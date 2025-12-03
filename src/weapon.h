@@ -22,7 +22,14 @@ struct Point
 class Weapon
 {
   public:
-    Weapon(std::string name, std::string description, int attackSpeed, int lvls, Point position, Rarity rarity);
+    Weapon(std::string name,
+           std::string description,
+           double damage,
+           double damageMultiplication,
+           int attackSpeed,
+           int lvls,
+           Point position,
+           Rarity rarity);
 
     virtual void shoot() = 0;
     void setPosition(Point &pos);
@@ -31,6 +38,8 @@ class Weapon
     std::string name;
     std::string description;
 
+    double damage;
+    double damageMultiplication;
     int attackSpeed;
     int lvls;
 
