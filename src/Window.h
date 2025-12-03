@@ -3,22 +3,28 @@
 
 #include <SFML/Graphics.hpp>
 #include <string>
+#include <vector>
+
+#include "Menu.h"
 
 class Window
 {
   public:
-    Window();
+    Window(std::vector<Menu *> menus);
     ~Window();
     void draw();
-    bool isClosed();
+    bool isClosed() const;
 
-  private:
     int static const WIDTH;
     int static const HEIGHT;
+
+  private:
     std::string static const GAME_TITLE;
 
     sf::RenderWindow *window;
     bool windowClosed;
+
+    std::vector<Menu *> menus;
 };
 
 #endif

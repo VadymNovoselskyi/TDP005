@@ -2,13 +2,15 @@
 #define GAME_STATE_H
 
 #include <SFML/Graphics.hpp>
+#include <vector>
 
+#include "Menu.h"
 #include "Window.h"
 
 class GameState
 {
   public:
-    GameState();
+    GameState(std::vector<Menu *> menus);
     ~GameState();
     void run();
 
