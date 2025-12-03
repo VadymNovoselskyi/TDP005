@@ -1,11 +1,10 @@
 #include "Menu.h"
 
-#include <algorithm>
 #include <iostream>
 #include <stdexcept>
 
 Menu::Menu(std::vector<ButtonInfo> buttons)
-    : defaultFont{}, buttons{buttons}, buttonElements{}, focusedButtonIdx{0}
+    : defaultFont{}, buttonElements{}, focusedButtonIdx{0}
 {
     defaultFont.loadFromFile("static/Orbitron-Bold.ttf");
 

@@ -28,7 +28,6 @@ class Menu
 
   private:
     sf::Font defaultFont;
-    std::vector<ButtonInfo> buttons;
     std::vector<sf::Text> buttonElements;
 
     int focusedButtonIdx;
