@@ -1,7 +1,7 @@
 #include "Character.h"
 
 
-void Character::takeDamage(int damage)
+void Character::takeDamage(double damage)
 {
     currentHP = currentHP- damage;
 }
