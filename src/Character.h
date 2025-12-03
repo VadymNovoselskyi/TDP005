@@ -12,6 +12,8 @@ struct Point
 class Character
 {
   public:
+    Character(int width, int height, int maxHP, int currentHp, int movementSpeed, Point positon, Point direction)
+    :widht{widht}, height{height}, maxHP{maxHP}, currentHP{currentHP}, movementSpeed{movementSpeed}, position{position}, direction{direction}  {} 
     virtual void move() = 0;
     void takeDamage(int );
     void setDirection(Point);
