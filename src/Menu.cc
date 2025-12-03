@@ -30,7 +30,7 @@ void Menu::draw(sf::RenderWindow *window) const
     }
 }
 
-void Menu::changeFocusedIndex(int change)
+void Menu::changeFocusedIdx(int change)
 {
     if (change != -1 && change != 1)
     {

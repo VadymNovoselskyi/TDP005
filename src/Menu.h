@@ -20,7 +20,7 @@ class Menu
     virtual ~Menu() = default;
 
     void draw(sf::RenderWindow *window) const;
-    void changeFocusedIndex(int change);
+    void changeFocusedIdx(int change);
     void handleClick();
 
   protected:
