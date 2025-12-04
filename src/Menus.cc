@@ -2,25 +2,32 @@
 
 #include <iostream>
 
-StartMenu::StartMenu() : Menu(createButtons())
+#include "StateMachine.h"
+
+StartMenu::StartMenu()
+    : Menu(createButtons(), StateMachine::instance()->state() == GameState::START_MENU)
 {
+    StateMachine::instance()->addListener("Start menu",
+                                          [this](GameState gameState)
+                                          { setIsOpen(gameState == GameState::START_MENU); });
 }
 
-std::vector<ButtonInfo> StartMenu::createButtons() const
+std::vector<ElementsInfo> StartMenu::createButtons() const
 {
-    std::vector<ButtonInfo> buttons{};
+    std::vector<ElementsInfo> elements{};
 
-    ButtonInfo startButton{
-        "START", 200, 100, []() { std::cout << "Starting the game!" << std::endl; }};
-    buttons.push_back(startButton);
+    ElementsInfo title{"GAME NAME", 0.5, 0.1, std::nullopt};
+    elements.push_back(title);
 
-    ButtonInfo rankingsButton{
-        "RANKINGS", 200, 300, []() { std::cout << "Switching to rankings!" << std::endl; }};
-    buttons.push_back(rankingsButton);
+    ElementsInfo startButton{"START", 0.5, 0.4, []() { StateMachine::instance()->startGame(); }};
+    elements.push_back(startButton);
 
-    ButtonInfo exitButton{
-        "EXIT", 200, 500, []() { std::cout << "EXITING the game!" << std::endl; }};
-    buttons.push_back(exitButton);
+    ElementsInfo rankingsButton{"RANKINGS", 0.5, 0.6, []() {}};
+    // "RANKINGS", 0.5, 0.4, []() { StateMachine::instance()->startGame(); }};
+    elements.push_back(rankingsButton);
 
-    return buttons;
+    ElementsInfo exitButton{"EXIT", 0.5, 0.8, []() { StateMachine::instance()->exitGame(); }};
+    elements.push_back(exitButton);
+
+    return elements;
 }

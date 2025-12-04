@@ -13,6 +13,7 @@ class Window
     Window(std::vector<Menu *> menus);
     ~Window();
     void draw();
+    void closeWindow();
     bool isClosed() const;
 
     int static const WIDTH;

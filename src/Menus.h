@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 
+#include "GameState.h"
+#include "StateMachine.h"
 #include "Menu.h"
 
 class StartMenu : public Menu
@@ -13,7 +15,7 @@ class StartMenu : public Menu
     StartMenu();
 
   private:
-    std::vector<ButtonInfo> createButtons() const override;
+    std::vector<ElementsInfo> createButtons() const override;
 };
 
 #endif
