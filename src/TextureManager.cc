@@ -1,4 +1,4 @@
-#include "textureManager.h"
+#include "TextureManager.h"
 
 #include <map>
 

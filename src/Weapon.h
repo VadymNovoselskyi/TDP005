@@ -2,8 +2,8 @@
 #define WEAPON_H
 
 #include <SFML/Graphics.hpp>
-#include "projectile.h"
-#include "point.h"
+#include "Projectile.h"
+#include "Point.h"
 
 #include <string>
 

@@ -1,4 +1,4 @@
-#include "projectile.h"
+#include "Projectile.h"
 
 Projectile::Projectile(Point position, Point direction, double velocity, double damage)
     :Entity(std::string{"projectile"}, position), direction{direction}, velocity{velocity}, damage{damage}

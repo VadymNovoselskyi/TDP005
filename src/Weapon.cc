@@ -1,4 +1,4 @@
-#include "weapon.h"
+#include "Weapon.h"
 
 weapon::weapon(std::string name,
                                    std::string description,

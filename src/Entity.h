@@ -2,8 +2,8 @@
 #define ENTITY_H
 
 #include <SFML/Graphics.hpp>
-#include "point.h"
-#include "textureManager.h"
+#include "Point.h"
+#include "TextureManager.h"
 
 #include <string>
 

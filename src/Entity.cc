@@ -1,4 +1,4 @@
-#include "entity.h"
+#include "Entity.h"
 
 Entity::Entity(std::string tag, Point position) : position{position}, tag{tag}
 {
