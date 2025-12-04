@@ -5,27 +5,29 @@
 
 struct Point
 {
-    int x;
-    int y;
+    double x;
+    double y;
 };
 
 class Character
 {
   public:
-    Character(int width, int height, int maxHP, int currentHp, int movementSpeed, Point positon, Point direction)
-    :widht{widht}, height{height}, maxHP{maxHP}, currentHP{currentHP}, movementSpeed{movementSpeed}, position{position}, direction{direction}  {} 
+    Character(double maxHP, double currentHp, int movementSpeed, Point positon, Point direction)
+        : maxHP{maxHP}, currentHP{currentHP}, movementSpeed{movementSpeed}, position{position},
+          direction{direction}
+    {
+    }
+
     virtual void move() = 0;
-    void takeDamage(int );
+    void takeDamage(int);
     void setDirection(Point);
     Point getDirection();
-    void setMovementSpeed(int); 
+    void setMovementSpeed(int);
 
-    protected:
-    int widht;
-    int height;
-    //sf::SDL_Surface* sprite;  -sprite till karaktrer
-    int maxHP;
-    int currentHP;
+  protected:
+    // sf::SDL_Surface* sprite;  -sprite till karaktrer
+    double maxHP;
+    double currentHP;
     int movementSpeed;
     Point position;
     Point direction;

@@ -18,8 +18,8 @@ class Player : public Character
            int maxXp,
            int levels,
            double damageMultipplyer);
-    void getXP(int);
-    void levelUp(int xp);
+    void setXP(int);
+    void levelUp();
     // void addWeapon(weapon)
     /// void createWeapon()
     void drawHP();
