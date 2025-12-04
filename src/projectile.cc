@@ -9,3 +9,8 @@ void Projectile::move()
 {
     position += direction *= velocity;
 }
+
+Point Projectile::getPosition()
+{
+    return position;
+}

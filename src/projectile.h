@@ -9,6 +9,7 @@ class Projectile
     public:
     Projectile(Point position, Point direction, double velocity, double damage);
     void move();
+    Point getPosition();
 
     private:
     Point position; 
