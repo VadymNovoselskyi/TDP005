@@ -17,7 +17,7 @@ sf::Texture TextureManager::getTexture(std::string name)
     else
     {
         sf::Texture t{};
-        t.loadFromFile(name);
+        t.loadFromFile("static/" + name);
         textureMap[name] = t;
         return t;
     }
