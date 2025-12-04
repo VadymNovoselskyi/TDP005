@@ -2,12 +2,9 @@
 #define CHARACTER_H
 
 #include <SFML/Graphics.hpp>
+#include <cmath>
 
-struct Point
-{
-    double x;
-    double y;
-};
+#include "point.h"
 
 class Character
 {

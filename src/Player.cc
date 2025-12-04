@@ -25,6 +25,40 @@ void Player::setXP(int gainedXP)
   }
 
 }
+
+void Player::move()
+{
+
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
+    {
+        //figure.move(0, -SPEED);
+        direction.y = -1;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
+    {
+        //figure.move(-SPEED, 0);
+        direction.x = -1;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
+    {
+        // figure.move(0, SPEED);
+        direction.y= 1;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
+    {
+        //figure.move(SPEED, 0);
+        direction.x = 1;
+    }
+    if(std::abs(direction.x) + std::abs(direction.y) > 1)
+    {
+        direction.x = direction.x / std::sqrt(2);
+        direction.y = direction.y / std::sqrt(2);     
+    }
+    // figure.move(sf::Vector2f(direction.x * movementSpeed, direction.y * movementSpeed));
+
+}
+
+
 // void Player::drawHP(bool boxPosX, bool boxPosY, float boxWidth, float boxheight)
 // {
 //    //Hp box background + outline
@@ -39,45 +73,23 @@ void Player::setXP(int gainedXP)
 //     CurrentHp.setPosition(boxPosX, boxPosY);
 // }
 
-void Player::levelUp(std::string choise, auto uppgrade)
-{
-  switch (choise)
-  {
-    case "Health":
-      maxHP += uppgrade;
-      break;
+// void Player::levelUp(std::string choise, auto uppgrade)
+// {
+//   switch (choise)
+//   {
+//     case "Health":
+//       maxHP += uppgrade;
+//       break;
 
-      case "Speed":
-      movementSpeed += uppgrade;
-      break;
+//       case "Speed":
+//       movementSpeed += uppgrade;
+//       break;
 
-      case "Damage":
-      damageMultipplyer += uppgrade;
-      case "Weapon":
+//       case "Damage":
+//       damageMultipplyer += uppgrade;
+//       case "Weapon":
         
-      break;
-  }
+//       break;
+//   }
   
-}
-void Player::move()
-{
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
-    {
-      // figure -> player
-       // figure.move(0, -movementSpeed);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
-    {
-      //  figure.move(-movementSpeed, 0);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
-    {
-      //  figure.move(0, movementSpeed);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
-    {
-       // figure.move(movementSpeed, 0);
-       return;
-    }
-
-}
+// }
