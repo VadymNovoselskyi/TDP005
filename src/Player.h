@@ -4,11 +4,11 @@
 #include <vector>
 
 #include "Character.h"
+
 class Player : public Character
 {
   public:
-    Player(
-           int maxHP,
+    Player(int maxHP,
            int currentHp,
            int movementSpeed,
            Point positon,
@@ -19,12 +19,12 @@ class Player : public Character
            int levels,
            double damageMultipplyer);
     void setXP(int);
-    void levelUp();
+    void levelUp(std::string, auto );
     // void addWeapon(weapon)
     /// void createWeapon()
     void drawHP();
     void drawXP();
-    
+    void move() override;
 
   private:
     std::string name{};
