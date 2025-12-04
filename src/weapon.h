@@ -1,5 +1,5 @@
-#ifndef PROJECTILEWEAPON_H
-#define PROJECTILEWEAPON_H
+#ifndef WEAPON_H
+#define WEAPON_H
 
 #include <SFML/Graphics.hpp>
 #include "projectile.h"
@@ -16,10 +16,10 @@ enum Rarity
 // kollade hur ennums funka (kolade på exempel svårt för mig att säga om jag koppiera då de bara
 // står exemplet hur man skriver den)
 
-class ProjectileWeapon
+class weapon
 {
   public:
-    ProjectileWeapon(std::string name,
+    weapon(std::string name,
                      std::string description,
                      double damage,
                      double damageMultiplication,

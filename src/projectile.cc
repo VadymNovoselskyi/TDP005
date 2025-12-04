@@ -5,13 +5,13 @@ Projectile::Projectile(Point position, Point direction, double velocity, double 
 {
 }
 
-// void Projectile::onCollistion(Entity other)
-// {
-//     if (other.getTag() == "enemy")
-//     {
+void Projectile::onCollistion(std::string other)
+{
+    if (other == "enemy")
+    {
 
-//     }
-// }
+    }
+}
 
 void Projectile::move()
 {
