@@ -57,7 +57,10 @@ void Player::move()
     // figure.move(sf::Vector2f(direction.x * movementSpeed, direction.y * movementSpeed));
 
 }
-
+void Player::die()
+{
+  StateMachine::instance()->finishGame();
+}
 
 // void Player::drawHP(bool boxPosX, bool boxPosY, float boxWidth, float boxheight)
 // {

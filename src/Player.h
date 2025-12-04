@@ -4,6 +4,8 @@
 #include <vector>
 
 #include "Character.h"
+#include "GameState.h"
+#include "StateMachine.h"
 
 class Player : public Character
 {
@@ -19,12 +21,13 @@ class Player : public Character
            int levels,
            double damageMultipplyer);
     void setXP(int);
-    void levelUp(std::string, auto );
+    void levelUp(std::string, auto);
     // void addWeapon(weapon)
     /// void createWeapon()
     void drawHP();
     void drawXP();
     void move() override;
+    void die() override;
 
   private:
     std::string name{};
@@ -32,6 +35,8 @@ class Player : public Character
     int maxXp;
     int levels;
     double damageMultipplyer;
+
+    
 };
 
 #endif /*PLAYER_H*/
