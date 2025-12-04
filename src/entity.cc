@@ -1,6 +1,6 @@
 #include "entity.h"
 
-Entity::Entity(std::string tag, Point position) : position{position}, variation{variation}, tag{tag}
+Entity::Entity(std::string tag, Point position) : position{position}, tag{tag}
 {
 }
 

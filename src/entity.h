@@ -2,9 +2,12 @@
 #define ENTITY_H
 
 #include <SFML/Graphics.hpp>
+#include "point.h"
+#include "textureManager.h"
+
 #include <string>
 
-#include "point.h"
+
 
 class Entity : public sf::Sprite
 {
@@ -16,7 +19,6 @@ class Entity : public sf::Sprite
 
   protected:
     Point position;
-    std::string variation;
   private:
     std::string tag;
 };
