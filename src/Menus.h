@@ -15,7 +15,7 @@ class StartMenu : public Menu
     StartMenu();
 
   private:
-    std::vector<ButtonInfo> createButtons() const override;
+    std::vector<ElementsInfo> createButtons() const override;
 };
 
 #endif

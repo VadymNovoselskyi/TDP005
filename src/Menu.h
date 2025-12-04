@@ -3,22 +3,23 @@
 
 #include <SFML/Graphics.hpp>
 #include <functional>
+#include <optional>
 #include <vector>
 
 #include "GameState.h"
 
-struct ButtonInfo
+struct ElementsInfo
 {
     sf::String text;
-    float x;
-    float y;
-    std::function<void()> onClick;
+    float xAlignn;
+    float yAlign;
+    std::optional<std::function<void()>> onClick;
 };
 
 class Menu
 {
   public:
-    Menu(std::vector<ButtonInfo> buttons, bool windowOpen);
+    Menu(std::vector<ElementsInfo> elements, bool windowOpen);
     virtual ~Menu();
 
     void draw(sf::RenderWindow *window) const;
@@ -26,14 +27,16 @@ class Menu
     bool isOpen() const;
 
   protected:
-    virtual std::vector<ButtonInfo> createButtons() const = 0;
+    virtual std::vector<ElementsInfo> createButtons() const = 0;
     void setIsOpen(bool isOpen);
+
 
   private:
     void changeFocusedIdx(int change);
 
     sf::Font defaultFont;
-    std::vector<ButtonInfo> buttons;
+    std::vector<ElementsInfo> buttonInfos;
+    std::vector<sf::Text *> textElements;
     std::vector<sf::Text *> buttonElements;
 
     bool menuOpen;

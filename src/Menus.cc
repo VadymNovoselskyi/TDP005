@@ -12,20 +12,22 @@ StartMenu::StartMenu()
                                           { setIsOpen(gameState == GameState::START_MENU); });
 }
 
-std::vector<ButtonInfo> StartMenu::createButtons() const
+std::vector<ElementsInfo> StartMenu::createButtons() const
 {
-    std::vector<ButtonInfo> buttons{};
+    std::vector<ElementsInfo> elements{};
 
-    // TODO: Change this to percent from middle on screen
-    ButtonInfo startButton{"START", 200, 100, []() { StateMachine::instance()->startGame(); }};
-    buttons.push_back(startButton);
+    ElementsInfo title{"GAME NAME", 0.5, 0.1, std::nullopt};
+    elements.push_back(title);
 
-    // ButtonInfo rankingsButton{
-    //     "RANKINGS", 200, 300, []() { StateMachine::instance()->startGame(); }};
-    // buttons.push_back(rankingsButton);
+    ElementsInfo startButton{"START", 0.5, 0.4, []() { StateMachine::instance()->startGame(); }};
+    elements.push_back(startButton);
 
-    ButtonInfo exitButton{"EXIT", 200, 300, []() { StateMachine::instance()->exitGame(); }};
-    buttons.push_back(exitButton);
+    ElementsInfo rankingsButton{"RANKINGS", 0.5, 0.6, []() {}};
+    // "RANKINGS", 0.5, 0.4, []() { StateMachine::instance()->startGame(); }};
+    elements.push_back(rankingsButton);
 
-    return buttons;
+    ElementsInfo exitButton{"EXIT", 0.5, 0.8, []() { StateMachine::instance()->exitGame(); }};
+    elements.push_back(exitButton);
+
+    return elements;
 }
