@@ -1,18 +1,16 @@
 #ifndef PROJECTILE_H
 #define PROJECTILE_H
 
-#include "point.h"
-#include <SFML/Graphics.hpp>
+#include "entity.h"
 
-class Projectile
+class Projectile : public Entity
 {
-    public:
+  public:
     Projectile(Point position, Point direction, double velocity, double damage);
+    // void onCollistion(Entity other) override;
     void move();
-    Point getPosition();
 
-    private:
-    Point position; 
+  private:
     Point direction;
     double velocity;
     double damage;
