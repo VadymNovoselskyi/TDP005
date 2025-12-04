@@ -10,11 +10,11 @@
 #include "GameState.h"
 #include "Window.h"
 
-class GameStateMachine
+class StateMachine
 {
   public:
-    static GameStateMachine *instance();
-    static GameStateMachine *init(Window *window);
+    static StateMachine *instance();
+    static StateMachine *init();
     static void deleteInstance();
 
     GameState state() const;
@@ -25,27 +25,16 @@ class GameStateMachine
     void finishGame();
     void exitGame();
 
-    void run();
-
     void addListener(std::string id, std::function<void(GameState)> handler);
     void removeListener(std::string id);
-
-    // TODO: Better ways to decouple gsm from window???
-    void setWindow(Window *window);
 
   private:
     void setState(GameState gameState);
 
-    static GameStateMachine *instancePtr;
-    GameStateMachine(Window *window);
-    ~GameStateMachine();
+    static StateMachine *instancePtr;
+    StateMachine();
+    ~StateMachine();
     GameState currentState;
-
-    int static const FPS;
-    sf::Time static const UPDATE_INTERVAL;
-
-    Window *window;
-    sf::Clock clock;
 
     std::map<std::string, std::function<void(GameState)>> listenersMap;
 };

@@ -1,27 +1,43 @@
 #include <iostream>
 #include <vector>
 
-#include "GameStateMachine.h"
+#include "StateMachine.h"
 #include "Menu.h"
 #include "Menus.h"
 
 int main()
 {
-    auto gsm = GameStateMachine::init(nullptr);
+    // Init the StateMachine and the menus
+    StateMachine::init();
     std::vector<Menu *> menus{};
     menus.push_back(new StartMenu());
 
-    // std::cout << "Created the GameOverMenu" << std::endl;
-
+    // Init the menu and add exit listener
     auto window = new Window(menus);
+    StateMachine::instance()->addListener("onExit",
+                                          [&window](GameState gameState)
+                                          {
+                                              if (gameState == GameState::EXIT)
+                                              {
+                                                  window->closeWindow();
+                                              }
+                                          });
 
-    // std::cout << "Created the GameStateMachine" << std::endl;
-    gsm->setWindow(window);
-    gsm->run();
-    // std::cout << "Ran the GameStateMachine" << std::endl;
+    // Add main loop logic
+    int const FPS{60};
+    sf::Time const UPDATE_INTERVAL{sf::milliseconds(1000.0 / FPS)};
+    sf::Clock clock{};
 
-    // std::cout << "Out of run in main" << std::endl;
-    GameStateMachine::deleteInstance();
-    // std::cout << "deleteInstance sucess" << std::endl;
+    while (!window->isClosed())
+    {
+        clock.restart();
+        window->draw();
+
+        sf::Time delta{UPDATE_INTERVAL - clock.getElapsedTime()};
+        sf::sleep(delta);
+    }
+
+    StateMachine::deleteInstance();
+    delete window;
     return 0;
 }
