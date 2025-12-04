@@ -4,7 +4,7 @@ Weapon::Weapon(std::string name,
                std::string description,
                double damage,
                double damageMultiplication,
-               int attackSpeed,
+               sf::Time attackSpeed,
                int lvls,
                Point position,
                Rarity rarity)
