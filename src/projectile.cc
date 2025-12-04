@@ -4,3 +4,8 @@ Projectile::Projectile(Point position, Point direction, double velocity, double 
     : position{position}, direction{direction}, velocity{velocity}, damage{damage}
 {
 }
+
+void Projectile::move()
+{
+    position += direction *= velocity;
+}

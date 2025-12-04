@@ -17,7 +17,7 @@ ProjectileWeapon::ProjectileWeapon(std::string name,
 void ProjectileWeapon::shoot()
 {
     Point dir{0, 0};
-    bullets.push_back(new Projectile{position, dir, speed, 20});
+    bullets.push_back(new Projectile{position, dir, speed, damage * damageMultiplication});
 }
 
 void ProjectileWeapon::uppdate()
