@@ -34,8 +34,3 @@ void weapon::uppdate()
         sf::sleep(attackSpeed);
     } while (true);
 }
-
-int main()
-{
-    return 0;
-}

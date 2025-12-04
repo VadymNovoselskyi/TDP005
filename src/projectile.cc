@@ -9,7 +9,7 @@ void Projectile::onCollistion(std::string other)
 {
     if (other == "enemy")
     {
-
+        //other take damage
     }
 }
 
