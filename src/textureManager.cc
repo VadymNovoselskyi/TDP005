@@ -2,10 +2,12 @@
 
 #include <map>
 
-sf::Texture textureManager::getTexture(std::string name)
+TextureManager::TextureManager() : textureMap{}
 {
-    std::map<std::string, sf::Texture> textureMap{};
+}
 
+sf::Texture TextureManager::getTexture(std::string name)
+{
     if (auto resualt = textureMap.find(name);
         resualt != textureMap.end()) // tog if statmentet från
                                      // https://en.cppreference.com/w/cpp/container/map/find.html
