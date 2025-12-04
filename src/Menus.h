@@ -22,6 +22,7 @@ class PauseMenu : public Menu
 {
   public:
     PauseMenu();
+    bool handleEvent(sf::Event event) override;
 
   private:
     std::vector<ElementsInfo> createButtons() const override;

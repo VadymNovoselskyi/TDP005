@@ -1,9 +1,9 @@
 #include <iostream>
 #include <vector>
 
-#include "StateMachine.h"
 #include "Menu.h"
 #include "Menus.h"
+#include "StateMachine.h"
 
 int main()
 {
@@ -16,6 +16,24 @@ int main()
 
     // Init the menu and add exit listener
     auto window = new Window(menus);
+
+    // Should I do anything with STARTING_GAME and CONTINUING_GAME
+    StateMachine::instance()->addListener("onStart",
+                                          [](GameState gameState)
+                                          {
+                                              if (gameState == GameState::STARTING_GAME)
+                                              {
+                                                  StateMachine::instance()->setInGame();
+                                              }
+                                          });
+    StateMachine::instance()->addListener("onContinue",
+                                          [](GameState gameState)
+                                          {
+                                              if (gameState == GameState::CONTINUING_GAME)
+                                              {
+                                                  StateMachine::instance()->setInGame();
+                                              }
+                                          });
     StateMachine::instance()->addListener("onExit",
                                           [&window](GameState gameState)
                                           {

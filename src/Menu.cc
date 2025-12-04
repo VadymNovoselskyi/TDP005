@@ -27,11 +27,12 @@ Menu::Menu(std::vector<ElementsInfo> const &elements, bool windowOpen)
         }
         else
         {
-            element->setFillColor(buttonElements.size() == 0 ? sf::Color::Red : sf::Color::Blue);
+            element->setFillColor(sf::Color::Blue);
             buttonInfos.push_back(elementInfo);
             buttonElements.push_back(element);
         }
     }
+    focusButton(0);
 }
 
 Menu::~Menu()
@@ -102,17 +103,25 @@ bool Menu::handleEvent(sf::Event event)
     return false;
 }
 
+void Menu::focusButton(int index)
+{
+    auto button = buttonElements.at(index);
+    button->setFillColor(sf::Color::Red);
+}
+void Menu::unFocusButton(int index)
+{
+    auto button = buttonElements.at(index);
+    button->setFillColor(sf::Color::Blue);
+}
+
 void Menu::changeFocusedIdx(int change)
 {
     int targetIndex = (focusedButtonIdx + change) % buttonElements.size();
     // std::cout << targetIndex << std::endl;
 
-    auto focusedButtonEl = buttonElements.at(focusedButtonIdx);
-    focusedButtonEl->setFillColor(sf::Color::Blue);
-
+    unFocusButton(focusedButtonIdx);
     focusedButtonIdx = targetIndex;
-    focusedButtonEl = buttonElements.at(focusedButtonIdx);
-    focusedButtonEl->setFillColor(sf::Color::Red);
+    focusButton(focusedButtonIdx);
 }
 
 bool Menu::isOpen() const
@@ -123,4 +132,7 @@ bool Menu::isOpen() const
 void Menu::setIsOpen(bool isOpen)
 {
     menuOpen = isOpen;
+    unFocusButton(focusedButtonIdx);
+    focusedButtonIdx = 0;
+    focusButton(focusedButtonIdx);
 }

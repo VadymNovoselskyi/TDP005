@@ -23,7 +23,7 @@ class Menu
     virtual ~Menu();
 
     void draw(sf::RenderWindow *window) const;
-    bool handleEvent(sf::Event event);
+    virtual bool handleEvent(sf::Event event);
     bool isOpen() const;
 
   protected:
@@ -31,6 +31,9 @@ class Menu
     void setIsOpen(bool isOpen);
 
   private:
+    void focusButton(int index);
+    void unFocusButton(int index);
+
     void changeFocusedIdx(int change);
 
     sf::Font defaultFont;

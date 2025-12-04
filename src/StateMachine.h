@@ -22,7 +22,9 @@ class StateMachine
 
     void openStartMenu();
     void startGame();
+    void setInGame();
     void pauseGame();
+    void continueGame();
     void finishGame();
     void exitGame();
 

@@ -3,7 +3,9 @@
 
 enum GameState
 {
-    START_MENU,
+    IN_START_MENU,
+    STARTING_GAME,
+    CONTINUING_GAME,
     IN_GAME,
     GAME_PAUSED,
     GAME_OVER,

@@ -46,16 +46,8 @@ void Window::draw()
             bool handled = menu->handleEvent(event);
             if (handled)
             {
-                continue;
+                break;
             }
-        }
-
-        if (StateMachine::instance()->state() == GameState::IN_GAME &&
-            event.type == sf::Event::KeyPressed &&
-            (event.key.scancode == sf::Keyboard::Scan::Space ||
-             event.key.scancode == sf::Keyboard::Scan::Escape))
-        {
-            StateMachine::instance()->pauseGame();
         }
     }
 
