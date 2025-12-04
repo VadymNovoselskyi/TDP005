@@ -2,20 +2,20 @@ CXX = g++
 CXXFLAGS = -g -std=c++17 -Wall -Wextra -MMD -MP
 LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
 
-OBJ = build/main.o build/GameState.o build/Window.o
+OBJ = build/projectile.o build/weapon.o build/projectileWeapon.o
 DEPS = $(OBJ:.o=.d)
 
 game: $(OBJ)
 	$(CXX) $(OBJ) $(LDFLAGS) -o $@
 
 # Compile rules
-build/main.o: src/main.cc
+build/projectile.o: src/projectile.cc
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-build/GameState.o: src/GameState.cc
+build/weapon.o: src/weapon.cc
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-build/Window.o: src/Window.cc
+build/projectileWeapon.o: src/projectileWeapon.cc
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 -include $(DEPS)
