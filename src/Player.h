@@ -1,0 +1,37 @@
+#ifndef PLAYER_H
+#define PLAYER_H
+#include <string>
+#include <vector>
+
+#include "Character.h"
+class Player : public Character
+{
+  public:
+    Player(
+           int maxHP,
+           int currentHp,
+           int movementSpeed,
+           Point positon,
+           Point direction,
+           std::string name,
+           int XP,
+           int maxXp,
+           int levels,
+           double damageMultipplyer);
+    void getXP(int);
+    void levelUp(int xp);
+    // void addWeapon(weapon)
+    /// void createWeapon()
+    void drawHP();
+    void drawXP();
+    
+
+  private:
+    std::string name{};
+    int xp;
+    int maxXp;
+    int levels;
+    double damageMultipplyer;
+};
+
+#endif /*PLAYER_H*/
