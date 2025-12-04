@@ -17,7 +17,8 @@ class StateMachine
     static StateMachine *init();
     static void deleteInstance();
 
-    GameState state() const;
+    // .clang-tidy that recommended it
+    [[nodiscard]] GameState state() const;
 
     void openStartMenu();
     void startGame();
@@ -25,15 +26,14 @@ class StateMachine
     void finishGame();
     void exitGame();
 
-    void addListener(std::string id, std::function<void(GameState)> handler);
-    void removeListener(std::string id);
+    void addListener(std::string const &id, std::function<void(GameState)> handler);
+    void removeListener(std::string const &id);
 
   private:
     void setState(GameState gameState);
 
     static StateMachine *instancePtr;
     StateMachine();
-    ~StateMachine();
     GameState currentState;
 
     std::map<std::string, std::function<void(GameState)>> listenersMap;

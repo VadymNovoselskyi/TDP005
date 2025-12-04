@@ -19,7 +19,7 @@ struct ElementsInfo
 class Menu
 {
   public:
-    Menu(std::vector<ElementsInfo> elements, bool windowOpen);
+    Menu(std::vector<ElementsInfo> const &elements, bool windowOpen);
     virtual ~Menu();
 
     void draw(sf::RenderWindow *window) const;

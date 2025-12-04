@@ -46,7 +46,7 @@ std::vector<ElementsInfo> PauseMenu::createButtons() const
 {
     std::vector<ElementsInfo> elements{};
 
-    ElementsInfo title{"GAME NAME", 0.5, 0.1, std::nullopt};
+    ElementsInfo title{"GAME PAUSED", 0.5, 0.1, std::nullopt};
     elements.push_back(title);
 
     ElementsInfo startButton{"CONTINUE", 0.5, 0.4, []() { StateMachine::instance()->startGame(); }};

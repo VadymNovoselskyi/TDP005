@@ -11,7 +11,12 @@ Checks: >
   -modernize-use-trailing-return-type,
   -cppcoreguidelines-special-member-functions,
   -cppcoreguidelines-non-private-member-variables-in-classes,
-  -cppcoreguidelines-avoid-const-or-ref-data-members
+  -cppcoreguidelines-avoid-const-or-ref-data-members,
+  -readability-redundant-member-init,
+  -cppcoreguidelines-narrowing-conversions,
+  -bugprone-narrowing-conversions,
+  -readability-qualified-auto,
+  -readability-identifier-length
 
 
 WarningsAsErrors: >

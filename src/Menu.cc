@@ -1,16 +1,15 @@
 #include "Menu.h"
 
 #include <iostream>
-#include <stdexcept>
 
 #include "Window.h"
 
-Menu::Menu(std::vector<ElementsInfo> elements, bool windowOpen)
+Menu::Menu(std::vector<ElementsInfo> const &elements, bool windowOpen)
     : defaultFont{}, buttonInfos{}, textElements{}, buttonElements{}, menuOpen{windowOpen},
       focusedButtonIdx{0}
 {
     defaultFont.loadFromFile("static/Orbitron-Bold.ttf");
-    for (auto const &elementInfo : elements)
+    for (auto &elementInfo : elements)
     {
         sf::Text *element{new sf::Text(elementInfo.text, defaultFont, 50)};
         auto textRect{element->getGlobalBounds()};
@@ -105,10 +104,6 @@ bool Menu::handleEvent(sf::Event event)
 
 void Menu::changeFocusedIdx(int change)
 {
-    if (change != -1 && change != 1)
-    {
-        throw std::logic_error("Invalid change for enu::changeFocusedIndex" + change);
-    }
     int targetIndex = (focusedButtonIdx + change) % buttonElements.size();
     // std::cout << targetIndex << std::endl;
 

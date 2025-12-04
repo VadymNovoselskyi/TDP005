@@ -8,7 +8,7 @@ int const Window::WIDTH{1024};
 int const Window::HEIGHT{768};
 std::string const Window::GAME_TITLE{"THE GAME"};
 
-Window::Window(std::vector<Menu *> menus) : window{}, windowClosed{false}, menus{menus}
+Window::Window(std::vector<Menu *> const &menus) : window{}, windowClosed{false}, menus{menus}
 {
     // std::cout << "Constructed the Window" << std::endl;
     this->window =

@@ -3,8 +3,6 @@
 #include <iostream>
 #include <stdexcept>
 
-#include "Window.h"
-
 StateMachine *StateMachine::instancePtr{nullptr};
 
 // Static methods:
@@ -36,16 +34,11 @@ StateMachine::StateMachine() : currentState{GameState::START_MENU}
     // std::cout << "Constructed the StartMenu" << std::endl;
 }
 
-StateMachine::~StateMachine()
-{
-    // std::cout << "Running the gsm destructor" << std::endl;
-}
-
-void StateMachine::addListener(std::string id, std::function<void(GameState)> handler)
+void StateMachine::addListener(std::string const &id, std::function<void(GameState)> handler)
 {
     listenersMap.insert_or_assign(id, handler);
 }
-void StateMachine::removeListener(std::string id)
+void StateMachine::removeListener(std::string const &id)
 {
     listenersMap.erase(listenersMap.find(id));
 }
