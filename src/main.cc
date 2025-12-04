@@ -20,11 +20,8 @@ int main()
     gsm->run();
     // std::cout << "Ran the GameStateMachine" << std::endl;
 
+    // std::cout << "Out of run in main" << std::endl;
     GameStateMachine::deleteInstance();
-
-    for (auto menu : menus)
-    {
-        delete menu;
-    }
+    // std::cout << "deleteInstance sucess" << std::endl;
     return 0;
 }

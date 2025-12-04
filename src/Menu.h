@@ -19,7 +19,7 @@ class Menu
 {
   public:
     Menu(std::vector<ButtonInfo> buttons, bool windowOpen);
-    virtual ~Menu() = default;
+    virtual ~Menu();
 
     void draw(sf::RenderWindow *window) const;
     void handleEvent(sf::Event event);

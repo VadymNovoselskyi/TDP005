@@ -15,6 +15,7 @@ Window::Window(std::vector<Menu *> menus) : window{}, windowClosed{false}, menus
 
 Window::~Window()
 {
+    // std::cout << "Running the window destructor" << std::endl;
     delete window;
     window = nullptr;
 
@@ -32,7 +33,9 @@ void Window::draw()
     {
         if (event.type == sf::Event::Closed)
         {
+            // std::cout << "Got close event" << std::endl;
             closeWindow();
+            // std::cout << "Closed the window" << std::endl;
             return;
         }
 
@@ -56,6 +59,7 @@ void Window::draw()
 
 void Window::closeWindow()
 {
+    // std::cout << "Closing the window" << std::endl;
     window->close();
     windowClosed = true;
 }

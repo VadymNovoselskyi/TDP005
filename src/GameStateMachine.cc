@@ -27,6 +27,7 @@ GameStateMachine *GameStateMachine::init(Window *window)
 
 void GameStateMachine::deleteInstance()
 {
+    // std::cout << "Deleting the instance" << std::endl;
     delete GameStateMachine::instancePtr;
     GameStateMachine::instancePtr = nullptr;
 }
@@ -40,6 +41,7 @@ GameStateMachine::GameStateMachine(Window *window)
 
 GameStateMachine::~GameStateMachine()
 {
+    // std::cout << "Running the gsm destructor" << std::endl;
     if (window != nullptr)
     {
         delete window;
@@ -64,7 +66,13 @@ void GameStateMachine::run()
 
         sf::Time delta{UPDATE_INTERVAL - clock.getElapsedTime()};
         sf::sleep(delta);
+
+        if (window->isClosed())
+        {
+            // std::cout << "Window has closed (gsm)" << std::endl;
+        }
     }
+    // std::cout << "Window closed, out of the run loop" << std::endl;
 }
 
 void GameStateMachine::addListener(std::string id, std::function<void(GameState)> handler)
@@ -121,7 +129,8 @@ void GameStateMachine::exitGame()
     if (currentState != GameState::START_MENU && currentState != GameState::GAME_OVER &&
         currentState != GameState::GAME_PAUSED)
     {
-        throw std::logic_error("Can exit the game only if the main, paus or game over menus is open");
+        throw std::logic_error(
+            "Can exit the game only if the main, paus or game over menus is open");
     }
     window->closeWindow();
     setState(GameState::EXIT);

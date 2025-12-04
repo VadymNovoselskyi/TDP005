@@ -16,6 +16,7 @@ std::vector<ButtonInfo> StartMenu::createButtons() const
 {
     std::vector<ButtonInfo> buttons{};
 
+    // TODO: Change this to percent from middle on screen
     ButtonInfo startButton{"START", 200, 100, []() { GameStateMachine::instance()->startGame(); }};
     buttons.push_back(startButton);
 
