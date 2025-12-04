@@ -4,7 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <vector>
-
+#include "GameState.h"
+#include "GameStateMachine.h"
 #include "Menu.h"
 
 class StartMenu : public Menu

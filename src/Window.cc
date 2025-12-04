@@ -32,9 +32,13 @@ void Window::draw()
     {
         if (event.type == sf::Event::Closed)
         {
-            window->close();
-            windowClosed = true;
+            closeWindow();
             return;
+        }
+
+        for (auto menu : menus)
+        {
+            menu->handleEvent(event);
         }
     }
 
@@ -48,6 +52,12 @@ void Window::draw()
     }
     // std::cout << "Completed running the draw" << std::endl;
     window->display();
+}
+
+void Window::closeWindow()
+{
+    window->close();
+    windowClosed = true;
 }
 
 bool Window::isClosed() const

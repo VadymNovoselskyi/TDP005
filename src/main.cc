@@ -1,23 +1,26 @@
 #include <iostream>
 #include <vector>
 
-#include "GameState.h"
+#include "GameStateMachine.h"
 #include "Menu.h"
 #include "Menus.h"
 
 int main()
 {
+    auto gsm = GameStateMachine::init(nullptr);
     std::vector<Menu *> menus{};
     menus.push_back(new StartMenu());
 
     // std::cout << "Created the GameOverMenu" << std::endl;
 
-    auto gs = new GameState(menus);
-    // std::cout << "Created the GameState" << std::endl;
-    gs->run();
-    // std::cout << "Ran the GameState" << std::endl;
+    auto window = new Window(menus);
 
-    delete gs;
+    // std::cout << "Created the GameStateMachine" << std::endl;
+    gsm->setWindow(window);
+    gsm->run();
+    // std::cout << "Ran the GameStateMachine" << std::endl;
+
+    GameStateMachine::deleteInstance();
 
     for (auto menu : menus)
     {
