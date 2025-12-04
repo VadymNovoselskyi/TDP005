@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "StateMachine.h"
+
 int const Window::WIDTH{1024};
 int const Window::HEIGHT{768};
 std::string const Window::GAME_TITLE{"THE GAME"};
@@ -41,7 +43,19 @@ void Window::draw()
 
         for (auto menu : menus)
         {
-            menu->handleEvent(event);
+            bool handled = menu->handleEvent(event);
+            if (handled)
+            {
+                continue;
+            }
+        }
+
+        if (StateMachine::instance()->state() == GameState::IN_GAME &&
+            event.type == sf::Event::KeyPressed &&
+            (event.key.scancode == sf::Keyboard::Scan::Space ||
+             event.key.scancode == sf::Keyboard::Scan::Escape))
+        {
+            StateMachine::instance()->pauseGame();
         }
     }
 

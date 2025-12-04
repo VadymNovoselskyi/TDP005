@@ -66,8 +66,13 @@ void Menu::draw(sf::RenderWindow *window) const
     }
 }
 
-void Menu::handleEvent(sf::Event event)
+bool Menu::handleEvent(sf::Event event)
 {
+    if (!menuOpen)
+    {
+        return false;
+    }
+
     if (event.type == sf::Event::KeyPressed)
     {
         // std::cout << sf::Keyboard::getDescription(event.key.scancode).toAnsiString() <<
@@ -78,23 +83,24 @@ void Menu::handleEvent(sf::Event event)
         case sf::Keyboard::Scan::Up:
             // std::cout << "pageUp" << std::endl;
             changeFocusedIdx(-1);
-            break;
+            return true;
 
         case sf::Keyboard::Scan::Down:
             // std::cout << "pageDown" << std::endl;
             changeFocusedIdx(1);
-            break;
+            return true;
 
         case sf::Keyboard::Scan::Enter:
             // std::cout << "Enter" << std::endl;
 
             // A little bit of cpp syntax goes long way
             buttonInfos.at(focusedButtonIdx).onClick->operator()();
-            break;
+            return true;
         default:
-            return;
+            return false;
         }
     }
+    return false;
 }
 
 void Menu::changeFocusedIdx(int change)

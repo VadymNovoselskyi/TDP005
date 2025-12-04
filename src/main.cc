@@ -11,6 +11,8 @@ int main()
     StateMachine::init();
     std::vector<Menu *> menus{};
     menus.push_back(new StartMenu());
+    menus.push_back(new PauseMenu());
+    menus.push_back(new GameOverMenu());
 
     // Init the menu and add exit listener
     auto window = new Window(menus);
