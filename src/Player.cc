@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "TextureManager.h"
+
 Player::Player(int maxHP,
                int currentHP,
                int movementSpeed,
@@ -13,12 +15,11 @@ Player::Player(int maxHP,
                int levels,
                double damageMultipplyer)
     : Character("player", maxHP, currentHP, movementSpeed, positon, direction), name{name}, xp{xp},
-      maxXP{maxXP}, levels{levels}, damageMultipplyer{damageMultipplyer}, texture{}
+      maxXP{maxXP}, levels{levels}, damageMultipplyer{damageMultipplyer},
+      texture{TextureManager::instance()->getTexture("fighter.png")}
 {
-    texture.loadFromFile("static/fighter.png");
-    auto player_size{texture.getSize()};
-
-    sf::Sprite::setTexture(texture);
+    auto player_size{texture->getSize()};
+    sf::Sprite::setTexture(*texture);
     sf::Sprite::setOrigin(player_size.x / 2, player_size.y);
 }
 

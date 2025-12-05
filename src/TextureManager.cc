@@ -22,22 +22,26 @@ TextureManager *TextureManager::init()
 void TextureManager::deleteInstance()
 {
     // std::cout << "Deleting the instance" << std::endl;
+    for (auto [name, texture] : TextureManager::instancePtr->textureMap)
+    {
+        delete texture;
+    }
     delete TextureManager::instancePtr;
     TextureManager::instancePtr = nullptr;
 }
 
-sf::Texture TextureManager::getTexture(std::string name)
+sf::Texture *TextureManager::getTexture(std::string const &name)
 {
-    if (auto resualt = textureMap.find(name);
-        resualt != textureMap.end()) // tog if statmentet från
-                                     // https://en.cppreference.com/w/cpp/container/map/find.html
+    if (auto result = textureMap.find(name);
+        result != textureMap.end()) // tog if statmentet från
+                                    // https://en.cppreference.com/w/cpp/container/map/find.html
     {
-        return resualt->second;
+        return result->second;
     }
     else
     {
-        sf::Texture t{};
-        t.loadFromFile("static/" + name);
+        sf::Texture *t{new sf::Texture{}};
+        t->loadFromFile("static/" + name);
         textureMap[name] = t;
         return t;
     }

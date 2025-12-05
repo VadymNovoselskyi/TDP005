@@ -39,7 +39,7 @@ class Player : public Character
     int maxXP;
     int levels;
     double damageMultipplyer;
-    sf::Texture texture;
+    sf::Texture const *texture;
 };
 
 #endif /*PLAYER_H*/
