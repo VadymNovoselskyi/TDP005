@@ -3,7 +3,6 @@
 
 #include <SFML/Graphics.hpp>
 #include "Point.h"
-#include "TextureManager.h"
 
 #include <string>
 
