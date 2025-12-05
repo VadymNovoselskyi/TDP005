@@ -7,7 +7,8 @@ class Projectile : public Entity
 {
   public:
     Projectile(sf::Vector2f pos, double velocity, double damage);
-    void onCollistion(std::string other) override;
+    void onCollision(std::string other) override;
+
     void move();
 
   private:

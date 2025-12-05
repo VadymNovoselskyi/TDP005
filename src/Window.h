@@ -5,12 +5,13 @@
 #include <string>
 #include <vector>
 
+#include "Map.h"
 #include "Menu.h"
 
 class Window
 {
   public:
-    Window(std::vector<Menu *> const &menus);
+    Window(std::vector<Menu *> const &menus, Map *map);
     ~Window();
     void draw();
     void closeWindow();
@@ -18,8 +19,8 @@ class Window
     // .clang-tidy again
     [[nodiscard]] bool isClosed() const;
 
-    int static const WIDTH;
-    int static const HEIGHT;
+    int static const WINDOW_WIDTH;
+    int static const WINDOW_HEIGHT;
 
   private:
     std::string static const GAME_TITLE;
@@ -28,6 +29,7 @@ class Window
     bool windowClosed;
 
     std::vector<Menu *> menus;
+    Map *map;
 };
 
 #endif

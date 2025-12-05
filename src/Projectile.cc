@@ -5,7 +5,7 @@ Projectile::Projectile(sf::Vector2f pos, double velocity, double damage)
 {
 }
 
-void Projectile::onCollistion(std::string other)
+void Projectile::onCollision(std::string other)
 {
     if (other == "enemy")
     {
