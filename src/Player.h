@@ -6,6 +6,7 @@
 #include "Character.h"
 #include "GameState.h"
 #include "StateMachine.h"
+
 enum Choises // levelup choise
 {
     HP,

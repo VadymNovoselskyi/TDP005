@@ -2,6 +2,7 @@
 #define MENUS_H
 
 #include <SFML/Graphics.hpp>
+#include <functional>
 #include <string>
 #include <vector>
 
@@ -42,19 +43,19 @@ struct LevelUpInfo
     std::string name;
     std::string description;
     // Change to the level up enum
-    std::string levelUpValue;
+    std::function<void()> onClick;
 };
 
 class LevelUpMenu : public Menu
 {
   public:
-    LevelUpMenu(std::vector<LevelUpInfo> const &levelUpOptions);
+    LevelUpMenu();
+    void createOptions(std::vector<LevelUpInfo> const &levelUpOptions);
+    using Menu::setButtons;
 
   private:
     std::vector<ElementsInfo> createButtons(std::vector<LevelUpInfo> const &levelUpOptions) const;
-
-    // The same trick to hide the -Woverloaded-virtual as in Entity taken from overflow
-    using Menu::createButtons;
+    std::vector<ElementsInfo> createButtons() const override;
 };
 
 #endif

@@ -1,7 +1,9 @@
 #include "Menus.h"
 
 #include <iostream>
+#include <vector>
 
+#include "Menu.h"
 #include "StateMachine.h"
 
 // Start menu
@@ -113,13 +115,17 @@ std::vector<ElementsInfo> GameOverMenu::createButtons() const
 }
 
 // Level Up menu
-LevelUpMenu::LevelUpMenu(std::vector<LevelUpInfo> const &levelUpOptions)
-    : Menu(createButtons(levelUpOptions),
-           StateMachine::instance()->state() == GameState::LEVEL_UP_SCREEN)
+LevelUpMenu::LevelUpMenu()
+    : Menu(createButtons(), StateMachine::instance()->state() == GameState::LEVEL_UP_SCREEN)
 {
     StateMachine::instance()->addListener("LevelUpMenu",
                                           [this](GameState gameState)
                                           { setIsOpen(gameState == GameState::LEVEL_UP_SCREEN); });
+}
+
+void LevelUpMenu::createOptions(std::vector<LevelUpInfo> const &levelUpOptions)
+{
+    Menu::setButtons(createButtons(levelUpOptions));
 }
 
 std::vector<ElementsInfo>
@@ -139,9 +145,13 @@ LevelUpMenu::createButtons(std::vector<LevelUpInfo> const &levelUpOptions) const
             levelUpOption.name + "\n" + levelUpOption.description,
             0.5,
             (((1 - PADDING_TOP - PADDING_BOTTOM) / optionsSize * i) + PADDING_TOP),
-            // []() { StateMachine::instance()->startGame(); }};
-            [&levelUpOption]() { levelUpOption.levelUpValue; }};
+            levelUpOption.onClick};
         elements.push_back(levelUpButton);
     }
     return elements;
+}
+
+std::vector<ElementsInfo> LevelUpMenu::createButtons() const
+{
+    return std::vector<ElementsInfo>{};
 }

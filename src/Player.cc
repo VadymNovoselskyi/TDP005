@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+#include "StateMachine.h"
 #include "TextureManager.h"
 
 Player::Player(float maxHP,

@@ -22,9 +22,11 @@ GameEngine::GameEngine() : window{}, clock{}
     bgTexture->setRepeated(true);
 
     std::vector<Menu *> menus{};
+
     menus.push_back(new StartMenu());
     menus.push_back(new PauseMenu());
     menus.push_back(new GameOverMenu());
+    menus.push_back(new LevelUpMenu());
 
     // Init the menu and add exit listener
     window = new Window(menus, bgTexture);
