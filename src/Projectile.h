@@ -6,12 +6,11 @@
 class Projectile : public Entity
 {
   public:
-    Projectile(Point position, Point direction, double velocity, double damage);
+    Projectile(sf::Vector2f pos, double velocity, double damage);
     void onCollistion(std::string other) override;
     void move();
 
   private:
-    Point direction;
     double velocity;
     double damage;
 };
