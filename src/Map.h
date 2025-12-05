@@ -10,13 +10,23 @@
 class Map
 {
   public:
-    Map(Player *player);
-    ~Map();
+    static Map *instance();
+    static Map *init(Player *player);
+    static void deleteInstance();
+
     void draw(sf::RenderWindow *window) const;
 
+    void addEntity(Entity *e);
+    void removeEntity(Entity *e);
+
   private:
+    Map(Player *player);
+    ~Map();
+    static Map *instancePtr;
+
     sf::View *view;
     Player *player;
+    std::vector<Entity *> entities;
 };
 
 #endif

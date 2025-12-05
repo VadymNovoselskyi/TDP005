@@ -8,10 +8,10 @@ int const Window::WINDOW_WIDTH{1024};
 int const Window::WINDOW_HEIGHT{768};
 std::string const Window::GAME_TITLE{"THE GAME"};
 
-Window::Window(std::vector<Menu *> const &menus, Map *map, sf::Texture const *bgTexture)
+Window::Window(std::vector<Menu *> const &menus, sf::Texture const *bgTexture)
     : window{new sf::RenderWindow{sf::VideoMode(Window::WINDOW_WIDTH, Window::WINDOW_HEIGHT),
                                   Window::GAME_TITLE}},
-      windowClosed{false}, menus{menus}, map{map}, bgTexture{bgTexture}
+      windowClosed{false}, menus{menus}, bgTexture{bgTexture}
 {
 }
 
@@ -19,9 +19,7 @@ Window::~Window()
 {
     // std::cout << "Running the window destructor" << std::endl;
     delete window;
-    delete map;
     window = nullptr;
-    map = nullptr;
 
     for (auto menu : menus)
     {
@@ -62,7 +60,7 @@ void Window::draw()
 
     if (StateMachine::instance()->state() == GameState::IN_GAME)
     {
-        map->draw(window);
+        Map::instance()->draw(window);
     }
     else
     {

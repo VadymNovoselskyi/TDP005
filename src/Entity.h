@@ -10,6 +10,7 @@ class Entity : public sf::Sprite
     Entity(std::string tag, sf::Vector2f pos);
     virtual void onCollision(std::string other /*otehr = other.tag*/) = 0;
     std::string getTag();
+    virtual void move() = 0;
 
   private:
     std::string tag;
