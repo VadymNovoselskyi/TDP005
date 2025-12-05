@@ -2,7 +2,7 @@ CXX = g++
 CXXFLAGS = -g -std=c++17 -Wall -Wextra -MMD -MP
 LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
 
-OBJ = build/main.o build/GameState.o build/Window.o build/Menu.o build/Menus.o build/Projectile.o build/Weapon.o build/TextureManager.o build/Point.o build/Entity.o
+OBJ = build/main.o build/StateMachine.o build/Window.o build/Menu.o build/Menus.o build/Projectile.o build/Weapon.o build/TextureManager.o build/Point.o build/Entity.o
 
 DEPS = $(OBJ:.o=.d)
 
@@ -13,7 +13,7 @@ game: $(OBJ)
 build/main.o: src/main.cc
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-build/GameState.o: src/GameState.cc
+build/StateMachine.o: src/StateMachine.cc
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 build/Window.o: src/Window.cc

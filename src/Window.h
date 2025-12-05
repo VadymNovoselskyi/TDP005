@@ -10,10 +10,13 @@
 class Window
 {
   public:
-    Window(std::vector<Menu *> menus);
+    Window(std::vector<Menu *> const &menus);
     ~Window();
     void draw();
-    bool isClosed() const;
+    void closeWindow();
+
+    // .clang-tidy again
+    [[nodiscard]] bool isClosed() const;
 
     int static const WIDTH;
     int static const HEIGHT;

@@ -1,46 +1,138 @@
 #include "Menu.h"
 
 #include <iostream>
-#include <stdexcept>
 
-Menu::Menu(std::vector<ButtonInfo> buttons)
-    : defaultFont{}, buttonElements{}, focusedButtonIdx{0}
+#include "Window.h"
+
+Menu::Menu(std::vector<ElementsInfo> const &elements, bool windowOpen)
+    : defaultFont{}, buttonInfos{}, textElements{}, buttonElements{}, menuOpen{windowOpen},
+      focusedButtonIdx{0}
 {
     defaultFont.loadFromFile("static/Orbitron-Bold.ttf");
-
-    for (auto const &button : buttons)
+    for (auto &elementInfo : elements)
     {
-        sf::Text buttonElement{button.text, defaultFont, 50};
-        buttonElement.setPosition(button.x, button.y);
-        buttonElement.setOutlineColor(sf::Color::Green);
-        buttonElement.setFillColor(sf::Color::Red);
-        buttonElement.setOutlineThickness(5.0);
+        sf::Text *element{new sf::Text(elementInfo.text, defaultFont, 50)};
+        auto textRect{element->getGlobalBounds()};
+        element->setOrigin(textRect.width / 2, textRect.height / 2);
+        element->setPosition((Window::WIDTH * elementInfo.xAlignn),
+                             (Window::HEIGHT * elementInfo.yAlign));
 
-        buttonElements.push_back(buttonElement);
+        element->setOutlineColor(sf::Color::Green);
+        element->setOutlineThickness(4.0);
+
+        if (!elementInfo.onClick.has_value())
+        {
+            element->setFillColor(sf::Color::Blue);
+            textElements.push_back(element);
+        }
+        else
+        {
+            element->setFillColor(sf::Color::Blue);
+            buttonInfos.push_back(elementInfo);
+            buttonElements.push_back(element);
+        }
+    }
+    focusButton(0);
+}
+
+Menu::~Menu()
+{
+    // std::cout << "Running the menu destructor" << std::endl;
+    for (auto buttonEl : buttonElements)
+    {
+        delete buttonEl;
+    }
+    for (auto textEl : textElements)
+    {
+        delete textEl;
     }
 }
 
 void Menu::draw(sf::RenderWindow *window) const
 {
     // std::cout << "Running the draw loop in Menu" << std::endl;
+    if (!menuOpen)
+    {
+        return;
+    }
 
     for (auto const &buttonEl : buttonElements)
     {
-        window->draw(buttonEl);
+        window->draw(*buttonEl);
     }
+    for (auto const &textEl : textElements)
+    {
+        window->draw(*textEl);
+    }
+}
+
+bool Menu::handleEvent(sf::Event event)
+{
+    if (!menuOpen)
+    {
+        return false;
+    }
+
+    if (event.type == sf::Event::KeyPressed)
+    {
+        // std::cout << sf::Keyboard::getDescription(event.key.scancode).toAnsiString() <<
+        // std::endl;
+
+        switch (event.key.scancode)
+        {
+        case sf::Keyboard::Scan::Up:
+            // std::cout << "pageUp" << std::endl;
+            changeFocusedIdx(-1);
+            return true;
+
+        case sf::Keyboard::Scan::Down:
+            // std::cout << "pageDown" << std::endl;
+            changeFocusedIdx(1);
+            return true;
+
+        case sf::Keyboard::Scan::Enter:
+            // std::cout << "Enter" << std::endl;
+
+            // A little bit of cpp syntax goes long way
+            buttonInfos.at(focusedButtonIdx).onClick->operator()();
+            return true;
+        default:
+            return false;
+        }
+    }
+    return false;
+}
+
+void Menu::focusButton(int index)
+{
+    auto button = buttonElements.at(index);
+    button->setFillColor(sf::Color::Red);
+}
+void Menu::unFocusButton(int index)
+{
+    auto button = buttonElements.at(index);
+    button->setFillColor(sf::Color::Blue);
 }
 
 void Menu::changeFocusedIdx(int change)
 {
-    if (change != -1 && change != 1)
-    {
-        throw std::logic_error("Invalid change for enu::changeFocusedIndex" + change);
-    }
+    int targetIndex = (focusedButtonIdx + change) % buttonElements.size();
+    // std::cout << targetIndex << std::endl;
 
-    auto focusedButtonEl = buttonElements.at(focusedButtonIdx);
-    focusedButtonEl.setFillColor(sf::Color::Red);
+    unFocusButton(focusedButtonIdx);
+    focusedButtonIdx = targetIndex;
+    focusButton(focusedButtonIdx);
+}
 
-    focusedButtonIdx += change;
-    focusedButtonEl = buttonElements.at(focusedButtonIdx);
-    focusedButtonEl.setFillColor(sf::Color::Blue);
+bool Menu::isOpen() const
+{
+    return menuOpen;
+}
+
+void Menu::setIsOpen(bool isOpen)
+{
+    menuOpen = isOpen;
+    unFocusButton(focusedButtonIdx);
+    focusedButtonIdx = 0;
+    focusButton(focusedButtonIdx);
 }
