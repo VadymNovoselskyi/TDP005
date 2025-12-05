@@ -4,15 +4,15 @@
 
 #include "StateMachine.h"
 
-int const Window::WIDTH{1024};
-int const Window::HEIGHT{768};
+int const Window::WINDOW_WIDTH{1024};
+int const Window::WINDOW_HEIGHT{768};
 std::string const Window::GAME_TITLE{"THE GAME"};
 
 Window::Window(std::vector<Menu *> const &menus) : window{}, windowClosed{false}, menus{menus}
 {
     // std::cout << "Constructed the Window" << std::endl;
     this->window =
-        new sf::RenderWindow{sf::VideoMode(Window::WIDTH, Window::HEIGHT), Window::GAME_TITLE};
+        new sf::RenderWindow{sf::VideoMode(Window::WINDOW_WIDTH, Window::WINDOW_HEIGHT), Window::GAME_TITLE};
 }
 
 Window::~Window()

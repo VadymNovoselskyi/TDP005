@@ -17,11 +17,11 @@ class Player : public Character
            Point direction,
            std::string name,
            int XP,
-           int maxXp,
+           int maxXP,
            int levels,
            double damageMultipplyer);
-    void setXP(int);
-    void levelUp(std::string, auto);
+    void setXP(int xp);
+    void levelUp(std::string string, int smth);
     // void addWeapon(weapon)
     /// void createWeapon()
     void drawHP();
@@ -32,7 +32,7 @@ class Player : public Character
   private:
     std::string name{};
     int xp;
-    int maxXp;
+    int maxXP;
     int levels;
     double damageMultipplyer;
 

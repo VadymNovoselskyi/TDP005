@@ -9,11 +9,7 @@
 class Character
 {
   public:
-    Character(double maxHP, double currentHp, int movementSpeed, Point positon, Point direction)
-        : maxHP{maxHP}, currentHP{currentHP}, movementSpeed{movementSpeed}, position{position},
-          direction{direction}
-    {
-    }
+    Character(double maxHP, double currentHP, int movementSpeed, Point position, Point direction);
 
     virtual void move() = 0;
     void takeDamage(int);

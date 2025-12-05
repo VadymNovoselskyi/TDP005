@@ -14,8 +14,8 @@ Menu::Menu(std::vector<ElementsInfo> const &elements, bool windowOpen)
         sf::Text *element{new sf::Text(elementInfo.text, defaultFont, 50)};
         auto textRect{element->getGlobalBounds()};
         element->setOrigin(textRect.width / 2, textRect.height / 2);
-        element->setPosition((Window::WIDTH * elementInfo.xAlignn),
-                             (Window::HEIGHT * elementInfo.yAlign));
+        element->setPosition((Window::WINDOW_WIDTH * elementInfo.xAlignn),
+                             (Window::WINDOW_HEIGHT * elementInfo.yAlign));
 
         element->setOutlineColor(sf::Color::Green);
         element->setOutlineThickness(4.0);

@@ -18,8 +18,8 @@ class Window
     // .clang-tidy again
     [[nodiscard]] bool isClosed() const;
 
-    int static const WIDTH;
-    int static const HEIGHT;
+    int static const WINDOW_WIDTH;
+    int static const WINDOW_HEIGHT;
 
   private:
     std::string static const GAME_TITLE;
