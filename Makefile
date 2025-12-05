@@ -40,6 +40,7 @@ build/Player.o: src/Player.cc
 build/Projectile.o: src/Projectile.cc
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+
 build/Weapon.o: src/Weapon.cc
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
@@ -48,6 +49,7 @@ build/TextureManager.o: src/TextureManager.cc
 
 build/Entity.o: src/Entity.cc
 	$(CXX) $(CXXFLAGS) -c $< -o $@
+
 
 -include $(DEPS)
 

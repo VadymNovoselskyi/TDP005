@@ -2,8 +2,10 @@
 
 #include <iostream>
 
-Player::Player(int maxHP,
-               int currentHP,
+#include "TextureManager.h"
+
+Player::Player(float maxHP,
+               float currentHP,
                int movementSpeed,
                sf::Vector2f const &positon,
                sf::Vector2f const &direction,
@@ -11,10 +13,10 @@ Player::Player(int maxHP,
                int xp,
                int maxXP,
                int levels,
-               double damageMultipplyer)
+               float damageMultiplier)
     : Character("player", maxHP, currentHP, movementSpeed, positon, direction), name{name}, xp{xp},
-      maxXP{maxXP}, levels{levels}, damageMultipplyer{damageMultipplyer},
-      texture{TextureManager::instance()->getTexture("fighter.png")}
+      maxXP{maxXP}, levels{levels}, damageMultiplier{damageMultiplier},
+      texture{TextureManager::instance()->getTexture("player.png")}
 {
     auto playerSize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
@@ -38,26 +40,18 @@ void Player::move()
     direction.y = 0;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
     {
-        // std::cout << "W pressed" << std::endl;
-        // figure.move(0, -SPEED);
         direction.y = -1;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
     {
-        // std::cout << "A pressed" << std::endl;
-        // figure.move(-SPEED, 0);
         direction.x = -1;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
     {
-        // std::cout << "S pressed" << std::endl;
-        // figure.move(0, SPEED);
         direction.y = 1;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
     {
-        // std::cout << "D pressed" << std::endl;
-        // figure.move(SPEED, 0);
         direction.x = 1;
     }
     if (std::abs(direction.x) + std::abs(direction.y) > 1)
@@ -84,38 +78,40 @@ void Player::onCollision(std::string const &other)
     {
     }
 }
+void Player::drawInfo(bool boxPosX, bool boxPosY, float boxWidth, float boxheight)
+{
+    drawHP(boxPosX, boxPosY, boxWidth, boxheight);
+    // drawXP(boxPosX, boxPosY -60, boxWidth, boxheight);
+}
+void Player::drawHP(bool boxPosX, bool boxPosY, float boxWidth, float boxheight)
+{
+    // Hp box background + outline
+    sf::RectangleShape HpBox(sf::Vector2(boxWidth, boxheight));
+    HpBox.setSize(sf::Vector2f(boxWidth, boxheight));
+    HpBox.setFillColor(sf::Color(128, 0, 0));
+    HpBox.setPosition(boxPosX, boxPosY);
+    // current hp
+    sf::RectangleShape CurrentHp(sf::Vector2(boxWidth, boxheight));
+    CurrentHp.setSize(sf::Vector2f(boxWidth, boxheight));
+    CurrentHp.setFillColor(sf::Color(204, 0, 0));
+    CurrentHp.setPosition(boxPosX, boxPosY);
+}
 
-// void Player::drawHP(bool boxPosX, bool boxPosY, float boxWidth, float boxheight)
-// {
-//    //Hp box background + outline
-//     sf::RectangleShape HpBox(sf::Vector2(boxWidth, boxheight));
-//     HpBox.setSize(sf::Vector2f(boxWidth, boxheight));
-//     HpBox.setFillColor(sf::Color(128,0,0));
-//     HpBox.setPosition(boxPosX, boxPosY);
-//     //current hp
-//     sf::RectangleShape CurrentHp(sf::Vector2(boxWidth, boxheight));
-//     CurrentHp.setSize(sf::Vector2f(boxWidth, boxheight));
-//     CurrentHp.setFillColor(sf::Color(204,0,0));
-//     CurrentHp.setPosition(boxPosX, boxPosY);
-// }
+void Player::levelUP(Choises choise)
+{
+    switch (choise)
+    {
+    case HP: // hp
+        maxHP += 50;
+        break;
+    case SPEED: // speed
+        movementSpeed += 5;
+        break;
 
-// void Player::levelUp(std::string choise, auto uppgrade)
-// {
-//   switch (choise)
-//   {
-//     case "Health":
-//       maxHP += uppgrade;
-//       break;
+    case DAMAGE: // damage
+        damageMultiplier += 0.5;
+    case WEAPON: // weapon
 
-//       case "Speed":
-//       movementSpeed += uppgrade;
-//       break;
-
-//       case "Damage":
-//       damageMultipplyer += uppgrade;
-//       case "Weapon":
-
-//       break;
-//   }
-
-// }
+        break;
+    }
+}

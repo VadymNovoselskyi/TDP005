@@ -1,8 +1,8 @@
 #include "Character.h"
 
 Character::Character(std::string const &tag,
-                     double maxHP,
-                     double currentHP,
+                     float maxHP,
+                     float currentHP,
                      int movementSpeed,
                      sf::Vector2f const &position,
                      sf::Vector2f const &direction)
