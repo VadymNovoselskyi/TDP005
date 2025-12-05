@@ -23,7 +23,7 @@ GameEngine::GameEngine() : window{}, clock{}
     menus.push_back(new GameOverMenu());
 
     Player *player{
-        new Player(10, 10, 10, Point{100.0, 100.0}, Point{100.0, 100.0}, "Player1", 0, 0, 0, 0)};
+        new Player(10, 10, 10, sf::Vector2f{100.0, 100.0}, sf::Vector2f{100.0, 100.0}, "Player1", 0, 0, 0, 0)};
     Map *map{new Map(player)};
 
     // Init the menu and add exit listener

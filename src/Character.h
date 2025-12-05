@@ -5,7 +5,6 @@
 #include <cmath>
 
 #include "Entity.h"
-#include "Point.h"
 
 class Character : public Entity
 {
@@ -14,13 +13,13 @@ class Character : public Entity
               double maxHP,
               double currentHP,
               int movementSpeed,
-              Point position,
-              Point direction);
+              sf::Vector2f position,
+              sf::Vector2f direction);
 
     virtual void move() = 0;
     void takeDamage(int);
-    void setDirection(Point);
-    Point getDirection();
+    void setDirection(sf::Vector2f);
+    sf::Vector2f getDirection();
     void setMovementSpeed(int);
 
   protected:
@@ -28,7 +27,7 @@ class Character : public Entity
     double maxHP;
     double currentHP;
     int movementSpeed;
-    Point direction;
+    sf::Vector2f direction;
     virtual void die() = 0;
 };
 

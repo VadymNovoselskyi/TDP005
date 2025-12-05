@@ -2,21 +2,15 @@
 #define ENTITY_H
 
 #include <SFML/Graphics.hpp>
-#include "Point.h"
-
 #include <string>
-
-
 
 class Entity : public sf::Sprite
 {
   public:
-    Entity(std::string tag, Point position);
+    Entity(std::string tag, sf::Vector2f pos);
     virtual void onCollision(std::string other /*otehr = other.tag*/) = 0;
     std::string getTag();
 
-  protected:
-    Point position;
   private:
     std::string tag;
 };

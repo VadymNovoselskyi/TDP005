@@ -7,8 +7,8 @@
 Player::Player(int maxHP,
                int currentHP,
                int movementSpeed,
-               Point positon,
-               Point direction,
+               sf::Vector2f positon,
+               sf::Vector2f direction,
                std::string name,
                int xp,
                int maxXP,
@@ -82,6 +82,10 @@ void Player::draw(sf::RenderWindow *window) const
 
 void Player::onCollision(std::string other)
 {
+    if (other == "enemy")
+    {
+
+    }
 }
 
 // void Player::drawHP(bool boxPosX, bool boxPosY, float boxWidth, float boxheight)

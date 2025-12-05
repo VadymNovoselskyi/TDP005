@@ -1,7 +1,7 @@
 #include "Projectile.h"
 
-Projectile::Projectile(Point position, Point direction, double velocity, double damage)
-    :Entity(std::string{"projectile"}, position), direction{direction}, velocity{velocity}, damage{damage}
+Projectile::Projectile(sf::Vector2f pos, double velocity, double damage)
+    :Entity(std::string{"projectile"}, pos), velocity{velocity}, damage{damage}
 {
 }
 
@@ -15,5 +15,10 @@ void Projectile::onCollision(std::string other)
 
 void Projectile::move()
 {
-    position += direction *= velocity;
+    double x {};
+    double y {};
+
+    //calculate dir
+
+    sf::Sprite::Transformable::move(x, y);
 }
