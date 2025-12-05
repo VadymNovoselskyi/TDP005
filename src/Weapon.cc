@@ -1,6 +1,6 @@
 #include "Weapon.h"
 
-weapon::weapon(std::string name,
+Weapon::Weapon(std::string name,
                                    std::string description,
                                    double damage,
                                    double damageMultiplication,
@@ -15,18 +15,18 @@ weapon::weapon(std::string name,
 {
 }
 
-void weapon::shoot()
+void Weapon::shoot()
 {
     Point dir{0, 0};
     bullets.push_back(new Projectile{position, dir, speed, damage * damageMultiplication});
 }
 
-void weapon::setPosition(Point &pos)
+void Weapon::setPosition(Point &pos)
 {
     position = pos;
 }
 
-void weapon::uppdate()
+void Weapon::uppdate()
 {
     do
     {

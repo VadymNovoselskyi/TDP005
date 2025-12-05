@@ -16,10 +16,10 @@ enum Rarity
 // kollade hur ennums funka (kolade på exempel svårt för mig att säga om jag koppiera då de bara
 // står exemplet hur man skriver den)
 
-class weapon
+class Weapon
 {
   public:
-    weapon(std::string name,
+    Weapon(std::string name,
                      std::string description,
                      double damage,
                      double damageMultiplication,
