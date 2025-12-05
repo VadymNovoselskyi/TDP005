@@ -33,9 +33,6 @@ build/Player.o: src/Player.cc
 build/point.o: src/point.cc
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-build/windowTextBuild.o: src/windowTextBuild.cc
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
 -include $(DEPS)
 
 .PHONY: clean
