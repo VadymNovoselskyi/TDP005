@@ -14,6 +14,7 @@ class Map
     static Map *init(Player *player);
     static void deleteInstance();
 
+    void handelUpdate();
     void draw(sf::RenderWindow *window) const;
 
     void addEntity(Entity *e);

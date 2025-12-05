@@ -17,6 +17,7 @@ class Character : public Entity
               sf::Vector2f direction);
 
     virtual void move() = 0;
+    virtual void draw(sf::RenderWindow *window) const = 0;
     void takeDamage(int);
     void setDirection(sf::Vector2f);
     sf::Vector2f getDirection();
