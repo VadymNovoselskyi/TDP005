@@ -31,7 +31,7 @@ class Window
 
     std::vector<Menu *> menus;
     Map *map;
-    sf::Texture const *bgTexture;
+    sf::RectangleShape *bg;
 };
 
 #endif
