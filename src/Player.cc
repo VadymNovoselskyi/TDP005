@@ -76,23 +76,23 @@ void Player::die()
 //     CurrentHp.setPosition(boxPosX, boxPosY);
 // }
 
-// void Player::levelUp(std::string choise, auto uppgrade)
-// {
-//   switch (choise)
-//   {
-//     case "Health":
-//       maxHP += uppgrade;
-//       break;
+void Player::levelUp(std::string choise, auto uppgrade)
+{
+  switch (choise)
+  {
+    case "Health":
+      maxHP += uppgrade;
+      break;
 
-//       case "Speed":
-//       movementSpeed += uppgrade;
-//       break;
+      case "Speed":
+      movementSpeed += uppgrade;
+      break;
 
-//       case "Damage":
-//       damageMultipplyer += uppgrade;
-//       case "Weapon":
+      case "Damage":
+      damageMultipplyer += uppgrade;
+      case "Weapon":
         
-//       break;
-//   }
+      break;
+  }
   
-// }
+}
