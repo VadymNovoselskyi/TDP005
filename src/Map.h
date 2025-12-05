@@ -2,7 +2,6 @@
 #define MAP_H
 
 #include <SFML/Graphics.hpp>
-#include <string>
 #include <vector>
 
 #include "Menu.h"

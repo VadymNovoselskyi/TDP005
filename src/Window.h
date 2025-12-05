@@ -13,6 +13,7 @@ class Window
   public:
     Window(std::vector<Menu *> const &menus, Map *map);
     ~Window();
+    void handleEvents();
     void draw();
     void closeWindow();
 
