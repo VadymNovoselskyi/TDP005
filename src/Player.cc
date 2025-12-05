@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "TextureManager.h"
+
 Player::Player(float maxHP,
                float currentHP,
                int movementSpeed,
@@ -11,16 +13,14 @@ Player::Player(float maxHP,
                int xp,
                int maxXP,
                int levels,
-               float damageMultiplier,
-               sf::Texture texture,)
+               float damageMultiplier)
     : Character("player", maxHP, currentHP, movementSpeed, positon, direction), name{name}, xp{xp},
-      maxXP{maxXP}, levels{levels}, damageMultiplier{damageMultiplier}, texture{texture},
-
+      maxXP{maxXP}, levels{levels}, damageMultiplier{damageMultiplier},
+      texture{TextureManager::instance()->getTexture("player.png")}
 {
-    texture.loadFromFile("static/fighter.png");
-    auto player_size{texture.getSize()};
+    auto player_size{texture->getSize()};
 
-    sf::Sprite::setTexture(texture);
+    sf::Sprite::setTexture(*texture);
     sf::Sprite::setOrigin(player_size.x / 2, player_size.y);
 }
 
@@ -67,8 +67,6 @@ void Player::die()
     StateMachine::instance()->finishGame();
 }
 
-
-
 void Player::draw(sf::RenderWindow *window) const
 {
     window->draw(*this);
@@ -84,19 +82,19 @@ void Player::onCollision(std::string other)
 void Player::drawInfo(bool boxPosX, bool boxPosY, float boxWidth, float boxheight)
 {
     drawHP(boxPosX, boxPosY, boxWidth, boxheight);
-   // drawXP(boxPosX, boxPosY -60, boxWidth, boxheight);
+    // drawXP(boxPosX, boxPosY -60, boxWidth, boxheight);
 }
 void Player::drawHP(bool boxPosX, bool boxPosY, float boxWidth, float boxheight)
 {
-   //Hp box background + outline
+    // Hp box background + outline
     sf::RectangleShape HpBox(sf::Vector2(boxWidth, boxheight));
     HpBox.setSize(sf::Vector2f(boxWidth, boxheight));
-    HpBox.setFillColor(sf::Color(128,0,0));
+    HpBox.setFillColor(sf::Color(128, 0, 0));
     HpBox.setPosition(boxPosX, boxPosY);
-    //current hp
+    // current hp
     sf::RectangleShape CurrentHp(sf::Vector2(boxWidth, boxheight));
     CurrentHp.setSize(sf::Vector2f(boxWidth, boxheight));
-    CurrentHp.setFillColor(sf::Color(204,0,0));
+    CurrentHp.setFillColor(sf::Color(204, 0, 0));
     CurrentHp.setPosition(boxPosX, boxPosY);
 }
 

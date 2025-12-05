@@ -18,7 +18,9 @@ Map::~Map()
 {
     // std::cout << "Running the window destructor" << std::endl;
     delete player;
+    delete view;
     player = nullptr;
+    view;
 }
 
 void Map::draw(sf::RenderWindow *window) const

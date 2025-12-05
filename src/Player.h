@@ -26,8 +26,7 @@ class Player : public Character
            int xp,
            int maxXP,
            int levels,
-           float damageMultiplier,
-           sf::Texture textue);
+           float damageMultiplier);
           
     void setXP(int xp);
     void levelUP(Choises choise);
@@ -57,7 +56,7 @@ class Player : public Character
     float boxWidth;
     float boxHeight;
 
-    sf::Texture texture;
+    sf::Texture const *texture;
 
 };
 
