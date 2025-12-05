@@ -111,3 +111,37 @@ std::vector<ElementsInfo> GameOverMenu::createButtons() const
 
     return elements;
 }
+
+// Level Up menu
+LevelUpMenu::LevelUpMenu(std::vector<LevelUpInfo> const &levelUpOptions)
+    : Menu(createButtons(levelUpOptions),
+           StateMachine::instance()->state() == GameState::LEVEL_UP_SCREEN)
+{
+    StateMachine::instance()->addListener("LevelUpMenu",
+                                          [this](GameState gameState)
+                                          { setIsOpen(gameState == GameState::LEVEL_UP_SCREEN); });
+}
+
+std::vector<ElementsInfo>
+LevelUpMenu::createButtons(std::vector<LevelUpInfo> const &levelUpOptions) const
+{
+    float PADDING_TOP{0.3};
+    float PADDING_BOTTOM{0.2};
+    int optionsSize{levelUpOptions.size()};
+    std::vector<ElementsInfo> elements{optionsSize + 1};
+
+    ElementsInfo title{"Choose your level up", 0.5, 0.1, std::nullopt};
+    elements.push_back(title);
+    for (int i{0}; i < optionsSize; ++i)
+    {
+        auto levelUpOption = levelUpOptions.at(i);
+        ElementsInfo levelUpButton{
+            levelUpOption.name + "\n" + levelUpOption.description,
+            0.5,
+            (((1 - PADDING_TOP - PADDING_BOTTOM) / optionsSize * i) + PADDING_TOP),
+            // []() { StateMachine::instance()->startGame(); }};
+            [&levelUpOption]() { levelUpOption.levelUpValue; }};
+        elements.push_back(levelUpButton);
+    }
+    return elements;
+}

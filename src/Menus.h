@@ -37,4 +37,21 @@ class GameOverMenu : public Menu
     std::vector<ElementsInfo> createButtons() const override;
 };
 
+struct LevelUpInfo
+{
+    std::string name;
+    std::string description;
+    // Change to the level up enum
+    std::string levelUpValue;
+};
+
+class LevelUpMenu : public Menu
+{
+  public:
+    LevelUpMenu(std::vector<LevelUpInfo> const &levelUpOptions);
+
+  private:
+    std::vector<ElementsInfo> createButtons(std::vector<LevelUpInfo> const &levelUpOptions) const;
+};
+
 #endif

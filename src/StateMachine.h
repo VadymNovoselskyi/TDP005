@@ -24,6 +24,7 @@ class StateMachine
     void setInGame();
     void pauseGame();
     void continueGame();
+    void startLevelUp();
     void finishGame();
     void exitGame();
 
