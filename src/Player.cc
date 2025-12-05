@@ -12,12 +12,10 @@ Player::Player(float maxHP,
                int maxXP,
                int levels,
                float damageMultiplier,
-               sf::Texture texture,
-               float boxWidth,
-               float boxHeight)
+               sf::Texture texture,)
     : Character("player", maxHP, currentHP, movementSpeed, positon, direction), name{name}, xp{xp},
       maxXP{maxXP}, levels{levels}, damageMultiplier{damageMultiplier}, texture{texture},
-      boxWidth{150}, boxHeight{50}
+
 {
     texture.loadFromFile("static/fighter.png");
     auto player_size{texture.getSize()};
@@ -68,25 +66,8 @@ void Player::die()
 {
     StateMachine::instance()->finishGame();
 }
-void Player::drawInfo()
-{
-    drawHP();
-    drawXP();
-}
-void Player::drawHP()
-{
-    // boxWidth =
-    // Hp box background + outline
-    sf::RectangleShape HpBox(sf::Vector2f(boxWidth, boxHeight));
-    HpBox.setSize(sf::Vector2f(boxWidth, boxHeight));
-    HpBox.setFillColor(sf::Color(128, 0, 0));
-    HpBox.setPosition(10.f, 10.f);
-    // current hp
-    sf::RectangleShape CurrentHp(sf::Vector2f(boxWidth, boxHeight));
-    CurrentHp.setSize(sf::Vector2f(boxWidth, boxHeight));
-    CurrentHp.setFillColor(sf::Color(204, 0, 0));
-    CurrentHp.setPosition(10.f, 10.f);
-}
+
+
 
 void Player::draw(sf::RenderWindow *window) const
 {
@@ -100,20 +81,24 @@ void Player::onCollision(std::string other)
     {
     }
 }
-
-// void Player::drawHP(bool boxPosX, bool boxPosY, float boxWidth, float boxheight)
-// {
-//    //Hp box background + outline
-//     sf::RectangleShape HpBox(sf::Vector2(boxWidth, boxheight));
-//     HpBox.setSize(sf::Vector2f(boxWidth, boxheight));
-//     HpBox.setFillColor(sf::Color(128,0,0));
-//     HpBox.setPosition(boxPosX, boxPosY);
-//     //current hp
-//     sf::RectangleShape CurrentHp(sf::Vector2(boxWidth, boxheight));
-//     CurrentHp.setSize(sf::Vector2f(boxWidth, boxheight));
-//     CurrentHp.setFillColor(sf::Color(204,0,0));
-//     CurrentHp.setPosition(boxPosX, boxPosY);
-// }
+void Player::drawInfo(bool boxPosX, bool boxPosY, float boxWidth, float boxheight)
+{
+    drawHP(boxPosX, boxPosY, boxWidth, boxheight);
+   // drawXP(boxPosX, boxPosY -60, boxWidth, boxheight);
+}
+void Player::drawHP(bool boxPosX, bool boxPosY, float boxWidth, float boxheight)
+{
+   //Hp box background + outline
+    sf::RectangleShape HpBox(sf::Vector2(boxWidth, boxheight));
+    HpBox.setSize(sf::Vector2f(boxWidth, boxheight));
+    HpBox.setFillColor(sf::Color(128,0,0));
+    HpBox.setPosition(boxPosX, boxPosY);
+    //current hp
+    sf::RectangleShape CurrentHp(sf::Vector2(boxWidth, boxheight));
+    CurrentHp.setSize(sf::Vector2f(boxWidth, boxheight));
+    CurrentHp.setFillColor(sf::Color(204,0,0));
+    CurrentHp.setPosition(boxPosX, boxPosY);
+}
 
 void Player::levelUP(Choises choise)
 {
@@ -129,7 +114,7 @@ void Player::levelUP(Choises choise)
     case DAMAGE: // damage
         damageMultiplier += 0.5;
     case WEAPON: // weapon
-        
+
         break;
     }
 }

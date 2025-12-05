@@ -27,18 +27,15 @@ class Player : public Character
            int maxXP,
            int levels,
            float damageMultiplier,
-           sf::Texture textue,
-           float boxWidth,
-           float boxHeight);
+           sf::Texture textue);
           
     void setXP(int xp);
     void levelUP(Choises choise);
 
-    void drawInfo();
-
+    void drawInfo(bool boxPosX, bool boxPosY, float boxWidth, float boxheight);
+    
     void draw(sf::RenderWindow *window) const;
-    void drawHP();
-    void drawXP();
+    
 
     void move() override;
     void die() override;
@@ -46,8 +43,8 @@ class Player : public Character
     void onCollision(std::string other /*otehr = other.tag*/) override;
 
   private:
-    void drawHP();
-    void drawXP();
+    void drawHP(bool boxPosX, bool boxPosY, float boxWidth, float boxheight);
+    void drawXP(bool boxPosX, bool boxPosY, float boxWidth, float boxheight);
     float maxHP;
 
     std::string name{};
