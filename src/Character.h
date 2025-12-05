@@ -15,7 +15,7 @@ class Character
     Character(double maxHP, double currentHp, int movementSpeed, Point positon, Point direction)
     :maxHP{maxHP}, currentHP{currentHP}, movementSpeed{movementSpeed}, position{position}, direction{direction}  {} 
     virtual void move() = 0;
-    void takeDamage(int );
+    void takeDamage(double );
     void setDirection(Point);
     Point getDirection();
     void setMovementSpeed(int); 
