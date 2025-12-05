@@ -10,9 +10,13 @@ sf::Time const GameEngine::UPDATE_INTERVAL{sf::milliseconds(1000.0 / GameEngine:
 
 GameEngine::GameEngine() : window{}, clock{}
 {
-    // Init the StateMachine, TextureManager and the menus
+    // Init the StateMachine, TextureManager, Map and the menus
     StateMachine::init();
     TextureManager::init();
+
+    Player *player{new Player(
+        10, 10, 10, sf::Vector2f{100.0, 100.0}, sf::Vector2f{100.0, 100.0}, "Player1", 0, 0, 0, 0)};
+    Map::init(player);
 
     sf::Texture *bgTexture = TextureManager::instance()->getTexture("grass.png");
     bgTexture->setRepeated(true);
@@ -22,12 +26,8 @@ GameEngine::GameEngine() : window{}, clock{}
     menus.push_back(new PauseMenu());
     menus.push_back(new GameOverMenu());
 
-    Player *player{new Player(
-        10, 10, 10, sf::Vector2f{100.0, 100.0}, sf::Vector2f{100.0, 100.0}, "Player1", 0, 0, 0, 0)};
-    Map *map{new Map(player)};
-
     // Init the menu and add exit listener
-    window = new Window(menus, map, bgTexture);
+    window = new Window(menus, bgTexture);
 
     // Should I do anything with STARTING_GAME and CONTINUING_GAME
     StateMachine::instance()->addListener("onStart",
@@ -54,6 +54,8 @@ GameEngine::GameEngine() : window{}, clock{}
                                                   window->closeWindow();
                                               }
                                           });
+
+    Map::instance()->addEntity(player);
 }
 
 GameEngine::~GameEngine()
@@ -70,6 +72,7 @@ void GameEngine::run()
     {
         clock.restart();
         window->handleEvents();
+        Map::instance()->handelUpdate();
         window->draw();
 
         sf::Time delta{UPDATE_INTERVAL - clock.getElapsedTime()};

@@ -11,7 +11,7 @@
 class Window
 {
   public:
-    Window(std::vector<Menu *> const &menus, Map *map, sf::Texture const *bgTexture);
+    Window(std::vector<Menu *> const &menus, sf::Texture const *bgTexture);
     ~Window();
     void handleEvents();
     void draw();
@@ -30,7 +30,6 @@ class Window
     bool windowClosed;
 
     std::vector<Menu *> menus;
-    Map *map;
     sf::RectangleShape *bg;
 };
 

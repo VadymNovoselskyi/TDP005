@@ -2,8 +2,6 @@
 
 #include <iostream>
 
-#include "TextureManager.h"
-
 Player::Player(int maxHP,
                int currentHP,
                int movementSpeed,

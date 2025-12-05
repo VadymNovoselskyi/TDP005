@@ -10,10 +10,12 @@ class Projectile : public Entity
     void onCollision(std::string other) override;
 
     void move();
+    void draw(sf::RenderWindow *window)const override;
 
   private:
     double velocity;
     double damage;
+    sf::Texture const *texture;
 };
 
 #endif

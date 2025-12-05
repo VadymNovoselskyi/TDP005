@@ -24,8 +24,8 @@ class Player : public Character
     void setXP(int xp);
     void levelUp(std::string string, int smth);
     // void addWeapon(weapon)
-    /// void createWeapon()
-    void draw(sf::RenderWindow *window) const;
+    // void createWeapon()
+    void draw(sf::RenderWindow *window)const override;
     void drawHP();
     void drawXP();
     void move() override;
