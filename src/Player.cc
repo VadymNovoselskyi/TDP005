@@ -41,25 +41,25 @@ void Player::move()
     {
         // std::cout << "W pressed" << std::endl;
         // figure.move(0, -SPEED);
-        direction.y = 1;
+        direction.y = -1;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
     {
         // std::cout << "A pressed" << std::endl;
         // figure.move(-SPEED, 0);
-        direction.x = 1;
+        direction.x = -1;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
     {
         // std::cout << "S pressed" << std::endl;
         // figure.move(0, SPEED);
-        direction.y = -1;
+        direction.y = 1;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
     {
         // std::cout << "D pressed" << std::endl;
         // figure.move(SPEED, 0);
-        direction.x = -1;
+        direction.x = 1;
     }
     if (std::abs(direction.x) + std::abs(direction.y) > 1)
     {
