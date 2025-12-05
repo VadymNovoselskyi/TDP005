@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 double const SPEED{5};
 int const FPS{60};
@@ -24,29 +25,33 @@ void processMovement(sf::Sprite &figure)
     }
 }
 
-void update(sf::RenderWindow &window, sf::Drawable const &figure)
-{
-    window.clear(sf::Color::Blue);
-
-    window.draw(figure);
-    window.display();
-}
-
 int main()
 {
-    sf::RenderWindow window{sf::VideoMode(1024, 768), "Hello world"};
+    sf::RenderWindow *window{new sf::RenderWindow{sf::VideoMode(1024, 768), "Hello world"}};
+    sf::View *view{new sf::View{{1024 / 2, 768 / 2}, {1024, 768}}};
+    window->setView(*view);
+
     sf::Clock clock;
 
     bool closed{false};
 
     int const r{50};
-    sf::CircleShape circle{r};
-    circle.setOrigin(r, r);
-    circle.setFillColor(sf::Color::Red);
-    circle.setPosition(100, 100);
+    sf::CircleShape circle1{r};
+    circle1.setOrigin(r, r);
+    circle1.setFillColor(sf::Color::Red);
+    sf::CircleShape circle2{r};
+    circle2.setOrigin(r, r);
+    circle2.setFillColor(sf::Color::Green);
+    sf::CircleShape circle3{r};
+    circle3.setOrigin(r, r);
+    circle3.setFillColor(sf::Color::Blue);
+
+    circle1.setPosition(500, 100);
+    circle2.setPosition(1000, 100);
+    circle3.setPosition(1500, 100);
 
     sf::Texture player_texture{};
-    player_texture.loadFromFile("lab1/fighter.png");
+    player_texture.loadFromFile("fighter.png");
     auto player_size{player_texture.getSize()};
 
     sf::Sprite player{player_texture};
@@ -57,17 +62,27 @@ int main()
     {
         clock.restart();
         sf::Event event{};
-        while (window.pollEvent(event))
+        while (window->pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
             {
-                window.close();
+                window->close();
                 closed = true;
             }
         }
         processMovement(player);
-        window.draw(player);
-        update(window, player);
+        view->setCenter(player.getPosition());
+        std::cout << player.getPosition().x << std::endl;
+        
+        std::cout << window->getView().getCenter().x << std::endl;
+        window->clear();
+        window->setView(*view);
+        window->draw(player);
+        window->draw(circle1);
+        window->draw(circle2);
+        window->draw(circle3);
+
+        window->display();
 
         sf::Time delta{UPDATE_TIME - clock.getElapsedTime()};
         sf::sleep(delta);

@@ -4,12 +4,18 @@
 #include <SFML/Graphics.hpp>
 #include <cmath>
 
-#include "point.h"
+#include "Entity.h"
+#include "Point.h"
 
-class Character
+class Character : public Entity
 {
   public:
-    Character(double maxHP, double currentHP, int movementSpeed, Point position, Point direction);
+    Character(std::string tag,
+              double maxHP,
+              double currentHP,
+              int movementSpeed,
+              Point position,
+              Point direction);
 
     virtual void move() = 0;
     void takeDamage(int);
@@ -22,7 +28,6 @@ class Character
     double maxHP;
     double currentHP;
     int movementSpeed;
-    Point position;
     Point direction;
     virtual void die() = 0;
 };

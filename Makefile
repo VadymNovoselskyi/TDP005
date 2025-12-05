@@ -2,7 +2,8 @@ CXX = g++
 CXXFLAGS = -g -std=c++17 -Wall -Wextra -MMD -MP
 LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
 
-OBJ = build/main.o build/StateMachine.o build/Window.o build/Menu.o build/Menus.o build/Character.o build/Player.o build/point.o build/windowTextBuild.o
+OBJ = build/main.o build/StateMachine.o build/Window.o build/Menu.o build/Menus.o build/Projectile.o build/Weapon.o build/TextureManager.o build/Point.o build/Entity.o build/Character.o build/Player.o /.build/windowTextBuild.o
+
 DEPS = $(OBJ:.o=.d)
 
 game: $(OBJ)
@@ -20,7 +21,7 @@ build/Window.o: src/Window.cc
 
 build/Menu.o: src/Menu.cc
 	$(CXX) $(CXXFLAGS) -c $< -o $@
-	
+
 build/Menus.o: src/Menus.cc
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
@@ -30,10 +31,22 @@ build/Character.o: src/Character.cc
 build/Player.o: src/Player.cc
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-build/point.o: src/point.cc
+build/windowTextBuild.o: src/windowTextBuild.cc
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-build/windowTextBuild.o: src/windowTextBuild.cc
+build/Projectile.o: src/Projectile.cc
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+build/Weapon.o: src/Weapon.cc
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+build/TextureManager.o: src/TextureManager.cc
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+build/Point.o: src/Point.cc
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+build/Entity.o: src/Entity.cc
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 -include $(DEPS)

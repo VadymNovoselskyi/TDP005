@@ -9,7 +9,7 @@ Player::Player(int maxHP,
                int maxXP,
                int levels,
                double damageMultipplyer)
-    : Character(maxHP, currentHP, movementSpeed, positon, direction), name{name}, xp{xp},
+    : Character("player", maxHP, currentHP, movementSpeed, positon, direction), name{name}, xp{xp},
       maxXP{maxXP}, levels{levels}, damageMultipplyer{damageMultipplyer}
 {
 }

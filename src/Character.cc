@@ -1,8 +1,12 @@
 #include "Character.h"
 
-Character::Character(
-    double maxHP, double currentHP, int movementSpeed, Point position, Point direction)
-    : maxHP{maxHP}, currentHP{currentHP}, movementSpeed{movementSpeed}, position{position},
+Character::Character(std::string tag,
+                     double maxHP,
+                     double currentHP,
+                     int movementSpeed,
+                     Point position,
+                     Point direction)
+    : Entity(tag, position), maxHP{maxHP}, currentHP{currentHP}, movementSpeed{movementSpeed},
       direction{direction}
 {
 }
