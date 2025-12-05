@@ -29,17 +29,14 @@ Window::~Window()
     }
 }
 
-void Window::draw()
+void Window::handleEvents()
 {
-    // std::cout << "Running the draw" << std::endl;
     sf::Event event{};
     while (window->pollEvent(event))
     {
         if (event.type == sf::Event::Closed)
         {
-            // std::cout << "Got close event" << std::endl;
             closeWindow();
-            // std::cout << "Closed the window" << std::endl;
             return;
         }
 
@@ -52,24 +49,30 @@ void Window::draw()
             }
         }
     }
+}
 
+void Window::draw()
+{
     window->clear();
-    map->draw(window);
 
-    // std::cout << menus.size() << std::endl;
-    for (auto menu : menus)
+    if (StateMachine::instance()->state() == GameState::IN_GAME)
     {
-        // std::cout << "Running the draw for a menu" << std::endl;
-
-        menu->draw(window);
+        map->draw(window);
     }
-    // std::cout << "Completed running the draw" << std::endl;
+    else
+    {
+        window->setView(window->getDefaultView());
+        for (auto menu : menus)
+        {
+            menu->draw(window);
+        }
+    }
+
     window->display();
 }
 
 void Window::closeWindow()
 {
-    // std::cout << "Closing the window" << std::endl;
     window->close();
     windowClosed = true;
 }

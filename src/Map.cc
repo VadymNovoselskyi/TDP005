@@ -6,8 +6,10 @@
 #include "Window.h"
 
 Map::Map(Player *player)
-    : view{new sf::View{{Window::WINDOW_WIDTH / 2, Window::WINDOW_HEIGHT / 2},
-                        {Window::WINDOW_WIDTH, Window::WINDOW_HEIGHT}}},
+    : view{new sf::View{
+          {static_cast<float>(Window::WINDOW_WIDTH) / 2,
+           static_cast<float>(Window::WINDOW_HEIGHT) / 2},
+          {static_cast<float>(Window::WINDOW_WIDTH), static_cast<float>(Window::WINDOW_HEIGHT)}}},
       player{player}
 {
 }
@@ -21,10 +23,6 @@ Map::~Map()
 
 void Map::draw(sf::RenderWindow *window) const
 {
-    if (StateMachine::instance()->state() != GameState::IN_GAME)
-    {
-        return;
-    }
     player->move();
 
     // std::cout << "Rendering the player" << std::endl;
