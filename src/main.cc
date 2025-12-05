@@ -1,9 +1,13 @@
 #include <iostream>
 #include <vector>
 
+#include "GameState.h"
+#include "Map.h"
 #include "Menu.h"
 #include "Menus.h"
+#include "Player.h"
 #include "StateMachine.h"
+#include "Window.h"
 
 int main()
 {
@@ -14,8 +18,12 @@ int main()
     menus.push_back(new PauseMenu());
     menus.push_back(new GameOverMenu());
 
+    Player *player{
+        new Player(10, 10, 10, Point{100.0, 100.0}, Point{100.0, 100.0}, "Player1", 0, 0, 0, 0)};
+    Map *map{new Map(player)};
+
     // Init the menu and add exit listener
-    auto window = new Window(menus);
+    Window *window = new Window(menus, map);
 
     // Should I do anything with STARTING_GAME and CONTINUING_GAME
     StateMachine::instance()->addListener("onStart",

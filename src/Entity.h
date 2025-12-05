@@ -12,9 +12,8 @@ class Entity : public sf::Sprite
 {
   public:
     Entity(std::string tag, Point position);
-    virtual void onCollistion(std::string other /*otehr = other.tag*/) = 0;
+    virtual void onCollision(std::string other /*otehr = other.tag*/) = 0;
     std::string getTag();
-    Point getPosition();
 
   protected:
     Point position;

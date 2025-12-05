@@ -5,7 +5,7 @@ Projectile::Projectile(Point position, Point direction, double velocity, double 
 {
 }
 
-void Projectile::onCollistion(std::string other)
+void Projectile::onCollision(std::string other)
 {
     if (other == "enemy")
     {

@@ -5,12 +5,13 @@
 #include <string>
 #include <vector>
 
+#include "Map.h"
 #include "Menu.h"
 
 class Window
 {
   public:
-    Window(std::vector<Menu *> const &menus);
+    Window(std::vector<Menu *> const &menus, Map *map);
     ~Window();
     void draw();
     void closeWindow();
@@ -28,6 +29,7 @@ class Window
     bool windowClosed;
 
     std::vector<Menu *> menus;
+    Map *map;
 };
 
 #endif

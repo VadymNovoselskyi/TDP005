@@ -11,13 +11,13 @@
 class Map
 {
   public:
-    Map(Player const *player);
+    Map(Player *player);
     ~Map();
     void draw(sf::RenderWindow *window) const;
 
   private:
     sf::View *view;
-    Player const *player;
+    Player *player;
 };
 
 #endif
