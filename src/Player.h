@@ -10,33 +10,39 @@
 class Player : public Character
 {
   public:
-    Player(int maxHP,
-           int currentHp,
+    Player(float maxHP,
+           float currentHp,
            int movementSpeed,
            Point positon,
            Point direction,
            std::string name,
-           int XP,
-           int maxXp,
+           int xp,
+           int maxXP,
            int levels,
-           double damageMultipplyer);
-    void setXP(int);
-    void levelUp(std::string, auto);
+           float damageMultiplier,
+           float boxWidth,
+           float boxHeight);
+    void setXP(int xp);
+    void levelUP(int smth);
     // void addWeapon(weapon)
     /// void createWeapon()
-    void drawHP();
-    void drawXP();
+    void drawInfo();
     void move() override;
     void die() override;
 
   private:
+    void drawHP();
+    void drawXP();
+    float maxHP;
+
     std::string name{};
     int xp;
-    int maxXp;
+    int maxXP;
+    float currentHP;
     int levels;
-    double damageMultipplyer;
-
-    
+    float damageMultipler;
+    float boxWidth;
+    float boxHeight;
 };
 
 #endif /*PLAYER_H*/

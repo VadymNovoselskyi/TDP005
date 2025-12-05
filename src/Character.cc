@@ -1,7 +1,7 @@
 #include "Character.h"
 
 Character::Character(
-    double maxHP, double currentHp, int movementSpeed, Point positon, Point direction)
+    float maxHP, float currentHP, int movementSpeed, Point position, Point direction)
     : maxHP{maxHP}, currentHP{currentHP}, movementSpeed{movementSpeed}, position{position},
       direction{direction}
 {

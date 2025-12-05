@@ -19,19 +19,21 @@ struct ElementsInfo
 class Menu
 {
   public:
-    Menu(std::vector<ElementsInfo> elements, bool windowOpen);
+    Menu(std::vector<ElementsInfo> const &elements, bool windowOpen);
     virtual ~Menu();
 
     void draw(sf::RenderWindow *window) const;
-    void handleEvent(sf::Event event);
+    virtual bool handleEvent(sf::Event event);
     bool isOpen() const;
 
   protected:
     virtual std::vector<ElementsInfo> createButtons() const = 0;
     void setIsOpen(bool isOpen);
 
-
   private:
+    void focusButton(int index);
+    void unFocusButton(int index);
+
     void changeFocusedIdx(int change);
 
     sf::Font defaultFont;

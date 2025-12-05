@@ -9,11 +9,7 @@
 class Character
 {
   public:
-    Character(double maxHP, double currentHp, int movementSpeed, Point positon, Point direction)
-        : maxHP{maxHP}, currentHP{currentHP}, movementSpeed{movementSpeed}, position{position},
-          direction{direction}
-    {
-    }
+    Character(float maxHP, float currentHP, int movementSpeed, Point position, Point direction);
 
     virtual void move() = 0;
     void takeDamage(int);
@@ -23,8 +19,8 @@ class Character
 
   protected:
     // sf::SDL_Surface* sprite;  -sprite till karaktrer
-    double maxHP;
-    double currentHP;
+    float maxHP;
+    float currentHP;
     int movementSpeed;
     Point position;
     Point direction;

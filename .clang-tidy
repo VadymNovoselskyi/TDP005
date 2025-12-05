@@ -11,32 +11,36 @@ Checks: >
   -modernize-use-trailing-return-type,
   -cppcoreguidelines-special-member-functions,
   -cppcoreguidelines-non-private-member-variables-in-classes,
-  -cppcoreguidelines-avoid-const-or-ref-data-members
-
+  -cppcoreguidelines-avoid-const-or-ref-data-members,
+  -readability-redundant-member-init,
+  -cppcoreguidelines-narrowing-conversions,
+  -bugprone-narrowing-conversions,
+  -readability-qualified-auto,
+  -readability-identifier-length,
+  -performance-avoid-endl
 
 WarningsAsErrors: >
   bugprone-*
   ,performance-*
   ,modernize-*
 
-
 CheckOptions:
   # === Naming conventions (change these to your taste) ===
   - key: readability-identifier-naming.VariableCase
-    value: camelBack        # local & global variables: myVariable
+    value: camelBack # local & global variables: myVariable
   - key: readability-identifier-naming.ParameterCase
-    value: camelBack        # function parameters: userId
+    value: camelBack # function parameters: userId
   - key: readability-identifier-naming.FunctionCase
-    value: camelBack        # functions: doSomething
+    value: camelBack # functions: doSomething
   - key: readability-identifier-naming.ClassCase
-    value: CamelCase        # classes, structs: MyClass
+    value: CamelCase # classes, structs: MyClass
   - key: readability-identifier-naming.StructCase
     value: CamelCase
   - key: readability-identifier-naming.EnumCase
     value: CamelCase
   - key: readability-identifier-naming.EnumConstantCase
-    value: UPPER_CASE       # ENUM_VALUE
+    value: UPPER_CASE # ENUM_VALUE
   - key: readability-identifier-naming.ConstantCase
-    value: UPPER_CASE       # const int MAX_SIZE
+    value: UPPER_CASE # const int MAX_SIZE
   - key: readability-identifier-naming.NamespaceCase
-    value: lower_case       # my_namespace
+    value: lower_case # my_namespace
