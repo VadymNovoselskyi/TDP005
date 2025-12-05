@@ -6,6 +6,13 @@
 #include "Character.h"
 #include "GameState.h"
 #include "StateMachine.h"
+enum Choises //levelup choise
+{
+  HP,
+  SPEED,
+  DAMAGE,
+  WEAPON
+};
 
 class Player : public Character
 {
@@ -25,9 +32,7 @@ class Player : public Character
            float boxHeight);
           
     void setXP(int xp);
-    void levelUP(int smth);
-    // void addWeapon(weapon)
-    /// void createWeapon()
+    void levelUP(Choises choise);
 
     void drawInfo();
 

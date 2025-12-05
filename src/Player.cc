@@ -115,21 +115,21 @@ void Player::onCollision(std::string other)
 //     CurrentHp.setPosition(boxPosX, boxPosY);
 // }
 
-void Player::levelUP(int uppgrade)
+void Player::levelUP(Choises choise)
 {
-    switch (uppgrade)
+    switch (choise)
     {
-    case 1: // hp
-        maxHP += uppgrade;
+    case HP: // hp
+        maxHP += 50;
         break;
-    case 2: // speed
-        movementSpeed += uppgrade;
+    case SPEED: // speed
+        movementSpeed += 5;
         break;
 
-    case 3: // damage
-        damageMultiplier += uppgrade;
-    case 4: // weapon
-
+    case DAMAGE: // damage
+        damageMultiplier += 0.5;
+    case WEAPON: // weapon
+        
         break;
     }
 }
