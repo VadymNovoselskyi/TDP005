@@ -34,9 +34,44 @@ void Enemy::die()
     
 }
 
-void Enemy::move()
+//fnkar inte här me är hur den kan se ut i game.cc
+void Enemy::move(sf::Sprite &figure1, sf::CircleShape &figure2)
 {
-    getDirection();
+    double const SPEED{5};
+    Point new_direction{0,0};
+    //Point player {figure1.getPosition()};
+    //Point enemy  {figure2.getPosition()};
+
+
+    if(figure2.getPosition().x < figure1.getPosition().x)
+    {
+        new_direction.x += 1;
+
+    }
+    if (figure2.getPosition().x > figure1.getPosition().x)
+    {
+        new_direction.x -= 1;
+
+    }
+    
+    if(figure2.getPosition().y < figure1.getPosition().y)
+    {
+        new_direction.y += 1;
+
+    }
+    if (figure2.getPosition().y > figure1.getPosition().y)
+    {
+        new_direction.y -= 1;
+
+    }
+
+    if(std::abs(new_direction.x) + std::abs(new_direction.y) > 1)
+    {
+        new_direction.x = new_direction.x / std::sqrt(2);
+        new_direction.y = new_direction.y / std::sqrt(2);     
+    }
+    
+    figure2.move(sf::Vector2f(new_direction.x * SPEED, new_direction.y * SPEED));
 }
 
 std::string Enemy::getTag()
