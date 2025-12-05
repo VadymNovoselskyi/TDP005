@@ -5,9 +5,9 @@
 Player::Player(int maxHP,
                int currentHP,
                int movementSpeed,
-               sf::Vector2f positon,
-               sf::Vector2f direction,
-               std::string name,
+               sf::Vector2f const &positon,
+               sf::Vector2f const &direction,
+               std::string const &name,
                int xp,
                int maxXP,
                int levels,
@@ -16,9 +16,9 @@ Player::Player(int maxHP,
       maxXP{maxXP}, levels{levels}, damageMultipplyer{damageMultipplyer},
       texture{TextureManager::instance()->getTexture("fighter.png")}
 {
-    auto player_size{texture->getSize()};
+    auto playerSize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
-    sf::Sprite::setOrigin(player_size.x / 2, player_size.y);
+    sf::Sprite::setOrigin(playerSize.x / 2.0, playerSize.y / 2.0);
 }
 
 void Player::setXP(int gainedXP)
@@ -78,11 +78,10 @@ void Player::draw(sf::RenderWindow *window) const
     // Draw HP and XP too plz
 }
 
-void Player::onCollision(std::string other)
+void Player::onCollision(std::string const &other)
 {
     if (other == "enemy")
     {
-
     }
 }
 

@@ -52,6 +52,9 @@ class LevelUpMenu : public Menu
 
   private:
     std::vector<ElementsInfo> createButtons(std::vector<LevelUpInfo> const &levelUpOptions) const;
+
+    // The same trick to hide the -Woverloaded-virtual as in Entity taken from overflow
+    using Menu::createButtons;
 };
 
 #endif

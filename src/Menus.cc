@@ -127,8 +127,8 @@ LevelUpMenu::createButtons(std::vector<LevelUpInfo> const &levelUpOptions) const
 {
     float PADDING_TOP{0.3};
     float PADDING_BOTTOM{0.2};
-    int optionsSize{levelUpOptions.size()};
-    std::vector<ElementsInfo> elements{optionsSize + 1};
+    int optionsSize{static_cast<int>(levelUpOptions.size())};
+    std::vector<ElementsInfo> elements{static_cast<unsigned long>(optionsSize + 1)};
 
     ElementsInfo title{"Choose your level up", 0.5, 0.1, std::nullopt};
     elements.push_back(title);

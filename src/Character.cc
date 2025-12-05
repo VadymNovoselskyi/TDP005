@@ -1,11 +1,11 @@
 #include "Character.h"
 
-Character::Character(std::string tag,
+Character::Character(std::string const &tag,
                      double maxHP,
                      double currentHP,
                      int movementSpeed,
-                     sf::Vector2f position,
-                     sf::Vector2f direction)
+                     sf::Vector2f const &position,
+                     sf::Vector2f const &direction)
     : Entity(tag, position), maxHP{maxHP}, currentHP{currentHP}, movementSpeed{movementSpeed},
       direction{direction}
 {
@@ -19,7 +19,7 @@ void Character::setDirection(sf::Vector2f newDirection)
 {
     direction = newDirection;
 }
-sf::Vector2f Character::getDirection()
+sf::Vector2f Character::getDirection() const
 {
     return direction;
 }

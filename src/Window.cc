@@ -11,7 +11,7 @@ std::string const Window::GAME_TITLE{"THE GAME"};
 Window::Window(std::vector<Menu *> const &menus, sf::Texture const *bgTexture)
     : window{new sf::RenderWindow{sf::VideoMode(Window::WINDOW_WIDTH, Window::WINDOW_HEIGHT),
                                   Window::GAME_TITLE}},
-      windowClosed{false}, menus{menus}, map{map}, bg{new sf::RectangleShape{}}
+      windowClosed{false}, menus{menus}, bg{new sf::RectangleShape{}}
 {
     bg->setSize({static_cast<float>(Window::WINDOW_WIDTH * 4),
                  static_cast<float>(Window::WINDOW_HEIGHT * 4)});
@@ -32,10 +32,8 @@ Window::~Window()
 {
     // std::cout << "Running the window destructor" << std::endl;
     delete window;
-    delete map;
     delete bg;
     window = nullptr;
-    map = nullptr;
     bg = nullptr;
 
     for (auto menu : menus)

@@ -13,10 +13,10 @@ class Player : public Character
     Player(int maxHP,
            int currentHp,
            int movementSpeed,
-           sf::Vector2f positon,
-           sf::Vector2f direction,
-           std::string name,
-           int XP,
+           sf::Vector2f const &positon,
+           sf::Vector2f const &direction,
+           std::string const &name,
+           int xp,
            int maxXP,
            int levels,
            double damageMultipplyer);
@@ -25,13 +25,14 @@ class Player : public Character
     void levelUp(std::string string, int smth);
     // void addWeapon(weapon)
     // void createWeapon()
-    void draw(sf::RenderWindow *window)const override;
+
+    void draw(sf::RenderWindow *window) const override;
     void drawHP();
     void drawXP();
     void move() override;
     void die() override;
 
-    void onCollision(std::string other /*otehr = other.tag*/) override;
+    void onCollision(std::string const &other /*otehr = other.tag*/) override;
 
   private:
     std::string name{};
