@@ -8,18 +8,20 @@ int const Window::WINDOW_WIDTH{1024};
 int const Window::WINDOW_HEIGHT{768};
 std::string const Window::GAME_TITLE{"THE GAME"};
 
-Window::Window(std::vector<Menu *> const &menus) : window{}, windowClosed{false}, menus{menus}
+Window::Window(std::vector<Menu *> const &menus, Map *map)
+    : window{new sf::RenderWindow{sf::VideoMode(Window::WINDOW_WIDTH, Window::WINDOW_HEIGHT),
+                                  Window::GAME_TITLE}},
+      windowClosed{false}, menus{menus}, map{map}
 {
-    // std::cout << "Constructed the Window" << std::endl;
-    this->window =
-        new sf::RenderWindow{sf::VideoMode(Window::WINDOW_WIDTH, Window::WINDOW_HEIGHT), Window::GAME_TITLE};
 }
 
 Window::~Window()
 {
     // std::cout << "Running the window destructor" << std::endl;
     delete window;
+    delete map;
     window = nullptr;
+    map = nullptr;
 
     for (auto menu : menus)
     {
@@ -27,17 +29,14 @@ Window::~Window()
     }
 }
 
-void Window::draw()
+void Window::handleEvents()
 {
-    // std::cout << "Running the draw" << std::endl;
     sf::Event event{};
     while (window->pollEvent(event))
     {
         if (event.type == sf::Event::Closed)
         {
-            // std::cout << "Got close event" << std::endl;
             closeWindow();
-            // std::cout << "Closed the window" << std::endl;
             return;
         }
 
@@ -50,22 +49,30 @@ void Window::draw()
             }
         }
     }
+}
 
+void Window::draw()
+{
     window->clear();
-    // std::cout << menus.size() << std::endl;
-    for (auto menu : menus)
-    {
-        // std::cout << "Running the draw for a menu" << std::endl;
 
-        menu->draw(window);
+    if (StateMachine::instance()->state() == GameState::IN_GAME)
+    {
+        map->draw(window);
     }
-    // std::cout << "Completed running the draw" << std::endl;
+    else
+    {
+        window->setView(window->getDefaultView());
+        for (auto menu : menus)
+        {
+            menu->draw(window);
+        }
+    }
+
     window->display();
 }
 
 void Window::closeWindow()
 {
-    // std::cout << "Closing the window" << std::endl;
     window->close();
     windowClosed = true;
 }

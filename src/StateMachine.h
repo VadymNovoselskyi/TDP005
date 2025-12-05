@@ -8,7 +8,6 @@
 #include <vector>
 
 #include "GameState.h"
-#include "Window.h"
 
 class StateMachine
 {

@@ -4,17 +4,23 @@
 #include <SFML/Graphics.hpp>
 #include <cmath>
 
-#include "point.h"
+#include "Entity.h"
 
-class Character
+class Character : public Entity
 {
   public:
-    Character(float maxHP, float currentHP, int movementSpeed, Point position, Point direction);
+    Character(std::string tag,
+              double maxHP,
+              double currentHP,
+              int movementSpeed,
+              sf::Vector2f position,
+              sf::Vector2f direction);
+
 
     virtual void move() = 0;
     void takeDamage(int);
-    void setDirection(Point);
-    Point getDirection();
+    void setDirection(sf::Vector2f);
+    sf::Vector2f getDirection();
     void setMovementSpeed(int);
 
   protected:
@@ -22,8 +28,7 @@ class Character
     float maxHP;
     float currentHP;
     int movementSpeed;
-    Point position;
-    Point direction;
+    sf::Vector2f direction;
     virtual void die() = 0;
 };
 

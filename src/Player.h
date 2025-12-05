@@ -13,22 +13,32 @@ class Player : public Character
     Player(float maxHP,
            float currentHp,
            int movementSpeed,
-           Point positon,
-           Point direction,
+           sf::Vector2f positon,
+           sf::Vector2f direction,
            std::string name,
            int xp,
            int maxXP,
            int levels,
            float damageMultiplier,
+           sf::Texture textue,
            float boxWidth,
            float boxHeight);
+          
     void setXP(int xp);
     void levelUP(int smth);
     // void addWeapon(weapon)
     /// void createWeapon()
+
     void drawInfo();
+
+    void draw(sf::RenderWindow *window) const;
+    void drawHP();
+    void drawXP();
+
     void move() override;
     void die() override;
+
+    void onCollision(std::string other /*otehr = other.tag*/) override;
 
   private:
     void drawHP();
@@ -40,9 +50,13 @@ class Player : public Character
     int maxXP;
     float currentHP;
     int levels;
-    float damageMultipler;
+
+    float damageMultiplier;
     float boxWidth;
     float boxHeight;
+
+    sf::Texture texture;
+
 };
 
 #endif /*PLAYER_H*/

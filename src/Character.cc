@@ -1,9 +1,14 @@
 #include "Character.h"
 
-Character::Character(
-    float maxHP, float currentHP, int movementSpeed, Point position, Point direction)
-    : maxHP{maxHP}, currentHP{currentHP}, movementSpeed{movementSpeed}, position{position},
-      direction{direction}
+
+Character::Character(std::string tag,
+                     double maxHP,
+                     double currentHP,
+                     int movementSpeed,
+                     sf::Vector2f position,
+                     sf::Vector2f direction)
+    : Entity(tag, position), maxHP{maxHP}, currentHP{currentHP}, movementSpeed{movementSpeed}
+
 {
 }
 
@@ -11,11 +16,11 @@ void Character::takeDamage(int damage)
 {
     currentHP = currentHP - damage;
 }
-void Character::setDirection(Point newDirection)
+void Character::setDirection(sf::Vector2f newDirection)
 {
     direction = newDirection;
 }
-Point Character::getDirection()
+sf::Vector2f Character::getDirection()
 {
     return direction;
 }

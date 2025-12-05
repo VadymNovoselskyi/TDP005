@@ -1,18 +1,30 @@
 #include "Player.h"
+
+#include <iostream>
+
 Player::Player(float maxHP,
                float currentHP,
                int movementSpeed,
-               Point positon,
-               Point direction,
+               sf::Vector2f positon,
+               sf::Vector2f direction,
                std::string name,
                int xp,
                int maxXP,
                int levels,
-               float damageMultipler,
+               float damageMultiplier,
+               sf::Texture texture,
                float boxWidth,
                float boxHeight)
-    : Character(maxHP, currentHP, movementSpeed, positon, direction), 
-    name{name}, xp{xp},maxXP{maxXP}, levels{levels}, damageMultipler{damageMultipler}, boxWidth{100},boxHeight{50}{}
+    : Character("player", maxHP, currentHP, movementSpeed, positon, direction), name{name}, xp{xp},
+      maxXP{maxXP}, levels{levels}, damageMultiplier{damageMultiplier}, texture{texture},
+      boxWidth{150}, boxHeight{50}
+{
+    texture.loadFromFile("static/fighter.png");
+    auto player_size{texture.getSize()};
+
+    sf::Sprite::setTexture(texture);
+    sf::Sprite::setOrigin(player_size.x / 2, player_size.y);
+}
 
 void Player::setXP(int gainedXP)
 {
@@ -27,6 +39,8 @@ void Player::setXP(int gainedXP)
 
 void Player::move()
 {
+    direction.x = 0;
+    direction.y = 0;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
     {
         direction.y = -1;
@@ -48,7 +62,7 @@ void Player::move()
         direction.x = direction.x / std::sqrt(2);
         direction.y = direction.y / std::sqrt(2);
     }
-    // figure.move(sf::Vector2f(direction.x * movementSpeed, direction.y * movementSpeed));
+    sf::Sprite::move(sf::Vector2f(direction.x * movementSpeed, direction.y * movementSpeed));
 }
 void Player::die()
 {
@@ -74,6 +88,33 @@ void Player::drawHP()
     CurrentHp.setPosition(10.f, 10.f);
 }
 
+void Player::draw(sf::RenderWindow *window) const
+{
+    window->draw(*this);
+    // Draw HP and XP too plz
+}
+
+void Player::onCollision(std::string other)
+{
+    if (other == "enemy")
+    {
+    }
+}
+
+// void Player::drawHP(bool boxPosX, bool boxPosY, float boxWidth, float boxheight)
+// {
+//    //Hp box background + outline
+//     sf::RectangleShape HpBox(sf::Vector2(boxWidth, boxheight));
+//     HpBox.setSize(sf::Vector2f(boxWidth, boxheight));
+//     HpBox.setFillColor(sf::Color(128,0,0));
+//     HpBox.setPosition(boxPosX, boxPosY);
+//     //current hp
+//     sf::RectangleShape CurrentHp(sf::Vector2(boxWidth, boxheight));
+//     CurrentHp.setSize(sf::Vector2f(boxWidth, boxheight));
+//     CurrentHp.setFillColor(sf::Color(204,0,0));
+//     CurrentHp.setPosition(boxPosX, boxPosY);
+// }
+
 void Player::levelUP(int uppgrade)
 {
     switch (uppgrade)
@@ -81,13 +122,12 @@ void Player::levelUP(int uppgrade)
     case 1: // hp
         maxHP += uppgrade;
         break;
-
     case 2: // speed
         movementSpeed += uppgrade;
         break;
 
     case 3: // damage
-        damageMultipler += uppgrade;
+        damageMultiplier += uppgrade;
     case 4: // weapon
 
         break;

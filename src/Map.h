@@ -2,26 +2,21 @@
 #define MAP_H
 
 #include <SFML/Graphics.hpp>
-#include <string>
 #include <vector>
 
 #include "Menu.h"
+#include "Player.h"
 
 class Map
 {
   public:
-    Map();
+    Map(Player *player);
     ~Map();
-    void draw(sf::RenderWindow *window);
-    void closeWindow();
-
-    int static const MAP_WIDTH;
-    int static const MAP_HEIGHT;
+    void draw(sf::RenderWindow *window) const;
 
   private:
     sf::View *view;
-    
-
+    Player *player;
 };
 
 #endif
