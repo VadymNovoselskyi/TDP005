@@ -3,6 +3,9 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "Entity.h"
+
+
 struct Point
 {
     double x;
