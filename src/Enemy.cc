@@ -1,28 +1,30 @@
 #include "Enemy.h"
+#include "Player.h"
 #include <iostream>
 #include <unistd.h>
 #include <cmath>
 
-Enemy::Enemy(/*Charactar*/  double maxHP, double currentHp, int movementSpeed, Point positon, Point direction,
+
+Enemy::Enemy(/*Charactar*/  double maxHP, double currentHp, int movementSpeed, sf::Vector2f positon, sf::Vector2f direction,
         int attackRange, int attackSpeed, int XP_DROP, double damage, int score)
-        :Character(maxHP, currentHp, movementSpeed, positon, direction), 
+        :Character("enemy" ,maxHP, currentHp, movementSpeed, positon, direction), 
         attackRange{attackRange}, attackSpeed{attackSpeed}, XP_DROP{XP_DROP}, damage{damage}, score{score} {}
 
-Footman::Footman(/*Charactar*/  double maxHP, double currentHp, int movementSpeed, Point positon, Point direction,
-            /*Enemy*/int attackRange, int attackSpeed, int XP_DROP, double damage, int score)
-            :Enemy(maxHP, currentHp, movementSpeed, positon, direction, attackRange, attackSpeed, XP_DROP, damage, score){}
+// Footman::Footman(/*Charactar*/  double maxHP, double currentHp, int movementSpeed, Point positon, Point direction,
+//             /*Enemy*/int attackRange, int attackSpeed, int XP_DROP, double damage, int score)
+//             :Enemy("enemy",maxHP, currentHp, movementSpeed, positon, direction, attackRange, attackSpeed, XP_DROP, damage, score){}
 
-Archer::Archer(/*Charactar*/  double maxHP, double currentHp, int movementSpeed, Point positon, Point direction,
-            /*Enemy*/int attackRange, int attackSpeed, int XP_DROP, double damage, int score)
-            :Enemy(maxHP, currentHp, movementSpeed, positon, direction, attackRange, attackSpeed, XP_DROP, damage, score){}
+// Archer::Archer(/*Charactar*/  double maxHP, double currentHp, int movementSpeed, Point positon, Point direction,
+//             /*Enemy*/int attackRange, int attackSpeed, int XP_DROP, double damage, int score)
+//             :Enemy("enemy",maxHP, currentHp, movementSpeed, positon, direction, attackRange, attackSpeed, XP_DROP, damage, score){}
 
-Kaboom::Kaboom(/*Charactar*/  double maxHP, double currentHp, int movementSpeed, Point positon, Point direction,
-            /*Enemy*/int attackRange, int attackSpeed, int XP_DROP, double damage, int score,
-            double explodeDamage, double explodeRange)
-            :Enemy(maxHP, currentHp, movementSpeed, positon, direction, attackRange, attackSpeed, XP_DROP, damage, score),
-            explodeDamage{explodeDamage}, explodeRange{explodeRange}{}
+// Kaboom::Kaboom(/*Charactar*/  double maxHP, double currentHp, int movementSpeed, Point positon, Point direction,
+//             /*Enemy*/int attackRange, int attackSpeed, int XP_DROP, double damage, int score,
+//             double explodeDamage, double explodeRange)
+//             :Enemy("enemy",maxHP, currentHp, movementSpeed, positon, direction, attackRange, attackSpeed, XP_DROP, damage, score),
+//             explodeDamage{explodeDamage}, explodeRange{explodeRange}{}
 
-double pythagoras(Point p) // ska vara en point
+double pythagoras(sf::Vector2f p) // ska vara en point
 {
     return sqrt((p.x*p.x)+(p.y*p.y));
 }
@@ -34,55 +36,69 @@ void Enemy::die()
     
 }
 
-//fnkar inte här me är hur den kan se ut i game.cc
-void Enemy::move(sf::Sprite &figure1, sf::CircleShape &figure2)
+void Enemy::draw(sf::RenderWindow *window) const
 {
+    window->draw(*this);
+    // Draw HP and XP too plz
+}
+
+
+
+//fnkar inte här me är hur den kan se ut i game.cc
+void Enemy::move()
+{
+
+    sf::Vector2f figure1 = player -> getPosition();
+    sf::Vector2f figure2 = getPosition();
     double const SPEED{5};
-    Point new_direction{0,0};
+    direction.x = 0;
+    direction.y = 0;
+
     //Point player {figure1.getPosition()};
     //Point enemy  {figure2.getPosition()};
 
 
-    if(figure2.getPosition().x < figure1.getPosition().x)
+    if(figure2.x < figure1.x)
     {
-        new_direction.x += 1;
+        direction.x += 1;
 
     }
-    if (figure2.getPosition().x > figure1.getPosition().x)
+    if (figure2.x > figure1.x)
     {
-        new_direction.x -= 1;
+        direction.x -= 1;
 
     }
     
-    if(figure2.getPosition().y < figure1.getPosition().y)
+    if(figure2.y < figure1.y)
     {
-        new_direction.y += 1;
+        direction.y += 1;
 
     }
-    if (figure2.getPosition().y > figure1.getPosition().y)
+    if (figure2.y > figure1.y)
     {
-        new_direction.y -= 1;
+        direction.y -= 1;
 
     }
 
-    if(std::abs(new_direction.x) + std::abs(new_direction.y) > 1)
+    if(std::abs(direction.x) + std::abs(direction.y) > 1)
     {
-        new_direction.x = new_direction.x / std::sqrt(2);
-        new_direction.y = new_direction.y / std::sqrt(2);     
+        direction.x = direction.x / std::sqrt(2);
+        direction.y = direction.y / std::sqrt(2);     
     }
     
-    figure2.move(sf::Vector2f(new_direction.x * SPEED, new_direction.y * SPEED));
+    sf::Sprite::move(direction.x * SPEED, direction.y * SPEED);
 }
 
 std::string Enemy::getTag()
 {
     return tag;
 }
-
-void Enemy::calcPath(Point player)
+/*
+void Enemy::calcPath(sf::Vector2f player)
 {
-    Point new_direction{0,0};
-    /*första disig*/
+    
+    direction.x = 0;
+    direction.y = 0;
     if(position.x < player.x)
     {
         new_direction.x += 1;
@@ -109,8 +125,8 @@ void Enemy::calcPath(Point player)
 
     setDirection(new_position);
 }
-
-void Enemy::tryAttack(Point player)
+*/
+void Enemy::tryAttack(sf::Vector2f player)
 {
 
     if(pythagoras(player)<= attackRange)
@@ -122,8 +138,8 @@ void Enemy::tryAttack(Point player)
 }
 
 
-
-bool Kaboom::isInRange(Point player)
+/*
+bool Kaboom::isInRange(sf::Vector2f player)
 {
 
     if(pythagoras(player)<= attackRange)
@@ -140,7 +156,7 @@ void Kaboom::increaseSpeed(int newSpeed)
     movementSpeed += newSpeed;
 }
 
-void Kaboom::explode(Point player)
+void Kaboom::explode(sf::Vector2f player)
 {
 
     
@@ -166,3 +182,4 @@ void Archer::attack()
 {
     
 }
+*/

@@ -37,9 +37,14 @@ void processMovementPE(sf::Sprite &figure1, sf::CircleShape &figure2)
     Point new_direction{0,0};
     //Point player {figure1.getPosition()};
     //Point enemy  {figure2.getPosition()};
+    
+    float rikting_x = figure1.getPosition().x - figure2.getPosition().x;
+    float rikting_y = figure1.getPosition().y - figure2.getPosition().y;
 
-    float len = std::sqrt(figure1.getPosition().x*figure1.getPosition().x + figure1.getPosition().y*figure1.getPosition().y);
 
+    float len = std::sqrt(rikting_x * rikting_x + rikting_y + rikting_y);
+
+    /*
     if(figure2.getPosition().x < figure1.getPosition().x)
     {
         //new_direction.x += 1;
@@ -71,15 +76,15 @@ void processMovementPE(sf::Sprite &figure1, sf::CircleShape &figure2)
         new_direction.x = new_direction.x / std::sqrt(2);
         new_direction.y = new_direction.y / std::sqrt(2);     
     }
-    
+    */
     //setDirection(new_position);
    
 
  
     //normalize
     
-   // new_direction.x = (figure1.getPosition().x / len);
-   // new_direction.y = (figure1.getPosition().y / len);
+    new_direction.x = (rikting_x / len);
+    new_direction.y = (rikting_y / len);
 
     figure2.move(sf::Vector2f(new_direction.x * SPEED, new_direction.y * SPEED));
     std::cout << "y "<<new_direction.x<< std::endl;

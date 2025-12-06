@@ -1,4 +1,6 @@
 *.out*
 *.o
+*.d
+game
 .DS_Store
 .vscode
