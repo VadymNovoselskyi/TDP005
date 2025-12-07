@@ -32,17 +32,23 @@ void Map::deleteInstance()
 
 void Map::handelUpdate()
 {
-    for_each(entities.begin(), entities.end(), [](Entity *e) { e->move();});
-    
-    
-    // for (auto it1{entities.begin()}; it1 != entities.end(); ++it1)    // de som är i loopen är
-    // tagen från tdp004 https://www.ida.liu.se/~TDP004/current/sal/slides/tdp004_9.pdf s.20
-    // {
-    //     for (auto it2{it1  + 1}; it2 != entities.end(); ++it2)
-    //     {
+    for (Entity *e : entities)
+    {
+        e->move();
+    }
 
-    //     }
-    // }
+    for (auto it1{entities.begin()}; it1 != entities.end(); ++it1) // de som är i loopen är
+    // tagen från tdp004 https://www.ida.liu.se/~TDP004/current/sal/slides/tdp004_9.pdf s.20
+    {
+        for (auto it2{it1 + 1}; it2 != entities.end(); ++it2)
+        {
+            if ((*it1)->getGlobalBounds().intersects((*it2)->getGlobalBounds()))
+            {
+                (*it1)->onCollision((*it2)->getTag());
+                (*it2)->onCollision((*it1)->getTag());
+            }
+        }
+    }
 }
 
 void Map::draw(sf::RenderWindow *window) const
@@ -50,8 +56,12 @@ void Map::draw(sf::RenderWindow *window) const
     // std::cout << "Rendering the player" << std::endl;
     view->setCenter(player->getPosition());
     window->setView(*view);
+
+    for (Entity *e : entities)
+    {
+        e->draw(window);
+    }
     player->draw(window);
-    for_each(entities.begin(), entities.end(), [window](Entity *e) { e->draw(window);});
 }
 
 void Map::addEntity(Entity *e)
@@ -62,7 +72,8 @@ void Map::addEntity(Entity *e)
 void Map::removeEntity(Entity *e)
 {
     entities.erase(
-        std::remove_if(entities.begin(), entities.end(), [e](Entity *e1) { return e == e1; }), entities.end());
+        std::remove_if(entities.begin(), entities.end(), [e](Entity *e1) { return e == e1; }),
+        entities.end());
 }
 
 Map::Map(Player *player)
@@ -80,6 +91,7 @@ Map::~Map()
     delete player;
     delete view;
     player = nullptr;
+    view = nullptr;
 
     for (Entity *e : entities)
     {
