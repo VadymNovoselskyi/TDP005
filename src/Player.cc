@@ -22,7 +22,12 @@ Player::Player(float maxHP,
 
     sf::Sprite::setTexture(*texture);
     sf::Sprite::setOrigin(player_size.x / 2, player_size.y);
-    //skapa boxa för xp och hp
+    //create box for xp and hp
+    sf::RectangleShape HPBox(sf::Vector2(150.f, 50.f));
+    sf::RectangleShape CurrentHPBox(sf::Vector2(150.f, 50.f));
+    
+    sf::RectangleShape XPBox(sf::Vector2(150.f, 50.f));
+    sf::RectangleShape CurrentXPBox(sf::Vector2(150.f, 50.f));
 }
 
 void Player::setXP(int gainedXP)
@@ -74,12 +79,15 @@ void Player::move()
         // {
         //     rotation = 180.f * direction.y;
         // }
-        //matematisk förklaring: https://www.matteboken.se/lektioner/gymnasiet/matte-fortsattning-niva-2/trigonometri/trigonometriska-funktioner?#!/
+        //matematisk förklaring: https://www.matteboken.se/lektioner/gymnasiet/matte-fortsattning-niva-2/trigonometri/radianer#!/
+        //kollade upp vad man behövde för att räkna ut vinkeln i matte
+        
         if(direction.y >= 0) //ner
         {
+            //multiplying by (180/PI)to convert radian to degrees and subtract to flip rotation. 
             rotation = 180.f - std::asin(direction.x) * (180.f / M_PI);
         }
-        else // upnej itne med programering bara matte
+        else // up
 
         {
             rotation =  std::asin(direction.x) * (180.f / M_PI);
@@ -111,9 +119,9 @@ void Player::onCollision(std::string other)
 void Player::drawInfo(float boxPosX, float boxPosY, float boxWidth, float boxheight)
 {
     drawBox(boxPosX, boxPosY, boxWidth, boxheight, 128, 0 ,0 ); // hp box background
-    drawBox(boxPosX, boxPosY, boxWidth, boxheight, 204, 0 ,0 ); // curent hp
-    drawBox(boxPosX, boxPosY +60, boxWidth, boxheight, 76, 154 ,42 ); // xp background
-    drawBox(boxPosX, boxPosY +60, boxWidth, boxheight, 118, 186 ,27 ); // current xp
+    drawBox(boxPosX, boxPosY, boxWidth * ( currentHP / maxHP), boxheight, 204, 0 ,0 ); // curent hp
+    // drawBox(boxPosX, boxPosY +60, boxWidth, boxheight, 76, 154 ,42 ); // xp background
+    // drawBox(boxPosX, boxPosY +60, boxWidth * (xp / maxXP), boxheight, 118, 186 ,27 ); // current xp
 
     // drawXP(boxPosX, boxPosY -60, boxWidth, boxheight);
 }
