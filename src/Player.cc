@@ -22,6 +22,12 @@ Player::Player(float maxHP,
     auto playerSize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
     sf::Sprite::setOrigin(playerSize.x / 2.0, playerSize.y / 2.0);
+    //create box for xp and hp
+    sf::RectangleShape HPBox(sf::Vector2(150.f, 50.f));
+    sf::RectangleShape CurrentHPBox(sf::Vector2(150.f, 50.f));
+    
+    sf::RectangleShape XPBox(sf::Vector2(150.f, 50.f));
+    sf::RectangleShape CurrentXPBox(sf::Vector2(150.f, 50.f));
 }
 
 void Player::setXP(int gainedXP)
@@ -39,27 +45,57 @@ void Player::move()
 {
     direction.x = 0;
     direction.y = 0;
+    //add rotation
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
     {
         direction.y = -1;
+        rotation = 0.f;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
     {
         direction.x = -1;
+        rotation = -90.f;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
     {
         direction.y = 1;
+        rotation = 180.f;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
     {
+        rotation = 90.f;
         direction.x = 1;
     }
     if (std::abs(direction.x) + std::abs(direction.y) > 1)
     {
+
         direction.x = direction.x / std::sqrt(2);
         direction.y = direction.y / std::sqrt(2);
+        //divide angle by 2 for rotation
+        //rotation = rotation / 2;
+        // rotation = 90.f * direction.x; // rotation up 
+        // if (direction.y > 0) // rotation ned
+        // {
+        //     rotation = 180.f * direction.y;
+        // }
+        //matematisk förklaring: https://www.matteboken.se/lektioner/gymnasiet/matte-fortsattning-niva-2/trigonometri/radianer#!/
+        //kollade upp vad man behövde för att räkna ut vinkeln i matte
+        
+        if(direction.y >= 0) //ner
+        {
+            //multiplying by (180/PI)to convert radian to degrees and subtract to flip rotation. 
+            rotation = 180.f - std::asin(direction.x) * (180.f / M_PI);
+        }
+        else // up
+
+        {
+            rotation =  std::asin(direction.x) * (180.f / M_PI);
+        }
+
     }
+
+    sf::Sprite::setRotation(rotation);
     sf::Sprite::move(sf::Vector2f(direction.x * movementSpeed, direction.y * movementSpeed));
 }
 void Player::die()
@@ -71,6 +107,7 @@ void Player::draw(sf::RenderWindow *window) const
 {
     window->draw(*this);
     // Draw HP and XP too plz
+    drawInfo(10.0, 10.0, 150.0, 50.0);
 }
 
 void Player::onCollision(std::string const &other)
@@ -79,23 +116,23 @@ void Player::onCollision(std::string const &other)
     {
     }
 }
-void Player::drawInfo(bool boxPosX, bool boxPosY, float boxWidth, float boxheight)
+void Player::drawInfo(float boxPosX, float boxPosY, float boxWidth, float boxheight) const
 {
-    drawHP(boxPosX, boxPosY, boxWidth, boxheight);
+    drawBox(boxPosX, boxPosY, boxWidth, boxheight, 128, 0 ,0 ); // hp box background
+    drawBox(boxPosX, boxPosY, boxWidth * ( currentHP / maxHP), boxheight, 204, 0 ,0 ); // curent hp
+    // drawBox(boxPosX, boxPosY +60, boxWidth, boxheight, 76, 154 ,42 ); // xp background
+    // drawBox(boxPosX, boxPosY +60, boxWidth * (xp / maxXP), boxheight, 118, 186 ,27 ); // current xp
+
     // drawXP(boxPosX, boxPosY -60, boxWidth, boxheight);
 }
-void Player::drawHP(bool boxPosX, bool boxPosY, float boxWidth, float boxheight)
+void Player::drawBox(float boxPosX, float boxPosY, float boxWidth, float boxheight, int r, int g, int b) const
 {
     // Hp box background + outline
-    sf::RectangleShape HpBox(sf::Vector2(boxWidth, boxheight));
-    HpBox.setSize(sf::Vector2f(boxWidth, boxheight));
-    HpBox.setFillColor(sf::Color(128, 0, 0));
-    HpBox.setPosition(boxPosX, boxPosY);
-    // current hp
-    sf::RectangleShape CurrentHp(sf::Vector2(boxWidth, boxheight));
-    CurrentHp.setSize(sf::Vector2f(boxWidth, boxheight));
-    CurrentHp.setFillColor(sf::Color(204, 0, 0));
-    CurrentHp.setPosition(boxPosX, boxPosY);
+    sf::RectangleShape box(sf::Vector2(boxWidth, boxheight));
+    box.setSize(sf::Vector2f(boxWidth, boxheight));
+    box.setFillColor(sf::Color(r, g, b));
+    box.setPosition(boxPosX, boxPosY);
+
 }
 
 void Player::levelUP(Choises choise)
