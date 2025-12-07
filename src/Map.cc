@@ -62,7 +62,7 @@ void Map::addEntity(Entity *e)
 void Map::removeEntity(Entity *e)
 {
     entities.erase(
-        std::remove_if(entities.begin(), entities.end(), [e](Entity *e1) { return e == e1; }));
+        std::remove_if(entities.begin(), entities.end(), [e](Entity *e1) { return e == e1; }), entities.end());
 }
 
 Map::Map(Player *player)
