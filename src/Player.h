@@ -31,9 +31,9 @@ class Player : public Character
     void setXP(int xp);
     void levelUP(Choises choise);
 
-    void drawInfo(bool boxPosX, bool boxPosY, float boxWidth, float boxheight);
+    void drawInfo(float boxPosX, float boxPosY, float boxWidth, float boxheight);
     
-    void draw(sf::RenderWindow *window) const;
+    void draw(sf::RenderWindow *window);
     
 
     void move() override;
@@ -42,11 +42,12 @@ class Player : public Character
     void onCollision(std::string other /*otehr = other.tag*/) override;
 
   private:
-    void drawHP(bool boxPosX, bool boxPosY, float boxWidth, float boxheight);
-    void drawXP(bool boxPosX, bool boxPosY, float boxWidth, float boxheight);
+    void drawBox(float boxPosX, float boxPosY, float boxWidth, float boxheight, int r, int g, int b);
+    
     float maxHP;
 
     std::string name{};
+    float rotation {};
     int xp;
     int maxXP;
     float currentHP;
