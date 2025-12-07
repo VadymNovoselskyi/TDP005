@@ -1,14 +1,13 @@
 #include "Enemy.h"
-#include "Player.h"
 #include <iostream>
 #include <unistd.h>
 #include <cmath>
 
 
-Enemy::Enemy(/*Charactar*/  double maxHP, double currentHp, int movementSpeed, sf::Vector2f positon, sf::Vector2f direction,
-        int attackRange, int attackSpeed, int XP_DROP, double damage, int score)
+Enemy::Enemy(/*Charactar*/  float maxHP, float currentHp, int movementSpeed, sf::Vector2f positon, sf::Vector2f direction,
+        int attackRange, int attackSpeed, int XP_DROP, double damage, int score, Player& player)
         :Character("enemy" ,maxHP, currentHp, movementSpeed, positon, direction), 
-        attackRange{attackRange}, attackSpeed{attackSpeed}, XP_DROP{XP_DROP}, damage{damage}, score{score} {}
+        attackRange{attackRange}, attackSpeed{attackSpeed}, XP_DROP{XP_DROP}, damage{damage}, score{score}, player{player} {}
 
 // Footman::Footman(/*Charactar*/  double maxHP, double currentHp, int movementSpeed, Point positon, Point direction,
 //             /*Enemy*/int attackRange, int attackSpeed, int XP_DROP, double damage, int score)
@@ -39,16 +38,15 @@ void Enemy::die()
 void Enemy::draw(sf::RenderWindow *window) const
 {
     window->draw(*this);
-    // Draw HP and XP too plz
+    
 }
-
 
 
 //fnkar inte här me är hur den kan se ut i game.cc
 void Enemy::move()
 {
 
-    sf::Vector2f figure1 = player -> getPosition();
+    sf::Vector2f figure1 = player.getPosition();
     sf::Vector2f figure2 = getPosition();
     double const SPEED{5};
     direction.x = 0;

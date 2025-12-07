@@ -1,10 +1,10 @@
 #include "Spawner.h"
 #include <cstdlib>
 
-void spwanEnemies()
+void Spawner::spwanEnemies()
 {
-    enemies
-    spwanRate
+
+    Map::instance()->addEntity(Enemy* enemy);
 }
   
 Point choseSpawnPos()

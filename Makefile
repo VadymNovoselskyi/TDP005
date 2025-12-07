@@ -37,7 +37,10 @@ build/Character.o: src/Character.cc
 build/Player.o: src/Player.cc
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-build/Player.o: src/Enemy.cc
+build/Enemy.o: src/Enemy.cc
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+build/Spawner.o: src/Spawner.cc
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 build/Projectile.o: src/Projectile.cc

@@ -1,28 +1,20 @@
 #include"Enemy.h"
+#include"Map.h"
+#include <vector>
 
 class Spawner
 {
     public:
+        Spawner(double spawnRate);
         void spwanEnemies();
-        Point choseSpawnPos(Point);
+        sf::Vector2f choseSpawnPos();
 
     private:
-        vector <Enemy*> enemies;
+        std::vector <Enemy*> enemies;
         double spwanRate;
-        Point spwanPoint;
+        sf::Vector2f spwanPoint;
         
 
 };
 
 
-
-
-
-
-
-
-
-int main()
-{
-    return 0;
-}

@@ -4,13 +4,14 @@
 #include "Character.h"
 #include "GameState.h"
 #include "StateMachine.h"
+#include "Player.h"
 
 
 class Enemy : public Character
 {
     public:
-        Enemy(/*Charactar*/  double maxHP, double currentHp, int movementSpeed, sf::Vector2f positon, sf::Vector2f direction,
-           /*Enemy*/ int attackRange, int attackSpeed, int XP_DROP, double damage, int score);
+        Enemy(/*Charactar*/  float maxHP, float currentHP, int movementSpeed, sf::Vector2f positon, sf::Vector2f direction,
+           /*Enemy*/ int attackRange, int attackSpeed, int XP_DROP, double damage, int score, Player& player);
         virtual ~Enemy();
 
         virtual void attack() = 0;
@@ -30,6 +31,7 @@ class Enemy : public Character
         int XP_DROP;
         double damage;
         int score; // inte en privat för olika enyme är vär olika score
+        Player& player;
     private:
         std::string tag{"enemy"};
 };

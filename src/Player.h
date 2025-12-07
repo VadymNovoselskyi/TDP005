@@ -19,7 +19,7 @@ class Player : public Character
 {
   public:
     Player(float maxHP,
-           float currentHp,
+           float currentHP,
            int movementSpeed,
            sf::Vector2f const &positon,
            sf::Vector2f const &direction,
