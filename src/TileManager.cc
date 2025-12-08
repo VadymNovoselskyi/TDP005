@@ -34,7 +34,8 @@ void TileManager::deleteInstance()
 }
 
 // Instance methods
-TileManager::TileManager(std::string const &tileMapPath) : tiles{}, obstacles{}, columnCount{}, rowCount{}
+TileManager::TileManager(std::string const &tileMapPath)
+    : tiles{}, obstacles{}, columnCount{}, rowCount{}
 {
     generateTiles(tileMapPath);
 }
@@ -44,6 +45,11 @@ TileManager::~TileManager() = default;
 std::vector<Obstacle *> TileManager::getObstacles() const
 {
     return obstacles;
+}
+
+sf::Vector2i TileManager::getMapDimensions() const
+{
+    return sf::Vector2i{columnCount * TILE_SIZE, rowCount * TILE_SIZE};
 }
 
 void TileManager::drawTiles(sf::RenderWindow *window) const
@@ -80,6 +86,7 @@ void TileManager::generateTiles(std::string const &tileMapPath)
     {
         throw std::logic_error("Couldn't open the tilemap");
     }
+    // TODO: Optimize drawing with sf::VertexArray
 
     // The loop is taken from
     // https://stackoverflow.com/questions/12133379/c-using-ifstream-with-getline
@@ -90,13 +97,28 @@ void TileManager::generateTiles(std::string const &tileMapPath)
         int wordCount{0};
         for (std::string word{}; line_stream >> word;)
         {
+            sf::Texture *texture = TextureManager::instance()->getTexture(word + ".png");
+            sf::Vector2f position = sf::Vector2f{static_cast<float>(wordCount * TILE_SIZE),
+                                                 static_cast<float>(lineCount * TILE_SIZE)};
+
             sf::RectangleShape tile{};
 
             tile.setSize({TILE_SIZE, TILE_SIZE});
-            tile.setPosition(wordCount * TILE_SIZE, lineCount * TILE_SIZE);
-            tile.setTexture(TextureManager::instance()->getTexture(word + ".png"));
+            tile.setPosition(position);
+            tile.setTexture(texture);
+
+            if (auto idx{word.find("obstacle-")}; idx != std::string::npos)
+            {
+                std::string obstacleType = word.substr(9);
+                Obstacle *obstacle{new Obstacle{
+                    texture,
+                    position,
+                    (obstacleType == "wall" || obstacleType == "gas") ? obstacleType : "obstacle"}};
+                obstacles.push_back(obstacle);
+            }
 
             tiles.push_back(tile);
+
             wordCount++;
         }
         lineCount++;

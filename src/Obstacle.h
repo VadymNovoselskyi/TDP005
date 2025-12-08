@@ -10,7 +10,9 @@ class Obstacle : public Entity
 {
   public:
     // Entity(std::string const &tag, sf::Vector2f const &pos);
-    Obstacle(sf::Texture const *texture, sf::Vector2f position);
+    Obstacle(sf::Texture const *texture,
+             sf::Vector2f position,
+             std::string const &tag = "obstacle");
 
     void onCollision(std::string const &other) override;
     void move() override;
