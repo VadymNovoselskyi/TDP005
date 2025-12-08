@@ -19,6 +19,11 @@ void Weapon::shoot()
     bullets.back()->move();
 }
 
+std::string Weapon::getName()
+{
+    return name;
+}
+
 void Weapon::uppdate()
 {
     do

@@ -4,6 +4,7 @@
 
 #include "Menus.h"
 #include "TextureManager.h"
+#include "WeaponManager.h"
 
 int const GameEngine::FPS{60};
 sf::Time const GameEngine::UPDATE_INTERVAL{sf::milliseconds(1000.0 / GameEngine::FPS)};
@@ -13,6 +14,7 @@ GameEngine::GameEngine() : window{}, clock{}
     // Init the StateMachine, TextureManager, Map and the menus
     StateMachine::init();
     TextureManager::init();
+    WeaponManager::init();
 
     Player *player{new Player(
         10, 10, 10, sf::Vector2f{100.0, 100.0}, sf::Vector2f{100.0, 100.0}, "Player1", 0, 0, 0, 0)};
@@ -56,6 +58,7 @@ GameEngine::GameEngine() : window{}, clock{}
                                           });
 
     Map::instance()->addEntity(player);
+    WeaponManager::instance()->getWeapon("AR");
 }
 
 GameEngine::~GameEngine()

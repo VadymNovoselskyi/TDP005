@@ -25,6 +25,7 @@ class Weapon : public sf::Sprite::Transformable
            Rarity rarity,
            double speed);
     void shoot();
+    std::string getName();
 
   protected:
     std::string name;

@@ -3,6 +3,7 @@
 #include "AssaultRifleWeapon.h"
 
 #include <iostream>
+#include <algorithm>
 
 WeaponManager *WeaponManager::instancePtr{nullptr};
 
@@ -29,6 +30,35 @@ void WeaponManager::deleteInstance()
     WeaponManager::instancePtr = nullptr;
 }
 
-WeaponManager::WeaponManager() : weapons {/*Add all weapons here (uniqe weapon class)*/ new AssaultRifleWeapon{}}
+void WeaponManager::shoot()
+{
+    for (Weapon* w : activWeapons)
+    {
+        w -> shoot();
+    }
+}
+
+
+void WeaponManager::setWeaponsPos(sf::Vector2f pos)
+{
+    for (Weapon* w : activWeapons)
+    {
+        w -> setPosition(pos.x, pos.y);
+    }
+}
+
+Weapon* WeaponManager::getWeapon(std::string const &name)
+{
+    auto it = std::find_if(activWeapons.begin(), activWeapons.end(), [name](Weapon* w)
+    {
+        return w -> getName() == name;
+    });
+    return *it;
+
+}
+
+void generatWeapon(int number /*0-3*/);
+
+WeaponManager::WeaponManager() : weapons {/*Add all weapons here (uniqe weapon class)*/ new AssaultRifleWeapon{}}, activWeapons {new AssaultRifleWeapon{}}
 {
 }
