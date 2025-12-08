@@ -50,21 +50,21 @@ void Player::move()
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
     {
         direction.y = NORTH;
-        rotation = 0.f;
+        rotation = UP;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
     {
         direction.x = EAST;
-        rotation = -90.f;
+        rotation = LEFT;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
     {
         direction.y = SOUTH;
-        rotation = 180.f;
+        rotation = DOWN;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
     {
-        rotation = 90.f;
+        rotation = RIGHT;
         direction.x = WEST;
     }
     if (std::abs(direction.x) + std::abs(direction.y) > 1)
@@ -114,8 +114,16 @@ void Player::drawInfo(float boxPosX, float boxPosY, float boxWidth, float boxhei
 {
     drawBox(boxPosX, boxPosY, boxWidth, boxheight, 128, 0 ,0 ); // hp box background
     drawBox(boxPosX, boxPosY, boxWidth * ( currentHP / maxHP), boxheight, 204, 0 ,0 ); // curent hp
-    // drawBox(boxPosX, boxPosY +60, boxWidth, boxheight, 76, 154 ,42 ); // xp background
-    // drawBox(boxPosX, boxPosY +60, boxWidth * (xp / maxXP), boxheight, 118, 186 ,27 ); // current xp
+    drawBox(boxPosX, boxPosY +60, boxWidth, boxheight, 76, 154 ,42 ); // xp background
+    if (xp < 0)
+    {
+        drawBox(boxPosX, boxPosY +60, boxWidth * (xp / maxXP), boxheight, 118, 186 ,27 ); // current xp
+    }
+    else
+    {
+        drawBox(boxPosX, boxPosY +60, 0.1, boxheight, 118, 186 ,27 ); // current xp
+    }
+    
 
     // drawXP(boxPosX, boxPosY -60, boxWidth, boxheight);
 }
@@ -126,11 +134,12 @@ void Player::drawBox(float boxPosX, float boxPosY, float boxWidth, float boxheig
     box.setSize(sf::Vector2f(boxWidth, boxheight));
     box.setFillColor(sf::Color(r, g, b));
     box.setPosition(boxPosX, boxPosY);
-
+    
 }
 
 void Player::levelUP(Choises choise)
 {
+    xp = 0; 
     switch (choise)
     {
     case HP: // hp

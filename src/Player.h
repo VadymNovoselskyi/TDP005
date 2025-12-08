@@ -21,7 +21,13 @@ enum Directions
   EAST = -1,
   WEST = 1
 };
-
+enum Rotations
+{
+  UP = 0,
+  LEFT = -90,
+  DOWN = 180,
+  RIGHT = 90 
+};
 class Player : public Character
 {
   public:
@@ -66,6 +72,7 @@ class Player : public Character
     float boxHeight;
 
     sf::Texture const *texture;
+    
 
 };
 
