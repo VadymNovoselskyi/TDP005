@@ -49,38 +49,32 @@ void Player::move()
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
     {
-        direction.y = -1;
+        direction.y = NORTH;
         rotation = 0.f;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
     {
-        direction.x = -1;
+        direction.x = EAST;
         rotation = -90.f;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
     {
-        direction.y = 1;
+        direction.y = SOUTH;
         rotation = 180.f;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
     {
         rotation = 90.f;
-        direction.x = 1;
+        direction.x = WEST;
     }
     if (std::abs(direction.x) + std::abs(direction.y) > 1)
     {
 
         direction.x = direction.x / std::sqrt(2);
         direction.y = direction.y / std::sqrt(2);
-        //divide angle by 2 for rotation
-        //rotation = rotation / 2;
-        // rotation = 90.f * direction.x; // rotation up 
-        // if (direction.y > 0) // rotation ned
-        // {
-        //     rotation = 180.f * direction.y;
-        // }
-        //matematisk förklaring: https://www.matteboken.se/lektioner/gymnasiet/matte-fortsattning-niva-2/trigonometri/radianer#!/
-        //kollade upp vad man behövde för att räkna ut vinkeln i matte
+
+        //matematic explination: https://www.matteboken.se/lektioner/gymnasiet/matte-fortsattning-niva-2/trigonometri/radianer#!/
+        //used to check calculation with degrees
         
         if(direction.y >= 0) //ner
         {
@@ -88,7 +82,6 @@ void Player::move()
             rotation = 180.f - std::asin(direction.x) * (180.f / M_PI);
         }
         else // up
-
         {
             rotation =  std::asin(direction.x) * (180.f / M_PI);
         }
@@ -98,6 +91,13 @@ void Player::move()
     sf::Sprite::setRotation(rotation);
     sf::Sprite::move(sf::Vector2f(direction.x * movementSpeed, direction.y * movementSpeed));
 }
+void Player::onCollision(std::string other)
+{
+    if (other == "enemy")
+    {
+    }
+}
+
 void Player::die()
 {
     StateMachine::instance()->finishGame();
@@ -106,16 +106,10 @@ void Player::die()
 void Player::draw(sf::RenderWindow *window)
 {
     window->draw(*this);
-    // Draw HP and XP too plz
     drawInfo(10.0, 10.0, 150.0, 50.0);
 }
 
-void Player::onCollision(std::string other)
-{
-    if (other == "enemy")
-    {
-    }
-}
+
 void Player::drawInfo(float boxPosX, float boxPosY, float boxWidth, float boxheight)
 {
     drawBox(boxPosX, boxPosY, boxWidth, boxheight, 128, 0 ,0 ); // hp box background

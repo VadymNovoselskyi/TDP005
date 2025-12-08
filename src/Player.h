@@ -14,6 +14,14 @@ enum Choises //levelup choise
   WEAPON
 };
 
+enum Directions
+{
+  NORTH = -1,
+  SOUTH = 1,
+  EAST = -1,
+  WEST = 1
+};
+
 class Player : public Character
 {
   public:
