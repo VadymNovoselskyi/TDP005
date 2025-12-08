@@ -8,6 +8,7 @@
 #include "GameState.h"
 #include "StateMachine.h"
 
+
 enum Directions
 {
   NORTH = -1,
@@ -27,32 +28,33 @@ enum Rotations
 class Player : public Character
 {
   public:
+
     Player(double maxHP,
            double currentHp,
            int movementSpeed,
-           sf::Vector2f positon,
-           sf::Vector2f direction,
-           std::string name,
+           sf::Vector2f const &positon,
+           sf::Vector2f const &direction,
+           std::string const &name,
            int levels,
            float damageMultiplier);
           
     // void levelUP(Choises choise);
 
-    void drawInfo(sf::RenderWindow *window);
+    void drawInfo(sf::RenderWindow *window) const;
     
-    void draw(sf::RenderWindow *window);
-    
+    void draw(sf::RenderWindow *window) const;
 
     void move() override;
     void die() override;
 
-    void onCollision(std::string other /*otehr = other.tag*/) override;
+    void onCollision(std::string const &other /*otehr = other.tag*/) override;
 
     protected:
     double maxHP;
     double currentHP;
     std::string name;
     float rotation;
+
     int levels;
     float damageMultiplier;
 
@@ -66,6 +68,7 @@ class Player : public Character
     sf::RectangleShape XPBox;
     sf::RectangleShape CurrentXPBox;
     
+
 
 };
 

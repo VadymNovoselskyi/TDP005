@@ -90,6 +90,16 @@ void StateMachine::setInGame()
     setState(GameState::IN_GAME);
 }
 
+void StateMachine::startLevelUp()
+{
+    // std::cout << "Starting the level up from " << currentState << std::endl;
+    if (currentState != GameState::IN_GAME)
+    {
+        throw std::logic_error("Can go to the level up screen only when in game");
+    }
+    setState(GameState::LEVEL_UP_SCREEN);
+}
+
 void StateMachine::pauseGame()
 {
     // std::cout << "Pausing the game from " << currentState << std::endl;
