@@ -17,7 +17,7 @@ GameEngine::GameEngine() : window{}, clock{}
     TileManager::init("static/tileMap.txt");
 
     Player *player{new Player(
-        10, 10, 10, sf::Vector2f{100.0, 100.0}, sf::Vector2f{100.0, 100.0}, "Player1", 0, 0, 0, 0)};
+        10, 10, 10, sf::Vector2f{0.0, 0.0}, sf::Vector2f{0.0, 0.0}, "Player1", 0, 0, 0, 0)};
     Map::init(player, TileManager::instance()->getObstacles());
 
     sf::Texture *bgTexture = TextureManager::instance()->getTexture("grass.png");
@@ -80,6 +80,7 @@ void GameEngine::run()
         window->draw();
 
         sf::Time delta{UPDATE_INTERVAL - clock.getElapsedTime()};
+        // std::cout << "FPS: " << (1000.0 / delta.asMilliseconds()) << std::endl;
         sf::sleep(delta);
     }
 }

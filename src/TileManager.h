@@ -14,7 +14,7 @@ class TileManager
     static TileManager *init(std::string const &tileMapPath);
     static void deleteInstance();
 
-    void drawTilesInView(sf::Window *window) const;
+    void drawTiles(sf::RenderWindow *window) const;
     [[nodiscard]] std::vector<Obstacle *> getObstacles() const;
 
   private:
@@ -24,8 +24,11 @@ class TileManager
     ~TileManager();
     static TileManager *instancePtr;
 
-    sf::VertexArray tiles;
+    int static const TILE_SIZE;
+    std::vector<sf::RectangleShape> tiles;
     std::vector<Obstacle *> obstacles;
+    int columnCount;
+    int rowCount;
 };
 
 #endif

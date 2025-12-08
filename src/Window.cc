@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "StateMachine.h"
+#include "TileManager.h"
 
 int const Window::WINDOW_WIDTH{1024};
 int const Window::WINDOW_HEIGHT{768};
@@ -67,7 +68,8 @@ void Window::handleEvents()
 void Window::draw()
 {
     window->clear();
-    window->draw(*bg);
+    // window->draw(*bg);
+    TileManager::instance()->drawTiles(window);
 
     if (StateMachine::instance()->state() == GameState::IN_GAME)
     {
