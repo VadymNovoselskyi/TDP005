@@ -10,8 +10,8 @@
 class Enemy : public Character
 {
     public:
-        Enemy(/*Charactar*/  float maxHP, float currentHP, int movementSpeed, sf::Vector2f positon, sf::Vector2f direction,
-           /*Enemy*/ int attackRange, int attackSpeed, int XP_DROP, double damage, int score, Player& player);
+        Enemy(/*Charactar*/  double maxHP, double currentHP, int movementSpeed, sf::Vector2f positon, sf::Vector2f direction,
+           /*Enemy*/ int attackRange, int attackSpeed, int XP_DROP, double damage, int score, Player* player);
         virtual ~Enemy();
 
         virtual void attack() = 0;
@@ -21,6 +21,7 @@ class Enemy : public Character
         
         void move() override;
         void die() override;
+        void onCollision(std::string const &othe) override;
 
     protected:
 
@@ -31,20 +32,20 @@ class Enemy : public Character
         int XP_DROP;
         double damage;
         int score; // inte en privat för olika enyme är vär olika score
-        Player& player;
+        Player* player;
     private:
         std::string tag{"enemy"};
 };
 
 
-// class Footman :public Enemy
-// {
-//     public:
-//         Footman(/*Charactar*/  double maxHP, double currentHp, int movementSpeed, sf::Vector2f positon, sf::Vector2f direction,
-//            /*Enemy*/ int attackRange, int attackSpeed, int XP_DROP, double damage, int score);
-//         void attack() override;
+class Footman :public Enemy
+{
+    public:
+        Footman(/*Charactar*/  double maxHP, double currentHp, int movementSpeed, sf::Vector2f positon, sf::Vector2f direction,
+           /*Enemy*/ int attackRange, int attackSpeed, int XP_DROP, double damage, int score, Player* player);
+        void attack() override;
         
-// };
+};
 
 // class Kaboom:public Enemy
 // {

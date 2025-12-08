@@ -7,6 +7,7 @@
 #include "Menu.h"
 #include "Player.h"
 #include "Window.h"
+#include "Spawner.h"
 
 class GameEngine
 {

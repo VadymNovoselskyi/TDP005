@@ -4,6 +4,7 @@
 
 #include "Menus.h"
 #include "TextureManager.h"
+#include "Spawner.h"
 
 int const GameEngine::FPS{60};
 sf::Time const GameEngine::UPDATE_INTERVAL{sf::milliseconds(1000.0 / GameEngine::FPS)};
@@ -17,6 +18,8 @@ GameEngine::GameEngine() : window{}, clock{}
     Player *player{new Player(
         10, 10, 10, sf::Vector2f{100.0, 100.0}, sf::Vector2f{100.0, 100.0}, "Player1", 0, 0, 0, 0)};
     Map::init(player);
+
+    Spawner spawner{Spawner(5.0, player)};
 
     sf::Texture *bgTexture = TextureManager::instance()->getTexture("grass.png");
     bgTexture->setRepeated(true);

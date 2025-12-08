@@ -44,69 +44,17 @@ void processMovementPE(sf::Sprite &figure1, sf::CircleShape &figure2)
 
     float len = std::sqrt(rikting_x * rikting_x + rikting_y + rikting_y);
 
-    /*
-    if(figure2.getPosition().x < figure1.getPosition().x)
-    {
-        //new_direction.x += 1;
-        new_direction.x += (figure1.getPosition().x / len);
-        //std::cout << "+x "<<new_direction.x<< std::endl;
-    }
-    if (figure2.getPosition().x > figure1.getPosition().x)
-    {
-        //new_direction.x -= 1;
-        new_direction.x -= (figure1.getPosition().x / len);
-        //std::cout << "-x "<<new_direction.x<< std::endl;
-    }
-    
-    if(figure2.getPosition().y < figure1.getPosition().y)
-    {
-        //new_direction.y += 1;
-        new_direction.y += (figure1.getPosition().y / len);
-        ///std::cout << "+y "<<new_direction.y<< std::endl;
-    }
-    if (figure2.getPosition().y > figure1.getPosition().y)
-    {
-        //new_direction.y -= 1;
-        new_direction.y -= (figure1.getPosition().y / len);
-        //std::cout << "-y "<<new_direction.y<< std::endl;
-    }
-
-    if(std::abs(new_direction.x) + std::abs(new_direction.y) > 1)
-    {
-        new_direction.x = new_direction.x / std::sqrt(2);
-        new_direction.y = new_direction.y / std::sqrt(2);     
-    }
-    */
-    //setDirection(new_position);
-   
-
  
     //normalize
-    
-    new_direction.x = (rikting_x / len);
-    new_direction.y = (rikting_y / len);
-
+    if(len != 0 and rikting_x != 0 and rikting_y != 0)
+    {
+        new_direction.x = (rikting_x / len);
+        new_direction.y = (rikting_y / len);
+    }
     figure2.move(sf::Vector2f(new_direction.x * SPEED, new_direction.y * SPEED));
     std::cout << "y "<<new_direction.x<< std::endl;
     std::cout << "x "<<new_direction.y<< std::endl;
 
-
-
-// y 0.70451 när upåt
-// x -0.0605438
-// y -0.70451 
-// x -0.0605438
-
-// y 0.202388 när neråt
-// x 0.677524
-// y -0.201847
-// x 0.677686
-
-// y 0.965648 till höger
-// x 0
-
-//y -0.112709 till vänster
-//x -0.698066
 
 
 }
