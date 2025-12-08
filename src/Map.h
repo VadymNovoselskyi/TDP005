@@ -9,7 +9,7 @@
 
 class Map
 {
-  public:
+  public: // singelton taget från vadyms kod
     static Map *instance();
     static Map *init(Player *player);
     static void deleteInstance();

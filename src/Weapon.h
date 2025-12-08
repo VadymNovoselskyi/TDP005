@@ -2,9 +2,9 @@
 #define WEAPON_H
 
 #include <SFML/Graphics.hpp>
-#include "Projectile.h"
-
 #include <string>
+
+#include "Projectile.h"
 
 enum Rarity
 {
@@ -18,13 +18,12 @@ enum Rarity
 class Weapon : public sf::Sprite::Transformable
 {
   public:
-    Weapon(std::string name,
-                     std::string description,
-                     double damage,
-                     double damageMultiplication,
-                     sf::Time attackSpeed,
-                     int lvls,
-                     Rarity rarity, double speed);
+    Weapon(std::string const &name,
+           std::string const &description,
+           double damage,
+           sf::Time const &attackSpeed,
+           Rarity rarity,
+           double speed);
     void shoot();
 
   protected:
@@ -34,11 +33,10 @@ class Weapon : public sf::Sprite::Transformable
     double damage;
     double damageMultiplication;
     sf::Time attackSpeed;
-    int lvls;
 
     Rarity rarity;
     void uppdate();
-    std::vector<Projectile*> bullets;
+    std::vector<Projectile *> bullets;
     double speed;
 };
 
