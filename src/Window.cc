@@ -9,33 +9,18 @@ int const Window::WINDOW_WIDTH{1024};
 int const Window::WINDOW_HEIGHT{768};
 std::string const Window::GAME_TITLE{"THE GAME"};
 
-Window::Window(std::vector<Menu *> const &menus, sf::Texture const *bgTexture)
+Window::Window(std::vector<Menu *> const &menus)
     : window{new sf::RenderWindow{sf::VideoMode(Window::WINDOW_WIDTH, Window::WINDOW_HEIGHT),
                                   Window::GAME_TITLE}},
-      windowClosed{false}, menus{menus}, bg{new sf::RectangleShape{}}
+      windowClosed{false}, menus{menus}
 {
-    bg->setSize({static_cast<float>(Window::WINDOW_WIDTH * 4),
-                 static_cast<float>(Window::WINDOW_HEIGHT * 4)});
-    bg->setOrigin({static_cast<float>(Window::WINDOW_WIDTH * 2),
-                   static_cast<float>(Window::WINDOW_HEIGHT * 2)});
-
-    bg->setTexture(bgTexture);
-
-    // You need to set the textureRect for the repeat on texture to work
-    // https://stackoverflow.com/questions/26517066/repeating-texture-to-fit-certain-size-in-sfml
-    bg->setTextureRect({Window::WINDOW_WIDTH * 2,
-                        Window::WINDOW_HEIGHT * 2,
-                        Window::WINDOW_WIDTH * 2,
-                        Window::WINDOW_HEIGHT * 2});
 }
 
 Window::~Window()
 {
     // std::cout << "Running the window destructor" << std::endl;
     delete window;
-    delete bg;
     window = nullptr;
-    bg = nullptr;
 
     for (auto menu : menus)
     {
@@ -68,7 +53,6 @@ void Window::handleEvents()
 void Window::draw()
 {
     window->clear();
-    // window->draw(*bg);
     TileManager::instance()->drawTiles(window);
 
     if (StateMachine::instance()->state() == GameState::IN_GAME)

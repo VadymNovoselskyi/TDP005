@@ -20,9 +20,6 @@ GameEngine::GameEngine() : window{}, clock{}
         10, 10, 10, sf::Vector2f{0.0, 0.0}, sf::Vector2f{0.0, 0.0}, "Player1", 0, 0, 0, 0)};
     Map::init(player, TileManager::instance()->getObstacles());
 
-    sf::Texture *bgTexture = TextureManager::instance()->getTexture("grass.png");
-    bgTexture->setRepeated(true);
-
     std::vector<Menu *> menus{};
 
     menus.push_back(new StartMenu());
@@ -31,7 +28,7 @@ GameEngine::GameEngine() : window{}, clock{}
     menus.push_back(new LevelUpMenu());
 
     // Init the menu and add exit listener
-    window = new Window(menus, bgTexture);
+    window = new Window(menus);
 
     // Should I do anything with STARTING_GAME and CONTINUING_GAME
     StateMachine::instance()->addListener("onStart",

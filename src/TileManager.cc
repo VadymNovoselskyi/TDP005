@@ -34,7 +34,7 @@ void TileManager::deleteInstance()
 }
 
 // Instance methods
-TileManager::TileManager(std::string const &tileMapPath) : tiles{}, obstacles{}
+TileManager::TileManager(std::string const &tileMapPath) : tiles{}, obstacles{}, columnCount{}, rowCount{}
 {
     generateTiles(tileMapPath);
 }
@@ -48,52 +48,12 @@ std::vector<Obstacle *> TileManager::getObstacles() const
 
 void TileManager::drawTiles(sf::RenderWindow *window) const
 {
-    // auto viewPortCenter = window->getView().getCenter();
-    // auto viewPortSize = window->getView().getSize();
-    // auto viewPortRect = sf::FloatRect{static_cast<float>(viewPortCenter.x - viewPortSize.x
-    // / 2.0),
-    //                                   static_cast<float>(viewPortCenter.y - viewPortSize.y
-    //                                   / 2.0), viewPortSize.x, viewPortSize.y};
-
-    // int renderedCount{0};
-    // for (auto tile : tiles)
-    // {
-    //     if (viewPortRect.intersects(tile.getGlobalBounds()))
-    //     {
-    //         window->draw(tile);
-    //         renderedCount++;
-    //     }
-    // }
-
     auto viewPortCenter = window->getView().getCenter();
     auto viewPortSize = window->getView().getSize();
     auto viewPortRect = sf::FloatRect{static_cast<float>(viewPortCenter.x - viewPortSize.x / 2.0),
                                       static_cast<float>(viewPortCenter.y - viewPortSize.y / 2.0),
                                       viewPortSize.x,
                                       viewPortSize.y};
-
-    // for (int column_idx{std::floor(viewPortRect.left / TILE_SIZE)};
-    //      column_idx < std::ceil((viewPortRect.left + viewPortRect.width) / TILE_SIZE);
-    //      column_idx++)
-    // {
-    //     if (column_idx < 0)
-    //     {
-    //         column_idx = 0;
-    //     }
-
-    //     for (int row_idx{std::floor(viewPortRect.top / TILE_SIZE)};
-    //          row_idx < std::ceil((viewPortRect.top + viewPortRect.height) / TILE_SIZE);
-    //          row_idx++)
-    //     {
-    //         if (row_idx < 0)
-    //         {
-    //             row_idx = 0;
-    //         }
-
-    //         window->draw(tiles.at(row_idx * columnCount + column_idx));
-    //         renderedCount++;
-    //     }
-    // }
 
     for (int column_idx{std::max(static_cast<int>(std::floor(viewPortRect.left / TILE_SIZE)), 0)};
          column_idx <
