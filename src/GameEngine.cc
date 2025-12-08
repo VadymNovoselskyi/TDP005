@@ -17,7 +17,7 @@ GameEngine::GameEngine() : window{}, clock{}
     TileManager::init("static/tileMap.txt");
 
     Player *player{new Player(
-        10, 10, 10, sf::Vector2f{0.0, 0.0}, sf::Vector2f{0.0, 0.0}, "Player1", 0, 0, 0, 0)};
+        10.0, 10.0, 10, sf::Vector2f{0.0, 0.0}, sf::Vector2f{0.0, 0.0}, "Player1", 0, 0)};
     Map::init(player, TileManager::instance()->getObstacles());
 
     std::vector<Menu *> menus{};

@@ -4,61 +4,72 @@
 #include <vector>
 
 #include "Character.h"
+#include "LevelUPManager.h"
 #include "GameState.h"
 #include "StateMachine.h"
 
-enum Choises // levelup choise
+
+enum Directions
 {
-    HP,
-    SPEED,
-    DAMAGE,
-    WEAPON
+  NORTH = -1,
+  SOUTH = 1,
+  EAST = -1,
+  WEST = 1
+};
+
+enum Rotations
+{
+  UP = 0,
+  LEFT = -90,
+  DOWN = 180,
+  RIGHT = 90 
 };
 
 class Player : public Character
 {
   public:
-    Player(float maxHP,
-           float currentHP,
+
+    Player(double maxHP,
+           double currentHp,
            int movementSpeed,
            sf::Vector2f const &positon,
            sf::Vector2f const &direction,
            std::string const &name,
-           int xp,
-           int maxXP,
            int levels,
            float damageMultiplier);
+          
+    // void levelUP(Choises choise);
 
-    void setXP(int xp);
-    void levelUP(Choises choise);
-
-    void draw(sf::RenderWindow *window) const override;
-    void drawInfo(float boxPosX, float boxPosY, float boxWidth, float boxheight) const;
-
+    void drawInfo(sf::RenderWindow *window) const;
+    
+    void draw(sf::RenderWindow *window) const;
 
     void move() override;
     void die() override;
 
     void onCollision(std::string const &other /*otehr = other.tag*/) override;
 
-  private:
-    void
-    drawBox(float boxPosX, float boxPosY, float boxWidth, float boxheight, int r, int g, int b) const; 
+    protected:
+    double maxHP;
+    double currentHP;
+    std::string name;
+    float rotation;
 
-    float maxHP;
-
-    std::string name{};
-    float rotation{};
-    int xp;
-    int maxXP;
-    float currentHP;
     int levels;
-
     float damageMultiplier;
-    float boxWidth;
-    float boxHeight;
 
+    private:
+    void drawBox(sf::RenderWindow *window, sf::RectangleShape box, float boxPosX, float boxPosY, float boxWidth, float boxheight, int r, int g, int b);
     sf::Texture const *texture;
+    //create box for xp and hp
+    sf::RectangleShape HPBox;
+    sf::RectangleShape CurrentHPBox;
+    
+    sf::RectangleShape XPBox;
+    sf::RectangleShape CurrentXPBox;
+    
+
+
 };
 
 #endif /*PLAYER_H*/
