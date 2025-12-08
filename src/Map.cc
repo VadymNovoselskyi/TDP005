@@ -17,9 +17,9 @@ Map *Map::instance()
     return Map::instancePtr;
 }
 
-Map *Map::init(Player *player)
+Map *Map::init(Player *player, std::vector<Obstacle *> const &obstacles)
 {
-    Map::instancePtr = new Map(player);
+    Map::instancePtr = new Map(player, obstacles);
     return Map::instancePtr;
 }
 
@@ -76,13 +76,17 @@ void Map::removeEntity(Entity *e)
         entities.end());
 }
 
-Map::Map(Player *player)
+Map::Map(Player *player, std::vector<Obstacle *> const &obstacles)
     : view{new sf::View{
           {static_cast<float>(Window::WINDOW_WIDTH) / 2,
            static_cast<float>(Window::WINDOW_HEIGHT) / 2},
           {static_cast<float>(Window::WINDOW_WIDTH), static_cast<float>(Window::WINDOW_HEIGHT)}}},
       player{player}, entities{}
 {
+    for (Obstacle *obstacle : obstacles)
+    {
+        entities.push_back(obstacle);
+    }
 }
 
 Map::~Map()

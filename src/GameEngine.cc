@@ -4,6 +4,7 @@
 
 #include "Menus.h"
 #include "TextureManager.h"
+#include "TileManager.h"
 
 int const GameEngine::FPS{60};
 sf::Time const GameEngine::UPDATE_INTERVAL{sf::milliseconds(1000.0 / GameEngine::FPS)};
@@ -13,10 +14,11 @@ GameEngine::GameEngine() : window{}, clock{}
     // Init the StateMachine, TextureManager, Map and the menus
     StateMachine::init();
     TextureManager::init();
+    TileManager::init("static/tileMap.txt");
 
     Player *player{new Player(
         10, 10, 10, sf::Vector2f{100.0, 100.0}, sf::Vector2f{100.0, 100.0}, "Player1", 0, 0, 0, 0)};
-    Map::init(player);
+    Map::init(player, TileManager::instance()->getObstacles());
 
     sf::Texture *bgTexture = TextureManager::instance()->getTexture("grass.png");
     bgTexture->setRepeated(true);
