@@ -10,7 +10,7 @@
 
 class Map
 {
-  public:
+  public: // singelton taget från vadyms kod
     static Map *instance();
     static Map *init(Player *player, std::vector<Obstacle *> const &obstacles);
     static void deleteInstance();

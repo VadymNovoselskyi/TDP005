@@ -5,6 +5,7 @@
 #include "Menus.h"
 #include "TextureManager.h"
 #include "TileManager.h"
+#include "WeaponManager.h"
 
 int const GameEngine::FPS{60};
 sf::Time const GameEngine::UPDATE_INTERVAL{sf::milliseconds(1000.0 / GameEngine::FPS)};
@@ -15,6 +16,7 @@ GameEngine::GameEngine() : window{}, clock{}
     StateMachine::init();
     TextureManager::init();
     TileManager::init("static/tileMap.txt");
+    WeaponManager::init();
 
     Player *player{new Player(
         10.0, 10.0, 10, sf::Vector2f{0.0, 0.0}, sf::Vector2f{0.0, 0.0}, "Player1", 0, 0)};
@@ -57,6 +59,7 @@ GameEngine::GameEngine() : window{}, clock{}
                                           });
 
     Map::instance()->addEntity(player);
+    WeaponManager::instance()->getWeapon("AR");
 }
 
 GameEngine::~GameEngine()

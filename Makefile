@@ -2,10 +2,9 @@ CXX = g++
 CXXFLAGS = -g -std=c++17 -Wall -Wextra -MMD -MP
 LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
 
-OBJ = build/main.o build/GameEngine.o build/StateMachine.o build/Window.o build/Map.o build/Menu.o build/Menus.o build/Projectile.o build/Weapon.o build/TextureManager.o build/Entity.o build/Character.o build/Player.o build/TileManager.o build/Obstacle.o
+OBJ = build/main.o build/GameEngine.o build/StateMachine.o build/Window.o build/Map.o build/Menu.o build/Menus.o build/Projectile.o build/Weapon.o build/TextureManager.o build/Entity.o build/Character.o build/Player.o build/WeaponManager.o build/AssaultRifleWeapon.o build/TileManager.o build/Obstacle.o
 
 DEPS = $(OBJ:.o=.d)
-
 game: $(OBJ)
 	$(CXX) $(OBJ) $(LDFLAGS) -o $@
 
@@ -62,6 +61,11 @@ build/Obstacle.o: src/Obstacle.cc
 build/Entity.o: src/Entity.cc
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+build/AssaultRifleWeapon.o: src/AssaultRifleWeapon.cc
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+build/WeaponManager.o: src/WeaponManager.cc
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 -include $(DEPS)
 
