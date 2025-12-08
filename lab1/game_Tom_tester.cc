@@ -42,20 +42,16 @@ void processMovementPE(sf::Sprite &figure1, sf::CircleShape &figure2)
     float rikting_y = figure1.getPosition().y - figure2.getPosition().y;
 
 
-    float len = std::sqrt(rikting_x * rikting_x + rikting_y + rikting_y);
+    float len = std::sqrt(rikting_x * rikting_x + rikting_y * rikting_y);
 
  
     //normalize
-    if(len != 0 and rikting_x != 0 and rikting_y != 0)
+    if(len != 0)
     {
         new_direction.x = (rikting_x / len);
         new_direction.y = (rikting_y / len);
     }
     figure2.move(sf::Vector2f(new_direction.x * SPEED, new_direction.y * SPEED));
-    std::cout << "y "<<new_direction.x<< std::endl;
-    std::cout << "x "<<new_direction.y<< std::endl;
-
-
 
 }
 

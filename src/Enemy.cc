@@ -11,7 +11,13 @@ Enemy::Enemy(/*Charactar*/  double maxHP, double currentHp, int movementSpeed, s
 
 Footman::Footman(/*Charactar*/ double maxHP, double currentHp, int movementSpeed, sf::Vector2f positon, sf::Vector2f direction,
         int attackRange, int attackSpeed, int XP_DROP, double damage, int score, Player* player)
-            :Enemy(maxHP, currentHp, movementSpeed, positon, direction, attackRange, attackSpeed, XP_DROP, damage, score, player){}
+            :Enemy(maxHP, currentHp, movementSpeed, positon, direction, attackRange, attackSpeed, XP_DROP, damage, score, player),
+            texture{TextureManager::instance()->getTexture("enemy.png")}        
+{
+    auto playerSize{texture->getSize()};
+    sf::Sprite::setTexture(*texture);
+    sf::Sprite::setOrigin(playerSize.x / 2.0, playerSize.y / 2.0);
+}
 
 // Archer::Archer(/*Charactar*/  double maxHP, double currentHp, int movementSpeed, Point positon, Point direction,
 //             /*Enemy*/int attackRange, int attackSpeed, int XP_DROP, double damage, int score)
@@ -39,7 +45,7 @@ void Enemy::draw(sf::RenderWindow *window) const
 { 
 
     window->draw(*this);
-    
+    std::cout<<"inne i draw"<<std::endl;
 }
 
 
@@ -52,6 +58,8 @@ void Enemy::move()
     double const SPEED{5};
     direction.x = 0;
     direction.y = 0;
+    std::cout<<"enemy x "<<figure2.x<<std::endl;
+    std::cout<<"enemy y "<<figure2.y<<std::endl;
 
     //Point player {figure1.getPosition()};
     //Point enemy  {figure2.getPosition()};
@@ -59,12 +67,15 @@ void Enemy::move()
     float rikting_y = figure1.y - figure2.y;
 
 
-    float len = std::sqrt(rikting_x * rikting_x + rikting_y + rikting_y);
-    direction.x = (rikting_x / len);
-    direction.y = (rikting_y / len);
-
+    float len = std::sqrt(rikting_x * rikting_x + rikting_y * rikting_y);
+    if(len != 0)
+    {
+        direction.x = (rikting_x / len);
+        direction.y = (rikting_y / len);
+    }
     
     sf::Sprite::move(direction.x * SPEED, direction.y * SPEED);
+    std::cout<<"inne i move"<<std::endl;
 }
 
 std::string Enemy::getTag()

@@ -50,8 +50,8 @@ void Map::draw(sf::RenderWindow *window) const
     // std::cout << "Rendering the player" << std::endl;
     view->setCenter(player->getPosition());
     window->setView(*view);
-    player->draw(window);
     for_each(entities.begin(), entities.end(), [window](Entity *e) { e->draw(window);});
+    player->draw(window);
 }
 
 void Map::addEntity(Entity *e)

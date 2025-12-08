@@ -44,6 +44,9 @@ class Footman :public Enemy
         Footman(/*Charactar*/  double maxHP, double currentHp, int movementSpeed, sf::Vector2f positon, sf::Vector2f direction,
            /*Enemy*/ int attackRange, int attackSpeed, int XP_DROP, double damage, int score, Player* player);
         void attack() override;
+
+    private:
+        sf::Texture const *texture;
         
 };
 
