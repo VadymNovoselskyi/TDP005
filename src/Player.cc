@@ -16,20 +16,18 @@ sf::Color const Player::CURRENT_XP_BOX_COLOR{76, 154, 42};
 float static const START_HP = 100;
 
 Player::Player(double startHP,
-               int movementSpeed, 
+               int movementSpeed,
                sf::Vector2f const &position,
                std::string const &tag,
                int levels,
                double damageMultiplier)
-    : Character(tag, startHP, movementSpeed, position),
+    : Character(tag, startHP, movementSpeed, position), maxHP{startHP}, hp{startHP}, rotation{},
       levels{levels}, damageMultiplier{damageMultiplier}, oldPosition{position},
       texture{TextureManager::instance()->getTexture("player.png")}
 {
     auto playerSize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
     sf::Sprite::setOrigin(playerSize.x / 2.0, playerSize.y / 2.0);
-    hp = startHP;
-    maxHP = startHP;
 }
 
 void Player::move()
@@ -41,22 +39,18 @@ void Player::move()
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
     {
         direction.y = Direction::NORTH;
-
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
     {
         direction.x = Direction::EAST;
-
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
     {
         direction.y = Direction::SOUTH;
-
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
     {
         direction.x = Direction::WEST;
-
     }
     if (std::abs(direction.x) + std::abs(direction.y) > 1)
     {
@@ -98,7 +92,7 @@ void Player::heal(double amount)
 }
 void Player::increaseMaxHP(double amount)
 {
-    maxHP +=amount;
+    maxHP += amount;
 }
 void Player::increaseSpeed(int amount)
 {
@@ -111,7 +105,7 @@ void Player::increaseDamageMultiplyer(double amount)
 
 void Player::die()
 {
-    //reset xp, hp ,damage 
+    // reset xp, hp ,damage
     StateMachine::instance()->finishGame();
 }
 
@@ -123,34 +117,33 @@ void Player::draw(sf::RenderWindow *window)
 
 void Player::drawInfo(sf::RenderWindow *window)
 {
-
     drawBox(window, // hp boxbackground -- fixa static const för ofset, fixa sf
             HPBox,
-            sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2) + BOX_OFFSET,  // x
-            sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2) + BOX_OFFSET, // y
-            150,                                                                    // lenght
-            35,                                                                     // widht
-            HP_BOX_COLOR);                                                          // color
+            sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2.0) + BOX_OFFSET,  // x
+            sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2.0) + BOX_OFFSET, // y
+            150,                                                                      // lenght
+            35,                                                                       // widht
+            HP_BOX_COLOR);                                                            // color
     drawBox(window,
             currentHPBox,
-            sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2) + BOX_OFFSET,
-            sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2) + BOX_OFFSET,
+            sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2.0) + BOX_OFFSET,
+            sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2.0) + BOX_OFFSET,
             150 * (hp / maxHP),
             35,
             CURRENT_HP_BOX_COLLOR); // curent hp
 
     drawBox(window,
             xpBox,
-            sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2) + BOX_OFFSET,
-            sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2) + XP_BOX_Y_OFFSET,
+            sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2.0) + BOX_OFFSET,
+            sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2.0) + XP_BOX_Y_OFFSET,
             150,
             35,
             XP_BOX_COLOR); // xp background
 
     drawBox(window,
             currentXPBox,
-            sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2) + BOX_OFFSET,
-            sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2) + XP_BOX_Y_OFFSET,
+            sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2.0) + BOX_OFFSET,
+            sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2.0) + XP_BOX_Y_OFFSET,
             0.1,
             35,
             CURRENT_XP_BOX_COLOR);

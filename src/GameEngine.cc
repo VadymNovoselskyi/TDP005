@@ -3,10 +3,10 @@
 #include <iostream>
 
 #include "Menus.h"
+#include "Spawner.h"
 #include "TextureManager.h"
 #include "TileManager.h"
 #include "WeaponManager.h"
-#include "Spawner.h"
 
 int const GameEngine::FPS{60};
 sf::Time const GameEngine::UPDATE_INTERVAL{sf::milliseconds(1000.0 / GameEngine::FPS)};
@@ -20,13 +20,11 @@ GameEngine::GameEngine() : window{}, clock{}
     WeaponManager::init();
 
     auto mapDimensions{TileManager::instance()->getMapDimensions()};
-    Player *player{new Player(10.0,
-                              10.0,
+    Player *player{new Player(100.0,
                               10,
                               sf::Vector2f{static_cast<float>(mapDimensions.x / 2.0),
                                            static_cast<float>(mapDimensions.y / 2.0)},
-                              sf::Vector2f{0.0, 0.0},
-                              "Player1",
+                              "Player",
                               0,
                               0)};
     Map::init(player, TileManager::instance()->getObstacles());

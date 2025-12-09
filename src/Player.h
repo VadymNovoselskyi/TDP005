@@ -4,8 +4,8 @@
 #include <vector>
 
 #include "Character.h"
-#include "GameState.h"
 #include "ExperienceManager.h"
+#include "GameState.h"
 #include "StateMachine.h"
 
 enum Direction
@@ -31,9 +31,9 @@ class Player : public Character
 
     void draw(sf::RenderWindow *window);
 
-    void move();
+    void move() override;
     void updateRotation(sf::RenderWindow *window);
-    
+
     void heal(double amount);
     void increaseMaxHP(double amount);
     void increaseSpeed(int amount);
@@ -42,11 +42,7 @@ class Player : public Character
 
     void onCollision(std::string const &other) override;
 
-
-
   private:
-    double  startHP;
-
     double maxHP;
     double hp;
     float rotation;
@@ -63,7 +59,7 @@ class Player : public Character
                  sf::Color boxColor);
 
     sf::Texture const *texture;
-    
+
     // create box for xp and hp
     sf::RectangleShape HPBox; // background box to show how much hp a player has lost
     sf::RectangleShape
