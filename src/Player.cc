@@ -65,7 +65,15 @@ void Player::move()
     } //
 
     sf::Sprite::move(sf::Vector2f(direction.x * movementSpeed, direction.y * movementSpeed));
+    weaponManager->setWeaponsPos(sf::Sprite::getPosition());
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::T))
+    {
+        std::cout << "Shooting" << std::endl;
+        weaponManager->shoot();
+    }
 }
+
 void Player::updateRotation(sf::RenderWindow *window)
 {
     // kollade upp om det fans någon atan funktion och hittad:
@@ -78,13 +86,7 @@ void Player::updateRotation(sf::RenderWindow *window)
     rotation = rotationRadians * (180 / M_PI) + 90; // transform radians to rtoation
 
     sf::Sprite::setRotation(rotation);
-    weaponManager->setWeaponsPos(sf::Sprite::getPosition());
     weaponManager->setWeaponsRotation(sf::Sprite::getRotation());
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::T))
-    {
-        weaponManager->shoot();
-    }
 }
 
 void Player::gainXp(int xp)

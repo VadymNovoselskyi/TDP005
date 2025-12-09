@@ -2,12 +2,10 @@
 #define WEAPON_H
 
 #include <SFML/Graphics.hpp>
+#include <cmath>
 #include <string>
 
 #include "Projectile.h"
-#include "Map.h"
-
-#include <cmath>
 
 enum Rarity
 {

@@ -30,15 +30,15 @@ void WeaponManager::setWeaponsPos(sf::Vector2f const &pos)
 {
     for (Weapon *w : activeWeapons)
     {
-        w -> setPosition(pos.x, pos.y);
+        w->setPosition(pos.x, pos.y);
     }
 }
 
 void WeaponManager::setWeaponsRotation(double rotaiton)
 {
-    for (Weapon* w : activWeapons)
+    for (Weapon *w : activeWeapons)
     {
-        w -> setRotation(rotaiton);
+        w->setRotation(rotaiton);
     }
 }
 

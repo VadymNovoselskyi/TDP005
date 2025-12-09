@@ -1,5 +1,8 @@
 #include "Weapon.h"
+
 #include <iostream>
+
+#include "Map.h"
 
 Weapon::Weapon(std::string const &name,
                std::string const &description,
@@ -14,7 +17,10 @@ Weapon::Weapon(std::string const &name,
 
 void Weapon::shoot()
 {
-    Map::instance() -> addEntity(new Projectile{Transformable::getPosition(), Transformable::getRotation() , speed, damage * damageMultiplication});
+    Map::instance()->addEntity(new Projectile{Transformable::getPosition(),
+                                              Transformable::getRotation(),
+                                              speed,
+                                              damage * damageMultiplication});
 }
 
 std::string Weapon::getName()

@@ -15,7 +15,7 @@ class Spawner
     sf::Vector2f choseSpawnPos();
 
   private:
-    double incresSpawnRate();
+    double increaseSpawnRate();
     double spawnRate;
     int counter;
     sf::Vector2f spwanPoint;

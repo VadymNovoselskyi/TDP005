@@ -24,7 +24,8 @@ sf::Vector2f Spawner::choseSpawnPos()
     int const random_x = std::rand();
     int const random_y = std::rand();
 }
-double Spawner::incresSpawnRate()
+
+double Spawner::increaseSpawnRate()
 {
     spawnRate *= 0.8;
 }
