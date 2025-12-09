@@ -34,7 +34,8 @@ class Player : public Character
            sf::Vector2f const &direction,
            std::string const &name,
            int levels,
-           float damageMultiplier);
+           float damageMultiplier,
+           sf::Vector2f oldPosition);
 
     // void levelUP(Choises choise);
 
@@ -47,33 +48,38 @@ class Player : public Character
     void die() override;
 
     void onCollision(std::string const &other /*otehr = other.tag*/) override;
-
-  protected:
+    
+  private:
     double maxHP;
     double currentHP;
     std::string name;
     float rotation;
-
     int levels;
     float damageMultiplier;
+    sf::Vector2f oldPosition;
 
-  private:
     void drawBox(sf::RenderWindow *window,
                  sf::RectangleShape box,
                  float boxPosX,
                  float boxPosY,
                  float boxWidth,
                  float boxheight,
-                 int r,
-                 int g,
-                 int b);
+                 sf::Color boxColor);
+    
     sf::Texture const *texture;
     // create box for xp and hp
-    sf::RectangleShape HPBox;
-    sf::RectangleShape CurrentHPBox;
+    sf::RectangleShape HPBox; // background box to show how much hp a player has lost
+    sf::RectangleShape currentHPBox; // shows the current hp lenght changes on % left of currenthp / maxhp
 
-    sf::RectangleShape XPBox;
-    sf::RectangleShape CurrentXPBox;
+    sf::RectangleShape xpBox; //background box to show how much xp is left until next level
+    sf::RectangleShape currentXPBox; // shows the current xp lengt changs on the % left of xp / maxXP to next level
+    
+    sf::Color static const CURRENT_HP_BOX_COLLOR; // lighter red to show current hp
+    sf::Color static const HP_BOX_COLOR; // darker red to show max hp
+    sf::Color static const CURRENT_XP_BOX_COLOR;
+    sf::Color static const XP_BOX_COLOR;
+    float static const BOX_OFFSET; //a set offset to be 18 pixles away from screen top left corner used by both xp and hp
+    float static const XP_BOX_Y_OFFSET;  // a set offset by 78 for the xp box to be set under the hp box
 
 };
 

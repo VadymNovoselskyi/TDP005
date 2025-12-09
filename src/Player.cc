@@ -6,6 +6,13 @@
 #include "TextureManager.h"
 #include "Window.h"
 
+float  const Player::BOX_OFFSET{18};
+float  const Player::XP_BOX_Y_OFFSET{78};
+sf::Color  const Player::HP_BOX_COLOR{204, 0, 0};
+sf::Color  const Player::CURRENT_HP_BOX_COLLOR{128, 0, 0};
+sf::Color  const Player::XP_BOX_COLOR{118, 186, 27};
+sf::Color  const Player::CURRENT_XP_BOX_COLOR{76, 154, 42};
+
 Player::Player(double maxHP,
                double currentHP,
                int movementSpeed,
@@ -13,9 +20,10 @@ Player::Player(double maxHP,
                sf::Vector2f const &direction,
                std::string const &name,
                int levels,
-               float damageMultiplier)
+               float damageMultiplier,
+            sf::Vector2f oldPosition)
     : Character("player", maxHP, currentHP, movementSpeed, position, direction), name{name},
-      levels{levels}, damageMultiplier{damageMultiplier},
+      levels{levels}, damageMultiplier{damageMultiplier},oldPosition{position},
       texture{TextureManager::instance()->getTexture("player.png")}
 {
     auto playerSize{texture->getSize()};
@@ -27,6 +35,7 @@ void Player::move()
 {
     direction.x = 0;
     direction.y = 0;
+    oldPosition = sf::Sprite::getPosition();
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
     {
         direction.y = NORTH;
@@ -52,29 +61,7 @@ void Player::move()
         direction.x = direction.x / std::sqrt(2);
         direction.y = direction.y / std::sqrt(2);
 
-        // matematic explination:
-        // https://www.matteboken.se/lektioner/gymnasiet/matte-fortsattning-niva-2/trigonometri/radianer#!/
-        // used to check calculation with degrees
-
-        // if (direction.y >= 0) // down
-        // {
-        //     // multiplying by (180/PI)to convert radian to degrees and subtract to flip rotation.
-        //     rotation = 180.f - std::asin(direction.x) * (180.f / M_PI);
-        // }
-        // else // up
-        // {
-        //     rotation = std::asin(direction.x) * (180.f / M_PI);
-        // }
-
     } //
-      // - fixa rotaiton utifrån mus
-    //     rotation = acos((sf::Mouse::getPosition().x - position.x) /
-    //                       sqrt(pow(sf::Mouse::getPosition().x - position.x, 2) +
-    //                            pow(sf::Mouse::getPosition().y - position.y, 2)))
-    //                      * 180.f / 3.14159265f;
-
-    // if (sf::Mouse::getPosition().y - position.y < 0)
-    //     rotation = 360.f - rotation;
 
     sf::Sprite::move(sf::Vector2f(direction.x * movementSpeed, direction.y * movementSpeed));
 }
@@ -94,9 +81,14 @@ void Player::uppdateRotation(sf::RenderWindow *window)
 
 void Player::onCollision(std::string const &other)
 {
-    if (other == "enemy")
-    {
-    }
+    // if (other == "enemy")
+    // {
+        
+    // }
+    // if(other == "box")
+    // {
+
+    // }
 }
 
 void Player::die()
@@ -116,50 +108,35 @@ void Player::drawInfo(sf::RenderWindow *window)
     //  -fixa position utifrån kamera
     drawBox(window, // hp boxbackground -- fixa static const för ofset, fixa sf
             HPBox,
-            sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2) + 18,  // x
-            sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2) + 18, // y
-            150,                                                            // lenght
-            35,                                                             // widht
-            128,                                                            // r
-            0,                                                              // g
-            0);                                                             // b
+            sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2) + BOX_OFFSET,  // x
+            sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2) + BOX_OFFSET, // y
+            150,                                                                    // lenght
+            35,                                                                     // widht
+            HP_BOX_COLOR);                                                                     // b
     drawBox(window,
-            CurrentHPBox,
-            sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2) + 18,
-            sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2) + 18,
+            currentHPBox,
+            sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2) + BOX_OFFSET,
+            sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2) + BOX_OFFSET,
             150 * (currentHP / maxHP),
             35,
-            204,
-            0,
-            0); // curent hp
+            CURRENT_HP_BOX_COLLOR); // curent hp
 
     drawBox(window,
-            XPBox,
-            sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2) + 18,
-            sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2) + 78,
+            xpBox,
+            sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2) + BOX_OFFSET,
+            sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2) + XP_BOX_Y_OFFSET,
             150,
             35,
-            76,
-            154,
-            42); // xp background
-    // if (xp < 0)
-    // { //TODO: add method to get current procentage of xp
-    //     drawBox(window, CurrentXPBox,sf::Sprite::getPosition().x +120,
-    //     sf::Sprite::getPosition().y - 120, 150 * (1 / 0.5), 50, 118, 186 ,27 ); // current xp
-    // }
-    // else
-    // {
+            XP_BOX_COLOR); // xp background
+
     drawBox(window,
-            CurrentXPBox,
-            sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2) + 18,
-            sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2) + 78,
+            currentXPBox,
+            sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2) + BOX_OFFSET,
+            sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2) + XP_BOX_Y_OFFSET,
             0.1,
             35,
-            118,
-            186,
-            27);
-    // current xp
-    //}
+            CURRENT_XP_BOX_COLOR);
+    // current xp -- if sats om xp 0 = 0 - sätt längd 0 annars räkna ut
 }
 
 void Player::drawBox(sf::RenderWindow *window,
@@ -168,33 +145,12 @@ void Player::drawBox(sf::RenderWindow *window,
                      float boxPosY,
                      float boxWidth,
                      float boxheight,
-                     int r,
-                     int g,
-                     int b)
+                     sf::Color boxColor)
 
 {
     box.setSize(sf::Vector2f(boxWidth, boxheight));
-    box.setFillColor(sf::Color(r, g, b));
+    box.setFillColor(boxColor);
     box.setPosition(boxPosX, boxPosY);
     window->draw(box);
-    
 }
 
-// void Player::levelUP(Choises choise) // skapa levelup manager
-// {
-//     switch (choise)
-//     {
-//     case HP: // hp
-//         maxHP += 50;
-//         break;
-//     case SPEED: // speed
-//         movementSpeed += 5;
-//         break;
-
-//     case DAMAGE: // damage
-//         damageMultiplier += 0.5;
-//     case WEAPON: // weapon
-
-//         break;
-//     }
-// }
