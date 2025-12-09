@@ -4,6 +4,7 @@
 enum GameState
 {
     IN_START_MENU,
+    CHOOSING_USERNAME,
     STARTING_GAME,
     CONTINUING_GAME,
     IN_GAME,

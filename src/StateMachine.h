@@ -20,6 +20,7 @@ class StateMachine
     [[nodiscard]] GameState state() const;
 
     void openStartMenu();
+    void chooseUsername();
     void startGame();
     void setInGame();
     void pauseGame();

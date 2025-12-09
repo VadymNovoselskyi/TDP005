@@ -33,6 +33,7 @@ GameEngine::GameEngine() : window{}, clock{}
     std::vector<Menu *> menus{};
 
     menus.push_back(new StartMenu());
+    menus.push_back(new ChooseNameMenu());
     menus.push_back(new PauseMenu());
     menus.push_back(new GameOverMenu());
     menus.push_back(new LevelUpMenu());

@@ -60,12 +60,23 @@ void StateMachine::openStartMenu()
     setState(GameState::IN_START_MENU);
 }
 
+void StateMachine::chooseUsername()
+{
+    // std::cout << "Choosing the name from" << currentState << std::endl;
+    if (currentState != GameState::IN_START_MENU)
+    {
+        throw std::logic_error("Can choose the name only from the start menu");
+    }
+    setState(GameState::CHOOSING_USERNAME);
+}
+
 void StateMachine::startGame()
 {
     // std::cout << "Starting the game from " << currentState << std::endl;
-    if (currentState != GameState::IN_START_MENU && currentState != GameState::GAME_OVER)
+    if (currentState != GameState::IN_START_MENU && currentState != GameState::GAME_OVER &&
+        currentState != GameState::CHOOSING_USERNAME)
     {
-        throw std::logic_error("Can start the game only if in the main menu or the game is over");
+        throw std::logic_error("Can start the game only if in the main menu, choosing name or the game is over");
     }
     setState(GameState::STARTING_GAME);
 }

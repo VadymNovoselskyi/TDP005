@@ -52,6 +52,7 @@ void Window::handleEvents()
 }
 
 void Window::draw()
+
 {
     window->clear();
     TileManager::instance()->drawTiles(window);
