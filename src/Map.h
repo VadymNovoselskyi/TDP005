@@ -19,7 +19,7 @@ class Map
 
     void addEntity(Entity *e);
     void removeEntity(Entity *e);
-
+    int size();
   private:
     Map(Player *player);
     ~Map();

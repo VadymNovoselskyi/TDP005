@@ -59,6 +59,8 @@ GameEngine::GameEngine() : window{}, clock{}
 
     Map::instance()->addEntity(player);
     WeaponManager::instance()->getWeapon("AR");
+    WeaponManager::instance()->shoot();
+    std::cout << Map::instance()->size() << std::endl;
 }
 
 GameEngine::~GameEngine()

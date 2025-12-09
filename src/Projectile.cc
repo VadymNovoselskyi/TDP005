@@ -1,7 +1,7 @@
 #include "Projectile.h"
 
 Projectile::Projectile(sf::Vector2f pos, double velocity, double damage)
-    :Entity(std::string{"projectile"}, pos), velocity{velocity}, damage{damage}, texture{TextureManager::instance()->getTexture("fighter.png")}
+    :Entity(std::string{"projectile"}, pos), velocity{velocity}, damage{damage}, texture{TextureManager::instance()->getTexture("AR_bullet.png")}
 {
     sf::Sprite::setTexture(*texture);
 }

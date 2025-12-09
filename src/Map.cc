@@ -65,6 +65,11 @@ void Map::removeEntity(Entity *e)
         std::remove_if(entities.begin(), entities.end(), [e](Entity *e1) { return e == e1; }));
 }
 
+int Map::size()
+{
+    return entities.size();
+}
+
 Map::Map(Player *player)
     : view{new sf::View{
           {static_cast<float>(Window::WINDOW_WIDTH) / 2,

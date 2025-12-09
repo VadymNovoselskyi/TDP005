@@ -5,6 +5,7 @@
 #include <string>
 
 #include "Projectile.h"
+#include "Map.h"
 
 enum Rarity
 {
@@ -37,7 +38,6 @@ class Weapon : public sf::Sprite::Transformable
 
     Rarity rarity;
     void uppdate();
-    std::vector<Projectile *> bullets;
     double speed;
 };
 
