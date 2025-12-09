@@ -17,9 +17,9 @@ Map *Map::instance()
     return Map::instancePtr;
 }
 
-Map *Map::init(Player *player)
+Map *Map::init(Player *player, std::vector<Obstacle *> const &obstacles)
 {
-    Map::instancePtr = new Map(player);
+    Map::instancePtr = new Map(player, obstacles);
     return Map::instancePtr;
 }
 
@@ -32,17 +32,24 @@ void Map::deleteInstance()
 
 void Map::handelUpdate()
 {
-    for_each(entities.begin(), entities.end(), [](Entity *e) { e->move();});
-    
-    
-    // for (auto it1{entities.begin()}; it1 != entities.end(); ++it1)    // de som är i loopen är
-    // tagen från tdp004 https://www.ida.liu.se/~TDP004/current/sal/slides/tdp004_9.pdf s.20
-    // {
-    //     for (auto it2{it1  + 1}; it2 != entities.end(); ++it2)
-    //     {
+    for (Entity *e : entities)
+    {
+        e->move();
+    }
 
-    //     }
-    // }
+    // TODO: watching walls and gas is too expensive, come up with other ways to do it
+    for (auto it1{entities.begin()}; it1 != entities.end(); ++it1) // de som är i loopen är
+    // tagen från tdp004 https://www.ida.liu.se/~TDP004/current/sal/slides/tdp004_9.pdf s.20
+    {
+        for (auto it2{it1 + 1}; it2 != entities.end(); ++it2)
+        {
+            if ((*it1)->getGlobalBounds().intersects((*it2)->getGlobalBounds()))
+            {
+                (*it1)->onCollision((*it2)->getTag());
+                (*it2)->onCollision((*it1)->getTag());
+            }
+        }
+    }
 }
 
 void Map::draw(sf::RenderWindow *window) const
@@ -50,8 +57,12 @@ void Map::draw(sf::RenderWindow *window) const
     // std::cout << "Rendering the player" << std::endl;
     view->setCenter(player->getPosition());
     window->setView(*view);
+
+    for (Entity *e : entities)
+    {
+        e->draw(window);
+    }
     player->draw(window);
-    for_each(entities.begin(), entities.end(), [window](Entity *e) { e->draw(window);});
 }
 
 void Map::addEntity(Entity *e)
@@ -62,7 +73,8 @@ void Map::addEntity(Entity *e)
 void Map::removeEntity(Entity *e)
 {
     entities.erase(
-        std::remove_if(entities.begin(), entities.end(), [e](Entity *e1) { return e == e1; }));
+        std::remove_if(entities.begin(), entities.end(), [e](Entity *e1) { return e == e1; }),
+        entities.end());
 }
 
 int Map::size()
@@ -70,20 +82,26 @@ int Map::size()
     return entities.size();
 }
 
-Map::Map(Player *player)
+Map::Map(Player *player, std::vector<Obstacle *> const &obstacles)
     : view{new sf::View{
           {static_cast<float>(Window::WINDOW_WIDTH) / 2,
            static_cast<float>(Window::WINDOW_HEIGHT) / 2},
           {static_cast<float>(Window::WINDOW_WIDTH), static_cast<float>(Window::WINDOW_HEIGHT)}}},
       player{player}, entities{}
 {
+    for (Obstacle *obstacle : obstacles)
+    {
+        entities.push_back(obstacle);
+    }
 }
 
 Map::~Map()
 {
     // std::cout << "Running the window destructor" << std::endl;
     delete player;
+    delete view;
     player = nullptr;
+    view = nullptr;
 
     for (Entity *e : entities)
     {

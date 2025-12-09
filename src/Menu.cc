@@ -9,30 +9,7 @@ Menu::Menu(std::vector<ElementsInfo> const &elements, bool windowOpen)
       focusedButtonIdx{0}
 {
     defaultFont.loadFromFile("static/Orbitron-Bold.ttf");
-    for (auto &elementInfo : elements)
-    {
-        sf::Text *element{new sf::Text(elementInfo.text, defaultFont, 50)};
-        auto textRect{element->getGlobalBounds()};
-        element->setOrigin(textRect.width / 2, textRect.height / 2);
-        element->setPosition((Window::WINDOW_WIDTH * elementInfo.xAlignn),
-                             (Window::WINDOW_HEIGHT * elementInfo.yAlign));
-
-        element->setOutlineColor(sf::Color::Green);
-        element->setOutlineThickness(4.0);
-
-        if (!elementInfo.onClick.has_value())
-        {
-            element->setFillColor(sf::Color::Blue);
-            textElements.push_back(element);
-        }
-        else
-        {
-            element->setFillColor(sf::Color::Blue);
-            buttonInfos.push_back(elementInfo);
-            buttonElements.push_back(element);
-        }
-    }
-    focusButton(0);
+    setButtons(elements);
 }
 
 Menu::~Menu()
@@ -92,15 +69,60 @@ bool Menu::handleEvent(sf::Event event)
 
         case sf::Keyboard::Scan::Enter:
             // std::cout << "Enter" << std::endl;
-
-            // A little bit of cpp syntax goes long way
-            buttonInfos.at(focusedButtonIdx).onClick->operator()();
+            if (!buttonElements.empty() && focusedButtonIdx < static_cast<int>(buttonInfos.size()))
+            {
+                buttonInfos.at(focusedButtonIdx).onClick->operator()();
+            }
             return true;
         default:
             return false;
         }
     }
     return false;
+}
+
+void Menu::setButtons(std::vector<ElementsInfo> const &elements)
+{
+    for (auto buttonEl : buttonElements)
+    {
+        delete buttonEl;
+    }
+    for (auto textEl : textElements)
+    {
+        delete textEl;
+    }
+    buttonElements.clear();
+    textElements.clear();
+    buttonInfos.clear();
+
+    for (auto &elementInfo : elements)
+    {
+        sf::Text *element{new sf::Text(elementInfo.text, defaultFont, 50)};
+        auto textRect{element->getGlobalBounds()};
+        element->setOrigin(textRect.width / 2, textRect.height / 2);
+        element->setPosition((Window::WINDOW_WIDTH * elementInfo.xAlignn),
+                             (Window::WINDOW_HEIGHT * elementInfo.yAlign));
+
+        element->setOutlineColor(sf::Color::Green);
+        element->setOutlineThickness(4.0);
+
+        if (!elementInfo.onClick.has_value())
+        {
+            element->setFillColor(sf::Color::Blue);
+            textElements.push_back(element);
+        }
+        else
+        {
+            element->setFillColor(sf::Color::Blue);
+            buttonInfos.push_back(elementInfo);
+            buttonElements.push_back(element);
+        }
+    }
+    if (!buttonElements.empty())
+    {
+        focusedButtonIdx = 0;
+        focusButton(0);
+    }
 }
 
 void Menu::focusButton(int index)
@@ -116,6 +138,10 @@ void Menu::unFocusButton(int index)
 
 void Menu::changeFocusedIdx(int change)
 {
+    if (buttonElements.empty())
+    {
+        return;
+    }
     int targetIndex = (focusedButtonIdx + change) % buttonElements.size();
     // std::cout << targetIndex << std::endl;
 
@@ -132,7 +158,10 @@ bool Menu::isOpen() const
 void Menu::setIsOpen(bool isOpen)
 {
     menuOpen = isOpen;
-    unFocusButton(focusedButtonIdx);
-    focusedButtonIdx = 0;
-    focusButton(focusedButtonIdx);
+    if (!buttonElements.empty())
+    {
+        unFocusButton(focusedButtonIdx);
+        focusedButtonIdx = 0;
+        focusButton(focusedButtonIdx);
+    }
 }

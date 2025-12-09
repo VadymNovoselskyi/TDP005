@@ -9,10 +9,11 @@
 
 enum Rarity
 {
-    basic,
-    rare,
-    epic
-}; // https://en.cppreference.com/w/cpp/language/enum.html
+    BASIC,
+    RARE,
+    EPIC
+};
+// https://en.cppreference.com/w/cpp/language/enum.html
 // kollade hur ennums funka (kolade på exempel svårt för mig att säga om jag koppiera då de bara
 // står exemplet hur man skriver den)
 
@@ -34,11 +35,17 @@ class Weapon : public sf::Sprite::Transformable
 
     double damage;
     double damageMultiplication;
+    int lvls;
+    double speed;
     sf::Time attackSpeed;
 
     Rarity rarity;
     void uppdate();
+<<<<<<< HEAD
     double speed;
+=======
+    std::vector<Projectile *> bullets;
+>>>>>>> origin/personal/vadno575
 };
 
 #endif

@@ -15,7 +15,7 @@ class TextureManager
 
   private:
     static TextureManager *instancePtr;
-    TextureManager();
+    TextureManager() = default;
 
     std::map<std::string, sf::Texture *> textureMap;
 };

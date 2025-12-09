@@ -1,17 +1,19 @@
 #include "Window.h"
 
+#include <chrono>
 #include <iostream>
 
 #include "StateMachine.h"
+#include "TileManager.h"
 
 int const Window::WINDOW_WIDTH{1024};
 int const Window::WINDOW_HEIGHT{768};
 std::string const Window::GAME_TITLE{"THE GAME"};
 
-Window::Window(std::vector<Menu *> const &menus, sf::Texture const *bgTexture)
+Window::Window(std::vector<Menu *> const &menus)
     : window{new sf::RenderWindow{sf::VideoMode(Window::WINDOW_WIDTH, Window::WINDOW_HEIGHT),
                                   Window::GAME_TITLE}},
-      windowClosed{false}, menus{menus}, bgTexture{bgTexture}
+      windowClosed{false}, menus{menus}
 {
 }
 
@@ -52,11 +54,7 @@ void Window::handleEvents()
 void Window::draw()
 {
     window->clear();
-
-    sf::RectangleShape bg{window->getView().getSize()};
-    bg.setPosition(0, 0);
-    bg.setTexture(bgTexture);
-    window->draw(bg);
+    TileManager::instance()->drawTiles(window);
 
     if (StateMachine::instance()->state() == GameState::IN_GAME)
     {

@@ -2,34 +2,24 @@
 
 #include <iostream>
 
-Player::Player(int maxHP,
-               int currentHP,
-               int movementSpeed,
-               sf::Vector2f positon,
-               sf::Vector2f direction,
-               std::string name,
-               int xp,
-               int maxXP,
-               int levels,
-               double damageMultipplyer)
-    : Character("player", maxHP, currentHP, movementSpeed, positon, direction), name{name}, xp{xp},
-      maxXP{maxXP}, levels{levels}, damageMultipplyer{damageMultipplyer},
-      texture{TextureManager::instance()->getTexture("fighter.png")}
-{
-    auto player_size{texture->getSize()};
-    sf::Sprite::setTexture(*texture);
-    sf::Sprite::setOrigin(player_size.x / 2, player_size.y);
-}
+#include "StateMachine.h"
+#include "TextureManager.h"
 
-void Player::setXP(int gainedXP)
+Player::Player(double maxHP,
+               double currentHP,
+               int movementSpeed,
+               sf::Vector2f const &positon,
+               sf::Vector2f const &direction,
+               std::string const &name,
+               int levels,
+               float damageMultiplier)
+    : Character("player", maxHP, currentHP, movementSpeed, positon, direction), name{name},
+      levels{levels}, damageMultiplier{damageMultiplier},
+      texture{TextureManager::instance()->getTexture("player.png")}
 {
-    xp += gainedXP;
-    if (xp <= maxXP)
-    {
-        xp = -maxXP;
-        maxXP += 100; // variabel för ökning + räkn med* - avrunda
-                      // levelUp();
-    }
+    auto playerSize{texture->getSize()};
+    sf::Sprite::setTexture(*texture);
+    sf::Sprite::setOrigin(playerSize.x / 2.0, playerSize.y / 2.0);
 }
 
 void Player::move()
@@ -38,35 +28,57 @@ void Player::move()
     direction.y = 0;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
     {
-        // std::cout << "W pressed" << std::endl;
-        // figure.move(0, -SPEED);
-        direction.y = -1;
+        direction.y = NORTH;
+        rotation = UP;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
     {
-        // std::cout << "A pressed" << std::endl;
-        // figure.move(-SPEED, 0);
-        direction.x = -1;
+        direction.x = EAST;
+        rotation = LEFT;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
     {
-        // std::cout << "S pressed" << std::endl;
-        // figure.move(0, SPEED);
-        direction.y = 1;
+        direction.y = SOUTH;
+        rotation = DOWN;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
     {
-        // std::cout << "D pressed" << std::endl;
-        // figure.move(SPEED, 0);
-        direction.x = 1;
+        direction.x = WEST;
+        rotation = RIGHT;
     }
     if (std::abs(direction.x) + std::abs(direction.y) > 1)
     {
         direction.x = direction.x / std::sqrt(2);
         direction.y = direction.y / std::sqrt(2);
-    }
+
+        // matematic explination:
+        // https://www.matteboken.se/lektioner/gymnasiet/matte-fortsattning-niva-2/trigonometri/radianer#!/
+        // used to check calculation with degrees
+
+        if (direction.y >= 0) // down
+        {
+            // multiplying by (180/PI)to convert radian to degrees and subtract to flip rotation.
+            rotation = 180.f - std::asin(direction.x) * (180.f / M_PI);
+        }
+        else // up
+        {
+            rotation = std::asin(direction.x) * (180.f / M_PI);
+        }
+
+    } // https://www.matteboken.se/lektioner/gymnasiet/matte-fortsattning-niva-1/trigonometri/enhetscirkeln#!/
+      // - fixa rotaiton utifrån mus
+
+    sf::Sprite::setRotation(rotation);
     sf::Sprite::move(sf::Vector2f(direction.x * movementSpeed, direction.y * movementSpeed));
 }
+
+void Player::onCollision(std::string const &other)
+{
+    if (other == "enemy")
+    {
+    }
+}
+
 void Player::die()
 {
     StateMachine::instance()->finishGame();
@@ -75,48 +87,61 @@ void Player::die()
 void Player::draw(sf::RenderWindow *window) const
 {
     window->draw(*this);
-    // Draw HP and XP too plz
+    drawInfo(window);
 }
 
-void Player::onCollision(std::string other)
+void Player::drawInfo(sf::RenderWindow *window) const
 {
-    if (other == "enemy")
-    {
+    // -fixa position utifrån kamera
+    // drawBox(window, HPBox, positon.x +60, positon.y -60, 150, 50, 128, 0 ,0 ); // hp box
+    // background drawBox(window, CurrentHPBox, positon.x +60, positon.y -60, 150 * ( currentHP /
+    // maxHP), 50, 204, 0 ,0 ); // curent hp
 
-    }
+    // drawBox(window, XPBox, positon.x +120, positon.y - 120 +60, 150, 50, 76, 154 ,42 ); // xp
+    // background if (xp < 0)
+    // {
+    //     drawBox(window, CurrentXPBox, positon.x +120,  positon.y - 120, 150 * (xp / maxXP), 50,
+    //     118, 186 ,27 ); // current xp
+    // }
+    // else
+    // {
+    //     drawBox(window, CurrentXPBox, positon.x +120, positon.y - 120, 0.1, 50, 118, 186 ,27 );
+    //     // current xp
+    // }
 }
 
-// void Player::drawHP(bool boxPosX, bool boxPosY, float boxWidth, float boxheight)
+void Player::drawBox(sf::RenderWindow *window,
+                     sf::RectangleShape box,
+                     float boxPosX,
+                     float boxPosY,
+                     float boxWidth,
+                     float boxheight,
+                     int r,
+                     int g,
+                     int b)
+
+{
+    box.setSize(sf::Vector2f(boxWidth, boxheight));
+    box.setFillColor(sf::Color(r, g, b));
+    box.setPosition(boxPosX, boxPosY);
+    window->draw(box);
+}
+
+// void Player::levelUP(Choises choise) // skapa levelup manager
 // {
-//    //Hp box background + outline
-//     sf::RectangleShape HpBox(sf::Vector2(boxWidth, boxheight));
-//     HpBox.setSize(sf::Vector2f(boxWidth, boxheight));
-//     HpBox.setFillColor(sf::Color(128,0,0));
-//     HpBox.setPosition(boxPosX, boxPosY);
-//     //current hp
-//     sf::RectangleShape CurrentHp(sf::Vector2(boxWidth, boxheight));
-//     CurrentHp.setSize(sf::Vector2f(boxWidth, boxheight));
-//     CurrentHp.setFillColor(sf::Color(204,0,0));
-//     CurrentHp.setPosition(boxPosX, boxPosY);
-// }
+//     switch (choise)
+//     {
+//     case HP: // hp
+//         maxHP += 50;
+//         break;
+//     case SPEED: // speed
+//         movementSpeed += 5;
+//         break;
 
-// void Player::levelUp(std::string choise, auto uppgrade)
-// {
-//   switch (choise)
-//   {
-//     case "Health":
-//       maxHP += uppgrade;
-//       break;
+//     case DAMAGE: // damage
+//         damageMultiplier += 0.5;
+//     case WEAPON: // weapon
 
-//       case "Speed":
-//       movementSpeed += uppgrade;
-//       break;
-
-//       case "Damage":
-//       damageMultipplyer += uppgrade;
-//       case "Weapon":
-
-//       break;
-//   }
-
+//         break;
+//     }
 // }

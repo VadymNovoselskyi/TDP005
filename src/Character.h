@@ -9,26 +9,25 @@
 class Character : public Entity
 {
   public:
-    Character(std::string tag,
-              double maxHP,
-              double currentHP,
+    Character(std::string const &tag,
+              float maxHP,
+              float currentHP,
               int movementSpeed,
-              sf::Vector2f position,
-              sf::Vector2f direction);
+              sf::Vector2f const &position,
+              sf::Vector2f const &direction);
 
-    virtual void move() = 0;
-    virtual void draw(sf::RenderWindow *window) const = 0;
-    void takeDamage(int);
+    void takeDamage(double);
     void setDirection(sf::Vector2f);
-    sf::Vector2f getDirection();
+    sf::Vector2f getDirection() const;
     void setMovementSpeed(int);
 
   protected:
     // sf::SDL_Surface* sprite;  -sprite till karaktrer
-    double maxHP;
-    double currentHP;
+    float maxHP;
+    float currentHP;
     int movementSpeed;
     sf::Vector2f direction;
+
     virtual void die() = 0;
 };
 

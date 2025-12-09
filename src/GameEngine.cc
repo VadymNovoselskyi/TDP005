@@ -4,6 +4,7 @@
 
 #include "Menus.h"
 #include "TextureManager.h"
+#include "TileManager.h"
 #include "WeaponManager.h"
 
 int const GameEngine::FPS{60};
@@ -14,22 +15,30 @@ GameEngine::GameEngine() : window{}, clock{}
     // Init the StateMachine, TextureManager, Map and the menus
     StateMachine::init();
     TextureManager::init();
+    TileManager::init("static/tileMap.txt");
     WeaponManager::init();
 
-    Player *player{new Player(
-        10, 10, 10, sf::Vector2f{100.0, 100.0}, sf::Vector2f{100.0, 100.0}, "Player1", 0, 0, 0, 0)};
-    Map::init(player);
-
-    sf::Texture *bgTexture = TextureManager::instance()->getTexture("grass.png");
-    bgTexture->setRepeated(true);
+    auto mapDimensions{TileManager::instance()->getMapDimensions()};
+    Player *player{new Player(10.0,
+                              10.0,
+                              10,
+                              sf::Vector2f{static_cast<float>(mapDimensions.x / 2.0),
+                                           static_cast<float>(mapDimensions.y / 2.0)},
+                              sf::Vector2f{0.0, 0.0},
+                              "Player1",
+                              0,
+                              0)};
+    Map::init(player, TileManager::instance()->getObstacles());
 
     std::vector<Menu *> menus{};
+
     menus.push_back(new StartMenu());
     menus.push_back(new PauseMenu());
     menus.push_back(new GameOverMenu());
+    menus.push_back(new LevelUpMenu());
 
     // Init the menu and add exit listener
-    window = new Window(menus, bgTexture);
+    window = new Window(menus);
 
     // Should I do anything with STARTING_GAME and CONTINUING_GAME
     StateMachine::instance()->addListener("onStart",
@@ -77,10 +86,15 @@ void GameEngine::run()
     {
         clock.restart();
         window->handleEvents();
-        Map::instance()->handelUpdate();
+
+        if (StateMachine::instance()->state() == GameState::IN_GAME)
+        {
+            Map::instance()->handelUpdate();
+        }
         window->draw();
 
         sf::Time delta{UPDATE_INTERVAL - clock.getElapsedTime()};
+        // std::cout << "FPS: " << (1000.0 / delta.asMilliseconds()) << std::endl;
         sf::sleep(delta);
     }
 }

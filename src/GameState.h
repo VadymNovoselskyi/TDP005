@@ -7,6 +7,7 @@ enum GameState
     STARTING_GAME,
     CONTINUING_GAME,
     IN_GAME,
+    LEVEL_UP_SCREEN,
     GAME_PAUSED,
     GAME_OVER,
     EXIT,

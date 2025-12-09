@@ -27,8 +27,9 @@ class Menu
     bool isOpen() const;
 
   protected:
-    virtual std::vector<ElementsInfo> createButtons() const = 0;
     void setIsOpen(bool isOpen);
+    void setButtons(std::vector<ElementsInfo> const &elements);
+    virtual std::vector<ElementsInfo> createButtons() const = 0;
 
   private:
     void focusButton(int index);

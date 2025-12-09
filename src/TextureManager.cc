@@ -21,7 +21,6 @@ TextureManager *TextureManager::init()
 
 void TextureManager::deleteInstance()
 {
-    // std::cout << "Deleting the instance" << std::endl;
     for (auto [name, texture] : TextureManager::instancePtr->textureMap)
     {
         delete texture;
@@ -45,8 +44,4 @@ sf::Texture *TextureManager::getTexture(std::string const &name)
         textureMap[name] = t;
         return t;
     }
-}
-
-TextureManager::TextureManager() : textureMap{}
-{
 }
