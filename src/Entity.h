@@ -6,6 +6,7 @@
 
 // to lower classes
 #include "TextureManager.h"
+#include <cmath>
 
 class Entity : public sf::Sprite
 {

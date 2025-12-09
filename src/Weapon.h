@@ -5,6 +5,9 @@
 #include <string>
 
 #include "Projectile.h"
+#include "Map.h"
+
+#include <cmath>
 
 enum Rarity
 {
@@ -34,13 +37,11 @@ class Weapon : public sf::Sprite::Transformable
 
     double damage;
     double damageMultiplication;
-    int lvls;
-    double speed;
     sf::Time attackSpeed;
 
     Rarity rarity;
     void uppdate();
-    std::vector<Projectile *> bullets;
+    double speed;
 };
 
 #endif
