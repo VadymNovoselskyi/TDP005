@@ -64,25 +64,29 @@ std::string Enemy::getTag()
 {
     return tag;
 }
-void Enemy::onCollision(std::string const &othe)
+void Enemy::onCollision(std::string const &other)
 {
-    //attack
-}
-void Enemy::tryAttack(sf::Vector2f player)
-{
-
-    if(pythagoras(player)<= attackRange)
+    if (other == "player")
     {
-        //Enemy::attack();
-
+        attack();
     }
-    sleep(attackSpeed);//använd timestap istälet
+
+}
+void Enemy::tryAttack(float len)
+{
+
+    if(len <= attackRange)
+    {
+        attack();
+        sleep(attackSpeed);//använd timestap istälet
+    }
+    
 }
 
 //Footman
 void Footman::attack()
 {
-
+    player -> takeDamage(damage);
 }
 
 void Footman::move()
@@ -109,17 +113,18 @@ void Footman::move()
     }
     
     sf::Sprite::move(direction.x * SPEED, direction.y * SPEED);
+    tryAttack(len);
 
 }
 
-
-bool Kaboom::isInRange(sf::Vector2f player, float len)
+//kaboom
+bool Kaboom::isInRange(float len)
 {
 
     if(len <= attackRange)
     {
         sleep(15);
-        Kaboom::explode(player);
+        Kaboom::explode(len);
 
     }
     
@@ -127,15 +132,15 @@ bool Kaboom::isInRange(sf::Vector2f player, float len)
 
 
 
-void Kaboom::explode(sf::Vector2f player)
+void Kaboom::explode(float len)
 {
 
     
-    if(pythagoras(player) <= explodeRange)
+    if(len <= explodeRange)
     {
-       // player.takeDamage(explodeDamage);
+       player -> takeDamage(explodeDamage);
     }
-        
+    die();
     //explodeRange
     //explodeDamage
     //kaboom die
@@ -143,7 +148,7 @@ void Kaboom::explode(sf::Vector2f player)
 
 void Kaboom::attack()
 {
-    
+    player -> takeDamage(damage);
 }
 void Kaboom::move()
 {
@@ -173,7 +178,7 @@ void Kaboom::move()
     }
     
     sf::Sprite::move(direction.x * SPEED, direction.y * SPEED);
-
+    tryAttack(len);
 }
 
 
@@ -208,4 +213,5 @@ void Archer::move()
     {
         sf::Sprite::move(direction.x * SPEED, direction.y * SPEED);
     }
+    tryAttack(len);
 }

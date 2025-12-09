@@ -25,7 +25,7 @@ class Enemy : public Character
 
     protected:
 
-        void tryAttack(sf::Vector2f);
+        void tryAttack(float leng);
         //void calcPath(sf::Vector2f);
         int attackRange;
         int attackSpeed;
@@ -61,8 +61,8 @@ class Kaboom:public Enemy
         void move() override;
 
     private:
-        bool isInRange(sf::Vector2f ,float len);
-        void explode(sf::Vector2f);
+        bool isInRange(float len);
+        void explode(float len);
         double explodeRange;
         double explodeDamage;
         sf::Texture const *texture;
