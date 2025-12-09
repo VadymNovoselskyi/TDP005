@@ -8,12 +8,12 @@
 Player::Player(double maxHP,
                double currentHP,
                int movementSpeed,
-               sf::Vector2f const &positon,
+               sf::Vector2f const &position,
                sf::Vector2f const &direction,
                std::string const &name,
                int levels,
                float damageMultiplier)
-    : Character("player", maxHP, currentHP, movementSpeed, positon, direction), name{name},
+    : Character("player", maxHP, currentHP, movementSpeed, position, direction), name{name},
       levels{levels}, damageMultiplier{damageMultiplier},
       texture{TextureManager::instance()->getTexture("player.png")}
 {
@@ -29,22 +29,22 @@ void Player::move()
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
     {
         direction.y = NORTH;
-        rotation = UP;
+       // rotation = UP;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
     {
         direction.x = EAST;
-        rotation = LEFT;
+        //rotation = LEFT;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
     {
         direction.y = SOUTH;
-        rotation = DOWN;
+        //rotation = DOWN;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
     {
         direction.x = WEST;
-        rotation = RIGHT;
+        //rotation = RIGHT;
     }
     if (std::abs(direction.x) + std::abs(direction.y) > 1)
     {
@@ -55,21 +55,35 @@ void Player::move()
         // https://www.matteboken.se/lektioner/gymnasiet/matte-fortsattning-niva-2/trigonometri/radianer#!/
         // used to check calculation with degrees
 
-        if (direction.y >= 0) // down
-        {
-            // multiplying by (180/PI)to convert radian to degrees and subtract to flip rotation.
-            rotation = 180.f - std::asin(direction.x) * (180.f / M_PI);
-        }
-        else // up
-        {
-            rotation = std::asin(direction.x) * (180.f / M_PI);
-        }
+        // if (direction.y >= 0) // down
+        // {
+        //     // multiplying by (180/PI)to convert radian to degrees and subtract to flip rotation.
+        //     rotation = 180.f - std::asin(direction.x) * (180.f / M_PI);
+        // }
+        // else // up
+        // {
+        //     rotation = std::asin(direction.x) * (180.f / M_PI);
+        // }
 
     } // https://www.matteboken.se/lektioner/gymnasiet/matte-fortsattning-niva-1/trigonometri/enhetscirkeln#!/
       // - fixa rotaiton utifrån mus
+//     rotation = acos((sf::Mouse::getPosition().x - position.x) / 
+//                       sqrt(pow(sf::Mouse::getPosition().x - position.x, 2) + 
+//                            pow(sf::Mouse::getPosition().y - position.y, 2))) 
+//                      * 180.f / 3.14159265f;
 
+// if (sf::Mouse::getPosition().y - position.y < 0)
+//     rotation = 360.f - rotation;
+    std::cout << "player pos: " << "X: " << position.x << "Y: " << position.y << std::endl;
+    std::cout << "mouse pos: " << "X: " << sf::Mouse::getPosition().x << "Y: " << sf::Mouse::getPosition().y << std::endl;
+    rotation = atan((sf::Mouse::getPosition().y - position.y) /
+                (sf::Mouse::getPosition().x - position.x)) * 180 / M_PI;
+    std::cout <<"rotation: " << rotation << std::endl;
+        
     sf::Sprite::setRotation(rotation);
     sf::Sprite::move(sf::Vector2f(direction.x * movementSpeed, direction.y * movementSpeed));
+
+
 }
 
 void Player::onCollision(std::string const &other)

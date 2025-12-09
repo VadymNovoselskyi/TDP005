@@ -32,7 +32,7 @@ class Player : public Character
     Player(double maxHP,
            double currentHp,
            int movementSpeed,
-           sf::Vector2f const &positon,
+           sf::Vector2f const &position,
            sf::Vector2f const &direction,
            std::string const &name,
            int levels,

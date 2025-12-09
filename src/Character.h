@@ -27,6 +27,7 @@ class Character : public Entity
     float currentHP;
     int movementSpeed;
     sf::Vector2f direction;
+    sf::Vector2f position;
 
     virtual void die() = 0;
 };
