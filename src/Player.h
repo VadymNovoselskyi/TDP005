@@ -40,6 +40,9 @@ class Player : public Character
     void gainXp(int xp);
     void heal(double amount);
     void increaseMaxHP(double amount);
+    void increaseXP(double amount);
+    void increaseMaxxp(double amount);
+
     void increaseSpeed(int amount);
     void increaseDamageMultiplyer(double amount);
     void die() override;
@@ -47,8 +50,8 @@ class Player : public Character
     void onCollision(std::string const &other) override;
 
   private:
-    double maxHP;
     double hp;
+    double maxHP;
     float rotation;
     int levels;
     double damageMultiplier;

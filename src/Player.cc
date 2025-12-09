@@ -16,7 +16,7 @@ sf::Color const Player::CURRENT_XP_BOX_COLOR{76, 154, 42};
 
 float static const START_HP = 100;
 
-Player::Player(double startHP,
+Player::Player(double hp,
                int movementSpeed,
                sf::Vector2f const &position,
                std::string const &tag,
@@ -25,7 +25,7 @@ Player::Player(double startHP,
                ExperienceManager *expManager,
                WeaponManager *weaponManager,
                std::function<void(std::vector<LevelUpInfo>)> const &onLevelUp)
-    : Character(tag, startHP, movementSpeed, position), maxHP{startHP}, hp{startHP}, rotation{},
+    : Character(tag, hp, movementSpeed, position), hp{START_HP}, rotation{},
       levels{levels}, damageMultiplier{damageMultiplier}, oldPosition{position},
       expManager(expManager), weaponManager{weaponManager}, onLevelUp{onLevelUp}
 {
@@ -116,10 +116,7 @@ void Player::heal(double amount)
 {
     hp += amount;
 }
-void Player::increaseMaxHP(double amount)
-{
-    maxHP += amount;
-}
+
 void Player::increaseSpeed(int amount)
 {
     movementSpeed += amount;
@@ -133,6 +130,9 @@ void Player::die()
 {
     // reset xp, hp ,damage
     StateMachine::instance()->finishGame();
+    hp = START_HP;
+    maxHP = START_HP;
+    
 }
 
 void Player::draw(sf::RenderWindow *window) const
