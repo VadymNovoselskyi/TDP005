@@ -17,7 +17,7 @@ void Projectile::onCollision(std::string other)
 void Projectile::move()
 {
     double x {};
-    double y {};
+    double y {-velocity};
 
     //calculate dir
 
