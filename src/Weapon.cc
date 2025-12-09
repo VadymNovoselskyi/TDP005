@@ -14,8 +14,8 @@ Weapon::Weapon(std::string const &name,
 
 void Weapon::shoot()
 {
-    Map::instance() -> addEntity(new Projectile{Transformable::getPosition(), speed, damage * damageMultiplication});
-    std::cout << "shoot" << std::endl;
+    sf::Vector2f dir {-1, -1};
+    Map::instance() -> addEntity(new Projectile{Transformable::getPosition(), dir , speed, damage * damageMultiplication});
 }
 
 std::string Weapon::getName()

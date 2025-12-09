@@ -1,8 +1,8 @@
 #include "Projectile.h"
+#include <iostream>
 
-
-Projectile::Projectile(sf::Vector2f const &pos, double velocity, double damage)
-    :Entity(std::string{"projectile"}, pos), velocity{velocity}, damage{damage}, texture{TextureManager::instance()->getTexture("AR_bullet.png")}
+Projectile::Projectile(sf::Vector2f const &pos, sf::Vector2f const &dir, double velocity, double damage)
+    :Entity(std::string{"projectile"}, pos), velocity{velocity}, dir {dir}, damage{damage}, texture{TextureManager::instance()->getTexture("AR_bullet.png")}
 {
     sf::Sprite::setTexture(*texture);
 }
@@ -17,8 +17,8 @@ void Projectile::onCollision(std::string const &other)
 
 void Projectile::move()
 {
-    double x {};
-    double y {-velocity};
+    double x {dir.x};
+    double y {dir.y};
 
     if (std::abs(x) + std::abs(y) > 1)
     {
@@ -45,7 +45,7 @@ void Projectile::move()
 
     // calculate dir
 
-    sf::Sprite::Transformable::move(x, y);
+    sf::Sprite::Transformable::move(x * velocity, y * velocity);
 }
 
 void Projectile::draw(sf::RenderWindow *window) const

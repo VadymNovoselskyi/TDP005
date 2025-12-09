@@ -6,6 +6,6 @@ AssaultRifleWeapon::AssaultRifleWeapon()
              /*dmg*/ 5.5f,
              /*attackSpeed in ms*/ sf::milliseconds(100),
              Rarity::BASIC,
-             /*bullet speed*/ 2)
+             /*bullet speed*/ 20)
 {
 }

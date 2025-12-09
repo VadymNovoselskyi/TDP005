@@ -4,6 +4,7 @@
 
 #include "StateMachine.h"
 #include "TextureManager.h"
+#include "WeaponManager.h"
 
 Player::Player(double maxHP,
                double currentHP,
@@ -70,6 +71,13 @@ void Player::move()
 
     sf::Sprite::setRotation(rotation);
     sf::Sprite::move(sf::Vector2f(direction.x * movementSpeed, direction.y * movementSpeed));
+
+    WeaponManager::instance()->setWeaponsPos(sf::Sprite::getPosition());
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::T))
+    {
+        WeaponManager::instance()->shoot();
+    }
 }
 
 void Player::onCollision(std::string const &other)

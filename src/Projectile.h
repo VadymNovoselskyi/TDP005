@@ -6,7 +6,7 @@
 class Projectile : public Entity
 {
   public:
-    Projectile(sf::Vector2f const &pos, double velocity, double damage);
+    Projectile(sf::Vector2f const &pos, sf::Vector2f const &dir, double velocity, double damage);
     void onCollision(std::string const &other) override;
 
     void move() override;
@@ -14,6 +14,7 @@ class Projectile : public Entity
 
   private:
     double velocity;
+    sf::Vector2f dir;
     double damage;
     sf::Texture const *texture;
 };

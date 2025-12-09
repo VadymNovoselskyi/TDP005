@@ -35,7 +35,6 @@ class Weapon : public sf::Sprite::Transformable
 
     double damage;
     double damageMultiplication;
-    int lvls;
     sf::Time attackSpeed;
 
     Rarity rarity;
