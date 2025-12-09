@@ -14,5 +14,5 @@ bool LevelUPManager::hasLeveldUP()
 }
 void LevelUPManager::levelupOptions()
 {
-    StateMachine::instance()->();
+    StateMachine::instance()->startLevelUp();
 }
