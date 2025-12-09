@@ -16,7 +16,6 @@ class StateMachine
     static StateMachine *init();
     static void deleteInstance();
 
-    // .clang-tidy that recommended it
     GameState state() const;
 
     void openStartMenu();

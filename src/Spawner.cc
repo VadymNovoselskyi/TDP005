@@ -1,35 +1,23 @@
 #include "Spawner.h"
-#include <iostream>
-#include <cstdlib>
 
+#include <cstdlib>
+#include <iostream>
 
 struct Point
 {
     int x{};
     int y{};
 };
-Spawner::Spawner(double spawnRate, Player* player):spawnRate{spawnRate}, player{player}
+Spawner::Spawner(double spawnRate, Player *player) : spawnRate{spawnRate}, player{player}
 {
     Spawner::spwanEnemies();
 }
 
 void Spawner::spwanEnemies()
 {
+    Footman *enemy = new Footman(100.0, 4, {10, 10}, 12, 6, 10, 5, 2, player);
 
-    Footman* enemy = new Footman(100.0,
-                             100.0,
-                             4,
-                             {10,10},
-                             {0,0},
-                             12,
-                             6,
-                             10,
-                             5,
-                             2,
-                             player);
-
-                   Map::instance()
-                       ->addEntity(enemy);
+    Map::instance()->addEntity(enemy);
 }
 
 Point choseSpawnPos()

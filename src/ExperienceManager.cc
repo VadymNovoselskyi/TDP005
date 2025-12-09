@@ -1,19 +1,40 @@
 #include "ExperienceManager.h"
 
-ExperienceManager::ExperienceManager(int xp, int maxXP) : xp{xp}, maxXP{maxXP}
+#include <iostream>
+
+std::vector<int> const ExperienceManager::LEVELS_PROGRESSION{
+    0, 1000, 2500, 5000, 8000, 15000, 24000, 35000, 999999999};
+std::vector<LevelUpInfo> const ExperienceManager::LEVEL_UPS{
+    {LevelUpChoice::HP,
+     "Buff your HP stats",
+     []() { std::cout << "HP buff selected" << std::endl; }},
+    {LevelUpChoice::SPEED,
+     "Buff your SPEED stats",
+     []() { std::cout << "SPEED buff selected" << std::endl; }},
+    {LevelUpChoice::DAMAGE,
+     "Buff your DAMAGE stats",
+     []() { std::cout << "DAMAGE buff selected" << std::endl; }},
+    {LevelUpChoice::WEAPON,
+     "Choose a WEAPON",
+     []() { std::cout << "WEAPON buff selected" << std::endl; }}};
+
+ExperienceManager::ExperienceManager() : currentXp{}, level{}
 {
-}
-void ExperienceManager::setXP(int gainedXP)
-{
-    xp += gainedXP;
- 
 }
 
-bool ExperienceManager::hasLeveldUP()
+bool ExperienceManager::gainXp(int gainedXP)
 {
-    return xp >= maxXP;
+    currentXp += gainedXP;
+    if (currentXp > LEVELS_PROGRESSION.at(level))
+    {
+        level++;
+        return true;
+    }
+
+    return false;
 }
-void ExperienceManager::levelupOptions()
+
+std::vector<LevelUpInfo> ExperienceManager::chooseLevelUps() const
 {
-    StateMachine::instance()->startLevelUp();
+    return LEVEL_UPS;
 }

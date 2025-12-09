@@ -2,9 +2,8 @@
 
 int main()
 {
-    GameEngine *gameEngine{new GameEngine()};
-    gameEngine->run();
-    delete gameEngine;
+    GameEngine gameEngine{GameEngine()};
+    gameEngine.run();
 
     return 0;
 }

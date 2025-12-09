@@ -17,7 +17,6 @@ class Window
     void draw();
     void closeWindow();
     sf::RenderWindow* getRenderWindow() const;
-    // .clang-tidy again
     bool isClosed() const;
 
     int static const WINDOW_WIDTH;

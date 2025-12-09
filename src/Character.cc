@@ -10,7 +10,7 @@ Character::Character(std::string const &tag,
 
 void Character::takeDamage(double damage)
 {
-    hp = hp - damage;
+    hp -= damage;
 }
 
 void Character::setMovementSpeed(int newSpeed)

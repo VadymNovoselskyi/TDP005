@@ -1,5 +1,6 @@
 #ifndef PLAYER_H
 #define PLAYER_H
+#include <functional>
 #include <string>
 #include <vector>
 
@@ -7,6 +8,7 @@
 #include "ExperienceManager.h"
 #include "GameState.h"
 #include "StateMachine.h"
+#include "WeaponManager.h"
 
 enum Direction
 {
@@ -25,15 +27,17 @@ class Player : public Character
            sf::Vector2f const &position,
            std::string const &tag,
            int levels,
-           double damageMultiplier);
+           double damageMultiplier,
+           ExperienceManager *expManager,
+           WeaponManager *weaponManager,
+           std::function<void(std::vector<LevelUpInfo>)> const &onLevelUp);
 
-    void drawInfo(sf::RenderWindow *window);
-
-    void draw(sf::RenderWindow *window);
+    void draw(sf::RenderWindow *window) const override;
 
     void move() override;
     void updateRotation(sf::RenderWindow *window);
 
+    void gainXp(int xp);
     void heal(double amount);
     void increaseMaxHP(double amount);
     void increaseSpeed(int amount);
@@ -50,15 +54,18 @@ class Player : public Character
     double damageMultiplier;
     sf::Vector2f oldPosition;
 
+    ExperienceManager *expManager;
+    WeaponManager *weaponManager;
+    std::function<void(std::vector<LevelUpInfo>)> onLevelUp;
+
+    void drawInfo(sf::RenderWindow *window) const;
     void drawBox(sf::RenderWindow *window,
                  sf::RectangleShape box,
                  float boxPosX,
                  float boxPosY,
                  float boxWidth,
                  float boxheight,
-                 sf::Color boxColor);
-
-    sf::Texture const *texture;
+                 sf::Color boxColor) const;
 
     // create box for xp and hp
     sf::RectangleShape HPBox; // background box to show how much hp a player has lost

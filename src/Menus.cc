@@ -207,7 +207,7 @@ LevelUpMenu::createButtons(std::vector<LevelUpInfo> const &levelUpOptions) const
     {
         auto levelUpOption = levelUpOptions.at(i);
         ElementsInfo levelUpButton{
-            levelUpOption.name + "\n" + levelUpOption.description,
+            levelUpOption.description,
             0.5,
             (((1 - PADDING_TOP - PADDING_BOTTOM) / optionsSize * i) + PADDING_TOP),
             levelUpOption.onClick};

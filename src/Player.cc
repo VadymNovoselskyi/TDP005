@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+#include "GameState.h"
 #include "StateMachine.h"
 #include "TextureManager.h"
 #include "Window.h"
@@ -20,11 +21,15 @@ Player::Player(double startHP,
                sf::Vector2f const &position,
                std::string const &tag,
                int levels,
-               double damageMultiplier)
+               double damageMultiplier,
+               ExperienceManager *expManager,
+               WeaponManager *weaponManager,
+               std::function<void(std::vector<LevelUpInfo>)> const &onLevelUp)
     : Character(tag, startHP, movementSpeed, position), maxHP{startHP}, hp{startHP}, rotation{},
       levels{levels}, damageMultiplier{damageMultiplier}, oldPosition{position},
-      texture{TextureManager::instance()->getTexture("player.png")}
+      expManager(expManager), weaponManager{weaponManager}, onLevelUp{onLevelUp}
 {
+    auto texture{TextureManager::instance()->getTexture("player.png")};
     auto playerSize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
     sf::Sprite::setOrigin(playerSize.x / 2.0, playerSize.y / 2.0);
@@ -75,6 +80,18 @@ void Player::updateRotation(sf::RenderWindow *window)
     sf::Sprite::setRotation(rotation);
 }
 
+void Player::gainXp(int xp)
+{
+    bool lvlGained = expManager->gainXp(xp);
+    if (!lvlGained)
+    {
+        return;
+    }
+
+    onLevelUp(expManager->chooseLevelUps());
+    StateMachine::instance()->startLevelUp();
+}
+
 void Player::onCollision(std::string const &other)
 {
     // if (other == "enemy")
@@ -109,13 +126,13 @@ void Player::die()
     StateMachine::instance()->finishGame();
 }
 
-void Player::draw(sf::RenderWindow *window)
+void Player::draw(sf::RenderWindow *window) const
 {
     window->draw(*this);
     drawInfo(window);
 }
 
-void Player::drawInfo(sf::RenderWindow *window)
+void Player::drawInfo(sf::RenderWindow *window) const
 {
     drawBox(window, // hp boxbackground -- fixa static const för ofset, fixa sf
             HPBox,
@@ -156,7 +173,7 @@ void Player::drawBox(sf::RenderWindow *window,
                      float boxPosY,
                      float boxWidth,
                      float boxheight,
-                     sf::Color boxColor)
+                     sf::Color boxColor) const
 
 {
     box.setSize(sf::Vector2f(boxWidth, boxheight));

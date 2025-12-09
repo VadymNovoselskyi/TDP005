@@ -2,7 +2,6 @@
 #define EXPERIENCE_MANAGER_H
 
 #include <vector>
-#include <map>
 
 #include "StateMachine.h"
 
@@ -16,7 +15,7 @@ enum LevelUpChoice
 
 struct LevelUpInfo
 {
-    std::string name;
+    LevelUpChoice levelUpChoice;
     std::string description;
     std::function<void()> onClick;
 };
@@ -26,11 +25,12 @@ class ExperienceManager
   public:
     ExperienceManager();
 
-    bool addXp(int xp);
+    bool gainXp(int gainedXp);
+    std::vector<LevelUpInfo> chooseLevelUps() const;
 
   private:
-    std::map<LevelUpChoice, LevelUpInfo> LEVEL_UPS;
-    std::vector<int> LEVELS_PROGRESSION;
+    std::vector<int> static const LEVELS_PROGRESSION;
+    std::vector<LevelUpInfo> static const LEVEL_UPS;
 
     int currentXp;
     int level;

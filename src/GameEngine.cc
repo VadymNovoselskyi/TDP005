@@ -1,7 +1,9 @@
 #include "GameEngine.h"
 
 #include <iostream>
+#include <vector>
 
+#include "ExperienceManager.h"
 #include "Menus.h"
 #include "Spawner.h"
 #include "TextureManager.h"
@@ -17,7 +19,17 @@ GameEngine::GameEngine() : window{}, clock{}
     StateMachine::init();
     TextureManager::init();
     TileManager::init("static/tileMap.txt");
-    WeaponManager::init();
+
+    std::vector<Menu *> menus{};
+    auto levelUpMenu{new LevelUpMenu()};
+    menus.push_back(new StartMenu());
+    menus.push_back(new ChooseNameMenu());
+    menus.push_back(new PauseMenu());
+    menus.push_back(new GameOverMenu());
+    menus.push_back(levelUpMenu);
+
+    auto expManager{new ExperienceManager()};
+    auto weaponManager{new WeaponManager()};
 
     auto mapDimensions{TileManager::instance()->getMapDimensions()};
     Player *player{new Player(100.0,
@@ -26,21 +38,18 @@ GameEngine::GameEngine() : window{}, clock{}
                                            static_cast<float>(mapDimensions.y / 2.0)},
                               "Player",
                               0,
-                              0)};
+                              0,
+                              expManager,
+                              weaponManager,
+                              [&levelUpMenu](std::vector<LevelUpInfo> const &levelUpInfo)
+                              { levelUpMenu->createOptions(levelUpInfo); })};
+    // weaponManager->getWeapon("AR");
+
     Map::init(player, TileManager::instance()->getObstacles());
     Spawner spawner{Spawner(5.0, player)};
 
-    std::vector<Menu *> menus{};
-
-    menus.push_back(new StartMenu());
-    menus.push_back(new ChooseNameMenu());
-    menus.push_back(new PauseMenu());
-    menus.push_back(new GameOverMenu());
-    menus.push_back(new LevelUpMenu());
-
     // Init the menu and add exit listener
     window = new Window(menus);
-
     // Should I do anything with STARTING_GAME and CONTINUING_GAME
     StateMachine::instance()->addListener("onStart",
                                           [](GameState gameState)
@@ -68,7 +77,6 @@ GameEngine::GameEngine() : window{}, clock{}
                                           });
 
     Map::instance()->addEntity(player);
-    WeaponManager::instance()->getWeapon("AR");
 }
 
 GameEngine::~GameEngine()
