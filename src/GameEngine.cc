@@ -13,7 +13,7 @@
 int const GameEngine::FPS{60};
 sf::Time const GameEngine::UPDATE_INTERVAL{sf::milliseconds(1000.0 / GameEngine::FPS)};
 
-GameEngine::GameEngine() : window{}, clock{}
+GameEngine::GameEngine() : window{}, clock{}, spawner{}
 {
     // Init the StateMachine, TextureManager, Map and the menus
     StateMachine::init();
@@ -46,7 +46,13 @@ GameEngine::GameEngine() : window{}, clock{}
     // weaponManager->getWeapon("AR");
 
     Map::init(player, TileManager::instance()->getObstacles());
-    Spawner spawner{Spawner(5.0, player)};
+    spawner = {new Spawner(player)};
+    std::vector<Menu *> menus{};
+
+    menus.push_back(new StartMenu());
+    menus.push_back(new PauseMenu());
+    menus.push_back(new GameOverMenu());
+    menus.push_back(new LevelUpMenu());
 
     // Init the menu and add exit listener
     window = new Window(menus);
@@ -96,6 +102,7 @@ void GameEngine::run()
 
         if (StateMachine::instance()->state() == GameState::IN_GAME)
         {
+            spawner ->spwanEnemies();
             Map::instance()->handelUpdate(window->getRenderWindow());
         }
         window->draw();
