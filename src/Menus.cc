@@ -82,7 +82,7 @@ bool ChooseNameMenu::handleEvent(sf::Event event)
     {
         if (event.text.unicode <= 126 && event.text.unicode >= 32 && username.length() < 20)
         {
-            username += std::to_string(event.text.unicode);
+            username += event.text.unicode;
             Menu::setButtons(createButtons(username));
         }
 
