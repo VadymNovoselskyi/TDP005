@@ -19,15 +19,27 @@ Footman::Footman(/*Charactar*/ double maxHP, double currentHp, int movementSpeed
     sf::Sprite::setOrigin(playerSize.x / 2.0, playerSize.y / 2.0);
 }
 
-// Archer::Archer(/*Charactar*/  double maxHP, double currentHp, int movementSpeed, Point positon, Point direction,
-//             /*Enemy*/int attackRange, int attackSpeed, int XP_DROP, double damage, int score)
-//             :Enemy("enemy",maxHP, currentHp, movementSpeed, positon, direction, attackRange, attackSpeed, XP_DROP, damage, score){}
+Archer::Archer(/*Charactar*/ double maxHP, double currentHp, int movementSpeed, sf::Vector2f positon, sf::Vector2f direction,
+        int attackRange, int attackSpeed, int XP_DROP, double damage, int score, Player* player)
+            :Enemy(maxHP, currentHp, movementSpeed, positon, direction, attackRange, attackSpeed, XP_DROP, damage, score, player),
+            texture{TextureManager::instance()->getTexture("enemy.png")}        
+{
+    auto playerSize{texture->getSize()};
+    sf::Sprite::setTexture(*texture);
+    sf::Sprite::setOrigin(playerSize.x / 2.0, playerSize.y / 2.0);
+}
 
-// Kaboom::Kaboom(/*Charactar*/  double maxHP, double currentHp, int movementSpeed, Point positon, Point direction,
-//             /*Enemy*/int attackRange, int attackSpeed, int XP_DROP, double damage, int score,
-//             double explodeDamage, double explodeRange)
-//             :Enemy("enemy",maxHP, currentHp, movementSpeed, positon, direction, attackRange, attackSpeed, XP_DROP, damage, score),
-//             explodeDamage{explodeDamage}, explodeRange{explodeRange}{}
+Kaboom::Kaboom(/*Charactar*/ double maxHP, double currentHp, int movementSpeed, sf::Vector2f positon, sf::Vector2f direction,
+        int attackRange, int attackSpeed, int XP_DROP, double damage, int score, Player* player,
+            double explodeDamage, double explodeRange)
+            :Enemy(maxHP, currentHp, movementSpeed, positon, direction, attackRange, attackSpeed, XP_DROP, damage, score, player),
+            explodeDamage{explodeDamage}, explodeRange{explodeRange},
+            texture{TextureManager::instance()->getTexture("enemy.png")}        
+{
+    auto playerSize{texture->getSize()};
+    sf::Sprite::setTexture(*texture);
+    sf::Sprite::setOrigin(playerSize.x / 2.0, playerSize.y / 2.0);
+}
 
 double pythagoras(sf::Vector2f p) // ska vara en point
 {
@@ -45,37 +57,7 @@ void Enemy::draw(sf::RenderWindow *window) const
 { 
 
     window->draw(*this);
-    std::cout<<"inne i draw"<<std::endl;
-}
 
-
-//fnkar inte här me är hur den kan se ut i game.cc
-void Enemy::move()
-{
-
-    sf::Vector2f figure1 = player -> getPosition();
-    sf::Vector2f figure2 = getPosition();
-    double const SPEED{5};
-    direction.x = 0;
-    direction.y = 0;
-    std::cout<<"enemy x "<<figure2.x<<std::endl;
-    std::cout<<"enemy y "<<figure2.y<<std::endl;
-
-    //Point player {figure1.getPosition()};
-    //Point enemy  {figure2.getPosition()};
-    float rikting_x = figure1.x - figure2.x;
-    float rikting_y = figure1.y - figure2.y;
-
-
-    float len = std::sqrt(rikting_x * rikting_x + rikting_y * rikting_y);
-    if(len != 0)
-    {
-        direction.x = (rikting_x / len);
-        direction.y = (rikting_y / len);
-    }
-    
-    sf::Sprite::move(direction.x * SPEED, direction.y * SPEED);
-    std::cout<<"inne i move"<<std::endl;
 }
 
 std::string Enemy::getTag()
@@ -97,48 +79,133 @@ void Enemy::tryAttack(sf::Vector2f player)
     sleep(attackSpeed);//använd timestap istälet
 }
 
-
-
-// bool Kaboom::isInRange(sf::Vector2f player)
-// {
-
-//     if(pythagoras(player)<= attackRange)
-//     {
-//         sleep(15);
-//         Kaboom::explode(player);
-
-//     }
-    
-// }
-
-// void Kaboom::increaseSpeed(int newSpeed)
-// {
-//     movementSpeed += newSpeed;
-// }
-
-// void Kaboom::explode(sf::Vector2f player)
-// {
-
-    
-//     if(pythagoras(player) <= explodeRange)
-//     {
-//        // player.takeDamage(explodeDamage);
-//     }
-        
-//     //explodeRange
-//     //explodeDamage
-//     //kaboom die
-// }
-
+//Footman
 void Footman::attack()
 {
 
 }
-// void Kaboom::attack()
-// {
+
+void Footman::move()
+{
+
+    sf::Vector2f figure1 = player -> getPosition();
+    sf::Vector2f figure2 = getPosition();
+    double const SPEED{5};
+    direction.x = 0;
+    direction.y = 0;
+ 
+
+    //Point player {figure1.getPosition()};
+    //Point enemy  {figure2.getPosition()};
+    float rikting_x = figure1.x - figure2.x;
+    float rikting_y = figure1.y - figure2.y;
+
+
+    float len = std::sqrt(rikting_x * rikting_x + rikting_y * rikting_y);
+    if(len != 0)
+    {
+        direction.x = (rikting_x / len);
+        direction.y = (rikting_y / len);
+    }
     
-// }
-// void Archer::attack()
-// {
+    sf::Sprite::move(direction.x * SPEED, direction.y * SPEED);
+
+}
+
+
+bool Kaboom::isInRange(sf::Vector2f player, float len)
+{
+
+    if(len <= attackRange)
+    {
+        sleep(15);
+        Kaboom::explode(player);
+
+    }
     
-// }
+}
+
+
+
+void Kaboom::explode(sf::Vector2f player)
+{
+
+    
+    if(pythagoras(player) <= explodeRange)
+    {
+       // player.takeDamage(explodeDamage);
+    }
+        
+    //explodeRange
+    //explodeDamage
+    //kaboom die
+}
+
+void Kaboom::attack()
+{
+    
+}
+void Kaboom::move()
+{
+
+    sf::Vector2f figure1 = player -> getPosition();
+    sf::Vector2f figure2 = getPosition();
+    double SPEED{5};
+    direction.x = 0;
+    direction.y = 0;
+ 
+
+    //Point player {figure1.getPosition()};
+    //Point enemy  {figure2.getPosition()};
+    float rikting_x = figure1.x - figure2.x;
+    float rikting_y = figure1.y - figure2.y;
+
+
+    float len = std::sqrt(rikting_x * rikting_x + rikting_y * rikting_y);
+    if(len != 0)
+    {
+        direction.x = (rikting_x / len);
+        direction.y = (rikting_y / len);
+    }
+    if(len <= 300)
+    {
+        SPEED = 10.0;
+    }
+    
+    sf::Sprite::move(direction.x * SPEED, direction.y * SPEED);
+
+}
+
+
+
+void Archer::attack()
+{
+    
+}
+void Archer::move()
+{
+
+    sf::Vector2f figure1 = player -> getPosition();
+    sf::Vector2f figure2 = getPosition();
+    double const SPEED{5};
+    direction.x = 0;
+    direction.y = 0;
+ 
+
+    //Point player {figure1.getPosition()};
+    //Point enemy  {figure2.getPosition()};
+    float rikting_x = figure1.x - figure2.x;
+    float rikting_y = figure1.y - figure2.y;
+
+
+    float len = std::sqrt(rikting_x * rikting_x + rikting_y * rikting_y);
+    if(len != 0)
+    {
+        direction.x = (rikting_x / len);
+        direction.y = (rikting_y / len);
+    }
+    if(len > 500)
+    {
+        sf::Sprite::move(direction.x * SPEED, direction.y * SPEED);
+    }
+}

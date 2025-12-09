@@ -19,7 +19,7 @@ class Enemy : public Character
 
         void draw(sf::RenderWindow *window)const override;
         
-        void move() override;
+        //void move() override;
         void die() override;
         void onCollision(std::string const &othe) override;
 
@@ -44,43 +44,47 @@ class Footman :public Enemy
         Footman(/*Charactar*/  double maxHP, double currentHp, int movementSpeed, sf::Vector2f positon, sf::Vector2f direction,
            /*Enemy*/ int attackRange, int attackSpeed, int XP_DROP, double damage, int score, Player* player);
         void attack() override;
+        void move() override;
 
     private:
         sf::Texture const *texture;
         
 };
 
-// class Kaboom:public Enemy
-// {
-//     public:
-//         Kaboom(/*Charactar*/  double maxHP, double currentHp, int movementSpeed, sf::Vector2f positon, sf::Vector2f direction,
-//            /*Enemy*/ int attackRange, int attackSpeed, int XP_DROP, double damage, int score,
-//         double explodeDamage, double explodeRange);
-//         void attack() override;
+class Kaboom:public Enemy
+{
+    public:
+        Kaboom(/*Charactar*/  double maxHP, double currentHp, int movementSpeed, sf::Vector2f positon, sf::Vector2f direction,
+           /*Enemy*/ int attackRange, int attackSpeed, int XP_DROP, double damage, int score, Player* player,
+        double explodeDamage, double explodeRange);
+        void attack() override;
+        void move() override;
 
-//     private:
-//         bool isInRange(sf::Vector2f);
-//         void increaseSpeed(int);
-//         void explode(sf::Vector2f);
-//         double explodeRange;
-//         double explodeDamage;
-// };
+    private:
+        bool isInRange(sf::Vector2f ,float len);
+        void explode(sf::Vector2f);
+        double explodeRange;
+        double explodeDamage;
+        sf::Texture const *texture;
+};
 
-// class Archer:public Enemy
-// {
-//     public:
-//         Archer(/*Charactar*/  double maxHP, double currentHp, int movementSpeed, sf::Vector2f positon, sf::Vector2f direction,
-//             int attackRange, int attackSpeed, int XP_DROP, double damage, int score);
-//     void attack() override;
+class Archer:public Enemy
+{
+    public:
+        Archer(/*Charactar*/ double maxHP, double currentHp, int movementSpeed, sf::Vector2f positon, sf::Vector2f direction,
+           /*Enemy*/ int attackRange, int attackSpeed, int XP_DROP, double damage, int score, Player* player);
+    void attack() override;
+    void move() override;
     
-//     protected:
-//         struct Projectles
-//         {
+    protected:
+        struct Projectles
+        {
 
-//         };    
-//     private:
-//         void shoot();
-//};
+        };    
+    private:
+        void shoot();
+        sf::Texture const *texture;
+};
 
 
 

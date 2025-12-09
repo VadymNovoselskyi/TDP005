@@ -2,7 +2,7 @@
 #include <cmath>
 #include <iostream>
 
-double const SPEED{5};
+double SPEED{5};
 int const FPS{60};
 auto const UPDATE_TIME{sf::milliseconds(1000.0 / FPS)};
 
@@ -51,7 +51,11 @@ void processMovementPE(sf::Sprite &figure1, sf::CircleShape &figure2)
         new_direction.x = (rikting_x / len);
         new_direction.y = (rikting_y / len);
     }
-    figure2.move(sf::Vector2f(new_direction.x * SPEED, new_direction.y * SPEED));
+    if(len > 500)
+    {
+        figure2.move(sf::Vector2f(new_direction.x * SPEED, new_direction.y * SPEED));
+    }
+
 
 }
 
