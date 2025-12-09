@@ -4,124 +4,157 @@
 
 #include "StateMachine.h"
 #include "TextureManager.h"
+#include "Window.h"
 
-Player::Player(double maxHP,
-               double currentHP,
-               int movementSpeed,
+float const Player::BOX_OFFSET{18};
+float const Player::XP_BOX_Y_OFFSET{78};
+sf::Color const Player::HP_BOX_COLOR{204, 0, 0};
+sf::Color const Player::CURRENT_HP_BOX_COLLOR{128, 0, 0};
+sf::Color const Player::XP_BOX_COLOR{118, 186, 27};
+sf::Color const Player::CURRENT_XP_BOX_COLOR{76, 154, 42};
+
+float static const START_HP = 100;
+
+Player::Player(double startHP,
+               int movementSpeed, 
                sf::Vector2f const &position,
-               sf::Vector2f const &direction,
-               std::string const &name,
+               std::string const &tag,
                int levels,
-               float damageMultiplier)
-    : Character("player", maxHP, currentHP, movementSpeed, position, direction), name{name},
-      levels{levels}, damageMultiplier{damageMultiplier},
+               double damageMultiplier)
+    : Character(tag, startHP, movementSpeed, position),
+      levels{levels}, damageMultiplier{damageMultiplier}, oldPosition{position},
       texture{TextureManager::instance()->getTexture("player.png")}
 {
     auto playerSize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
     sf::Sprite::setOrigin(playerSize.x / 2.0, playerSize.y / 2.0);
+    hp = startHP;
+    maxHP = startHP;
 }
 
 void Player::move()
 {
+    sf::Vector2f direction;
     direction.x = 0;
     direction.y = 0;
+    oldPosition = sf::Sprite::getPosition();
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
     {
-        direction.y = NORTH;
-       // rotation = UP;
+        direction.y = Direction::NORTH;
+
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
     {
-        direction.x = EAST;
-        //rotation = LEFT;
+        direction.x = Direction::EAST;
+
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
     {
-        direction.y = SOUTH;
-        //rotation = DOWN;
+        direction.y = Direction::SOUTH;
+
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
     {
-        direction.x = WEST;
-        //rotation = RIGHT;
+        direction.x = Direction::WEST;
+
     }
     if (std::abs(direction.x) + std::abs(direction.y) > 1)
     {
         direction.x = direction.x / std::sqrt(2);
         direction.y = direction.y / std::sqrt(2);
 
-        // matematic explination:
-        // https://www.matteboken.se/lektioner/gymnasiet/matte-fortsattning-niva-2/trigonometri/radianer#!/
-        // used to check calculation with degrees
+    } //
 
-        // if (direction.y >= 0) // down
-        // {
-        //     // multiplying by (180/PI)to convert radian to degrees and subtract to flip rotation.
-        //     rotation = 180.f - std::asin(direction.x) * (180.f / M_PI);
-        // }
-        // else // up
-        // {
-        //     rotation = std::asin(direction.x) * (180.f / M_PI);
-        // }
-
-    } // https://www.matteboken.se/lektioner/gymnasiet/matte-fortsattning-niva-1/trigonometri/enhetscirkeln#!/
-      // - fixa rotaiton utifrån mus
-//     rotation = acos((sf::Mouse::getPosition().x - position.x) / 
-//                       sqrt(pow(sf::Mouse::getPosition().x - position.x, 2) + 
-//                            pow(sf::Mouse::getPosition().y - position.y, 2))) 
-//                      * 180.f / 3.14159265f;
-
-// if (sf::Mouse::getPosition().y - position.y < 0)
-//     rotation = 360.f - rotation;
-    std::cout << "player pos: " << "X: " << position.x << "Y: " << position.y << std::endl;
-    std::cout << "mouse pos: " << "X: " << sf::Mouse::getPosition().x << "Y: " << sf::Mouse::getPosition().y << std::endl;
-    rotation = atan((sf::Mouse::getPosition().y - position.y) /
-                (sf::Mouse::getPosition().x - position.x)) * 180 / M_PI;
-    std::cout <<"rotation: " << rotation << std::endl;
-        
-    sf::Sprite::setRotation(rotation);
     sf::Sprite::move(sf::Vector2f(direction.x * movementSpeed, direction.y * movementSpeed));
+}
+void Player::updateRotation(sf::RenderWindow *window)
+{
+    // kollade upp om det fans någon atan funktion och hittad:
+    // https://cppreference.com/w/c/numeric/math/atan2.html kollade upp hur jag skulle räkna
+    // enhetscirklen:
+    // https://www.matteboken.se/lektioner/gymnasiet/matte-fortsattning-niva-1/trigonometri/enhetscirkeln#!/
+    double rotationRadians =
+        std::atan2((sf::Mouse::getPosition(*window).y - (Window::WINDOW_HEIGHT / 2)),
+                   (sf::Mouse::getPosition(*window).x - (Window::WINDOW_WIDTH / 2)));
+    rotation = rotationRadians * (180 / M_PI) + 90; // transform radians to rtoation
 
-
+    sf::Sprite::setRotation(rotation);
 }
 
 void Player::onCollision(std::string const &other)
 {
-    if (other == "enemy")
-    {
-    }
+    // if (other == "enemy")
+    // {
+
+    // }
+    // if(other == "box")
+    // {
+
+    // }
+}
+void Player::heal(double amount)
+{
+    hp += amount;
+}
+void Player::increaseMaxHP(double amount)
+{
+    maxHP +=amount;
+}
+void Player::increaseSpeed(int amount)
+{
+    movementSpeed += amount;
+}
+void Player::increaseDamageMultiplyer(double amount)
+{
+    damageMultiplier += amount;
 }
 
 void Player::die()
 {
+    //reset xp, hp ,damage 
     StateMachine::instance()->finishGame();
 }
 
-void Player::draw(sf::RenderWindow *window) const
+void Player::draw(sf::RenderWindow *window)
 {
     window->draw(*this);
     drawInfo(window);
 }
 
-void Player::drawInfo(sf::RenderWindow *window) const
+void Player::drawInfo(sf::RenderWindow *window)
 {
-    // -fixa position utifrån kamera
-    // drawBox(window, HPBox, positon.x +60, positon.y -60, 150, 50, 128, 0 ,0 ); // hp box
-    // background drawBox(window, CurrentHPBox, positon.x +60, positon.y -60, 150 * ( currentHP /
-    // maxHP), 50, 204, 0 ,0 ); // curent hp
 
-    // drawBox(window, XPBox, positon.x +120, positon.y - 120 +60, 150, 50, 76, 154 ,42 ); // xp
-    // background if (xp < 0)
-    // {
-    //     drawBox(window, CurrentXPBox, positon.x +120,  positon.y - 120, 150 * (xp / maxXP), 50,
-    //     118, 186 ,27 ); // current xp
-    // }
-    // else
-    // {
-    //     drawBox(window, CurrentXPBox, positon.x +120, positon.y - 120, 0.1, 50, 118, 186 ,27 );
-    //     // current xp
-    // }
+    drawBox(window, // hp boxbackground -- fixa static const för ofset, fixa sf
+            HPBox,
+            sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2) + BOX_OFFSET,  // x
+            sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2) + BOX_OFFSET, // y
+            150,                                                                    // lenght
+            35,                                                                     // widht
+            HP_BOX_COLOR);                                                          // color
+    drawBox(window,
+            currentHPBox,
+            sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2) + BOX_OFFSET,
+            sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2) + BOX_OFFSET,
+            150 * (hp / maxHP),
+            35,
+            CURRENT_HP_BOX_COLLOR); // curent hp
+
+    drawBox(window,
+            xpBox,
+            sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2) + BOX_OFFSET,
+            sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2) + XP_BOX_Y_OFFSET,
+            150,
+            35,
+            XP_BOX_COLOR); // xp background
+
+    drawBox(window,
+            currentXPBox,
+            sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2) + BOX_OFFSET,
+            sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2) + XP_BOX_Y_OFFSET,
+            0.1,
+            35,
+            CURRENT_XP_BOX_COLOR);
+    // current xp -- if sats om xp 0 = 0 - sätt längd 0 annars räkna ut
 }
 
 void Player::drawBox(sf::RenderWindow *window,
@@ -130,32 +163,11 @@ void Player::drawBox(sf::RenderWindow *window,
                      float boxPosY,
                      float boxWidth,
                      float boxheight,
-                     int r,
-                     int g,
-                     int b)
+                     sf::Color boxColor)
 
 {
     box.setSize(sf::Vector2f(boxWidth, boxheight));
-    box.setFillColor(sf::Color(r, g, b));
+    box.setFillColor(boxColor);
     box.setPosition(boxPosX, boxPosY);
     window->draw(box);
 }
-
-// void Player::levelUP(Choises choise) // skapa levelup manager
-// {
-//     switch (choise)
-//     {
-//     case HP: // hp
-//         maxHP += 50;
-//         break;
-//     case SPEED: // speed
-//         movementSpeed += 5;
-//         break;
-
-//     case DAMAGE: // damage
-//         damageMultiplier += 0.5;
-//     case WEAPON: // weapon
-
-//         break;
-//     }
-// }

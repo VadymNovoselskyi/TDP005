@@ -27,7 +27,10 @@ Window::~Window()
         delete menu;
     }
 }
-
+sf::RenderWindow* Window::getRenderWindow() const
+{
+    return window;
+}
 void Window::handleEvents()
 {
     sf::Event event{};

@@ -90,7 +90,7 @@ void GameEngine::run()
 
         if (StateMachine::instance()->state() == GameState::IN_GAME)
         {
-            Map::instance()->handelUpdate();
+            Map::instance()->handelUpdate(window->getRenderWindow());
         }
         window->draw();
 
