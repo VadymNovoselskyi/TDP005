@@ -1,20 +1,27 @@
-// #include"Enemy.h"
-// #include"Map.h"
-// #include <vector>
+#ifndef Spawner_H
+#define Spawner_H
 
-// class Spawner
-// {
-//     public:
-//         Spawner(double spawnRate);
-//         void spwanEnemies();
-//         sf::Vector2f choseSpawnPos();
 
-//     private:
-//         std::vector <Enemy*> enemies;
-//         double spwanRate;
-//         sf::Vector2f spwanPoint;
+#include"Enemy.h"
+#include"Map.h"
+#include <vector>
+#include "Player.h"
+
+class Spawner
+{
+    public:
+        Spawner(double spawnRate, Player* player);
+        void spwanEnemies();
+        sf::Vector2f choseSpawnPos();
+
+    private:
+        std::vector <Enemy*> enemies;
+        double spawnRate;
+        sf::Vector2f spwanPoint;
+        Player* player;
+        
         
 
 // };
 
-
+#endif

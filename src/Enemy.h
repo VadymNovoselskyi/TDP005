@@ -10,8 +10,8 @@
 class Enemy : public Character
 {
     public:
-        Enemy(/*Charactar*/  float maxHP, float currentHP, int movementSpeed, sf::Vector2f positon, sf::Vector2f direction,
-           /*Enemy*/ int attackRange, int attackSpeed, int XP_DROP, double damage, int score, Player& player);
+        Enemy(/*Charactar*/  double maxHP, double currentHP, int movementSpeed, sf::Vector2f positon, sf::Vector2f direction,
+           /*Enemy*/ int attackRange, int attackSpeed, int XP_DROP, double damage, int score, Player* player);
         virtual ~Enemy();
 
         virtual void attack() = 0;
@@ -19,64 +19,72 @@ class Enemy : public Character
 
         void draw(sf::RenderWindow *window)const override;
         
-        void move() override;
+        //void move() override;
         void die() override;
+        void onCollision(std::string const &othe) override;
 
     protected:
 
-        void tryAttack(sf::Vector2f);
+        void tryAttack(float leng);
         //void calcPath(sf::Vector2f);
         int attackRange;
         int attackSpeed;
         int XP_DROP;
         double damage;
         int score; // inte en privat för olika enyme är vär olika score
-        Player& player;
+        Player* player;
     private:
         std::string tag{"enemy"};
 };
 
 
-// class Footman :public Enemy
-// {
-//     public:
-//         Footman(/*Charactar*/  double maxHP, double currentHp, int movementSpeed, sf::Vector2f positon, sf::Vector2f direction,
-//            /*Enemy*/ int attackRange, int attackSpeed, int XP_DROP, double damage, int score);
-//         void attack() override;
+class Footman :public Enemy
+{
+    public:
+        Footman(/*Charactar*/  double maxHP, double currentHp, int movementSpeed, sf::Vector2f positon, sf::Vector2f direction,
+           /*Enemy*/ int attackRange, int attackSpeed, int XP_DROP, double damage, int score, Player* player);
+        void attack() override;
+        void move() override;
+
+    private:
+        sf::Texture const *texture;
         
-// };
+};
 
-// class Kaboom:public Enemy
-// {
-//     public:
-//         Kaboom(/*Charactar*/  double maxHP, double currentHp, int movementSpeed, sf::Vector2f positon, sf::Vector2f direction,
-//            /*Enemy*/ int attackRange, int attackSpeed, int XP_DROP, double damage, int score,
-//         double explodeDamage, double explodeRange);
-//         void attack() override;
+class Kaboom:public Enemy
+{
+    public:
+        Kaboom(/*Charactar*/  double maxHP, double currentHp, int movementSpeed, sf::Vector2f positon, sf::Vector2f direction,
+           /*Enemy*/ int attackRange, int attackSpeed, int XP_DROP, double damage, int score, Player* player,
+        double explodeDamage, double explodeRange);
+        void attack() override;
+        void move() override;
 
-//     private:
-//         bool isInRange(sf::Vector2f);
-//         void increaseSpeed(int);
-//         void explode(sf::Vector2f);
-//         double explodeRange;
-//         double explodeDamage;
-// };
+    private:
+        bool isInRange(float len);
+        void explode(float len);
+        double explodeRange;
+        double explodeDamage;
+        sf::Texture const *texture;
+};
 
-// class Archer:public Enemy
-// {
-//     public:
-//         Archer(/*Charactar*/  double maxHP, double currentHp, int movementSpeed, sf::Vector2f positon, sf::Vector2f direction,
-//             int attackRange, int attackSpeed, int XP_DROP, double damage, int score);
-//     void attack() override;
+class Archer:public Enemy
+{
+    public:
+        Archer(/*Charactar*/ double maxHP, double currentHp, int movementSpeed, sf::Vector2f positon, sf::Vector2f direction,
+           /*Enemy*/ int attackRange, int attackSpeed, int XP_DROP, double damage, int score, Player* player);
+    void attack() override;
+    void move() override;
     
-//     protected:
-//         struct Projectles
-//         {
+    protected:
+        struct Projectles
+        {
 
-//         };    
-//     private:
-//         void shoot();
-//};
+        };    
+    private:
+        void shoot();
+        sf::Texture const *texture;
+};
 
 
 

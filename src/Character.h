@@ -10,8 +10,8 @@ class Character : public Entity
 {
   public:
     Character(std::string const &tag,
-              float maxHP,
-              float currentHP,
+              double maxHP,
+              double currentHP,
               int movementSpeed,
               sf::Vector2f const &position,
               sf::Vector2f const &direction);
@@ -23,8 +23,8 @@ class Character : public Entity
 
   protected:
     // sf::SDL_Surface* sprite;  -sprite till karaktrer
-    float maxHP;
-    float currentHP;
+    double maxHP;
+    double currentHP;
     int movementSpeed;
     sf::Vector2f direction;
     sf::Vector2f position;

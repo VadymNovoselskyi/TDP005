@@ -6,6 +6,7 @@
 #include "TextureManager.h"
 #include "TileManager.h"
 #include "WeaponManager.h"
+#include "Spawner.h"
 
 int const GameEngine::FPS{60};
 sf::Time const GameEngine::UPDATE_INTERVAL{sf::milliseconds(1000.0 / GameEngine::FPS)};
@@ -29,6 +30,7 @@ GameEngine::GameEngine() : window{}, clock{}
                               0,
                               0)};
     Map::init(player, TileManager::instance()->getObstacles());
+    Spawner spawner{Spawner(5.0, player)};
 
     std::vector<Menu *> menus{};
 
