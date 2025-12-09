@@ -50,6 +50,7 @@ class Player : public Character
     void onCollision(std::string const &other) override;
 
   private:
+    double const startHP;
     double hp;
     double maxHP;
     float rotation;
@@ -87,7 +88,6 @@ class Player : public Character
                                    // used by both xp and hp
     float static const XP_BOX_Y_OFFSET; // a set offset by 78 for the xp box to be set under the hp
                                         // box
-    float static const START_HP;
 };
 
 #endif /*PLAYER_H*/

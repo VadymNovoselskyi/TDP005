@@ -14,9 +14,9 @@ sf::Color const Player::CURRENT_HP_BOX_COLLOR{128, 0, 0};
 sf::Color const Player::XP_BOX_COLOR{118, 186, 27};
 sf::Color const Player::CURRENT_XP_BOX_COLOR{76, 154, 42};
 
-float static const START_HP = 100;
 
-Player::Player(double hp,
+
+Player::Player(double const startHP,
                int movementSpeed,
                sf::Vector2f const &position,
                std::string const &tag,
@@ -25,7 +25,7 @@ Player::Player(double hp,
                ExperienceManager *expManager,
                WeaponManager *weaponManager,
                std::function<void(std::vector<LevelUpInfo>)> const &onLevelUp)
-    : Character(tag, hp, movementSpeed, position), hp{START_HP}, rotation{},
+    : Character(tag, startHP, movementSpeed, position), startHP{startHP}, rotation{},
       levels{levels}, damageMultiplier{damageMultiplier}, oldPosition{position},
       expManager(expManager), weaponManager{weaponManager}, onLevelUp{onLevelUp}
 {
@@ -33,6 +33,8 @@ Player::Player(double hp,
     auto playerSize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
     sf::Sprite::setOrigin(playerSize.x / 2.0, playerSize.y / 2.0);
+    hp = startHP;
+    maxHP = startHP;
 }
 
 void Player::move()
@@ -130,8 +132,9 @@ void Player::die()
 {
     // reset xp, hp ,damage
     StateMachine::instance()->finishGame();
-    hp = START_HP;
-    maxHP = START_HP;
+    sf::Sprite::move(sf::Vector2f(Window::WINDOW_WIDTH / 2, Window::WINDOW_HEIGHT / 2));
+    hp = startHP;
+    maxHP = startHP;
     
 }
 
