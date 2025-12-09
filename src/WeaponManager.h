@@ -17,7 +17,7 @@ class WeaponManager
     void setWeaponsRotation(double rotaiton);
 
     Weapon *getWeapon(std::string const &name);
-    void getNewWeapon();
+    void receiveNewWeapon(std::string const &name);
 
   private:
     std::vector<Weapon *> activeWeapons;

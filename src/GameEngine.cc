@@ -44,6 +44,7 @@ GameEngine::GameEngine() : window{}, spawner{}, clock{}
                               [&levelUpMenu](std::vector<LevelUpInfo> const &levelUpInfo)
                               { levelUpMenu->createOptions(levelUpInfo); })};
     // weaponManager->getWeapon("AR");
+    weaponManager->receiveNewWeapon("AR");
 
     Map::init(player, TileManager::instance()->getObstacles());
     spawner = {new Spawner(player)};

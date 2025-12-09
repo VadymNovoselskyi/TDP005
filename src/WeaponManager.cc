@@ -44,10 +44,15 @@ void WeaponManager::setWeaponsRotation(double rotaiton)
 
 Weapon *WeaponManager::getWeapon(std::string const &name)
 {
-    auto it = std::find_if(activeWeapons.begin(),
-                           activeWeapons.end(),
-                           [name](Weapon *w) { return w->getName() == name; });
-    return *it;
+    auto weapon = std::find_if(activeWeapons.begin(),
+                               activeWeapons.end(),
+                               [name](Weapon *w) { return w->getName() == name; });
+    return *weapon;
 }
 
-void generatWeapon(int number /*0-3*/);
+void WeaponManager::receiveNewWeapon(std::string const &name)
+{
+    auto weapon = std::find_if(
+        weapons.begin(), weapons.end(), [name](Weapon *w) { return w->getName() == name; });
+    activeWeapons.push_back(*weapon);
+}

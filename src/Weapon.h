@@ -38,8 +38,9 @@ class Weapon : public sf::Sprite::Transformable
     sf::Time attackSpeed;
 
     Rarity rarity;
-    void uppdate();
     double speed;
+
+    void update();
 };
 
 #endif

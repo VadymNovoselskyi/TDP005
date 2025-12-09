@@ -28,7 +28,7 @@ std::string Weapon::getName()
     return name;
 }
 
-void Weapon::uppdate()
+void Weapon::update()
 {
     do
     {
