@@ -20,8 +20,6 @@ class Spawner
         sf::Vector2f spwanPoint;
         Player* player;
         
-        
-
-// };
+};
 
 #endif

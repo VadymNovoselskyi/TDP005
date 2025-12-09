@@ -13,8 +13,8 @@ Spawner::Spawner(double spawnRate, Player* player):spawnRate{spawnRate}, player{
     Spawner::spwanEnemies();
 }
 
-// void Spawner::spwanEnemies()
-// {
+void Spawner::spwanEnemies()
+{
 
     Footman* enemy = new Footman(100.0,
                              100.0,
