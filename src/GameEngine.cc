@@ -13,7 +13,7 @@
 int const GameEngine::FPS{60};
 sf::Time const GameEngine::UPDATE_INTERVAL{sf::milliseconds(1000.0 / GameEngine::FPS)};
 
-GameEngine::GameEngine() : window{}, clock{}, spawner{}
+GameEngine::GameEngine() : window{}, spawner{}, clock{}
 {
     // Init the StateMachine, TextureManager, Map and the menus
     StateMachine::init();
@@ -47,16 +47,11 @@ GameEngine::GameEngine() : window{}, clock{}, spawner{}
 
     Map::init(player, TileManager::instance()->getObstacles());
     spawner = {new Spawner(player)};
-    std::vector<Menu *> menus{};
-
-    menus.push_back(new StartMenu());
-    menus.push_back(new PauseMenu());
-    menus.push_back(new GameOverMenu());
-    menus.push_back(new LevelUpMenu());
 
     // Init the menu and add exit listener
     window = new Window(menus);
-    // Should I do anything with STARTING_GAME and CONTINUING_GAME
+
+    // TODO: reset the game state onStart etc
     StateMachine::instance()->addListener("onStart",
                                           [](GameState gameState)
                                           {
@@ -102,7 +97,7 @@ void GameEngine::run()
 
         if (StateMachine::instance()->state() == GameState::IN_GAME)
         {
-            spawner ->spwanEnemies();
+            spawner->spwanEnemies();
             Map::instance()->handelUpdate(window->getRenderWindow());
         }
         window->draw();

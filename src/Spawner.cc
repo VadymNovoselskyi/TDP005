@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <iostream>
 
-Spawner::Spawner(Player* player):spawnRate{200.0}, player{player}
+Spawner::Spawner(Player *player) : spawnRate{200.0}, player{player}, counter{0}
 {
     Spawner::spwanEnemies();
 }
@@ -12,20 +12,11 @@ void Spawner::spwanEnemies()
 {
     Footman *enemy = new Footman(100.0, 4, {10, 10}, 12, 6, 10, 5, 2, player);
 
-                    Map::instance()
-                        ->addEntity(enemy);
+    Map::instance()->addEntity(enemy);
+    // Spawner::incresSpawnRate();
+    // std::cout<<"nolsets "<<conter<<std::endl;
 
-    
-        conter = 0;
-        //Spawner::incresSpawnRate();
-        //std::cout<<"nolsets "<<conter<<std::endl;
- 
-        //std::cout<<"i spawner "<<conter<<std::endl;
-    }
-    else
-    {
-        conter +=1;
-    }
+    // std::cout<<"i spawner "<<conter<<std::endl;
 }
 
 sf::Vector2f Spawner::choseSpawnPos()
