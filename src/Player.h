@@ -38,9 +38,9 @@ class Player : public Character
 
     // void levelUP(Choises choise);
 
-    void drawInfo(sf::RenderWindow *window) const;
+    void drawInfo(sf::RenderWindow *window);
 
-    void draw(sf::RenderWindow *window) const;
+    void draw(sf::RenderWindow *window);
 
     void move();
     void uppdateRotation(sf::RenderWindow *window);

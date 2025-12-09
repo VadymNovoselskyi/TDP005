@@ -66,7 +66,7 @@ void Player::move()
         //     rotation = std::asin(direction.x) * (180.f / M_PI);
         // }
 
-    } // 
+    } //
       // - fixa rotaiton utifrån mus
     //     rotation = acos((sf::Mouse::getPosition().x - position.x) /
     //                       sqrt(pow(sf::Mouse::getPosition().x - position.x, 2) +
@@ -80,11 +80,13 @@ void Player::move()
 }
 void Player::uppdateRotation(sf::RenderWindow *window)
 {
-    //kollade upp om det fans någon atan funktion och hittad: https://cppreference.com/w/c/numeric/math/atan2.html
-    //kollade upp hur jag skulle räkna enhetscirklen: https://www.matteboken.se/lektioner/gymnasiet/matte-fortsattning-niva-1/trigonometri/enhetscirkeln#!/
+    // kollade upp om det fans någon atan funktion och hittad:
+    // https://cppreference.com/w/c/numeric/math/atan2.html kollade upp hur jag skulle räkna
+    // enhetscirklen:
+    // https://www.matteboken.se/lektioner/gymnasiet/matte-fortsattning-niva-1/trigonometri/enhetscirkeln#!/
     double rotationRadians =
         std::atan2((sf::Mouse::getPosition(*window).y - (Window::WINDOW_HEIGHT / 2)),
-                  (sf::Mouse::getPosition(*window).x - (Window::WINDOW_WIDTH / 2)));
+                   (sf::Mouse::getPosition(*window).x - (Window::WINDOW_WIDTH / 2)));
     rotation = rotationRadians * (180 / M_PI) + 90; // transform radians to rtoation
 
     sf::Sprite::setRotation(rotation);
@@ -102,30 +104,62 @@ void Player::die()
     StateMachine::instance()->finishGame();
 }
 
-void Player::draw(sf::RenderWindow *window) const
+void Player::draw(sf::RenderWindow *window)
 {
     window->draw(*this);
     drawInfo(window);
 }
 
-void Player::drawInfo(sf::RenderWindow *window) const
+void Player::drawInfo(sf::RenderWindow *window)
 {
-    // -fixa position utifrån kamera
-    // drawBox(window, HPBox, positon.x +60, positon.y -60, 150, 50, 128, 0 ,0 ); // hp box
-    // background drawBox(window, CurrentHPBox, positon.x +60, positon.y -60, 150 * ( currentHP /
-    // maxHP), 50, 204, 0 ,0 ); // curent hp
+    // widht: window width - playerx / 2, height: window height - playery / 2
+    //  -fixa position utifrån kamera
+    drawBox(window, // hp boxbackground -- fixa static const för ofset, fixa sf
+            HPBox,
+            sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2) + 18,  // x
+            sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2) + 18, // y
+            150,                                                            // lenght
+            35,                                                             // widht
+            128,                                                            // r
+            0,                                                              // g
+            0);                                                             // b
+    drawBox(window,
+            CurrentHPBox,
+            sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2) + 18,
+            sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2) + 18,
+            150 * (currentHP / maxHP),
+            35,
+            204,
+            0,
+            0); // curent hp
 
-    // drawBox(window, XPBox, positon.x +120, positon.y - 120 +60, 150, 50, 76, 154 ,42 ); // xp
-    // background if (xp < 0)
-    // {
-    //     drawBox(window, CurrentXPBox, positon.x +120,  positon.y - 120, 150 * (xp / maxXP), 50,
-    //     118, 186 ,27 ); // current xp
+    drawBox(window,
+            XPBox,
+            sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2) + 18,
+            sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2) + 78,
+            150,
+            35,
+            76,
+            154,
+            42); // xp background
+    // if (xp < 0)
+    // { //TODO: add method to get current procentage of xp
+    //     drawBox(window, CurrentXPBox,sf::Sprite::getPosition().x +120,
+    //     sf::Sprite::getPosition().y - 120, 150 * (1 / 0.5), 50, 118, 186 ,27 ); // current xp
     // }
     // else
     // {
-    //     drawBox(window, CurrentXPBox, positon.x +120, positon.y - 120, 0.1, 50, 118, 186 ,27 );
-    //     // current xp
-    // }
+    drawBox(window,
+            CurrentXPBox,
+            sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2) + 18,
+            sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2) + 78,
+            0.1,
+            35,
+            118,
+            186,
+            27);
+    // current xp
+    //}
 }
 
 void Player::drawBox(sf::RenderWindow *window,
@@ -143,6 +177,7 @@ void Player::drawBox(sf::RenderWindow *window,
     box.setFillColor(sf::Color(r, g, b));
     box.setPosition(boxPosX, boxPosY);
     window->draw(box);
+    
 }
 
 // void Player::levelUP(Choises choise) // skapa levelup manager
