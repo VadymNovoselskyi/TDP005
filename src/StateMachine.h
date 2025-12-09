@@ -17,7 +17,7 @@ class StateMachine
     static void deleteInstance();
 
     // .clang-tidy that recommended it
-    [[nodiscard]] GameState state() const;
+    GameState state() const;
 
     void openStartMenu();
     void chooseUsername();

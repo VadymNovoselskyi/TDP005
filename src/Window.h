@@ -18,7 +18,7 @@ class Window
     void closeWindow();
 
     // .clang-tidy again
-    [[nodiscard]] bool isClosed() const;
+    bool isClosed() const;
 
     int static const WINDOW_WIDTH;
     int static const WINDOW_HEIGHT;

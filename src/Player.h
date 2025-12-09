@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "Character.h"
-#include "LevelUPManager.h"
+#include "ExperienceManager.h"
 #include "GameState.h"
 #include "StateMachine.h"
 
@@ -42,7 +42,7 @@ class Player : public Character
 
     void drawInfo(sf::RenderWindow *window) const;
     
-    void draw(sf::RenderWindow *window) const;
+    void draw(sf::RenderWindow *window) const override;
 
     void move() override;
     void die() override;
