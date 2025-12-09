@@ -30,13 +30,14 @@ void Map::deleteInstance()
     Map::instancePtr = nullptr;
 }
 
-void Map::handelUpdate()
+void Map::handelUpdate(sf::RenderWindow *window)
 {
+
     for (Entity *e : entities)
     {
         e->move();
     }
-
+    player ->uppdateRotation( window);
     // TODO: watching walls and gas is too expensive, come up with other ways to do it
     for (auto it1{entities.begin()}; it1 != entities.end(); ++it1) // de som är i loopen är
     // tagen från tdp004 https://www.ida.liu.se/~TDP004/current/sal/slides/tdp004_9.pdf s.20

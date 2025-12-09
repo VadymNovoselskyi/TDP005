@@ -16,7 +16,7 @@ class Window
     void handleEvents();
     void draw();
     void closeWindow();
-
+    sf::RenderWindow* getRenderWindow() const;
     // .clang-tidy again
     [[nodiscard]] bool isClosed() const;
 

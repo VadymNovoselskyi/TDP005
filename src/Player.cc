@@ -4,6 +4,7 @@
 
 #include "StateMachine.h"
 #include "TextureManager.h"
+#include "Window.h"
 
 Player::Player(double maxHP,
                double currentHP,
@@ -29,22 +30,22 @@ void Player::move()
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
     {
         direction.y = NORTH;
-       // rotation = UP;
+        // rotation = UP;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
     {
         direction.x = EAST;
-        //rotation = LEFT;
+        // rotation = LEFT;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
     {
         direction.y = SOUTH;
-        //rotation = DOWN;
+        // rotation = DOWN;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
     {
         direction.x = WEST;
-        //rotation = RIGHT;
+        // rotation = RIGHT;
     }
     if (std::abs(direction.x) + std::abs(direction.y) > 1)
     {
@@ -65,25 +66,28 @@ void Player::move()
         //     rotation = std::asin(direction.x) * (180.f / M_PI);
         // }
 
-    } // https://www.matteboken.se/lektioner/gymnasiet/matte-fortsattning-niva-1/trigonometri/enhetscirkeln#!/
+    } // 
       // - fixa rotaiton utifrån mus
-//     rotation = acos((sf::Mouse::getPosition().x - position.x) / 
-//                       sqrt(pow(sf::Mouse::getPosition().x - position.x, 2) + 
-//                            pow(sf::Mouse::getPosition().y - position.y, 2))) 
-//                      * 180.f / 3.14159265f;
+    //     rotation = acos((sf::Mouse::getPosition().x - position.x) /
+    //                       sqrt(pow(sf::Mouse::getPosition().x - position.x, 2) +
+    //                            pow(sf::Mouse::getPosition().y - position.y, 2)))
+    //                      * 180.f / 3.14159265f;
 
-// if (sf::Mouse::getPosition().y - position.y < 0)
-//     rotation = 360.f - rotation;
-    std::cout << "player pos: " << "X: " << position.x << "Y: " << position.y << std::endl;
-    std::cout << "mouse pos: " << "X: " << sf::Mouse::getPosition().x << "Y: " << sf::Mouse::getPosition().y << std::endl;
-    rotation = atan((sf::Mouse::getPosition().y - position.y) /
-                (sf::Mouse::getPosition().x - position.x)) * 180 / M_PI;
-    std::cout <<"rotation: " << rotation << std::endl;
-        
-    sf::Sprite::setRotation(rotation);
+    // if (sf::Mouse::getPosition().y - position.y < 0)
+    //     rotation = 360.f - rotation;
+
     sf::Sprite::move(sf::Vector2f(direction.x * movementSpeed, direction.y * movementSpeed));
+}
+void Player::uppdateRotation(sf::RenderWindow *window)
+{
+    //kollade upp om det fans någon atan funktion och hittad: https://cppreference.com/w/c/numeric/math/atan2.html
+    //kollade upp hur jag skulle räkna enhetscirklen: https://www.matteboken.se/lektioner/gymnasiet/matte-fortsattning-niva-1/trigonometri/enhetscirkeln#!/
+    double rotationRadians =
+        std::atan2((sf::Mouse::getPosition(*window).y - (Window::WINDOW_HEIGHT / 2)),
+                  (sf::Mouse::getPosition(*window).x - (Window::WINDOW_WIDTH / 2)));
+    rotation = rotationRadians * (180 / M_PI) + 90; // transform radians to rtoation
 
-
+    sf::Sprite::setRotation(rotation);
 }
 
 void Player::onCollision(std::string const &other)
