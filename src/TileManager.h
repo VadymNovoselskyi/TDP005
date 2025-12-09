@@ -17,6 +17,8 @@ class TileManager
     void drawTiles(sf::RenderWindow *window) const;
     [[nodiscard]] std::vector<Obstacle *> getObstacles() const;
 
+    sf::Vector2i getMapDimensions() const;
+
   private:
     void generateTiles(std::string const &tileMapPath);
 

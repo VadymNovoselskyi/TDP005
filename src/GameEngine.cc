@@ -73,7 +73,11 @@ void GameEngine::run()
     {
         clock.restart();
         window->handleEvents();
-        Map::instance()->handelUpdate();
+
+        if (StateMachine::instance()->state() == GameState::IN_GAME)
+        {
+            Map::instance()->handelUpdate();
+        }
         window->draw();
 
         sf::Time delta{UPDATE_INTERVAL - clock.getElapsedTime()};
