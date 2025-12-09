@@ -2,7 +2,6 @@
 #define CHARACTER_H
 
 #include <SFML/Graphics.hpp>
-#include <cmath>
 
 #include "Entity.h"
 

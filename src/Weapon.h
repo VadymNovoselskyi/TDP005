@@ -36,16 +36,11 @@ class Weapon : public sf::Sprite::Transformable
     double damage;
     double damageMultiplication;
     int lvls;
-    double speed;
     sf::Time attackSpeed;
 
     Rarity rarity;
     void uppdate();
-<<<<<<< HEAD
     double speed;
-=======
-    std::vector<Projectile *> bullets;
->>>>>>> origin/personal/vadno575
 };
 
 #endif

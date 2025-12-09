@@ -20,6 +20,28 @@ void Projectile::move()
     double x {};
     double y {-velocity};
 
+    if (std::abs(x) + std::abs(y) > 1)
+    {
+        x = x / std::sqrt(2);
+        y = y / std::sqrt(2);
+
+        // matematic explination:
+        // https://www.matteboken.se/lektioner/gymnasiet/matte-fortsattning-niva-2/trigonometri/radianer#!/
+        // used to check calculation with degrees
+
+        if (y >= 0) // down
+        {
+            // multiplying by (180/PI)to convert radian to degrees and subtract to flip rotation.
+            sf::Sprite::setRotation(180.f - std::asin(x) * (180.f / M_PI));
+        }
+        else // up
+        {
+            sf::Sprite::setRotation(std::asin(x) * (180.f / M_PI));
+        }
+
+    } // https://www.matteboken.se/lektioner/gymnasiet/matte-fortsattning-niva-1/trigonometri/enhetscirkeln#!/
+      // - fixa rotaiton utifrån mus
+
 
     // calculate dir
 
