@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 
+#include "ExperienceManager.h"
 #include "GameState.h"
 #include "Menu.h"
 #include "StateMachine.h"
@@ -50,14 +51,6 @@ class GameOverMenu : public Menu
 
   private:
     std::vector<ElementsInfo> createButtons() const override;
-};
-
-struct LevelUpInfo
-{
-    std::string name;
-    std::string description;
-    // Change to the level up enum
-    std::function<void()> onClick;
 };
 
 class LevelUpMenu : public Menu
