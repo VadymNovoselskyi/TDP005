@@ -7,6 +7,8 @@
 #include "Projectile.h"
 #include "Map.h"
 
+#include <cmath>
+
 enum Rarity
 {
     BASIC,

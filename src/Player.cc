@@ -73,6 +73,7 @@ void Player::move()
     sf::Sprite::move(sf::Vector2f(direction.x * movementSpeed, direction.y * movementSpeed));
 
     WeaponManager::instance()->setWeaponsPos(sf::Sprite::getPosition());
+    WeaponManager::instance()->setWeaponsRotation(sf::Sprite::getRotation());
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::T))
     {

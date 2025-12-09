@@ -47,6 +47,14 @@ void WeaponManager::setWeaponsPos(sf::Vector2f pos)
     }
 }
 
+void WeaponManager::setWeaponsRotation(double rotaiton)
+{
+    for (Weapon* w : activWeapons)
+    {
+        w -> setRotation(rotaiton);
+    }
+}
+
 Weapon* WeaponManager::getWeapon(std::string const &name)
 {
     auto it = std::find_if(activWeapons.begin(), activWeapons.end(), [name](Weapon* w)

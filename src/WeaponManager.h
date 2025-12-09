@@ -15,6 +15,7 @@ class WeaponManager
 
     void shoot();
     void setWeaponsPos(sf::Vector2f pos);
+    void setWeaponsRotation(double rotaiton);
     Weapon* getWeapon(std::string const &name);
     void generatWeapon(int number /*0-3*/);
 
