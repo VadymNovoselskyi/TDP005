@@ -11,7 +11,7 @@ class Entity : public sf::Sprite
 {
   public:
     Entity(std::string const &tag, sf::Vector2f const &pos);
-    virtual void onCollision(std::string const &other /*otehr = other.tag*/) = 0;
+    virtual void onCollision(std::string const &other ) = 0;
     std::string getTag() const;
     virtual void move() = 0;
 
