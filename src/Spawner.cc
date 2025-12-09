@@ -3,14 +3,7 @@
 #include <cstdlib>
 
 
-
-
-struct Point
-{
-    int x{};
-    int y{};
-};
-Spawner::Spawner(double spawnRate, Player* player):spawnRate{spawnRate}, player{player}
+Spawner::Spawner(Player* player):spawnRate{200.0}, player{player}
 {
     Spawner::spwanEnemies();
 }
@@ -33,12 +26,13 @@ void Spawner::spwanEnemies()
 
                     Map::instance()
                         ->addEntity(enemy);
-        if(conter == spawnRate)
-        {
-            conter = 0;
-            std::cout<<"nolsets "<<conter<<std::endl;
-        }
-        std::cout<<"i spawner "<<conter<<std::endl;
+
+    
+        conter = 0;
+        //Spawner::incresSpawnRate();
+        //std::cout<<"nolsets "<<conter<<std::endl;
+ 
+        //std::cout<<"i spawner "<<conter<<std::endl;
     }
     else
     {
@@ -46,8 +40,12 @@ void Spawner::spwanEnemies()
     }
 }
 
-Point choseSpawnPos()
+sf::Vector2f Spawner::choseSpawnPos()
 {
     int const random_x = std::rand();
     int const random_y = std::rand();
+}
+double Spawner::incresSpawnRate()
+{
+    spawnRate *= 0.8;
 }

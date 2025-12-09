@@ -10,16 +10,17 @@
 class Spawner
 {
     public:
-        Spawner(double spawnRate, Player* player);
+        Spawner(Player* player);
         void spwanEnemies();
         sf::Vector2f choseSpawnPos();
 
     private:
+        double incresSpawnRate();
         std::vector <Enemy*> enemies;
-        double spawnRate {};
+        double spawnRate;
         sf::Vector2f spwanPoint;
         Player* player;
-        double conter {};
+        double conter;
         
         
 

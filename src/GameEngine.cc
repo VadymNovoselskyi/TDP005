@@ -31,7 +31,7 @@ GameEngine::GameEngine() : window{}, clock{}, spawner{}
                               0,
                               0)};
     Map::init(player, TileManager::instance()->getObstacles());
-    spawner = {new Spawner(200.0, player)};
+    spawner = {new Spawner(player)};
     std::vector<Menu *> menus{};
 
     menus.push_back(new StartMenu());
