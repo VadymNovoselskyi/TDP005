@@ -61,7 +61,7 @@ class Kaboom:public Enemy
         void move() override;
 
     private:
-        bool isInRange(float len);
+        void isInRange(float len);
         void explode(float len);
         double explodeRange;
         double explodeDamage;

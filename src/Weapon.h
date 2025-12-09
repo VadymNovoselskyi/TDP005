@@ -22,12 +22,11 @@ class Weapon : public sf::Sprite::Transformable
     Weapon(std::string const &name,
            std::string const &description,
            double damage,
-           double damageMultiplication,
            sf::Time const &attackSpeed,
-           int lvls,
            Rarity rarity,
            double speed);
     void shoot();
+    std::string getName();
 
   protected:
     std::string name;
@@ -40,9 +39,8 @@ class Weapon : public sf::Sprite::Transformable
     sf::Time attackSpeed;
 
     Rarity rarity;
+    void uppdate();
     std::vector<Projectile *> bullets;
-
-    void update();
 };
 
 #endif

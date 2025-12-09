@@ -5,13 +5,14 @@
 #include <vector>
 
 #include "Menu.h"
+#include "Obstacle.h"
 #include "Player.h"
 
 class Map
 {
-  public:
+  public: // singelton taget från vadyms kod
     static Map *instance();
-    static Map *init(Player *player);
+    static Map *init(Player *player, std::vector<Obstacle *> const &obstacles);
     static void deleteInstance();
 
     void handelUpdate();
@@ -19,10 +20,9 @@ class Map
 
     void addEntity(Entity *e);
     void removeEntity(Entity *e);
-  
 
   private:
-    Map(Player *player);
+    Map(Player *player, std::vector<Obstacle *> const &obstacles);
     ~Map();
     static Map *instancePtr;
 

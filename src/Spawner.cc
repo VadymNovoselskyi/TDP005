@@ -3,6 +3,8 @@
 #include <cstdlib>
 
 
+
+
 struct Point
 {
     int x{};
@@ -30,6 +32,8 @@ void Spawner::spwanEnemies()
 
                    Map::instance()
                        ->addEntity(enemy);
+    conter += 1;
+    std::cout<<"i spawner "<<conter<<std::endl;
 }
 
 Point choseSpawnPos()

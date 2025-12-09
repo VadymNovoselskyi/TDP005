@@ -2,6 +2,7 @@
 #include <iostream>
 #include <unistd.h>
 #include <cmath>
+#include"Map.h"
 
 
 Enemy::Enemy(/*Charactar*/  double maxHP, double currentHp, int movementSpeed, sf::Vector2f positon, sf::Vector2f direction,
@@ -50,7 +51,9 @@ Enemy::~Enemy() {}
 
 void Enemy::die()
 {
-    
+    //ge xp och påeng
+    //Map::removeEntity(Entity *this);
+
 }
 
 void Enemy::draw(sf::RenderWindow *window) const
@@ -78,7 +81,7 @@ void Enemy::tryAttack(float len)
     if(len <= attackRange)
     {
         attack();
-        sleep(attackSpeed);//använd timestap istälet
+        //sleep(attackSpeed);//använd timestap istälet
     }
     
 }
@@ -118,12 +121,12 @@ void Footman::move()
 }
 
 //kaboom
-bool Kaboom::isInRange(float len)
+void Kaboom::isInRange(float len)
 {
 
     if(len <= attackRange)
     {
-        sleep(15);
+        //sleep(15);
         Kaboom::explode(len);
 
     }
