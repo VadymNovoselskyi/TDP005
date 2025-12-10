@@ -2,10 +2,10 @@
 #define ASSAULT_RIFLE_H
 #include "Weapon.h"
 
-class AssaultRifleWeapon : public Weapon
+class AssaultRifle : public Weapon
 {
 public:
-    AssaultRifleWeapon();
+    AssaultRifle();
     void shoot() override;
 private:
     /* data */

@@ -1,8 +1,8 @@
-#include "AssaultRifleWeapon.h"
+#include "AssaultRifle.h"
 
 #include "Map.h"
 
-AssaultRifleWeapon::AssaultRifleWeapon()
+AssaultRifle::AssaultRifle()
     : Weapon("AR",
              "Shoot kinda fast with a mediumlow damag",
              /*dmg*/ 5.5f,
@@ -12,7 +12,7 @@ AssaultRifleWeapon::AssaultRifleWeapon()
 {
 }
 
-void AssaultRifleWeapon::shoot()
+void AssaultRifle::shoot()
 {
     Map::instance()->addEntity(new Projectile{Transformable::getPosition(),
                                               Transformable::getRotation(),

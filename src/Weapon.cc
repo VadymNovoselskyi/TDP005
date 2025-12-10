@@ -15,13 +15,10 @@ Weapon::Weapon(std::string const &name,
 {
 }
 
-// void Weapon::shoot()
-// {
-//     Map::instance()->addEntity(new Projectile{Transformable::getPosition(),
-//                                               Transformable::getRotation(),
-//                                               speed,
-//                                               damage * damageMultiplication});
-// }
+void Weapon::fire()
+{
+    shoot();
+}
 
 std::string Weapon::getName()
 {

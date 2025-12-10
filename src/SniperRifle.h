@@ -1,0 +1,14 @@
+#ifndef SNIPER_RIFLE_H
+#define SNIPER_RIFLE_H
+#include "Weapon.h"
+
+class SniperRifle : public Weapon
+{
+public:
+    SniperRifle();
+    void shoot() override;
+private:
+    /* data */
+};
+
+#endif

@@ -26,6 +26,7 @@ class Weapon : public sf::Sprite::Transformable
            sf::Time const &attackSpeed,
            Rarity rarity,
            double speed);
+    void fire();
     virtual void shoot() = 0;
     std::string getName();
 

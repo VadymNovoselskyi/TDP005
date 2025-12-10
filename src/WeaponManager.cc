@@ -3,11 +3,11 @@
 #include <algorithm>
 #include <iostream>
 
-#include "AssaultRifleWeapon.h"
+#include "AssaultRifle.h"
 
 WeaponManager::WeaponManager() : activeWeapons{}, weapons{}
 {
-    weapons.push_back(new AssaultRifleWeapon());
+    weapons.push_back(new AssaultRifle());
 }
 
 WeaponManager::~WeaponManager()
@@ -22,7 +22,7 @@ void WeaponManager::shoot()
 {
     for (Weapon *w : activeWeapons)
     {
-        w->shoot();
+        w->fire();
     }
 }
 
