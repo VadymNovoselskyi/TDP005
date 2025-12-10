@@ -2,7 +2,6 @@
 #include <iostream>
 #include <cstdlib>
 
-
 Spawner::Spawner(Player* player):spawnRate{200.0}, player{player}
 {
     Spawner::spwanEnemies();
@@ -10,22 +9,22 @@ Spawner::Spawner(Player* player):spawnRate{200.0}, player{player}
 
 void Spawner::spwanEnemies()
 {
+    double maxHP {100.0};
+    double currentHP {100.0};
+    int movementSpeed {4};
+    sf::Vector2f position {10,10};
+    sf::Vector2f direction {0,0};
+    int attackRange {12};
+    int attackSpeed {6};
+    int XP_DROP {10};
+    double damage {5};
+    int score {2};
+    
     if(conter == spawnRate)
     {
-        Footman* enemy = new Footman(100.0,
-                                100.0,
-                                4,
-                                {10,10},
-                                {0,0},
-                                12,
-                                6,
-                                10,
-                                5,
-                                2,
-                                player);
+        Footman* enemy = new Footman(maxHP, currentHP, movementSpeed, position, direction, attackRange, attackSpeed, XP_DROP, damage, score, player);
 
-                    Map::instance()
-                        ->addEntity(enemy);
+        Map::instance()->addEntity(enemy);
 
     
         conter = 0;
