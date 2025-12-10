@@ -108,11 +108,7 @@ void Player::gainXp(int xp)
 
 void Player::onCollision(std::string const &other)
 {
-    if (other == "enemy")
-    {
-        sf::Sprite::setPosition(oldPosition);
-        takeDamage(5);
-    }
+
     if(other == "box")
     {
         sf::Sprite::setPosition(oldPosition);

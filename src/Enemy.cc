@@ -172,8 +172,8 @@ void Footman::move()
     direction.x = 0;
     direction.y = 0;
 
-    // Point player {figure1.getPosition()};
-    // Point enemy  {figure2.getPosition()};
+    // Point player {playerPosition.getPosition()};
+    // Point enemy  {enemyPosition.getPosition()};
     float direction_x = playerPositon.x - enemyPosition.x;
     float direction_y = playerPositon.y - enemyPosition.y;
 
@@ -217,16 +217,17 @@ void Kaboom::attack()
 }
 void Kaboom::move()
 {
-    sf::Vector2f figure1 = player->getPosition();
-    sf::Vector2f figure2 = getPosition();
+    
+    sf::Vector2f playerPosition = player->getPosition();
+    sf::Vector2f enemyPosition = getPosition();
     sf::Vector2f direction;
     direction.x = 0;
     direction.y = 0;
 
-    // Point player {figure1.getPosition()};
-    // Point enemy  {figure2.getPosition()};
-    float direction_x = figure1.x - figure2.x;
-    float direction_y = figure1.y - figure2.y;
+    // Point player {playerPosition.getPosition()};
+    // Point enemy  {enemyPosition.getPosition()};
+    float direction_x = playerPosition.x - enemyPosition.x;
+    float direction_y = playerPosition.y - enemyPosition.y;
 
     float len = std::sqrt(direction_x * direction_x + direction_y * direction_y);
     if (len != 0)
@@ -248,14 +249,15 @@ void Archer::attack()
 }
 void Archer::move()
 {
-    sf::Vector2f figure1 = player->getPosition();
-    sf::Vector2f figure2 = getPosition();
+
+    sf::Vector2f playerPosition = player->getPosition();
+    sf::Vector2f enemyPosition = getPosition();
     sf::Vector2f direction;
     direction.x = 0;
     direction.y = 0;
 
-    float direction_x = figure1.x - figure2.x;
-    float direction_y = figure1.y - figure2.y;
+    float direction_x = playerPosition.x - enemyPosition.x;
+    float direction_y = playerPosition.y - enemyPosition.y;
 
     float len = std::sqrt(direction_x * direction_x + direction_y * direction_y);
     if (len != 0)
