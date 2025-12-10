@@ -1,5 +1,8 @@
 #include "Projectile.h"
 
+#include "Enemy.h"
+#include "Map.h"
+
 #include <iostream>
 
 Projectile::Projectile(sf::Vector2f const &pos, double rotation, double velocity, double damage)
@@ -11,11 +14,14 @@ Projectile::Projectile(sf::Vector2f const &pos, double rotation, double velocity
     sf::Sprite::setOrigin(sf::Sprite::getScale().x / 2, sf::Sprite::getScale().y / 2);
 }
 
-void Projectile::onCollision(std::string const &other)
+void Projectile::onCollision(Entity *other)
 {
-    if (other == "enemy")
+    if (other -> getTag() == "enemy")
     {
-        // other take damage
+        Enemy * e = dynamic_cast<Enemy *>(other);
+        std::cout << damage << std::endl;
+        e -> takeDamage(damage);
+        // Map::instance() -> removeEntity(this);
     }
 }
 

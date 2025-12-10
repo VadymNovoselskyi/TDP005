@@ -11,7 +11,7 @@ Obstacle::Obstacle(sf::Texture const *texture, sf::Vector2f position, std::strin
     // sf::Sprite::setOrigin(obstackeSize.x / 2.0, obstackeSize.y / 2.0);
 }
 
-void Obstacle::onCollision(std::string const &)
+void Obstacle::onCollision(Entity *other)
 {
 }
 

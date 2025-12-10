@@ -121,6 +121,8 @@ void Enemy::die()
 {
     // ge xp och påeng
     // Map::removeEntity(Entity *this);
+    movementSpeed = 0;
+    // delete this;
 }
 
 void Enemy::draw(sf::RenderWindow *window) const
@@ -135,9 +137,9 @@ std::string Enemy::getTag()
 {
     return tag;
 }
-void Enemy::onCollision(std::string const &other)
+void Enemy::onCollision(Entity *other)
 {
-    if (other == "player")
+    if (other -> getTag() == "player")
     {
         attack();
     }

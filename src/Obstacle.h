@@ -14,7 +14,7 @@ class Obstacle : public Entity
              sf::Vector2f position,
              std::string const &tag = "obstacle");
 
-    void onCollision(std::string const &other) override;
+    void onCollision(Entity *other) override;
     void move() override;
     void draw(sf::RenderWindow *window) const override;
 };

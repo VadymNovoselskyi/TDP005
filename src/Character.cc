@@ -1,4 +1,5 @@
 #include "Character.h"
+#include <iostream>
 
 Character::Character(std::string const &tag,
                      double hp,
@@ -8,9 +9,14 @@ Character::Character(std::string const &tag,
 {
 }
 
-void Character::takeDamage(double damage)
+void Character::takeDamage(double &damage)
 {
     hp -= damage;
+    std::cout << hp << " | " << damage << std::endl;
+    if (hp <= 0)
+    {
+        die();
+    }
 }
 
 void Character::setMovementSpeed(int newSpeed)

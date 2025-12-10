@@ -46,8 +46,8 @@ void Map::handelUpdate(sf::RenderWindow *window)
         {
             if ((*it1)->getGlobalBounds().intersects((*it2)->getGlobalBounds()))
             {
-                (*it1)->onCollision((*it2)->getTag());
-                (*it2)->onCollision((*it1)->getTag());
+                (*it1)->onCollision(*it2);
+                (*it2)->onCollision(*it1);
             }
         }
     }

@@ -6,11 +6,11 @@
 
 Weapon::Weapon(std::string const &name,
                std::string const &description,
-               double damage,
+               double const &damage,
                double const &attackSpeed,
                Rarity rarity,
                double speed)
-    : name{name}, description{description}, damage{damage}, damageMultiplication{},
+    : name{name}, description{description}, damage{damage}, damageMultiplication{1},
       attackSpeed{attackSpeed}, rarity{rarity}, speed{speed}, counter {}
 {
 }

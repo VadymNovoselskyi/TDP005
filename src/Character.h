@@ -13,8 +13,7 @@ class Character : public Entity
               int movementSpeed,
               sf::Vector2f const &position);
 
-    void takeDamage(double);
-
+    void takeDamage(double &);
     void setMovementSpeed(int);
 
   protected:

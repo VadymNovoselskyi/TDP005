@@ -5,7 +5,7 @@
 AssaultRifle::AssaultRifle()
     : Weapon("AR",
              "Shoot kinda fast with a mediumlow damag",
-             /*dmg*/ 5.5f,
+             /*dmg*/ 7.5f,
              /*attackSpeed (shoots per sec)*/ 10,
              Rarity::BASIC,
              /*bullet speed*/ 80)
