@@ -20,7 +20,6 @@ class Map
 
     void addEntity(Entity *e);
     void removeEntity(Entity *e);
-    int size();
   private:
     Map(Player *player, std::vector<Obstacle *> const &obstacles);
     ~Map();

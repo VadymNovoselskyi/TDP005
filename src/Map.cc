@@ -78,11 +78,6 @@ void Map::removeEntity(Entity *e)
         entities.end());
 }
 
-int Map::size()
-{
-    return entities.size();
-}
-
 Map::Map(Player *player, std::vector<Obstacle *> const &obstacles)
     : view{new sf::View{
           {static_cast<float>(Window::WINDOW_WIDTH) / 2,

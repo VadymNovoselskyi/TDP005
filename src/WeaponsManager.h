@@ -10,6 +10,7 @@ class WeaponsManager
 {
   public:
     WeaponsManager();
+    ~WeaponsManager();
     void resetState();
 
     void shoot();
@@ -20,10 +21,10 @@ class WeaponsManager
     void receiveRandomWeapon();
 
   private:
-    void equipWeapon(Weapon const &weapon);
+    void equipWeapon(Weapon *weapon);
 
-    std::vector<Weapon> equipedWeapons;
-    std::vector<Weapon> unequipedWeapons;
+    std::vector<Weapon *> equipedWeapons;
+    std::vector<Weapon *> unequipedWeapons;
 };
 
 #endif

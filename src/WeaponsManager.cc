@@ -4,11 +4,11 @@
 #include <cstdlib>
 #include <iostream>
 
-#include "AssaultRifleWeapon.h"
+#include "AssaultRifle.h"
 
 WeaponsManager::WeaponsManager() : equipedWeapons{}, unequipedWeapons{}
 {
-    unequipedWeapons.push_back(AssaultRifleWeapon());
+    unequipedWeapons.push_back(new AssaultRifle());
 }
 
 void WeaponsManager::resetState()
@@ -18,27 +18,39 @@ void WeaponsManager::resetState()
     unequipedWeapons.insert(unequipedWeapons.end(), equipedWeapons.begin(), equipedWeapons.end());
 }
 
+WeaponsManager::~WeaponsManager()
+{
+    for (Weapon *w : equipedWeapons)
+    {
+        delete w;
+    }
+    for (Weapon *w : unequipedWeapons)
+    {
+        delete w;
+    }
+}
+
 void WeaponsManager::shoot()
 {
-    for (Weapon w : equipedWeapons)
+    for (Weapon *w : equipedWeapons)
     {
-        w.shoot();
+        w->tryToShoot();
     }
 }
 
 void WeaponsManager::setWeaponsPos(sf::Vector2f const &pos)
 {
-    for (Weapon w : equipedWeapons)
+    for (Weapon *w : equipedWeapons)
     {
-        w.setPosition(pos.x, pos.y);
+        w->setPosition(pos.x, pos.y);
     }
 }
 
 void WeaponsManager::setWeaponsRotation(double rotaiton)
 {
-    for (Weapon w : equipedWeapons)
+    for (Weapon *w : equipedWeapons)
     {
-        w.setRotation(rotaiton);
+        w->setRotation(rotaiton);
     }
 }
 
@@ -46,7 +58,7 @@ void WeaponsManager::receiveNewWeapon(std::string const &name)
 {
     auto weaponIt = std::find_if(unequipedWeapons.begin(),
                                  unequipedWeapons.end(),
-                                 [&name](Weapon w) { return w.getName() == name; });
+                                 [&name](Weapon *w) { return w->getName() == name; });
     equipWeapon(*weaponIt);
 }
 
@@ -62,12 +74,12 @@ void WeaponsManager::receiveRandomWeapon()
     equipedWeapons.push_back(unequipedWeapons.at(randIndex));
 }
 
-void WeaponsManager::equipWeapon(Weapon const &weaponToDelete)
+void WeaponsManager::equipWeapon(Weapon *weaponToDelete)
 {
     unequipedWeapons.erase(
         std::remove_if(unequipedWeapons.begin(),
                        unequipedWeapons.end(),
-                       [&weaponToDelete](Weapon const &weapon)
-                       { return weaponToDelete.getName() == weapon.getName(); }));
+                       [weaponToDelete](Weapon *weapon)
+                       { return weaponToDelete->getName() == weapon->getName(); }));
     equipedWeapons.push_back(weaponToDelete);
 }

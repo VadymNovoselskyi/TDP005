@@ -78,7 +78,9 @@ GameEngine::~GameEngine()
     StateMachine::deleteInstance();
     TextureManager::deleteInstance();
     delete window;
+    delete spawner;
     window = nullptr;
+    spawner = nullptr;
 }
 
 void GameEngine::run()

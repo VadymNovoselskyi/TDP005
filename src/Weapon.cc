@@ -7,32 +7,25 @@
 Weapon::Weapon(std::string const &name,
                std::string const &description,
                double damage,
-               sf::Time const &attackSpeed,
+               double const &attackSpeed,
                Rarity rarity,
                double speed)
     : name{name}, description{description}, damage{damage}, damageMultiplication{},
-      attackSpeed{attackSpeed}, rarity{rarity}, speed{speed}
+      attackSpeed{attackSpeed}, rarity{rarity}, speed{speed}, counter {}
 {
 }
 
-void Weapon::shoot()
+void Weapon::tryToShoot()
 {
-    Map::instance()->addEntity(new Projectile{Transformable::getPosition(),
-                                              Transformable::getRotation(),
-                                              speed,
-                                              damage * damageMultiplication});
+    counter--;
+    if (counter <= 0)
+    {
+        shoot();
+        counter = 60 / attackSpeed;
+    }
 }
 
 std::string Weapon::getName() const
 {
     return name;
-}
-
-void Weapon::update()
-{
-    do
-    {
-        shoot();
-        sf::sleep(attackSpeed);
-    } while (true);
 }
