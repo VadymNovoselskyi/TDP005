@@ -6,10 +6,19 @@ AssaultRifle::AssaultRifle()
     : Weapon("AR",
              "Shoot kinda fast with a mediumlow damag",
              /*dmg*/ 5.5f,
-             /*attackSpeed in ms*/ sf::milliseconds(80),
+             /*attackSpeed (shoots per sec)*/ 10,
              Rarity::BASIC,
-             /*bullet speed*/ 100)
+             /*bullet speed*/ 80)
 {
+}
+void AssaultRifle::tryToShoot()
+{
+    counter--;
+    if (counter <= 0 && sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    {
+        shoot();
+        counter = 60 / attackSpeed;
+    }
 }
 
 void AssaultRifle::shoot()

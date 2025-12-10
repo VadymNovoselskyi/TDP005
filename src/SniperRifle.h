@@ -6,8 +6,8 @@ class SniperRifle : public Weapon
 {
 public:
     SniperRifle();
-    void shoot() override;
 private:
+    void shoot() override;
     /* data */
 };
 

@@ -6,7 +6,7 @@ SniperRifle::SniperRifle()
     : Weapon("AR",
              "Shoot kinda fast with a mediumlow damag",
              /*dmg*/ 5.5f,
-             /*attackSpeed in ms*/ sf::milliseconds(1000),
+             /*attackSpeed (shoots per sec)*/ 1,
              Rarity::BASIC,
              /*bullet speed*/ 200)
 {

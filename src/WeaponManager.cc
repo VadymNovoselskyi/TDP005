@@ -22,7 +22,7 @@ void WeaponManager::shoot()
 {
     for (Weapon *w : activeWeapons)
     {
-        w->fire();
+        w->tryToShoot();
     }
 }
 
