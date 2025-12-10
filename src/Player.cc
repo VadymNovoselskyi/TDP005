@@ -89,7 +89,7 @@ void Player::updateRotation(sf::RenderWindow *window)
         std::atan2((sf::Mouse::getPosition(*window).y - (Window::WINDOW_HEIGHT / 2)),
                    (sf::Mouse::getPosition(*window).x - (Window::WINDOW_WIDTH / 2)));
     rotation = rotationRadians * (180 / M_PI) + 90; // transform radians to rotation
-
+    
     sf::Sprite::setRotation(rotation);
     weaponManager->setWeaponsRotation(sf::Sprite::getRotation());
 }
