@@ -6,11 +6,11 @@
 #include "StateMachine.h"
 #include "TextureManager.h"
 #include "Window.h"
-
+//variables that wont change and is used to make code easier to read
 float const Player::BOX_OFFSET{18};
 float const Player::XP_BOX_Y_OFFSET{78};
-float const BOX_WIDHT {150};
-float const BOX_HEIGTH {35};
+float const Player::BOX_WIDHT {150};
+float const Player::BOX_HEIGTH {35};
 sf::Color const Player::HP_BOX_COLOR{204, 0, 0};
 sf::Color const Player::CURRENT_HP_BOX_COLLOR{128, 0, 0};
 sf::Color const Player::XP_BOX_COLOR{118, 186, 27};
