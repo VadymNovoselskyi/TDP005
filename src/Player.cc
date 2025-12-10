@@ -9,10 +9,10 @@
 // variables that wont change and is used to make code easier to read
 float const Player::BOX_OFFSET{18};
 float const Player::XP_BOX_Y_OFFSET{78};
-float const Player::BOX_WIDHT {150};
-float const Player::BOX_HEIGTH {35};
-//colors for each box, first is for the backgorund to show the amount that is lost or left 
-//the other box is to show the current amount
+float const Player::BOX_WIDHT{150};
+float const Player::BOX_HEIGTH{35};
+// colors for each box, first is for the backgorund to show the amount that is lost or left
+// the other box is to show the current amount
 sf::Color const Player::HP_BOX_COLOR{204, 0, 0};
 sf::Color const Player::CURRENT_HP_BOX_COLLOR{128, 0, 0};
 sf::Color const Player::XP_BOX_COLOR{118, 186, 27};
@@ -63,7 +63,7 @@ Player::Player(double startHP,
 
 void Player::move()
 {
-    //resets current direction and saves the old position
+    // resets current direction and saves the old position
     sf::Vector2f direction;
     direction.x = 0;
     direction.y = 0;
@@ -86,8 +86,8 @@ void Player::move()
     }
     if (std::abs(direction.x) + std::abs(direction.y) > 1)
     {
-        //divides direction by std::sqrt(2) to get a lower speed when player goes diagonal
-        direction.x = direction.x / std::sqrt(2); 
+        // divides direction by std::sqrt(2) to get a lower speed when player goes diagonal
+        direction.x = direction.x / std::sqrt(2);
         direction.y = direction.y / std::sqrt(2);
     }
 
@@ -133,17 +133,21 @@ void Player::onCollision(std::string const &other)
         sf::Sprite::setPosition(oldPosition);
         takeDamage(5);
     }
-    if(other == "box")
+    if (other == "box")
     {
         sf::Sprite::setPosition(oldPosition);
     }
 }
-//methods to increase amount
+// methods to increase amount
 void Player::heal(double amount)
 {
     hp += amount;
 }
 
+void Player::increaseMaxHP(double hp)
+{
+    maxHP += hp;
+}
 void Player::increaseSpeed(int amount)
 {
     movementSpeed += amount;
@@ -164,7 +168,7 @@ void Player::die()
     // ExperienceManager::resetxp();
     // waiting for method to remove every weapon exept start wepon
 }
-//methods to draw boxes
+// methods to draw boxes
 void Player::draw(sf::RenderWindow *window) const
 {
     window->draw(*this);

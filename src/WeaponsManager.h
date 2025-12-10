@@ -20,7 +20,7 @@ class WeaponsManager
     void receiveRandomWeapon();
 
   private:
-    void equipWeapon(Weapon);
+    void equipWeapon(Weapon const &weapon);
 
     std::vector<Weapon> equipedWeapons;
     std::vector<Weapon> unequipedWeapons;

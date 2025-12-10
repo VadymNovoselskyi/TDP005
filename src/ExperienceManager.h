@@ -25,6 +25,7 @@ class ExperienceManager
   public:
     ExperienceManager();
     void setCallbacks(std::map<LevelUpChoice, std::function<void()>> const &levelUpCallbacks);
+    void resetState();
 
     bool gainXp(int gainedXp);
     std::vector<LevelUpInfo> chooseLevelUps() const;

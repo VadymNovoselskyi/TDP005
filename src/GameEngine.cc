@@ -35,7 +35,6 @@ GameEngine::GameEngine() : window{}, spawner{}, clock{}
                                            static_cast<float>(mapDimensions.y / 2.0)},
                               "Player",
                               0,
-                              0,
                               [levelUpMenu](std::vector<LevelUpInfo> const &levelUpInfo)
                               { levelUpMenu->createOptions(levelUpInfo); })};
 

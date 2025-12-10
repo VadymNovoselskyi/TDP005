@@ -23,6 +23,12 @@ void ExperienceManager::setCallbacks(
     }
 }
 
+void ExperienceManager::resetState()
+{
+    currentXp = 0;
+    level = 0;
+}
+
 bool ExperienceManager::gainXp(int gainedXP)
 {
     currentXp += gainedXP;

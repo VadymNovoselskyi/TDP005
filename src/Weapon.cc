@@ -23,7 +23,7 @@ void Weapon::shoot()
                                               damage * damageMultiplication});
 }
 
-std::string Weapon::getName()
+std::string Weapon::getName() const
 {
     return name;
 }
