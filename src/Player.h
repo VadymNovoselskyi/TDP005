@@ -8,7 +8,7 @@
 #include "ExperienceManager.h"
 #include "GameState.h"
 #include "StateMachine.h"
-#include "WeaponManager.h"
+#include "WeaponsManager.h"
 
 enum Direction
 {
@@ -58,7 +58,7 @@ class Player : public Character
     sf::Vector2f oldPosition;
 
     ExperienceManager expManager;
-    WeaponManager weaponManager;
+    WeaponsManager weaponManager;
     std::function<void(std::vector<LevelUpInfo>)> onLevelUp;
 
     void drawInfo(sf::RenderWindow *window) const;

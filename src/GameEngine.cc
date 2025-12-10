@@ -8,7 +8,7 @@
 #include "Spawner.h"
 #include "TextureManager.h"
 #include "TileManager.h"
-#include "WeaponManager.h"
+#include "WeaponsManager.h"
 
 int const GameEngine::FPS{60};
 sf::Time const GameEngine::UPDATE_INTERVAL{sf::milliseconds(1000.0 / GameEngine::FPS)};

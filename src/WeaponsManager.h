@@ -6,11 +6,11 @@
 
 #include "Weapon.h"
 
-class WeaponManager
+class WeaponsManager
 {
   public:
-    WeaponManager();
-    ~WeaponManager();
+    WeaponsManager();
+    void resetState();
 
     void shoot();
     void setWeaponsPos(sf::Vector2f const &pos);

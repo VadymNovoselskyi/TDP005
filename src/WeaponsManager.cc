@@ -1,4 +1,4 @@
-#include "WeaponManager.h"
+#include "WeaponsManager.h"
 
 #include <algorithm>
 #include <cstdlib>
@@ -6,16 +6,19 @@
 
 #include "AssaultRifleWeapon.h"
 
-WeaponManager::WeaponManager() : equipedWeapons{}, unequipedWeapons{}
+WeaponsManager::WeaponsManager() : equipedWeapons{}, unequipedWeapons{}
 {
     unequipedWeapons.push_back(AssaultRifleWeapon());
 }
 
-WeaponManager::~WeaponManager()
+void WeaponsManager::resetState()
 {
+    // Appending vectors taken from
+    // https://www.geeksforgeeks.org/cpp/how-to-append-a-vector-to-a-vector-in-cpp/
+    unequipedWeapons.insert(unequipedWeapons.end(), equipedWeapons.begin(), equipedWeapons.end());
 }
 
-void WeaponManager::shoot()
+void WeaponsManager::shoot()
 {
     for (Weapon w : equipedWeapons)
     {
@@ -23,7 +26,7 @@ void WeaponManager::shoot()
     }
 }
 
-void WeaponManager::setWeaponsPos(sf::Vector2f const &pos)
+void WeaponsManager::setWeaponsPos(sf::Vector2f const &pos)
 {
     for (Weapon w : equipedWeapons)
     {
@@ -31,7 +34,7 @@ void WeaponManager::setWeaponsPos(sf::Vector2f const &pos)
     }
 }
 
-void WeaponManager::setWeaponsRotation(double rotaiton)
+void WeaponsManager::setWeaponsRotation(double rotaiton)
 {
     for (Weapon w : equipedWeapons)
     {
@@ -39,7 +42,7 @@ void WeaponManager::setWeaponsRotation(double rotaiton)
     }
 }
 
-void WeaponManager::receiveNewWeapon(std::string const &name)
+void WeaponsManager::receiveNewWeapon(std::string const &name)
 {
     auto weaponIt = std::find_if(unequipedWeapons.begin(),
                                  unequipedWeapons.end(),
@@ -47,7 +50,7 @@ void WeaponManager::receiveNewWeapon(std::string const &name)
     equipWeapon(*weaponIt);
 }
 
-void WeaponManager::receiveRandomWeapon()
+void WeaponsManager::receiveRandomWeapon()
 {
     // random index generator taken from https://en.cppreference.com/w/cpp/numeric/random/rand.html
     if (unequipedWeapons.size() < 1)
@@ -59,7 +62,7 @@ void WeaponManager::receiveRandomWeapon()
     equipedWeapons.push_back(unequipedWeapons.at(randIndex));
 }
 
-void WeaponManager::equipWeapon(Weapon weapon)
+void WeaponsManager::equipWeapon(Weapon weapon)
 {
     unequipedWeapons.erase(std::remove(unequipedWeapons.begin(), unequipedWeapons.end(), weapon));
     equipedWeapons.push_back(weapon);
