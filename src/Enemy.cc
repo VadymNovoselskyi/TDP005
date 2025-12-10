@@ -35,7 +35,7 @@ Kaboom::Kaboom(/*Charactar*/ double maxHP, double currentHp, int movementSpeed, 
             double explodeDamage, double explodeRange)
             :Enemy(maxHP, currentHp, movementSpeed, positon, direction, attackRange, attackSpeed, XP_DROP, damage, score, player),
             explodeDamage{explodeDamage}, explodeRange{explodeRange},
-            texture{TextureManager::instance()->getTexture("enemy.png")}        
+            texture{TextureManager::instance()->getTexture("obstacle-gas.png")}        
 {
     auto playerSize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
