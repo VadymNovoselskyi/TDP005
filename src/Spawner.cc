@@ -20,7 +20,7 @@ void Spawner::spwanEnemies()
     double damage {5};
     int score {2};
     
-    if(conter == spawnRate)
+    if(conter >= spawnRate)
     {
         Footman* enemy = new Footman(maxHP, currentHP, movementSpeed, position, direction, attackRange, attackSpeed, XP_DROP, damage, score, player);
 
@@ -28,15 +28,15 @@ void Spawner::spwanEnemies()
 
     
         conter = 0;
-        //Spawner::incresSpawnRate();
-        //std::cout<<"nolsets "<<conter<<std::endl;
+        Spawner::incresSpawnRate();
  
-        //std::cout<<"i spawner "<<conter<<std::endl;
+        
     }
     else
     {
         conter +=1;
     }
+    
 }
 
 sf::Vector2f Spawner::choseSpawnPos()
@@ -44,7 +44,9 @@ sf::Vector2f Spawner::choseSpawnPos()
     int const random_x = std::rand();
     int const random_y = std::rand();
 }
-double Spawner::incresSpawnRate()
+void Spawner::incresSpawnRate()
 {
+   
     spawnRate *= 0.8;
+   
 }
