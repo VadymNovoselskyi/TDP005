@@ -13,7 +13,7 @@ class Spawner
   public:
     Spawner(Player *player);
     void spwanEnemies();
-    sf::Vector2f choseSpawnPos();
+    void choseSpawnPos();
 
     private:
         void incresSpawnRate();
@@ -32,7 +32,7 @@ class Spawner
         double maxHP {100.0};
         double currentHP {100.0};
         int movementSpeed {4};
-        sf::Vector2f position {choseSpawnPos()};
+        sf::Vector2f position {};
         sf::Vector2f direction {0,0};
         int attackRange {12};
         int attackSpeed {6};

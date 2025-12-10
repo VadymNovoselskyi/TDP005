@@ -98,7 +98,7 @@ Kaboom::Kaboom(/*Charactar*/
             score,
             player),
       explodeDamage{explodeDamage}, explodeRange{explodeRange},
-      texture{TextureManager::instance()->getTexture("enemy.png")}
+      texture{TextureManager::instance()->getTexture("obstacle-gas.png")}
 {
     auto playerSize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
