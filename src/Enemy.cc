@@ -25,7 +25,6 @@ Footman::Footman(/*Charactar*/
                  double currentHp,
                  int movementSpeed,
                  sf::Vector2f positon,
-                 sf::Vector2f direction,
                  int attackRange,
                  int attackSpeed,
                  int XP_DROP,
@@ -53,7 +52,6 @@ Archer::Archer(/*Charactar*/
                double currentHp,
                int movementSpeed,
                sf::Vector2f positon,
-               sf::Vector2f direction,
                int attackRange,
                int attackSpeed,
                int XP_DROP,
@@ -81,7 +79,6 @@ Kaboom::Kaboom(/*Charactar*/
                double currentHp,
                int movementSpeed,
                sf::Vector2f positon,
-               sf::Vector2f direction,
                int attackRange,
                int attackSpeed,
                int XP_DROP,
@@ -137,9 +134,18 @@ std::string Enemy::getTag()
 }
 void Enemy::onCollision(std::string const &other)
 {
-    if (other == "player")
+    if (other == "Player")
     {
         attack();
+        sf::Sprite::setPosition(oldPosition);
+    }
+    else if ( other == "enemy")
+    {
+        sf::Sprite::setPosition(oldPosition);
+    }
+    else if (other == "box")
+    {
+        sf::Sprite::setPosition(oldPosition);
     }
 }
 void Enemy::tryAttack(float len)
@@ -159,8 +165,9 @@ void Footman::attack()
 
 void Footman::move()
 {
+    oldPosition = getPosition();
     sf::Vector2f playerPositon = player->getPosition();
-    sf::Vector2f enemyPosition = getPosition();
+    sf::Vector2f enemyPosition = oldPosition;
     sf::Vector2f direction;
     direction.x = 0;
     direction.y = 0;
@@ -206,6 +213,7 @@ void Kaboom::explode(float len)
 void Kaboom::attack()
 {
     player->takeDamage(damage);
+    
 }
 void Kaboom::move()
 {
