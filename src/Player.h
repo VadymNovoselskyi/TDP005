@@ -23,11 +23,11 @@ class Player : public Character
 {
   public:
     Player(double startHP,
-           int movementSpeed,
+           int const startSpeed,
            sf::Vector2f const &position,
            std::string const &tag,
            int levels,
-           double damageMultiplier,
+           double const startDamageMultiplier,
            ExperienceManager *expManager,
            WeaponManager *weaponManager,
            std::function<void(std::vector<LevelUpInfo>)> const &onLevelUp);
@@ -53,8 +53,11 @@ class Player : public Character
     double const startHP;
     double hp;
     double maxHP;
+    int const startSpeed;
+    int movementSpeed;
     float rotation;
     int levels;
+    double const startDamageMultiplier;
     double damageMultiplier;
     sf::Vector2f oldPosition;
 
@@ -88,6 +91,8 @@ class Player : public Character
                                    // used by both xp and hp
     float static const XP_BOX_Y_OFFSET; // a set offset by 78 for the xp box to be set under the hp
                                         // box
+    float static const BOX_WIDHT;
+    float static const BOX_HEIGTH;
 };
 
 #endif /*PLAYER_H*/

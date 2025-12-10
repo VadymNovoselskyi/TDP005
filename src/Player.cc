@@ -9,32 +9,35 @@
 
 float const Player::BOX_OFFSET{18};
 float const Player::XP_BOX_Y_OFFSET{78};
+float const BOX_WIDHT {150};
+float const BOX_HEIGTH {35};
 sf::Color const Player::HP_BOX_COLOR{204, 0, 0};
 sf::Color const Player::CURRENT_HP_BOX_COLLOR{128, 0, 0};
 sf::Color const Player::XP_BOX_COLOR{118, 186, 27};
 sf::Color const Player::CURRENT_XP_BOX_COLOR{76, 154, 42};
 
-
-
 Player::Player(double const startHP,
-               int movementSpeed,
+               int const startSpeed,
                sf::Vector2f const &position,
                std::string const &tag,
                int levels,
-               double damageMultiplier,
+               double const startDamageMultiplier,
                ExperienceManager *expManager,
                WeaponManager *weaponManager,
                std::function<void(std::vector<LevelUpInfo>)> const &onLevelUp)
-    : Character(tag, startHP, movementSpeed, position), startHP{startHP}, rotation{},
-      levels{levels}, damageMultiplier{damageMultiplier}, oldPosition{position},
+    : Character(tag, startHP, startSpeed, position), startHP{startHP}, startSpeed{startSpeed},
+      rotation{}, levels{levels}, startDamageMultiplier{startDamageMultiplier}, oldPosition{position},
       expManager(expManager), weaponManager{weaponManager}, onLevelUp{onLevelUp}
 {
     auto texture{TextureManager::instance()->getTexture("player.png")};
     auto playerSize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
     sf::Sprite::setOrigin(playerSize.x / 2.0, playerSize.y / 2.0);
+    //sets the start value for player stats
     hp = startHP;
     maxHP = startHP;
+    movementSpeed = startSpeed;
+    damageMultiplier = startDamageMultiplier;
 }
 
 void Player::move()
@@ -68,12 +71,10 @@ void Player::move()
 
     sf::Sprite::move(sf::Vector2f(direction.x * movementSpeed, direction.y * movementSpeed));
     weaponManager->setWeaponsPos(sf::Sprite::getPosition());
-    if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
     {
-        std::cout << "shoot" << std::endl;
-         weaponManager->shoot();
+        weaponManager->shoot();
     }
-
 }
 
 void Player::updateRotation(sf::RenderWindow *window)
@@ -135,7 +136,9 @@ void Player::die()
     sf::Sprite::move(sf::Vector2f(Window::WINDOW_WIDTH / 2, Window::WINDOW_HEIGHT / 2));
     hp = startHP;
     maxHP = startHP;
-    
+    movementSpeed = startSpeed;
+    //ExperienceManager::resetxp();
+    //waiting for method to remove every weapon exept start wepon
 }
 
 void Player::draw(sf::RenderWindow *window) const
@@ -150,31 +153,31 @@ void Player::drawInfo(sf::RenderWindow *window) const
             HPBox,
             sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2.0) + BOX_OFFSET,  // x
             sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2.0) + BOX_OFFSET, // y
-            150,                                                                      // lenght
-            35,                                                                       // widht
+            BOX_WIDHT,                                                                      // lenght
+            BOX_HEIGTH,                                                                       // widht
             HP_BOX_COLOR);                                                            // color
     drawBox(window,
             currentHPBox,
             sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2.0) + BOX_OFFSET,
             sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2.0) + BOX_OFFSET,
-            150 * (hp / maxHP),
-            35,
+            BOX_WIDHT * (hp / maxHP),
+            BOX_HEIGTH,
             CURRENT_HP_BOX_COLLOR); // curent hp
 
     drawBox(window,
             xpBox,
             sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2.0) + BOX_OFFSET,
             sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2.0) + XP_BOX_Y_OFFSET,
-            150,
-            35,
+            BOX_WIDHT,
+            BOX_HEIGTH,
             XP_BOX_COLOR); // xp background
 
     drawBox(window,
             currentXPBox,
             sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2.0) + BOX_OFFSET,
             sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2.0) + XP_BOX_Y_OFFSET,
-            0.1,
-            35,
+            BOX_WIDHT,
+            BOX_HEIGTH,
             CURRENT_XP_BOX_COLOR);
     // current xp -- if sats om xp 0 = 0 - sätt längd 0 annars räkna ut
 }
