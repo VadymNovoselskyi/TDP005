@@ -1,5 +1,9 @@
 #include "Weapon.h"
 
+#include <iostream>
+
+#include "Map.h"
+
 Weapon::Weapon(std::string const &name,
                std::string const &description,
                double damage,
@@ -7,18 +11,16 @@ Weapon::Weapon(std::string const &name,
                Rarity rarity,
                double speed)
     : name{name}, description{description}, damage{damage}, damageMultiplication{},
-      attackSpeed{attackSpeed}, rarity{rarity}, bullets{}, speed{speed}
+      attackSpeed{attackSpeed}, rarity{rarity}, speed{speed}
 {
 }
 
 void Weapon::shoot()
 {
-    bullets.push_back(
-        new Projectile{Transformable::getPosition(), speed, damage * damageMultiplication});
-    bullets.push_back(
-        new Projectile{Transformable::getPosition(), speed, damage * damageMultiplication});
-    bullets.back()->setRotation(Transformable::getRotation());
-    bullets.back()->move();
+    Map::instance()->addEntity(new Projectile{Transformable::getPosition(),
+                                              Transformable::getRotation(),
+                                              speed,
+                                              damage * damageMultiplication});
 }
 
 std::string Weapon::getName()
@@ -26,7 +28,7 @@ std::string Weapon::getName()
     return name;
 }
 
-void Weapon::uppdate()
+void Weapon::update()
 {
     do
     {

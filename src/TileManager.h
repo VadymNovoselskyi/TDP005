@@ -15,7 +15,7 @@ class TileManager
     static void deleteInstance();
 
     void drawTiles(sf::RenderWindow *window) const;
-    [[nodiscard]] std::vector<Obstacle *> getObstacles() const;
+    std::vector<Obstacle *> getObstacles() const;
 
     sf::Vector2i getMapDimensions() const;
 

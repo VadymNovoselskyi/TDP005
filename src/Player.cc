@@ -2,88 +2,149 @@
 
 #include <iostream>
 
+#include "GameState.h"
 #include "StateMachine.h"
 #include "TextureManager.h"
+#include "Window.h"
+//variables that wont change and is used to make code easier to read
+float const Player::BOX_OFFSET{18};
+float const Player::XP_BOX_Y_OFFSET{78};
+float const Player::BOX_WIDHT {150};
+float const Player::BOX_HEIGTH {35};
+//colors for each box, first is for the backgorund to show the amount that is lost or left 
+//the other box is to show the current amount
+sf::Color const Player::HP_BOX_COLOR{204, 0, 0};
+sf::Color const Player::CURRENT_HP_BOX_COLLOR{128, 0, 0};
+sf::Color const Player::XP_BOX_COLOR{118, 186, 27};
+sf::Color const Player::CURRENT_XP_BOX_COLOR{76, 154, 42};
 
-Player::Player(double maxHP,
-               double currentHP,
-               int movementSpeed,
-               sf::Vector2f const &positon,
-               sf::Vector2f const &direction,
-               std::string const &name,
+Player::Player(double const startHP,
+               int const startSpeed,
+               sf::Vector2f const &position,
+               std::string const &tag,
                int levels,
-               float damageMultiplier)
-    : Character("player", maxHP, currentHP, movementSpeed, positon, direction), name{name},
-      levels{levels}, damageMultiplier{damageMultiplier},
-      texture{TextureManager::instance()->getTexture("player.png")}
+               double const startDamageMultiplier,
+               ExperienceManager *expManager,
+               WeaponManager *weaponManager,
+               std::function<void(std::vector<LevelUpInfo>)> const &onLevelUp)
+    : Character(tag, startHP, startSpeed, position), startHP{startHP}, startSpeed{startSpeed},
+      rotation{}, levels{levels}, startDamageMultiplier{startDamageMultiplier}, oldPosition{position},
+      expManager(expManager), weaponManager{weaponManager}, onLevelUp{onLevelUp}
 {
+    auto texture{TextureManager::instance()->getTexture("player.png")};
     auto playerSize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
     sf::Sprite::setOrigin(playerSize.x / 2.0, playerSize.y / 2.0);
+    //sets the start value for player stats
+    hp = startHP;
+    maxHP = startHP;
+    movementSpeed = startSpeed;
+    damageMultiplier = startDamageMultiplier;
 }
 
 void Player::move()
 {
+    //resets current direction and saves the old position
+    sf::Vector2f direction;
     direction.x = 0;
     direction.y = 0;
+    oldPosition = sf::Sprite::getPosition();
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
     {
-        direction.y = NORTH;
-        rotation = UP;
+        direction.y = Direction::NORTH;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
     {
-        direction.x = EAST;
-        rotation = LEFT;
+        direction.x = Direction::EAST;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
     {
-        direction.y = SOUTH;
-        rotation = DOWN;
+        direction.y = Direction::SOUTH;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
     {
-        direction.x = WEST;
-        rotation = RIGHT;
+        direction.x = Direction::WEST;
     }
     if (std::abs(direction.x) + std::abs(direction.y) > 1)
     {
-        direction.x = direction.x / std::sqrt(2);
+        //divides direction by std::sqrt(2) to get a lower speed when player goes diagonal
+        direction.x = direction.x / std::sqrt(2); 
         direction.y = direction.y / std::sqrt(2);
+    } 
+    sf::Sprite::move(sf::Vector2f(direction.x * movementSpeed, direction.y * movementSpeed));
+    weaponManager->setWeaponsPos(sf::Sprite::getPosition());
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    {
+        weaponManager->shoot();
+    }
+}
 
-        // matematic explination:
-        // https://www.matteboken.se/lektioner/gymnasiet/matte-fortsattning-niva-2/trigonometri/radianer#!/
-        // used to check calculation with degrees
-
-        if (direction.y >= 0) // down
-        {
-            // multiplying by (180/PI)to convert radian to degrees and subtract to flip rotation.
-            rotation = 180.f - std::asin(direction.x) * (180.f / M_PI);
-        }
-        else // up
-        {
-            rotation = std::asin(direction.x) * (180.f / M_PI);
-        }
-
-    } // https://www.matteboken.se/lektioner/gymnasiet/matte-fortsattning-niva-1/trigonometri/enhetscirkeln#!/
-      // - fixa rotaiton utifrån mus
+void Player::updateRotation(sf::RenderWindow *window)
+{
+    // kollade upp om det fans någon atan funktion och hittad:
+    // https://cppreference.com/w/c/numeric/math/atan2.html kollade upp hur jag skulle räkna
+    // enhetscirklen:
+    // https://www.matteboken.se/lektioner/gymnasiet/matte-fortsattning-niva-1/trigonometri/enhetscirkeln#!/
+    double rotationRadians =
+        std::atan2((sf::Mouse::getPosition(*window).y - (Window::WINDOW_HEIGHT / 2)),
+                   (sf::Mouse::getPosition(*window).x - (Window::WINDOW_WIDTH / 2)));
+    rotation = rotationRadians * (180 / M_PI) + 90; // transform radians to rotation
 
     sf::Sprite::setRotation(rotation);
-    sf::Sprite::move(sf::Vector2f(direction.x * movementSpeed, direction.y * movementSpeed));
+    weaponManager->setWeaponsRotation(sf::Sprite::getRotation());
+}
+
+void Player::gainXp(int xp)
+{
+    bool lvlGained = expManager->gainXp(xp);
+    if (!lvlGained)
+    {
+        return;
+    }
+
+    onLevelUp(expManager->chooseLevelUps());
+    StateMachine::instance()->startLevelUp();
 }
 
 void Player::onCollision(std::string const &other)
 {
     if (other == "enemy")
     {
+        sf::Sprite::setPosition(oldPosition);
+        takeDamage(5);
     }
+    if(other == "box")
+    {
+        sf::Sprite::setPosition(oldPosition);
+    }
+}
+//methods to increase amount
+void Player::heal(double amount)
+{
+    hp += amount;
+}
+
+void Player::increaseSpeed(int amount)
+{
+    movementSpeed += amount;
+}
+void Player::increaseDamageMultiplyer(double amount)
+{
+    damageMultiplier += amount;
 }
 
 void Player::die()
 {
+    // reset xp, hp ,damage
     StateMachine::instance()->finishGame();
+    sf::Sprite::move(sf::Vector2f(Window::WINDOW_WIDTH / 2, Window::WINDOW_HEIGHT / 2));
+    hp = startHP;
+    maxHP = startHP;
+    movementSpeed = startSpeed;
+    //ExperienceManager::resetxp();
+    //waiting for method to remove every weapon exept start wepon
 }
-
+//methods to draw boxes
 void Player::draw(sf::RenderWindow *window) const
 {
     window->draw(*this);
@@ -92,22 +153,37 @@ void Player::draw(sf::RenderWindow *window) const
 
 void Player::drawInfo(sf::RenderWindow *window) const
 {
-    // -fixa position utifrån kamera
-    // drawBox(window, HPBox, positon.x +60, positon.y -60, 150, 50, 128, 0 ,0 ); // hp box
-    // background drawBox(window, CurrentHPBox, positon.x +60, positon.y -60, 150 * ( currentHP /
-    // maxHP), 50, 204, 0 ,0 ); // curent hp
+    drawBox(window, // hp boxbackground -- fixa static const för ofset, fixa sf
+            HPBox,
+            sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2.0) + BOX_OFFSET,  // x
+            sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2.0) + BOX_OFFSET, // y
+            BOX_WIDHT,                                                                      // lenght
+            BOX_HEIGTH,                                                                       // widht
+            HP_BOX_COLOR);                                                            // color
+    drawBox(window,
+            currentHPBox,
+            sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2.0) + BOX_OFFSET,
+            sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2.0) + BOX_OFFSET,
+            BOX_WIDHT * (hp / maxHP),
+            BOX_HEIGTH,
+            CURRENT_HP_BOX_COLLOR); // curent hp
 
-    // drawBox(window, XPBox, positon.x +120, positon.y - 120 +60, 150, 50, 76, 154 ,42 ); // xp
-    // background if (xp < 0)
-    // {
-    //     drawBox(window, CurrentXPBox, positon.x +120,  positon.y - 120, 150 * (xp / maxXP), 50,
-    //     118, 186 ,27 ); // current xp
-    // }
-    // else
-    // {
-    //     drawBox(window, CurrentXPBox, positon.x +120, positon.y - 120, 0.1, 50, 118, 186 ,27 );
-    //     // current xp
-    // }
+    drawBox(window,
+            xpBox,
+            sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2.0) + BOX_OFFSET,
+            sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2.0) + XP_BOX_Y_OFFSET,
+            BOX_WIDHT,
+            BOX_HEIGTH,
+            XP_BOX_COLOR); // xp background
+
+    drawBox(window,
+            currentXPBox,
+            sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2.0) + BOX_OFFSET,
+            sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2.0) + XP_BOX_Y_OFFSET,
+            BOX_WIDHT,
+            BOX_HEIGTH,
+            CURRENT_XP_BOX_COLOR);
+    // current xp -- if sats om xp 0 = 0 - sätt längd 0 annars räkna ut
 }
 
 void Player::drawBox(sf::RenderWindow *window,
@@ -116,32 +192,11 @@ void Player::drawBox(sf::RenderWindow *window,
                      float boxPosY,
                      float boxWidth,
                      float boxheight,
-                     int r,
-                     int g,
-                     int b)
+                     sf::Color boxColor) const
 
 {
     box.setSize(sf::Vector2f(boxWidth, boxheight));
-    box.setFillColor(sf::Color(r, g, b));
+    box.setFillColor(boxColor);
     box.setPosition(boxPosX, boxPosY);
     window->draw(box);
 }
-
-// void Player::levelUP(Choises choise) // skapa levelup manager
-// {
-//     switch (choise)
-//     {
-//     case HP: // hp
-//         maxHP += 50;
-//         break;
-//     case SPEED: // speed
-//         movementSpeed += 5;
-//         break;
-
-//     case DAMAGE: // damage
-//         damageMultiplier += 0.5;
-//     case WEAPON: // weapon
-
-//         break;
-//     }
-// }

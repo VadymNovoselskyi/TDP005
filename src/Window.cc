@@ -1,6 +1,5 @@
 #include "Window.h"
 
-#include <chrono>
 #include <iostream>
 
 #include "StateMachine.h"
@@ -28,7 +27,10 @@ Window::~Window()
         delete menu;
     }
 }
-
+sf::RenderWindow* Window::getRenderWindow() const
+{
+    return window;
+}
 void Window::handleEvents()
 {
     sf::Event event{};
@@ -52,6 +54,7 @@ void Window::handleEvents()
 }
 
 void Window::draw()
+
 {
     window->clear();
     TileManager::instance()->drawTiles(window);

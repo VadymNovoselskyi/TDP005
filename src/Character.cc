@@ -1,33 +1,17 @@
 #include "Character.h"
 
 Character::Character(std::string const &tag,
-                     double maxHP,
-                     double currentHP,
+                     double hp,
                      int movementSpeed,
-                     sf::Vector2f const &position,
-                     sf::Vector2f const &direction)
-    : Entity(tag, position), maxHP{maxHP}, currentHP{currentHP}, movementSpeed{movementSpeed},
-      direction{direction}
+                     sf::Vector2f const &position)
+    : Entity(tag, position), hp{hp}, movementSpeed{movementSpeed}
 {
 }
 
 void Character::takeDamage(double damage)
 {
-    currentHP = currentHP - damage;
+    hp -= damage;
 }
-void Character::setDirection(sf::Vector2f newDirection)
-{
-    direction = newDirection;
-}
-sf::Vector2f Character::getDirection() const
-{
-    return direction;
-}
-
-// sf::Vector2f Character::getPosition() const
-// {
-//     return position;
-// }
 
 void Character::setMovementSpeed(int newSpeed)
 {

@@ -15,12 +15,12 @@ class Map
     static Map *init(Player *player, std::vector<Obstacle *> const &obstacles);
     static void deleteInstance();
 
-    void handelUpdate();
+    void handelUpdate(sf::RenderWindow *window);
     void draw(sf::RenderWindow *window) const;
 
     void addEntity(Entity *e);
     void removeEntity(Entity *e);
-
+    int size();
   private:
     Map(Player *player, std::vector<Obstacle *> const &obstacles);
     ~Map();

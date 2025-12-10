@@ -22,7 +22,8 @@ std::vector<ElementsInfo> StartMenu::createButtons() const
     ElementsInfo title{"GAME NAME", 0.5, 0.1, std::nullopt};
     elements.push_back(title);
 
-    ElementsInfo startButton{"START", 0.5, 0.4, []() { StateMachine::instance()->startGame(); }};
+    ElementsInfo startButton{
+        "START", 0.5, 0.4, []() { StateMachine::instance()->chooseUsername(); }};
     elements.push_back(startButton);
 
     ElementsInfo rankingsButton{"RANKINGS", 0.5, 0.6, []() {}};
@@ -33,6 +34,70 @@ std::vector<ElementsInfo> StartMenu::createButtons() const
     elements.push_back(exitButton);
 
     return elements;
+}
+
+// Choose name menu
+ChooseNameMenu::ChooseNameMenu()
+    : Menu(createButtons(), StateMachine::instance()->state() == GameState::CHOOSING_USERNAME),
+      username{}
+{
+    StateMachine::instance()->addListener(
+        "ChooseNameMenu",
+        [this](GameState gameState) { setIsOpen(gameState == GameState::CHOOSING_USERNAME); });
+}
+
+std::vector<ElementsInfo> ChooseNameMenu::createButtons() const
+{
+    return createButtons("*YOUR USERNAME*");
+}
+
+// Done this because cant init username in the constructor because of reordering
+std::vector<ElementsInfo> ChooseNameMenu::createButtons(std::string const &username) const
+{
+    std::vector<ElementsInfo> elements{};
+
+    ElementsInfo title{"CHOOSE YOUR USERNAME", 0.5, 0.1, std::nullopt};
+    elements.push_back(title);
+
+    ElementsInfo nameField{username, 0.5, 0.4, std::nullopt};
+    elements.push_back(nameField);
+
+    ElementsInfo submitButton{"SUBMIT", 0.5, 0.6, []() { StateMachine::instance()->startGame(); }};
+    elements.push_back(submitButton);
+
+    return elements;
+}
+bool ChooseNameMenu::handleEvent(sf::Event event)
+{
+    bool handled = Menu::handleEvent(event);
+    if (handled)
+    {
+        return true;
+    }
+
+    if (StateMachine::instance()->state() == GameState::CHOOSING_USERNAME &&
+        event.type == sf::Event::TextEntered)
+    // Only add the ASCII chars, seems good enough for now
+    // The unicode values are taken from https://en.wikipedia.org/wiki/List_of_Unicode_characters
+    {
+        if (event.text.unicode <= 126 && event.text.unicode >= 32 && username.length() < 20)
+        {
+            username += event.text.unicode;
+            Menu::setButtons(createButtons(username));
+        }
+
+        // The backspace button
+        else if (event.text.unicode == 8)
+        {
+            if (username.length() > 0)
+            {
+                username.erase(username.length() - 1);
+                Menu::setButtons(createButtons(username));
+            }
+        }
+        return true;
+    }
+    return false;
 }
 
 // Pause menu
@@ -142,7 +207,7 @@ LevelUpMenu::createButtons(std::vector<LevelUpInfo> const &levelUpOptions) const
     {
         auto levelUpOption = levelUpOptions.at(i);
         ElementsInfo levelUpButton{
-            levelUpOption.name + "\n" + levelUpOption.description,
+            levelUpOption.description,
             0.5,
             (((1 - PADDING_TOP - PADDING_BOTTOM) / optionsSize * i) + PADDING_TOP),
             levelUpOption.onClick};

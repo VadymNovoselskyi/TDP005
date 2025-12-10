@@ -2,6 +2,7 @@
 #define WEAPON_H
 
 #include <SFML/Graphics.hpp>
+#include <cmath>
 #include <string>
 
 #include "Projectile.h"
@@ -34,13 +35,12 @@ class Weapon : public sf::Sprite::Transformable
 
     double damage;
     double damageMultiplication;
-    int lvls;
-    double speed;
     sf::Time attackSpeed;
 
     Rarity rarity;
-    void uppdate();
-    std::vector<Projectile *> bullets;
+    double speed;
+
+    void update();
 };
 
 #endif

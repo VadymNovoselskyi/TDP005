@@ -1,19 +1,19 @@
 #ifndef Spawner_H
 #define Spawner_H
 
-
-#include"Enemy.h"
-#include"Map.h"
 #include <vector>
+
+#include "Enemy.h"
+#include "Map.h"
 #include "Player.h"
 #include "TileManager.h"
 
 class Spawner
 {
-    public:
-        Spawner(Player* player);
-        void spwanEnemies();
-        sf::Vector2f choseSpawnPos();
+  public:
+    Spawner(Player *player);
+    void spwanEnemies();
+    sf::Vector2f choseSpawnPos();
 
     private:
         void incresSpawnRate();

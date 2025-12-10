@@ -10,7 +10,7 @@
 class Enemy : public Character
 {
     public:
-        Enemy(/*Charactar*/  double maxHP, double currentHP, int movementSpeed, sf::Vector2f positon, sf::Vector2f direction,
+        Enemy(/*Charactar*/ double currentHP, int movementSpeed, sf::Vector2f positon,
            /*Enemy*/ int attackRange, int attackSpeed, int XP_DROP, double damage, int score, Player* player);
         virtual ~Enemy();
 
@@ -24,7 +24,7 @@ class Enemy : public Character
         void onCollision(std::string const &othe) override;
 
     protected:
-
+        void moveHelper();
         void tryAttack(float leng);
         //void calcPath(sf::Vector2f);
         int attackRange;
@@ -41,7 +41,7 @@ class Enemy : public Character
 class Footman :public Enemy
 {
     public:
-        Footman(/*Charactar*/  double maxHP, double currentHp, int movementSpeed, sf::Vector2f positon, sf::Vector2f direction,
+        Footman(/*Charactar*/double currentHp, int movementSpeed, sf::Vector2f positon, sf::Vector2f direction,
            /*Enemy*/ int attackRange, int attackSpeed, int XP_DROP, double damage, int score, Player* player);
         void attack() override;
         void move() override;
@@ -54,7 +54,7 @@ class Footman :public Enemy
 class Kaboom:public Enemy
 {
     public:
-        Kaboom(/*Charactar*/  double maxHP, double currentHp, int movementSpeed, sf::Vector2f positon, sf::Vector2f direction,
+        Kaboom(/*Charactar*/double currentHp, int movementSpeed, sf::Vector2f positon, sf::Vector2f direction,
            /*Enemy*/ int attackRange, int attackSpeed, int XP_DROP, double damage, int score, Player* player,
         double explodeDamage, double explodeRange);
         void attack() override;
@@ -71,7 +71,7 @@ class Kaboom:public Enemy
 class Archer:public Enemy
 {
     public:
-        Archer(/*Charactar*/ double maxHP, double currentHp, int movementSpeed, sf::Vector2f positon, sf::Vector2f direction,
+        Archer(/*Charactar*/ double currentHp, int movementSpeed, sf::Vector2f positon, sf::Vector2f direction,
            /*Enemy*/ int attackRange, int attackSpeed, int XP_DROP, double damage, int score, Player* player);
     void attack() override;
     void move() override;

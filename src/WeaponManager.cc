@@ -1,64 +1,58 @@
 #include "WeaponManager.h"
 
+#include <algorithm>
+#include <iostream>
+
 #include "AssaultRifleWeapon.h"
 
-#include <iostream>
-#include <algorithm>
-
-WeaponManager *WeaponManager::instancePtr{nullptr};
-
-// Static methods:
-WeaponManager *WeaponManager::instance()
+WeaponManager::WeaponManager() : activeWeapons{}, weapons{}
 {
-    if (WeaponManager::instancePtr == nullptr)
+    weapons.push_back(new AssaultRifleWeapon());
+}
+
+WeaponManager::~WeaponManager()
+{
+    for (auto weapon : weapons)
     {
-        throw std::logic_error("Didn't init WeaponManager before calling instance on it");
+        delete weapon;
     }
-    return WeaponManager::instancePtr;
-}
-
-WeaponManager *WeaponManager::init()
-{
-    WeaponManager::instancePtr = new WeaponManager();
-    return WeaponManager::instancePtr;
-}
-
-void WeaponManager::deleteInstance()
-{
-    // std::cout << "Deleting the instance" << std::endl;
-    delete WeaponManager::instancePtr;
-    WeaponManager::instancePtr = nullptr;
 }
 
 void WeaponManager::shoot()
 {
-    for (Weapon* w : activWeapons)
+    for (Weapon *w : activeWeapons)
     {
-        w -> shoot();
+        w->shoot();
     }
 }
 
-
-void WeaponManager::setWeaponsPos(sf::Vector2f pos)
+void WeaponManager::setWeaponsPos(sf::Vector2f const &pos)
 {
-    for (Weapon* w : activWeapons)
+    for (Weapon *w : activeWeapons)
     {
-        w -> setPosition(pos.x, pos.y);
+        w->setPosition(pos.x, pos.y);
     }
 }
 
-Weapon* WeaponManager::getWeapon(std::string const &name)
+void WeaponManager::setWeaponsRotation(double rotaiton)
 {
-    auto it = std::find_if(activWeapons.begin(), activWeapons.end(), [name](Weapon* w)
+    for (Weapon *w : activeWeapons)
     {
-        return w -> getName() == name;
-    });
-    return *it;
-
+        w->setRotation(rotaiton);
+    }
 }
 
-void generatWeapon(int number /*0-3*/);
-
-WeaponManager::WeaponManager() : weapons {/*Add all weapons here (uniqe weapon class)*/ new AssaultRifleWeapon{}}, activWeapons {new AssaultRifleWeapon{}}
+Weapon *WeaponManager::getWeapon(std::string const &name)
 {
+    auto weapon = std::find_if(activeWeapons.begin(),
+                               activeWeapons.end(),
+                               [name](Weapon *w) { return w->getName() == name; });
+    return *weapon;
+}
+
+void WeaponManager::receiveNewWeapon(std::string const &name)
+{
+    auto weapon = std::find_if(
+        weapons.begin(), weapons.end(), [name](Weapon *w) { return w->getName() == name; });
+    activeWeapons.push_back(*weapon);
 }

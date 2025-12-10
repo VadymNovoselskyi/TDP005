@@ -6,7 +6,6 @@ class AssaultRifleWeapon : public Weapon
 {
 public:
     AssaultRifleWeapon();
-    ~AssaultRifleWeapon() = default;
 private:
     /* data */
 };

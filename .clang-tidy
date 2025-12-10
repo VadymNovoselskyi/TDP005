@@ -20,7 +20,12 @@ Checks: >
   -performance-avoid-endl,
   -modernize-pass-by-value,
   -bugprone-easily-swappable-parameters,
-  -performance-enum-size
+  -performance-enum-size,
+  -cppcoreguidelines-pro-type-union-access,
+  -modernize-use-nodiscard,
+  -readability-magic-numbers,
+  -unused-includes,
+  -readability-convert-member-functions-to-static
 
 WarningsAsErrors: >
   bugprone-*

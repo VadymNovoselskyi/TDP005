@@ -1,5 +1,5 @@
 #include "Spawner.h"
-#include <iostream>
+
 #include <cstdlib>
 #include "TileManager.h"
 
@@ -13,14 +13,13 @@ void Spawner::spwanEnemies()
     
     if(conter >= spawnRate)
     {
-        Footman* enemyF = new Footman(maxHP, currentHP, movementSpeed, position, direction, attackRange, attackSpeed, XP_DROP, damage, score, player);
+        Footman* enemyF = new Footman(currentHP, movementSpeed, position, direction, attackRange, attackSpeed, XP_DROP, damage, score, player);
 
         Map::instance()->addEntity(enemyF);
         addKaboom();
     
         conter = 0;
         Spawner::incresSpawnRate();
- 
         
     }
     else
@@ -41,6 +40,7 @@ sf::Vector2f Spawner::choseSpawnPos()
     return nySpawnPos;
 
 }
+
 void Spawner::incresSpawnRate()
 {
     if(spawnRate > 1)
