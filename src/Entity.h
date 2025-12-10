@@ -5,18 +5,24 @@
 #include <string>
 
 // to lower classes
-#include "TextureManager.h"
 #include <cmath>
+
+#include "TextureManager.h"
 
 class Entity : public sf::Sprite
 {
   public:
-    Entity(std::string const &tag, sf::Vector2f const &pos);
-    virtual void onCollision(Entity* other ) = 0;
+    Entity(std::string const &tag, sf::Vector2f const &pos, double hp);
+    virtual void onCollision(Entity *other) = 0;
     std::string getTag() const;
     virtual void move() = 0;
 
     virtual void draw(sf::RenderWindow *window) const;
+    void takeDamage(double &);
+
+  protected:
+    double hp;
+    virtual void die() = 0;
 
   private:
     std::string tag;

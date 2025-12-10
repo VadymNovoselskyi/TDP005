@@ -121,8 +121,8 @@ void Enemy::die()
 {
     // ge xp och påeng
     // Map::removeEntity(Entity *this);
-    movementSpeed = 0;
-    // delete this;
+
+    Map::instance()->removeEntity(this);
 }
 
 void Enemy::draw(sf::RenderWindow *window) const

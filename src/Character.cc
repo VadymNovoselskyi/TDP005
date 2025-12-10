@@ -1,22 +1,11 @@
 #include "Character.h"
-#include <iostream>
 
 Character::Character(std::string const &tag,
                      double hp,
                      int movementSpeed,
                      sf::Vector2f const &position)
-    : Entity(tag, position), hp{hp}, movementSpeed{movementSpeed}
+    : Entity(tag, position, hp), movementSpeed{movementSpeed}
 {
-}
-
-void Character::takeDamage(double &damage)
-{
-    hp -= damage;
-    std::cout << hp << " | " << damage << std::endl;
-    if (hp <= 0)
-    {
-        die();
-    }
 }
 
 void Character::setMovementSpeed(int newSpeed)

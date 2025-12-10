@@ -17,6 +17,7 @@ class Obstacle : public Entity
     void onCollision(Entity *other) override;
     void move() override;
     void draw(sf::RenderWindow *window) const override;
+    void die() override;
 };
 
 #endif

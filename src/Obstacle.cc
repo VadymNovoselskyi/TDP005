@@ -4,7 +4,7 @@
 
 #include "Entity.h"
 
-Obstacle::Obstacle(sf::Texture const *texture, sf::Vector2f position, std::string const& tag) : Entity(tag, position)
+Obstacle::Obstacle(sf::Texture const *texture, sf::Vector2f position, std::string const& tag) : Entity(tag, position, /*hp*/1)
 {
     // auto obstackeSize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
@@ -22,4 +22,9 @@ void Obstacle::move()
 void Obstacle::draw(sf::RenderWindow *window) const
 {
     window->draw(*this);
+}
+
+void Obstacle::die()
+{
+
 }
