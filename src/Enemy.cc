@@ -97,7 +97,6 @@ void Footman::move()
 
     sf::Vector2f figure1 = player -> getPosition();
     sf::Vector2f figure2 = getPosition();
-    double const SPEED{5};
     direction.x = 0;
     direction.y = 0;
  
@@ -115,7 +114,7 @@ void Footman::move()
         direction.y = (rikting_y / len);
     }
     
-    sf::Sprite::move(direction.x * SPEED, direction.y * SPEED);
+    sf::Sprite::move(direction.x * movementSpeed, direction.y * movementSpeed);
     tryAttack(len);
 
 }
@@ -158,7 +157,6 @@ void Kaboom::move()
 
     sf::Vector2f figure1 = player -> getPosition();
     sf::Vector2f figure2 = getPosition();
-    double SPEED{5};
     direction.x = 0;
     direction.y = 0;
  
@@ -177,10 +175,10 @@ void Kaboom::move()
     }
     if(len <= 300)
     {
-        SPEED = 10.0;
+        movementSpeed = 10.0;
     }
     
-    sf::Sprite::move(direction.x * SPEED, direction.y * SPEED);
+    sf::Sprite::move(direction.x * movementSpeed, direction.y * movementSpeed);
     tryAttack(len);
 }
 
@@ -195,7 +193,6 @@ void Archer::move()
 
     sf::Vector2f figure1 = player -> getPosition();
     sf::Vector2f figure2 = getPosition();
-    double const SPEED{5};
     direction.x = 0;
     direction.y = 0;
  
@@ -214,7 +211,7 @@ void Archer::move()
     }
     if(len > 500)
     {
-        sf::Sprite::move(direction.x * SPEED, direction.y * SPEED);
+        sf::Sprite::move(direction.x * movementSpeed, direction.y * movementSpeed);
     }
     tryAttack(len);
 }
