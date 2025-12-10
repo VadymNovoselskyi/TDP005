@@ -19,7 +19,7 @@ sf::Color const Player::XP_BOX_COLOR{118, 186, 27};
 sf::Color const Player::CURRENT_XP_BOX_COLOR{76, 154, 42};
 
 Player::Player(double startHP,
-               int movementSpeed,
+               int startSpeed,
                sf::Vector2f const &position,
                std::string const &tag,
                int levels,
@@ -84,6 +84,7 @@ void Player::move()
     {
         direction.x = Direction::WEST;
     }
+
     if (std::abs(direction.x) + std::abs(direction.y) > 1)
     {
         // divides direction by std::sqrt(2) to get a lower speed when player goes diagonal
@@ -92,6 +93,7 @@ void Player::move()
     }
 
     sf::Sprite::move(sf::Vector2f(direction.x * movementSpeed, direction.y * movementSpeed));
+
     weaponManager.setWeaponsPos(sf::Sprite::getPosition());
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
     {
