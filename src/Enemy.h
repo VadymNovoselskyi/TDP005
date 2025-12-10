@@ -80,7 +80,8 @@ class Kaboom : public Enemy
            int score,
            Player *player,
            double explodeDamage,
-           double explodeRange);
+           double explodeRange,
+           float agroRange);
     void attack() override;
     void move() override;
 
@@ -89,6 +90,7 @@ class Kaboom : public Enemy
     void explode(float len);
     double explodeRange;
     double explodeDamage;
+    float agroRange;
     sf::Texture const *texture;
 };
 
@@ -103,7 +105,8 @@ class Archer : public Enemy
            int XP_DROP,
            double damage,
            int score,
-           Player *player);
+           Player *player,
+           float fireRange);
     void attack() override;
     void move() override;
 
@@ -114,6 +117,7 @@ class Archer : public Enemy
 
   private:
     void shoot();
+    float fireRange; 
     sf::Texture const *texture;
 };
 

@@ -59,9 +59,10 @@ void Spawner::addKaboom()
 {
     if(inKaboom)
     {
-        double explodeRange {};
-        double explodeDamage {};
-        Kaboom* enemyK = new Kaboom( currentHP, movementSpeed, position, attackRange, attackSpeed, XP_DROP, damage, score, player, explodeRange, explodeDamage);
+        double explodeRange {150};
+        double explodeDamage {10};
+        float agroRange {300};
+        Kaboom* enemyK = new Kaboom( currentHP, movementSpeed, position, attackRange, attackSpeed, XP_DROP, damage, score, player, explodeRange, explodeDamage, agroRange);
         Map::instance()->addEntity(enemyK);
     }
 }
@@ -70,8 +71,8 @@ void Spawner::addArcher()
 {
     if(inArcher)
     {
-
-        Archer* enemyA = new Archer( currentHP, movementSpeed, position, attackRange, attackSpeed, XP_DROP, damage, score, player);
+        float fireRange {400};
+        Archer* enemyA = new Archer( currentHP, movementSpeed, position, attackRange, attackSpeed, XP_DROP, damage, score, player, fireRange);
         Map::instance()->addEntity(enemyA);
     }
 }
