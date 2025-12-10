@@ -13,7 +13,7 @@ void Spawner::spwanEnemies()
     
     if(conter >= spawnRate)
     {
-        Footman* enemyF = new Footman(currentHP, movementSpeed, position, direction, attackRange, attackSpeed, XP_DROP, damage, score, player);
+        Footman* enemyF = new Footman(currentHP, movementSpeed, position, attackRange, attackSpeed, XP_DROP, damage, score, player);
 
         Map::instance()->addEntity(enemyF);
         addKaboom();
@@ -57,7 +57,7 @@ void Spawner::addKaboom()
     {
         double explodeRange {};
         double explodeDamage {};
-        Kaboom* enemyK = new Kaboom(maxHP, currentHP, movementSpeed, position, direction, attackRange, attackSpeed, XP_DROP, damage, score, player, explodeRange, explodeDamage);
+        Kaboom* enemyK = new Kaboom( currentHP, movementSpeed, position, attackRange, attackSpeed, XP_DROP, damage, score, player, explodeRange, explodeDamage);
         Map::instance()->addEntity(enemyK);
     }
 }

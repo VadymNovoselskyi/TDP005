@@ -41,7 +41,7 @@ class Enemy : public Character
 class Footman :public Enemy
 {
     public:
-        Footman(/*Charactar*/double currentHp, int movementSpeed, sf::Vector2f positon, sf::Vector2f direction,
+        Footman(/*Charactar*/double currentHp, int movementSpeed, sf::Vector2f positon,
            /*Enemy*/ int attackRange, int attackSpeed, int XP_DROP, double damage, int score, Player* player);
         void attack() override;
         void move() override;
@@ -54,7 +54,7 @@ class Footman :public Enemy
 class Kaboom:public Enemy
 {
     public:
-        Kaboom(/*Charactar*/double currentHp, int movementSpeed, sf::Vector2f positon, sf::Vector2f direction,
+        Kaboom(/*Charactar*/double currentHp, int movementSpeed, sf::Vector2f positon,
            /*Enemy*/ int attackRange, int attackSpeed, int XP_DROP, double damage, int score, Player* player,
         double explodeDamage, double explodeRange);
         void attack() override;
@@ -71,7 +71,7 @@ class Kaboom:public Enemy
 class Archer:public Enemy
 {
     public:
-        Archer(/*Charactar*/ double currentHp, int movementSpeed, sf::Vector2f positon, sf::Vector2f direction,
+        Archer(/*Charactar*/ double currentHp, int movementSpeed, sf::Vector2f positon,
            /*Enemy*/ int attackRange, int attackSpeed, int XP_DROP, double damage, int score, Player* player);
     void attack() override;
     void move() override;
