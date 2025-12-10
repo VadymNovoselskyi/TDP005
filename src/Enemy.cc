@@ -92,7 +92,7 @@ void Footman::attack()
     player -> takeDamage(damage);
 }
 
-void Footman::move()
+void Footman::move() // skapa en move hjälper 
 {
 
     sf::Vector2f figure1 = player -> getPosition();

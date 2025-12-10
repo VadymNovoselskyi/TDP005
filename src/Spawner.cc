@@ -1,6 +1,7 @@
 #include "Spawner.h"
 #include <iostream>
 #include <cstdlib>
+#include "TileManager.h"
 
 Spawner::Spawner(Player* player):spawnRate{200.0}, player{player}
 {
@@ -12,7 +13,7 @@ void Spawner::spwanEnemies()
     double maxHP {100.0};
     double currentHP {100.0};
     int movementSpeed {4};
-    sf::Vector2f position {10,10};
+    sf::Vector2f position {choseSpawnPos()};
     sf::Vector2f direction {0,0};
     int attackRange {12};
     int attackSpeed {6};
@@ -41,12 +42,19 @@ void Spawner::spwanEnemies()
 
 sf::Vector2f Spawner::choseSpawnPos()
 {
-    int const random_x = std::rand();
-    int const random_y = std::rand();
+    sf::Vector2i mapSize { TileManager::instance() -> getMapDimensions()};
+    //std::cout<<mapSize.x<<std::endl;
+    float randomX = std::rand() % mapSize.x; // tar inspraskion från  w3schools //https://www.w3schools.com/cpp/cpp_howto_random_number.asp
+    float randomY = std::rand() % mapSize.y;
+ 
+    sf::Vector2f nySpawnPos {randomX, randomY};
+    return nySpawnPos;
+
 }
 void Spawner::incresSpawnRate()
 {
-   
-    spawnRate *= 0.8;
-   
+    if(spawnRate > 1)
+    {
+        spawnRate *= 0.8;
+    }
 }

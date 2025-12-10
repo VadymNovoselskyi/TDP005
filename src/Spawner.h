@@ -6,6 +6,7 @@
 #include"Map.h"
 #include <vector>
 #include "Player.h"
+#include "TileManager.h"
 
 class Spawner
 {
