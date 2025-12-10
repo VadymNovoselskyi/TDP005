@@ -14,13 +14,6 @@ class Spawner
     void spwanEnemies();
     sf::Vector2f choseSpawnPos();
 
-<<<<<<< HEAD
-  private:
-    double increaseSpawnRate();
-    double spawnRate;
-    int counter;
-    sf::Vector2f spwanPoint;
-=======
     private:
         void incresSpawnRate();
         std::vector <Enemy*> enemies;
@@ -29,9 +22,6 @@ class Spawner
         Player* player;
         double conter;
         
-        
->>>>>>> origin/personal/tomgl406
-
     std::vector<Enemy *> enemies;
     Player *player;
 };
