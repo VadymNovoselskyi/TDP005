@@ -21,6 +21,8 @@ void Spawner::spwanEnemies()
         choseSpawnPos();
         addKaboom();
     
+        choseSpawnPos();
+        addArcher();
         conter = 0;
         Spawner::incresSpawnRate();
         
@@ -50,6 +52,7 @@ void Spawner::incresSpawnRate()
     {
         spawnRate *= 0.99;
         inKaboom = true; // tilfälig
+        inArcher = true; // tilfälig
     }
 }
 
@@ -62,5 +65,15 @@ void Spawner::addKaboom()
         double explodeDamage {};
         Kaboom* enemyK = new Kaboom( currentHP, movementSpeed, position, attackRange, attackSpeed, XP_DROP, damage, score, player, explodeRange, explodeDamage);
         Map::instance()->addEntity(enemyK);
+    }
+}
+
+void Spawner::addArcher()
+{
+    if(inArcher)
+    {
+
+        Archer* enemyA = new Archer( currentHP, movementSpeed, position, attackRange, attackSpeed, XP_DROP, damage, score, player);
+        Map::instance()->addEntity(enemyA);
     }
 }
