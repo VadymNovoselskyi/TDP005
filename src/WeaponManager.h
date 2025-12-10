@@ -16,15 +16,14 @@ class WeaponManager
     void setWeaponsPos(sf::Vector2f const &pos);
     void setWeaponsRotation(double rotaiton);
 
-    Weapon *getWeapon(std::string const &name);
     void receiveNewWeapon(std::string const &name);
     void receiveRandomWeapon();
 
   private:
-    void equipWeapon(Weapon *);
+    void equipWeapon(Weapon);
 
-    std::vector<Weapon *> equipedWeapons;
-    std::vector<Weapon *> unequipedWeapons;
+    std::vector<Weapon> equipedWeapons;
+    std::vector<Weapon> unequipedWeapons;
 };
 
 #endif
