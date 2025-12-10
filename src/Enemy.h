@@ -31,7 +31,8 @@ class Enemy : public Character
     void onCollision(std::string const &othe) override;
 
   protected:
-    void moveHelper();
+    float calculateDistance();
+    sf::Vector2f calculateDirection();
     void tryAttack(float leng);
     // void calcPath(sf::Vector2f);
     sf::Vector2f oldPosition;
@@ -44,6 +45,7 @@ class Enemy : public Character
 
   private:
     std::string tag{"enemy"};
+    
 };
 
 class Footman : public Enemy

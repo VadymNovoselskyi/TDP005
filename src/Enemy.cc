@@ -105,11 +105,6 @@ Kaboom::Kaboom(/*Charactar*/
     sf::Sprite::setOrigin(playerSize.x / 2.0, playerSize.y / 2.0);
 }
 
-double pythagoras(sf::Vector2f p) // ska vara en point
-{
-    return sqrt((p.x * p.x) + (p.y * p.y));
-}
-
 Enemy::~Enemy()
 {
 }
@@ -117,16 +112,30 @@ Enemy::~Enemy()
 void Enemy::die()
 {
     // ge xp och påeng
-    // Map::removeEntity(Entity *this);
+    //Map::removeEntity(Entity *this);
 }
 
 void Enemy::draw(sf::RenderWindow *window) const
 {
     window->draw(*this);
 }
-void Enemy::moveHelper()
+float Enemy::calculateDistance()
 {
-    
+    oldPosition = getPosition();
+    sf::Vector2f playerPositon = player->getPosition();
+    sf::Vector2f enemyPosition = oldPosition;
+
+    float direction_x = playerPositon.x - enemyPosition.x;
+    float direction_y = playerPositon.y - enemyPosition.y;
+
+    return std::sqrt(direction_x * direction_x + direction_y* direction_y);
+}
+sf::Vector2f Enemy::calculateDirection()
+{
+    sf::Vector2f playerPositon = player->getPosition();
+    sf::Vector2f enemyPosition = getPosition();
+    sf::Vector2f directionResult {playerPositon.x - enemyPosition.x, playerPositon.y - enemyPosition.y};
+    return directionResult;
 }
 std::string Enemy::getTag()
 {
@@ -141,12 +150,14 @@ void Enemy::onCollision(std::string const &other)
     }
     else if ( other == "enemy")
     {
+        //instead create a function that either gets a empty position close or a random position close
         sf::Sprite::setPosition(oldPosition);
     }
     else if (other == "box")
     {
         sf::Sprite::setPosition(oldPosition);
     }
+    
 }
 void Enemy::tryAttack(float len)
 {
@@ -166,22 +177,17 @@ void Footman::attack()
 void Footman::move()
 {
     oldPosition = getPosition();
-    sf::Vector2f playerPositon = player->getPosition();
-    sf::Vector2f enemyPosition = oldPosition;
+    sf::Vector2f directionResult = calculateDirection();
+
+
     sf::Vector2f direction;
     direction.x = 0;
     direction.y = 0;
-
-    // Point player {playerPosition.getPosition()};
-    // Point enemy  {enemyPosition.getPosition()};
-    float direction_x = playerPositon.x - enemyPosition.x;
-    float direction_y = playerPositon.y - enemyPosition.y;
-
-    float len = std::sqrt(direction_x * direction_x + direction_y* direction_y);
+    float len = calculateDistance();
     if (len != 0)
     {
-        direction.x = (direction_x / len);
-        direction.y = (direction_y/ len);
+        direction.x = (directionResult.x / len);
+        direction.y = (directionResult.y/ len);
     }
 
     sf::Sprite::move(direction.x * movementSpeed, direction.y * movementSpeed);
@@ -217,23 +223,18 @@ void Kaboom::attack()
 }
 void Kaboom::move()
 {
-    
-    sf::Vector2f playerPosition = player->getPosition();
-    sf::Vector2f enemyPosition = getPosition();
+    oldPosition = getPosition();
+    sf::Vector2f directionResult = calculateDirection();
+
+
     sf::Vector2f direction;
     direction.x = 0;
     direction.y = 0;
-
-    // Point player {playerPosition.getPosition()};
-    // Point enemy  {enemyPosition.getPosition()};
-    float direction_x = playerPosition.x - enemyPosition.x;
-    float direction_y = playerPosition.y - enemyPosition.y;
-
-    float len = std::sqrt(direction_x * direction_x + direction_y * direction_y);
+    float len = calculateDistance();
     if (len != 0)
     {
-        direction.x = (direction_x / len);
-        direction.y = (direction_y / len);
+        direction.x = (directionResult.x / len);
+        direction.y = (directionResult.y / len);
     }
     if (len <= 300)
     {
@@ -249,21 +250,18 @@ void Archer::attack()
 }
 void Archer::move()
 {
+     oldPosition = getPosition();
+    sf::Vector2f directionResult = calculateDirection();
 
-    sf::Vector2f playerPosition = player->getPosition();
-    sf::Vector2f enemyPosition = getPosition();
+
     sf::Vector2f direction;
     direction.x = 0;
     direction.y = 0;
-
-    float direction_x = playerPosition.x - enemyPosition.x;
-    float direction_y = playerPosition.y - enemyPosition.y;
-
-    float len = std::sqrt(direction_x * direction_x + direction_y * direction_y);
+    float len = calculateDistance();
     if (len != 0)
     {
-        direction.x = (direction_x / len);
-        direction.y = (direction_y / len);
+        direction.x = (directionResult.x / len);
+        direction.y = (directionResult.y / len);
     }
     if (len > 500)
     {
