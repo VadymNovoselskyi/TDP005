@@ -25,13 +25,11 @@ void Spawner::spwanEnemies()
         addArcher();
         conter = 0;
         Spawner::incresSpawnRate();
-        
     }
     else
     {
-        conter +=1;
+        conter += 1;
     }
-    
 }
 
 void Spawner::choseSpawnPos()
