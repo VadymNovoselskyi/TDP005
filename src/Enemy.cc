@@ -98,7 +98,7 @@ Kaboom::Kaboom(/*Charactar*/
             score,
             player),
       explodeDamage{explodeDamage}, explodeRange{explodeRange},
-      texture{TextureManager::instance()->getTexture("enemy.png")}
+      texture{TextureManager::instance()->getTexture("obstacle-gas.png")}
 {
     auto playerSize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
@@ -174,7 +174,7 @@ void Footman::attack()
     player->takeDamage(damage);
 }
 
-void Footman::move()
+void Footman::move() // skapa en move hjälper 
 {
     oldPosition = getPosition();
     sf::Vector2f directionResult = calculateDirection();
