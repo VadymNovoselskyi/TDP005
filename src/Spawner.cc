@@ -12,7 +12,6 @@ Spawner::Spawner(Player* player):spawnRate{200.0}, player{player}
 void Spawner::spwanEnemies()
 {
 
-    double maxHP {100.0};
     double currentHP {100.0};
     int movementSpeed {4};
     sf::Vector2f position {10,10};
@@ -25,14 +24,12 @@ void Spawner::spwanEnemies()
     
     if(conter >= spawnRate)
     {
-        Footman* enemy = new Footman(maxHP, currentHP, movementSpeed, position, direction, attackRange, attackSpeed, XP_DROP, damage, score, player);
+        Footman* enemy = new Footman(currentHP, movementSpeed, position, direction, attackRange, attackSpeed, XP_DROP, damage, score, player);
 
         Map::instance()->addEntity(enemy);
-
     
         conter = 0;
         Spawner::incresSpawnRate();
- 
         
     }
     else

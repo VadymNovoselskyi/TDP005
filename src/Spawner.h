@@ -21,9 +21,7 @@ class Spawner
         sf::Vector2f spwanPoint;
         Player* player;
         double conter;
-        
-    std::vector<Enemy *> enemies;
-    Player *player;
+
 };
 
 #endif
