@@ -135,7 +135,6 @@ void Menu::changeFocusedIdx(int change)
         return;
     }
     int targetIndex = (focusedButtonIdx + change) % buttonElements.size();
-    // std::cout << targetIndex << std::endl;
 
     unFocusButton(focusedButtonIdx);
     focusedButtonIdx = targetIndex;

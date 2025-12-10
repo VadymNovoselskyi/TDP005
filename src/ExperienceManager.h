@@ -24,13 +24,14 @@ class ExperienceManager
 {
   public:
     ExperienceManager();
+    void setCallbacks(std::map<LevelUpChoice, std::function<void()>> const &levelUpCallbacks);
 
     bool gainXp(int gainedXp);
     std::vector<LevelUpInfo> chooseLevelUps() const;
 
   private:
     std::vector<int> static const LEVELS_PROGRESSION;
-    std::vector<LevelUpInfo> static const LEVEL_UPS;
+    std::vector<LevelUpInfo> levelUps;
 
     int currentXp;
     int level;

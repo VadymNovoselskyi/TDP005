@@ -18,10 +18,13 @@ class WeaponManager
 
     Weapon *getWeapon(std::string const &name);
     void receiveNewWeapon(std::string const &name);
+    void receiveRandomWeapon();
 
   private:
-    std::vector<Weapon *> activeWeapons;
-    std::vector<Weapon *> weapons;
+    void equipWeapon(Weapon *);
+
+    std::vector<Weapon *> equipedWeapons;
+    std::vector<Weapon *> unequipedWeapons;
 };
 
 #endif

@@ -14,7 +14,7 @@ sf::Color const Player::CURRENT_HP_BOX_COLLOR{128, 0, 0};
 sf::Color const Player::XP_BOX_COLOR{118, 186, 27};
 sf::Color const Player::CURRENT_XP_BOX_COLOR{76, 154, 42};
 
-float static const START_HP = 100;
+float const Player::START_HP{100};
 
 Player::Player(double startHP,
                int movementSpeed,
@@ -22,22 +22,47 @@ Player::Player(double startHP,
                std::string const &tag,
                int levels,
                double damageMultiplier,
-               ExperienceManager *expManager,
-               WeaponManager *weaponManager,
                std::function<void(std::vector<LevelUpInfo>)> const &onLevelUp)
     : Character(tag, startHP, movementSpeed, position), maxHP{startHP}, hp{startHP}, rotation{},
-      levels{levels}, damageMultiplier{damageMultiplier}, oldPosition{position},
-      expManager(expManager), weaponManager{weaponManager}, onLevelUp{onLevelUp}
+      levels{levels}, damageMultiplier{damageMultiplier}, onLevelUp{onLevelUp},
+      oldPosition{position},
+      //   I hate ho
+      expManager{}, weaponManager{}
 {
     auto texture{TextureManager::instance()->getTexture("player.png")};
     auto playerSize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
     sf::Sprite::setOrigin(playerSize.x / 2.0, playerSize.y / 2.0);
+
+    expManager.setCallbacks({{LevelUpChoice::HP,
+                              [this]()
+                              {
+                                  increaseMaxHP(100);
+                                  StateMachine::instance()->continueGame();
+                              }},
+                             {LevelUpChoice::SPEED,
+                              [this]()
+                              {
+                                  increaseSpeed(5);
+                                  StateMachine::instance()->continueGame();
+                              }},
+                             {LevelUpChoice::DAMAGE,
+                              [this]()
+                              {
+                                  increaseDamageMultiplyer(0.5);
+                                  StateMachine::instance()->continueGame();
+                              }},
+                             {LevelUpChoice::WEAPON,
+                              [this]()
+                              {
+                                  weaponManager.receiveRandomWeapon();
+                                  StateMachine::instance()->continueGame();
+                              }}});
+    weaponManager.receiveNewWeapon("AR");
 }
 
 void Player::move()
 {
-    gainXp(1);
 
     sf::Vector2f direction;
     direction.x = 0;
@@ -63,16 +88,14 @@ void Player::move()
     {
         direction.x = direction.x / std::sqrt(2);
         direction.y = direction.y / std::sqrt(2);
-
-    } //
+    }
 
     sf::Sprite::move(sf::Vector2f(direction.x * movementSpeed, direction.y * movementSpeed));
-    weaponManager->setWeaponsPos(sf::Sprite::getPosition());
+    weaponManager.setWeaponsPos(sf::Sprite::getPosition());
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::T))
     {
-        std::cout << "Shooting" << std::endl;
-        weaponManager->shoot();
+        weaponManager.shoot();
     }
 }
 
@@ -88,18 +111,18 @@ void Player::updateRotation(sf::RenderWindow *window)
     rotation = rotationRadians * (180 / M_PI) + 90; // transform radians to rtoation
 
     sf::Sprite::setRotation(rotation);
-    weaponManager->setWeaponsRotation(sf::Sprite::getRotation());
+    weaponManager.setWeaponsRotation(sf::Sprite::getRotation());
 }
 
 void Player::gainXp(int xp)
 {
-    bool lvlGained = expManager->gainXp(xp);
+    bool lvlGained = expManager.gainXp(xp);
     if (!lvlGained)
     {
         return;
     }
 
-    onLevelUp(expManager->chooseLevelUps());
+    onLevelUp(expManager.chooseLevelUps());
     StateMachine::instance()->startLevelUp();
 }
 

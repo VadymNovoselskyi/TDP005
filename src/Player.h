@@ -28,8 +28,6 @@ class Player : public Character
            std::string const &tag,
            int levels,
            double damageMultiplier,
-           ExperienceManager *expManager,
-           WeaponManager *weaponManager,
            std::function<void(std::vector<LevelUpInfo>)> const &onLevelUp);
 
     void draw(sf::RenderWindow *window) const override;
@@ -54,8 +52,8 @@ class Player : public Character
     double damageMultiplier;
     sf::Vector2f oldPosition;
 
-    ExperienceManager *expManager;
-    WeaponManager *weaponManager;
+    ExperienceManager expManager;
+    WeaponManager weaponManager;
     std::function<void(std::vector<LevelUpInfo>)> onLevelUp;
 
     void drawInfo(sf::RenderWindow *window) const;

@@ -28,9 +28,6 @@ GameEngine::GameEngine() : window{}, spawner{}, clock{}
     menus.push_back(new GameOverMenu());
     menus.push_back(levelUpMenu);
 
-    auto expManager{new ExperienceManager()};
-    auto weaponManager{new WeaponManager()};
-
     auto mapDimensions{TileManager::instance()->getMapDimensions()};
     Player *player{new Player(100.0,
                               10,
@@ -39,12 +36,8 @@ GameEngine::GameEngine() : window{}, spawner{}, clock{}
                               "Player",
                               0,
                               0,
-                              expManager,
-                              weaponManager,
                               [levelUpMenu](std::vector<LevelUpInfo> const &levelUpInfo)
                               { levelUpMenu->createOptions(levelUpInfo); })};
-    // weaponManager->getWeapon("AR");
-    weaponManager->receiveNewWeapon("AR");
 
     Map::init(player, TileManager::instance()->getObstacles());
     spawner = {new Spawner(player)};
