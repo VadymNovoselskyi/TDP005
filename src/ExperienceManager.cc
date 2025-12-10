@@ -25,7 +25,7 @@ ExperienceManager::ExperienceManager() : currentXp{}, level{}
 bool ExperienceManager::gainXp(int gainedXP)
 {
     currentXp += gainedXP;
-    if (currentXp > LEVELS_PROGRESSION.at(level))
+    if (currentXp >= LEVELS_PROGRESSION.at(level))
     {
         level++;
         return true;

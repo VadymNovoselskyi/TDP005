@@ -41,7 +41,7 @@ GameEngine::GameEngine() : window{}, spawner{}, clock{}
                               0,
                               expManager,
                               weaponManager,
-                              [&levelUpMenu](std::vector<LevelUpInfo> const &levelUpInfo)
+                              [levelUpMenu](std::vector<LevelUpInfo> const &levelUpInfo)
                               { levelUpMenu->createOptions(levelUpInfo); })};
     // weaponManager->getWeapon("AR");
     weaponManager->receiveNewWeapon("AR");

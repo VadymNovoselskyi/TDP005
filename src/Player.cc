@@ -37,6 +37,8 @@ Player::Player(double startHP,
 
 void Player::move()
 {
+    gainXp(1);
+
     sf::Vector2f direction;
     direction.x = 0;
     direction.y = 0;
