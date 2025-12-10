@@ -68,12 +68,12 @@ void Player::move()
 
     sf::Sprite::move(sf::Vector2f(direction.x * movementSpeed, direction.y * movementSpeed));
     weaponManager->setWeaponsPos(sf::Sprite::getPosition());
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::T))
+    if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
     {
-        std::cout << "Shooting" << std::endl;
-        weaponManager->shoot();
+        std::cout << "shoot" << std::endl;
+         weaponManager->shoot();
     }
+
 }
 
 void Player::updateRotation(sf::RenderWindow *window)
