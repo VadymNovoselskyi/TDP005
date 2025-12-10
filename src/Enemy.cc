@@ -137,6 +137,15 @@ sf::Vector2f Enemy::calculateDirection()
     sf::Vector2f directionResult {playerPositon.x - enemyPosition.x, playerPositon.y - enemyPosition.y};
     return directionResult;
 }
+float Enemy::calculateRotation()
+{
+
+    double rotationRadians =
+        std::atan2((player->getPosition().y - getPosition().y),
+                   (player->getPosition().x - getPosition().x));
+    rotation = rotationRadians * (180 / M_PI) + 90;
+    return rotation;
+}
 std::string Enemy::getTag()
 {
     return tag;
@@ -175,10 +184,9 @@ void Footman::attack()
 }
 
 void Footman::move() // skapa en move hjälper 
-{
+{ //TODO: calculate rotaiton
     oldPosition = getPosition();
     sf::Vector2f directionResult = calculateDirection();
-
 
     sf::Vector2f direction;
     direction.x = 0;
@@ -189,7 +197,7 @@ void Footman::move() // skapa en move hjälper
         direction.x = (directionResult.x / len);
         direction.y = (directionResult.y/ len);
     }
-
+    sf::Sprite::setRotation(calculateRotation());
     sf::Sprite::move(direction.x * movementSpeed, direction.y * movementSpeed);
     tryAttack(len);
 }
@@ -240,7 +248,7 @@ void Kaboom::move()
     {
         movementSpeed = 10.0;
     }
-
+    sf::Sprite::setRotation(calculateRotation());
     sf::Sprite::move(direction.x * movementSpeed, direction.y * movementSpeed);
     tryAttack(len);
 }
@@ -265,6 +273,7 @@ void Archer::move()
     }
     if (len > 500)
     {
+        sf::Sprite::setRotation(calculateRotation());
         sf::Sprite::move(direction.x * movementSpeed, direction.y * movementSpeed);
     }
     tryAttack(len);
