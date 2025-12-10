@@ -6,6 +6,7 @@ class AssaultRifleWeapon : public Weapon
 {
 public:
     AssaultRifleWeapon();
+    void shoot() override;
 private:
     /* data */
 };

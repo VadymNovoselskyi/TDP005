@@ -14,8 +14,6 @@ sf::Color const Player::CURRENT_HP_BOX_COLLOR{128, 0, 0};
 sf::Color const Player::XP_BOX_COLOR{118, 186, 27};
 sf::Color const Player::CURRENT_XP_BOX_COLOR{76, 154, 42};
 
-
-
 Player::Player(double const startHP,
                int movementSpeed,
                sf::Vector2f const &position,
@@ -68,12 +66,10 @@ void Player::move()
 
     sf::Sprite::move(sf::Vector2f(direction.x * movementSpeed, direction.y * movementSpeed));
     weaponManager->setWeaponsPos(sf::Sprite::getPosition());
-    if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
     {
-        std::cout << "shoot" << std::endl;
-         weaponManager->shoot();
+        weaponManager->shoot();
     }
-
 }
 
 void Player::updateRotation(sf::RenderWindow *window)
@@ -135,7 +131,6 @@ void Player::die()
     sf::Sprite::move(sf::Vector2f(Window::WINDOW_WIDTH / 2, Window::WINDOW_HEIGHT / 2));
     hp = startHP;
     maxHP = startHP;
-    
 }
 
 void Player::draw(sf::RenderWindow *window) const
