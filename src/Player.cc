@@ -9,8 +9,10 @@
 // variables that wont change and is used to make code easier to read
 float const Player::BOX_OFFSET{18};
 float const Player::XP_BOX_Y_OFFSET{78};
-float const Player::BOX_WIDHT{150};
-float const Player::BOX_HEIGTH{35};
+float const Player::BOX_WIDHT {150};
+float const Player::BOX_HEIGTH {35};
+//colors for each box, first is for the backgorund to show the amount that is lost or left 
+//the other box is to show the current amount
 sf::Color const Player::HP_BOX_COLOR{204, 0, 0};
 sf::Color const Player::CURRENT_HP_BOX_COLLOR{128, 0, 0};
 sf::Color const Player::XP_BOX_COLOR{118, 186, 27};
@@ -61,6 +63,7 @@ Player::Player(double startHP,
 
 void Player::move()
 {
+    //resets current direction and saves the old position
     sf::Vector2f direction;
     direction.x = 0;
     direction.y = 0;
@@ -83,7 +86,8 @@ void Player::move()
     }
     if (std::abs(direction.x) + std::abs(direction.y) > 1)
     {
-        direction.x = direction.x / std::sqrt(2);
+        //divides direction by std::sqrt(2) to get a lower speed when player goes diagonal
+        direction.x = direction.x / std::sqrt(2); 
         direction.y = direction.y / std::sqrt(2);
     }
 
@@ -104,7 +108,7 @@ void Player::updateRotation(sf::RenderWindow *window)
     double rotationRadians =
         std::atan2((sf::Mouse::getPosition(*window).y - (Window::WINDOW_HEIGHT / 2)),
                    (sf::Mouse::getPosition(*window).x - (Window::WINDOW_WIDTH / 2)));
-    rotation = rotationRadians * (180 / M_PI) + 90; // transform radians to rtoation
+    rotation = rotationRadians * (180 / M_PI) + 90; // transform radians to rotation
 
     sf::Sprite::setRotation(rotation);
     weaponManager.setWeaponsRotation(sf::Sprite::getRotation());
@@ -124,15 +128,17 @@ void Player::gainXp(int xp)
 
 void Player::onCollision(std::string const &other)
 {
-    // if (other == "enemy")
-    // {
-
-    // }
-    // if(other == "box")
-    // {
-
-    // }
+    if (other == "enemy")
+    {
+        sf::Sprite::setPosition(oldPosition);
+        takeDamage(5);
+    }
+    if(other == "box")
+    {
+        sf::Sprite::setPosition(oldPosition);
+    }
 }
+//methods to increase amount
 void Player::heal(double amount)
 {
     hp += amount;
@@ -158,7 +164,7 @@ void Player::die()
     // ExperienceManager::resetxp();
     // waiting for method to remove every weapon exept start wepon
 }
-
+//methods to draw boxes
 void Player::draw(sf::RenderWindow *window) const
 {
     window->draw(*this);
