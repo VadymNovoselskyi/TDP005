@@ -39,6 +39,7 @@ class Enemy : public Character
     sf::Vector2f oldPosition;
     int attackRange;
     int attackSpeed;
+    int count {attackSpeed};
     int XP_DROP;
     double damage;
     int score; // inte en privat för olika enyme är vär olika score

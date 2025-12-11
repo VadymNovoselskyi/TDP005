@@ -174,10 +174,15 @@ void Enemy::onCollision(std::string const &other)
 
 void Enemy::tryAttack(float len)
 {
-    if (len <= attackRange)
+    if (len <= attackRange and attackSpeed == count)
     {
         attack();
+        count = 0;
         // sleep(attackSpeed);//använd timestap istälet
+    }
+    else
+    {
+        count ++;
     }
 }
 
