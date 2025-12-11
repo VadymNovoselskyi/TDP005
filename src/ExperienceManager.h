@@ -30,6 +30,8 @@ class ExperienceManager
     bool gainXp(int gainedXp);
     std::vector<LevelUpInfo> chooseLevelUps() const;
 
+    int getXpFilled() const;
+
   private:
     std::vector<int> static const LEVELS_PROGRESSION;
     std::vector<LevelUpInfo> levelUps;
