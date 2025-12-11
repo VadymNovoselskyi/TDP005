@@ -5,6 +5,7 @@
 #include <unistd.h>
 
 #include "Map.h"
+#include "Highscore.h"
 
 Enemy::Enemy(/*Charactar*/ double currentHp,
              int movementSpeed,
@@ -113,6 +114,8 @@ void Enemy::die()
     // Map::removeEntity(Entity *this);
 
     Map::instance()->removeEntity(this);
+    player->gainXp(XP_DROP);
+    Highscore::instance()->addKillScore(score);
 }
 
 void Enemy::draw(sf::RenderWindow *window) const

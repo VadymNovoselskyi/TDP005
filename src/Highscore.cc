@@ -38,7 +38,7 @@ Highscore::Highscore(int framesPerScore)
     font.loadFromFile("static/Orbitron-Bold.ttf");
 
     highscoreText.setFont(font);
-    highscoreText.setFillColor(sf::Color::Black);
+    highscoreText.setFillColor(sf::Color::Blue);
     highscoreText.setCharacterSize(40);
 }
 
