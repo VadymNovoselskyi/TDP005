@@ -181,7 +181,7 @@ void Player::die()
     // ExperienceManager::resetxp();
     // waiting for method to remove every weapon exept start wepon
 }
-// methods to draw boxes
+//methods to visualise hp and xp with boxes
 void Player::draw(sf::RenderWindow *window) const
 {
     window->draw(*this);

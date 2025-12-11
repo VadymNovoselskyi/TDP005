@@ -167,6 +167,7 @@ void Enemy::onCollision(Entity *other)
         sf::Sprite::setPosition(oldPosition);
     }
 }
+
 void Enemy::tryAttack(float len)
 {
     if (len <= attackRange)
