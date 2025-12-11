@@ -3,7 +3,6 @@
 #include <algorithm>
 #include <iostream>
 
-#include "StateMachine.h"
 #include "TileManager.h"
 #include "Window.h"
 
@@ -75,11 +74,11 @@ void Map::handelUpdate(sf::RenderWindow *window)
     if (entitiesToRemove.size())
     {
         // std::cout << "Removing from entities " << entitiesToRemove.size() << std::endl;
-        for (auto it : entitiesToRemove)
+        for (auto it = entitiesToRemove.rbegin(); it != entitiesToRemove.rend(); ++it)
         {
             // std::cout << *it << std::endl;
-            delete *it;
-            entities.erase(it);
+            delete *(*it);
+            entities.erase(*it);
         }
         entitiesToRemove.clear();
     }
