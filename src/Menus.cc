@@ -213,6 +213,7 @@ LevelUpMenu::createButtons(std::vector<LevelUpInfo> const &levelUpOptions) const
             levelUpOption.onClick};
         elements.push_back(levelUpButton);
     }
+
     return elements;
 }
 

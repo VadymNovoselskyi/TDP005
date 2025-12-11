@@ -12,6 +12,7 @@ class Spawner
 {
   public:
     Spawner(Player *player);
+    
     void spwanEnemies();
     void choseSpawnPos();
 

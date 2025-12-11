@@ -32,13 +32,12 @@ void Map::deleteInstance()
 
 void Map::handelUpdate(sf::RenderWindow *window)
 {
-
     for (Entity *e : entities)
     {
         e->move();
     }
-    player ->updateRotation( window);
-    
+    player->updateRotation(window);
+
     // TODO: watching walls and gas is too expensive, come up with other ways to do it
     for (auto it1{entities.begin()}; it1 != entities.end(); ++it1) // de som är i loopen är
     // tagen från tdp004 https://www.ida.liu.se/~TDP004/current/sal/slides/tdp004_9.pdf s.20
@@ -47,10 +46,11 @@ void Map::handelUpdate(sf::RenderWindow *window)
         {
             if ((*it1)->getGlobalBounds().intersects((*it2)->getGlobalBounds()))
             {
-                (*it1)->onCollision((*it2)->getTag());
-                (*it2)->onCollision((*it1)->getTag());
+                (*it1)->onCollision(*it2);
+                (*it2)->onCollision(*it1);
             }
         }
+        toRemove.erase(toRemove.begin());
     }
 }
 
@@ -74,14 +74,35 @@ void Map::addEntity(Entity *e)
 
 void Map::removeEntity(Entity *e)
 {
-    entities.erase(
-        std::remove_if(entities.begin(), entities.end(), [e](Entity *e1) { return e == e1; }),
-        entities.end());
+    std::remove_if(entities.begin(), entities.end(), [e](Entity *e1) { return e == e1; }),
+        toRemove.end();
 }
 
-int Map::size()
+Entity *Map::getClosestEnemy()
 {
-    return entities.size();
+    Entity *enemy{nullptr};
+    double minPos {999999.0};
+    for (Entity *e : entities)
+    {
+        if (e->getTag() != "enemy")
+        {
+            continue;
+        }
+
+        // get abs x and y fore e
+        double eX = abs(e->getPosition().x + player->getPosition().x);
+        double eY = abs(e->getPosition().y + player->getPosition().y);
+
+        double eXY = eX + eY;
+
+        if (eXY <= minPos)
+        {
+            // set new enemy
+            enemy = e;
+            minPos = eXY;
+        }
+    }
+    return enemy;
 }
 
 Map::Map(Player *player, std::vector<Obstacle *> const &obstacles)
@@ -89,7 +110,7 @@ Map::Map(Player *player, std::vector<Obstacle *> const &obstacles)
           {static_cast<float>(Window::WINDOW_WIDTH) / 2,
            static_cast<float>(Window::WINDOW_HEIGHT) / 2},
           {static_cast<float>(Window::WINDOW_WIDTH), static_cast<float>(Window::WINDOW_HEIGHT)}}},
-      player{player}, entities{}
+      player{player}, entities{}, toRemove{}
 {
     for (Obstacle *obstacle : obstacles)
     {

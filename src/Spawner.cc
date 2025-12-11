@@ -30,7 +30,6 @@ void Spawner::spwanEnemies()
     {
         conter += 1;
     }
-
 }
 
 void Spawner::nyEnmey()

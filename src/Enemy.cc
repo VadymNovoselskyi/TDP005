@@ -116,7 +116,9 @@ Enemy::~Enemy()
 void Enemy::die()
 {
     // ge xp och påeng
-    //Map::removeEntity(Entity *this);
+    // Map::removeEntity(Entity *this);
+
+    Map::instance()->removeEntity(this);
 }
 
 void Enemy::draw(sf::RenderWindow *window) const
@@ -154,19 +156,19 @@ std::string Enemy::getTag()
 {
     return tag;
 }
-void Enemy::onCollision(std::string const &other)
+void Enemy::onCollision(Entity *other)
 {
-    if (other == "Player")
+    if (other -> getTag() == "player")
     {
         attack();
         sf::Sprite::setPosition(oldPosition);
     }
-    else if ( other == "enemy")
+    else if ( other -> getTag() == "enemy")
     {
         //instead create a function that either gets a empty position close or a random position close
         sf::Sprite::setPosition(oldPosition);
     }
-    else if (other == "box")
+    else if (other -> getTag() == "box")
     {
         sf::Sprite::setPosition(oldPosition);
     }

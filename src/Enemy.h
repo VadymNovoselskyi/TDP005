@@ -24,7 +24,11 @@ class Enemy : public Character
     virtual void attack() = 0;
     std::string getTag();
 
-    void draw(sf::RenderWindow *window) const override;
+        void draw(sf::RenderWindow *window)const override;
+        
+        //void move() override;
+        void die() override;
+        void onCollision(Entity *other) override;
 
     // void move() override;
     void die() override;

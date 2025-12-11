@@ -8,7 +8,7 @@
 #include "Spawner.h"
 #include "TextureManager.h"
 #include "TileManager.h"
-#include "WeaponManager.h"
+#include "WeaponsManager.h"
 
 int const GameEngine::FPS{60};
 sf::Time const GameEngine::UPDATE_INTERVAL{sf::milliseconds(1000.0 / GameEngine::FPS)};
@@ -28,9 +28,6 @@ GameEngine::GameEngine() : window{}, spawner{}, clock{}
     menus.push_back(new GameOverMenu());
     menus.push_back(levelUpMenu);
 
-    auto expManager{new ExperienceManager()};
-    auto weaponManager{new WeaponManager()};
-
     auto mapDimensions{TileManager::instance()->getMapDimensions()};
     Player *player{new Player(100.0,
                               10,
@@ -38,13 +35,8 @@ GameEngine::GameEngine() : window{}, spawner{}, clock{}
                                            static_cast<float>(mapDimensions.y / 2.0)},
                               "Player",
                               0,
-                              0,
-                              expManager,
-                              weaponManager,
-                              [&levelUpMenu](std::vector<LevelUpInfo> const &levelUpInfo)
+                              [levelUpMenu](std::vector<LevelUpInfo> const &levelUpInfo)
                               { levelUpMenu->createOptions(levelUpInfo); })};
-    // weaponManager->getWeapon("AR");
-    weaponManager->receiveNewWeapon("AR");
 
     Map::init(player, TileManager::instance()->getObstacles());
     spawner = {new Spawner(player)};
@@ -86,7 +78,9 @@ GameEngine::~GameEngine()
     StateMachine::deleteInstance();
     TextureManager::deleteInstance();
     delete window;
+    delete spawner;
     window = nullptr;
+    spawner = nullptr;
 }
 
 void GameEngine::run()

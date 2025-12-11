@@ -8,7 +8,7 @@
 #include "ExperienceManager.h"
 #include "GameState.h"
 #include "StateMachine.h"
-#include "WeaponManager.h"
+#include "WeaponsManager.h"
 
 enum Direction
 {
@@ -27,9 +27,6 @@ class Player : public Character
            sf::Vector2f const &position,
            std::string const &tag,
            int levels,
-           double const startDamageMultiplier,
-           ExperienceManager *expManager,
-           WeaponManager *weaponManager,
            std::function<void(std::vector<LevelUpInfo>)> const &onLevelUp);
 
     void draw(sf::RenderWindow *window) const override;
@@ -40,14 +37,12 @@ class Player : public Character
     void gainXp(int xp);
     void heal(double amount);
     void increaseMaxHP(double amount);
-    void increaseXP(double amount);
-    void increaseMaxxp(double amount);
 
     void increaseSpeed(int amount);
     void increaseDamageMultiplyer(double amount);
     void die() override;
 
-    void onCollision(std::string const &other) override;
+    void onCollision(Entity *other) override;
 
   private:
     double const startHP;
@@ -57,12 +52,11 @@ class Player : public Character
     int movementSpeed;
     float rotation;
     int levels;
-    double const startDamageMultiplier;
     double damageMultiplier;
     sf::Vector2f oldPosition;
 
-    ExperienceManager *expManager;
-    WeaponManager *weaponManager;
+    ExperienceManager expManager;
+    WeaponsManager weaponManager;
     std::function<void(std::vector<LevelUpInfo>)> onLevelUp;
 
     void drawInfo(sf::RenderWindow *window) const;
