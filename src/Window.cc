@@ -64,7 +64,7 @@ void Window::draw()
     {
         Map::instance()->draw(window);
         Highscore::instance()->draw(window);
-    }
+     }
     else
     {
         window->setView(window->getDefaultView());

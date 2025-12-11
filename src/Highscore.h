@@ -14,7 +14,7 @@ class Highscore
 {
   public:
     static Highscore *instance();
-    static Highscore *init(int scorePerFrame);
+    static Highscore *init(int framesPerScore);
     static void deleteInstance();
 
     void draw(sf::RenderWindow *window);
@@ -26,9 +26,11 @@ class Highscore
     Highscore(int scorePerFrame);
     static Highscore *instancePtr;
 
-    void addSurvivalScore();
+    void tickSurvivalScore();
 
-    int scorePerFrame;
+    int framesPerScore;
+    int scoreCountdown;
+
     int score;
     int timeSurvived;
     int enemiesKilled;

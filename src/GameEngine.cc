@@ -19,7 +19,7 @@ GameEngine::GameEngine() : window{}, spawner{}, clock{}
     // Init the StateMachine, TextureManager, Map and the menus
     StateMachine::init();
     TextureManager::init();
-    Highscore::init(1);
+    Highscore::init(60);
     TileManager::init("static/tileMap.txt");
 
     std::vector<Menu *> menus{};

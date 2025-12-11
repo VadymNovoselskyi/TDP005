@@ -31,8 +31,9 @@ void Highscore::deleteInstance()
 }
 
 // Instance methods
-Highscore::Highscore(int scorePerFrame)
-    : scorePerFrame{scorePerFrame}, score{0}, timeSurvived{0}, enemiesKilled{0}, highscoreText{}
+Highscore::Highscore(int framesPerScore)
+    : framesPerScore{framesPerScore}, scoreCountdown{framesPerScore}, score{0}, timeSurvived{0},
+      enemiesKilled{0}, highscoreText{}
 {
     font.loadFromFile("static/Orbitron-Bold.ttf");
 
@@ -55,7 +56,7 @@ void Highscore::draw(sf::RenderWindow *window)
 
     window->draw(highscoreText);
 
-    addSurvivalScore();
+    tickSurvivalScore();
 }
 
 void Highscore::addKillScore(int extraScore)
@@ -64,12 +65,20 @@ void Highscore::addKillScore(int extraScore)
     enemiesKilled++;
 }
 
-void Highscore::addSurvivalScore()
+void Highscore::tickSurvivalScore()
 {
-    score += scorePerFrame;
+    if (scoreCountdown == 0)
+    {
+        score++;
+        scoreCountdown = framesPerScore;
+    }
+    else 
+    {
+        scoreCountdown--;
+    }
 }
 
 ScoreInfo Highscore::getScoreInfo() const
 {
-    return {score, static_cast<int>(score / scorePerFrame), enemiesKilled};
+    return {score, static_cast<int>(score * framesPerScore), enemiesKilled};
 }
