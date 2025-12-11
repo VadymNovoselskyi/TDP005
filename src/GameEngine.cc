@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "ExperienceManager.h"
+#include "Highscore.h"
 #include "Menus.h"
 #include "Spawner.h"
 #include "TextureManager.h"
@@ -18,6 +19,7 @@ GameEngine::GameEngine() : window{}, spawner{}, clock{}
     // Init the StateMachine, TextureManager, Map and the menus
     StateMachine::init();
     TextureManager::init();
+    Highscore::init(1);
     TileManager::init("static/tileMap.txt");
 
     std::vector<Menu *> menus{};

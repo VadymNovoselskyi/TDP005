@@ -61,22 +61,22 @@ sf::Vector2f TileManager::getMapDimensions() const
 
 void TileManager::drawTiles(sf::RenderWindow *window) const
 {
-    auto viewPortCenter = window->getView().getCenter();
-    auto viewPortSize = window->getView().getSize();
-    auto viewPortRect = sf::FloatRect{static_cast<float>(viewPortCenter.x - viewPortSize.x / 2.0),
-                                      static_cast<float>(viewPortCenter.y - viewPortSize.y / 2.0),
-                                      viewPortSize.x,
-                                      viewPortSize.y};
+    auto viewCenter = window->getView().getCenter();
+    auto viewSize = window->getView().getSize();
+    auto viewRect = sf::FloatRect{static_cast<float>(viewCenter.x - viewSize.x / 2.0),
+                                      static_cast<float>(viewCenter.y - viewSize.y / 2.0),
+                                      viewSize.x,
+                                      viewSize.y};
 
-    for (int column_idx{std::max(static_cast<int>(std::floor(viewPortRect.left / TILE_SIZE)), 0)};
+    for (int column_idx{std::max(static_cast<int>(std::floor(viewRect.left / TILE_SIZE)), 0)};
          column_idx <
-         std::min(static_cast<int>(std::ceil((viewPortRect.left + viewPortRect.width) / TILE_SIZE)),
+         std::min(static_cast<int>(std::ceil((viewRect.left + viewRect.width) / TILE_SIZE)),
                   columnCount);
          column_idx++)
     {
-        for (int row_idx{std::max(static_cast<int>(std::floor(viewPortRect.top / TILE_SIZE)), 0)};
+        for (int row_idx{std::max(static_cast<int>(std::floor(viewRect.top / TILE_SIZE)), 0)};
              row_idx < std::min(static_cast<int>(std::ceil(
-                                    (viewPortRect.top + viewPortRect.height) / TILE_SIZE)),
+                                    (viewRect.top + viewRect.height) / TILE_SIZE)),
                                 rowCount);
              row_idx++)
         {

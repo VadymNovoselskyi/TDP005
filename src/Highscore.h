@@ -14,22 +14,27 @@ class Highscore
 {
   public:
     static Highscore *instance();
-    static Highscore *init();
+    static Highscore *init(int scorePerFrame);
     static void deleteInstance();
 
-    void addSurvivalScore(int extraScore, int timeMs);
+    void draw(sf::RenderWindow *window);
     void addKillScore(int extraScore);
 
     ScoreInfo getScoreInfo() const;
 
   private:
-    Highscore();
-    ~Highscore();
+    Highscore(int scorePerFrame);
     static Highscore *instancePtr;
 
+    void addSurvivalScore();
+
+    int scorePerFrame;
     int score;
     int timeSurvived;
     int enemiesKilled;
+
+    sf::Text highscoreText;
+    sf::Font font;
 };
 
 #endif

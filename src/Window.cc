@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+#include "Highscore.h"
 #include "StateMachine.h"
 #include "TileManager.h"
 
@@ -27,7 +28,7 @@ Window::~Window()
         delete menu;
     }
 }
-sf::RenderWindow* Window::getRenderWindow() const
+sf::RenderWindow *Window::getRenderWindow() const
 {
     return window;
 }
@@ -62,6 +63,7 @@ void Window::draw()
     if (StateMachine::instance()->state() == GameState::IN_GAME)
     {
         Map::instance()->draw(window);
+        Highscore::instance()->draw(window);
     }
     else
     {
