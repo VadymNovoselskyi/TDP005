@@ -15,14 +15,14 @@ Menu::Menu(std::vector<ElementsInfo> const &elements, bool windowOpen)
 Menu::~Menu()
 {
     // std::cout << "Running the menu destructor" << std::endl;
-    for (auto buttonEl : buttonElements)
-    {
-        delete buttonEl;
-    }
-    for (auto textEl : textElements)
-    {
-        delete textEl;
-    }
+    // for (auto buttonEl : buttonElements)
+    // {
+    //     delete buttonEl;
+    // }
+    // for (auto textEl : textElements)
+    // {
+    //     delete textEl;
+    // }
 }
 
 void Menu::draw(sf::RenderWindow *window) const
@@ -35,11 +35,11 @@ void Menu::draw(sf::RenderWindow *window) const
 
     for (auto const &buttonEl : buttonElements)
     {
-        window->draw(*buttonEl);
+        window->draw(buttonEl);
     }
     for (auto const &textEl : textElements)
     {
-        window->draw(*textEl);
+        window->draw(textEl);
     }
 }
 
@@ -83,37 +83,29 @@ bool Menu::handleEvent(sf::Event event)
 
 void Menu::setButtons(std::vector<ElementsInfo> const &elements)
 {
-    for (auto buttonEl : buttonElements)
-    {
-        delete buttonEl;
-    }
-    for (auto textEl : textElements)
-    {
-        delete textEl;
-    }
     buttonElements.clear();
     textElements.clear();
     buttonInfos.clear();
 
     for (auto &elementInfo : elements)
     {
-        sf::Text *element{new sf::Text(elementInfo.text, defaultFont, 50)};
-        auto textRect{element->getGlobalBounds()};
-        element->setOrigin(textRect.width / 2, textRect.height / 2);
-        element->setPosition((Window::WINDOW_WIDTH * elementInfo.xAlignn),
-                             (Window::WINDOW_HEIGHT * elementInfo.yAlign));
+        sf::Text element{sf::Text(elementInfo.text, defaultFont, 50)};
+        auto textRect{element.getGlobalBounds()};
+        element.setOrigin(textRect.width / 2, textRect.height / 2);
+        element.setPosition((Window::WINDOW_WIDTH * elementInfo.xAlignn),
+                            (Window::WINDOW_HEIGHT * elementInfo.yAlign));
 
-        element->setOutlineColor(sf::Color::Green);
-        element->setOutlineThickness(4.0);
+        element.setOutlineColor(sf::Color::Green);
+        element.setOutlineThickness(4.0);
 
         if (!elementInfo.onClick.has_value())
         {
-            element->setFillColor(sf::Color::Blue);
+            element.setFillColor(sf::Color::Blue);
             textElements.push_back(element);
         }
         else
         {
-            element->setFillColor(sf::Color::Blue);
+            element.setFillColor(sf::Color::Blue);
             buttonInfos.push_back(elementInfo);
             buttonElements.push_back(element);
         }
@@ -127,13 +119,13 @@ void Menu::setButtons(std::vector<ElementsInfo> const &elements)
 
 void Menu::focusButton(int index)
 {
-    auto button = buttonElements.at(index);
-    button->setFillColor(sf::Color::Red);
+    sf::Text &button = buttonElements.at(index);
+    button.setFillColor(sf::Color::Red);
 }
 void Menu::unFocusButton(int index)
 {
-    auto button = buttonElements.at(index);
-    button->setFillColor(sf::Color::Blue);
+    sf::Text &button = buttonElements.at(index);
+    button.setFillColor(sf::Color::Blue);
 }
 
 void Menu::changeFocusedIdx(int change)
@@ -143,7 +135,6 @@ void Menu::changeFocusedIdx(int change)
         return;
     }
     int targetIndex = (focusedButtonIdx + change) % buttonElements.size();
-    // std::cout << targetIndex << std::endl;
 
     unFocusButton(focusedButtonIdx);
     focusedButtonIdx = targetIndex;

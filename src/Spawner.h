@@ -12,18 +12,22 @@ class Spawner
 {
   public:
     Spawner(Player *player);
-    void spwanEnemies();
+    void resetState();
+    
+    void spawnEnemies();
     void choseSpawnPos();
 
     private:
-        void incresSpawnRate();
+        void increaseSpawnRate();
         void addKaboom();
         void addArcher();
+
         std::vector <Enemy*> enemies;
-        double spawnRate;
         sf::Vector2f spwanPoint;
+
+        double spawnRate;
+        double counter;
         Player* player;
-        double conter;
 
         bool inKaboom{false};
         bool inArcher{false};

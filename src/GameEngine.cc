@@ -8,7 +8,7 @@
 #include "Spawner.h"
 #include "TextureManager.h"
 #include "TileManager.h"
-#include "WeaponManager.h"
+#include "WeaponsManager.h"
 
 int const GameEngine::FPS{60};
 sf::Time const GameEngine::UPDATE_INTERVAL{sf::milliseconds(1000.0 / GameEngine::FPS)};
@@ -28,23 +28,17 @@ GameEngine::GameEngine() : window{}, spawner{}, clock{}
     menus.push_back(new GameOverMenu());
     menus.push_back(levelUpMenu);
 
-    auto expManager{new ExperienceManager()};
-    auto weaponManager{new WeaponManager()};
-
     auto mapDimensions{TileManager::instance()->getMapDimensions()};
+    auto mapCenter{sf::Vector2f{static_cast<float>(mapDimensions.x / 2.0),
+                                static_cast<float>(mapDimensions.y / 2.0)}};
+
     Player *player{new Player(100.0,
                               10,
-                              sf::Vector2f{static_cast<float>(mapDimensions.x / 2.0),
-                                           static_cast<float>(mapDimensions.y / 2.0)},
-                              "Player",
+                              mapCenter,
+                              "player",
                               0,
-                              0,
-                              expManager,
-                              weaponManager,
-                              [&levelUpMenu](std::vector<LevelUpInfo> const &levelUpInfo)
+                              [levelUpMenu](std::vector<LevelUpInfo> const &levelUpInfo)
                               { levelUpMenu->createOptions(levelUpInfo); })};
-    // weaponManager->getWeapon("AR");
-    weaponManager->receiveNewWeapon("AR");
 
     Map::init(player, TileManager::instance()->getObstacles());
     spawner = {new Spawner(player)};
@@ -54,10 +48,14 @@ GameEngine::GameEngine() : window{}, spawner{}, clock{}
 
     // TODO: reset the game state onStart etc
     StateMachine::instance()->addListener("onStart",
-                                          [](GameState gameState)
+                                          [player, mapCenter, this](GameState gameState)
                                           {
                                               if (gameState == GameState::STARTING_GAME)
                                               {
+                                                  player->resetState(mapCenter);
+                                                  spawner->resetState();
+                                                  Map::instance()->resetState();
+
                                                   StateMachine::instance()->setInGame();
                                               }
                                           });
@@ -78,7 +76,6 @@ GameEngine::GameEngine() : window{}, spawner{}, clock{}
                                               }
                                           });
 
-    Map::instance()->addEntity(player);
 }
 
 GameEngine::~GameEngine()
@@ -86,7 +83,9 @@ GameEngine::~GameEngine()
     StateMachine::deleteInstance();
     TextureManager::deleteInstance();
     delete window;
+    delete spawner;
     window = nullptr;
+    spawner = nullptr;
 }
 
 void GameEngine::run()
@@ -98,7 +97,7 @@ void GameEngine::run()
 
         if (StateMachine::instance()->state() == GameState::IN_GAME)
         {
-            spawner->spwanEnemies();
+            spawner->spawnEnemies();
             Map::instance()->handelUpdate(window->getRenderWindow());
         }
         window->draw();

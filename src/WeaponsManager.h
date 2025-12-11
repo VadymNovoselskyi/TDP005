@@ -6,22 +6,25 @@
 
 #include "Weapon.h"
 
-class WeaponManager
+class WeaponsManager
 {
   public:
-    WeaponManager();
-    ~WeaponManager();
+    WeaponsManager();
+    ~WeaponsManager();
+    void resetState();
 
     void shoot();
     void setWeaponsPos(sf::Vector2f const &pos);
     void setWeaponsRotation(double rotaiton);
 
-    Weapon *getWeapon(std::string const &name);
     void receiveNewWeapon(std::string const &name);
+    void receiveRandomWeapon();
 
   private:
-    std::vector<Weapon *> activeWeapons;
-    std::vector<Weapon *> weapons;
+    void equipWeapon(Weapon *weapon);
+
+    std::vector<Weapon *> equipedWeapons;
+    std::vector<Weapon *> unequipedWeapons;
 };
 
 #endif

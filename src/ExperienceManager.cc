@@ -1,31 +1,38 @@
 #include "ExperienceManager.h"
 
+#include <algorithm>
 #include <iostream>
 
 std::vector<int> const ExperienceManager::LEVELS_PROGRESSION{
     0, 1000, 2500, 5000, 8000, 15000, 24000, 35000, 999999999};
-std::vector<LevelUpInfo> const ExperienceManager::LEVEL_UPS{
-    {LevelUpChoice::HP,
-     "Buff your HP stats",
-     []() { std::cout << "HP buff selected" << std::endl; }},
-    {LevelUpChoice::SPEED,
-     "Buff your SPEED stats",
-     []() { std::cout << "SPEED buff selected" << std::endl; }},
-    {LevelUpChoice::DAMAGE,
-     "Buff your DAMAGE stats",
-     []() { std::cout << "DAMAGE buff selected" << std::endl; }},
-    {LevelUpChoice::WEAPON,
-     "Choose a WEAPON",
-     []() { std::cout << "WEAPON buff selected" << std::endl; }}};
 
-ExperienceManager::ExperienceManager() : currentXp{}, level{}
+ExperienceManager::ExperienceManager() : levelUps{}, currentXp{0}, level{0}
 {
+    levelUps = {{LevelUpChoice::HP, "Buff your HP stats", []() {}},
+                {LevelUpChoice::SPEED, "Buff your SPEED stats", []() {}},
+                {LevelUpChoice::DAMAGE, "Buff your DAMAGE stats", []() {}},
+                {LevelUpChoice::WEAPON, "Choose a WEAPON", []() {}}};
+}
+
+void ExperienceManager::setCallbacks(
+    std::map<LevelUpChoice, std::function<void()>> const &levelUpCallbacks)
+{
+    for (LevelUpInfo &levelUp : levelUps)
+    {
+        levelUp.onClick = levelUpCallbacks.at(levelUp.levelUpChoice);
+    }
+}
+
+void ExperienceManager::resetState()
+{
+    currentXp = 0;
+    level = 0;
 }
 
 bool ExperienceManager::gainXp(int gainedXP)
 {
     currentXp += gainedXP;
-    if (currentXp > LEVELS_PROGRESSION.at(level))
+    if (currentXp >= LEVELS_PROGRESSION.at(level))
     {
         level++;
         return true;
@@ -36,5 +43,5 @@ bool ExperienceManager::gainXp(int gainedXP)
 
 std::vector<LevelUpInfo> ExperienceManager::chooseLevelUps() const
 {
-    return LEVEL_UPS;
+    return levelUps;
 }

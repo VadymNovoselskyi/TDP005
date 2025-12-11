@@ -84,9 +84,9 @@ void StateMachine::startGame()
 void StateMachine::continueGame()
 {
     // std::cout << "Continuing the game from " << currentState << std::endl;
-    if (currentState != GameState::GAME_PAUSED)
+    if (currentState != GameState::GAME_PAUSED && currentState != GameState::LEVEL_UP_SCREEN)
     {
-        throw std::logic_error("Can continue the game only if it was paused");
+        throw std::logic_error("Can continue the game only if it was paused or on level up");
     }
     setState(GameState::CONTINUING_GAME);
 }

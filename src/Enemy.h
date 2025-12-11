@@ -28,7 +28,7 @@ class Enemy : public Character
 
     // void move() override;
     void die() override;
-    void onCollision(std::string const &other) override;
+    void onCollision(Entity *other) override;
 
   protected:
     float calculateDistance();
@@ -44,10 +44,6 @@ class Enemy : public Character
     int score; // inte en privat för olika enyme är vär olika score
     Player *player;
     float rotation;
-
-  private:
-    std::string tag{"enemy"};
-    
 };
 
 class Footman : public Enemy
@@ -82,7 +78,8 @@ class Kaboom : public Enemy
            int score,
            Player *player,
            double explodeDamage,
-           double explodeRange);
+           double explodeRange,
+           float agroRange);
     void attack() override;
     void move() override;
 
@@ -91,6 +88,7 @@ class Kaboom : public Enemy
     void explode(float len);
     double explodeRange;
     double explodeDamage;
+    float agroRange;
     sf::Texture const *texture;
 };
 
@@ -105,7 +103,8 @@ class Archer : public Enemy
            int XP_DROP,
            double damage,
            int score,
-           Player *player);
+           Player *player,
+           float fireRange);
     void attack() override;
     void move() override;
 
@@ -116,6 +115,7 @@ class Archer : public Enemy
 
   private:
     void shoot();
+    float fireRange; 
     sf::Texture const *texture;
 };
 
