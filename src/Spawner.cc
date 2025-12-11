@@ -1,6 +1,7 @@
 #include "Spawner.h"
 
 #include <cstdlib>
+#include <iostream> // print test
 #include <iostream>
 
 #include "TileManager.h"
@@ -22,6 +23,7 @@ void Spawner::spawnEnemies()
 {
     if (counter >= spawnRate)
     {
+        newEnemy();
         choseSpawnPos();
         Footman *enemyF = new Footman(currentHP,
                                       movementSpeed,
@@ -34,12 +36,11 @@ void Spawner::spawnEnemies()
                                       player);
 
         Map::instance()->addEntity(enemyF);
-        choseSpawnPos();
         addKaboom();
-
-        choseSpawnPos();
         addArcher();
+
         counter = 0;
+        timeCounter += 1;
         Spawner::increaseSpawnRate();
     }
     else
@@ -48,29 +49,66 @@ void Spawner::spawnEnemies()
     }
 }
 
+void Spawner::newEnemy()
+{
+    if (timeCounter >= 10)
+    {
+        inKaboom = true;
+    }
+    if (timeCounter >= 20)
+    {
+        inArcher = true;
+    }
+}
+
 void Spawner::choseSpawnPos()
 {
-    sf::Vector2f mapSize{TileManager::instance()->getMapDimensions()};
-    // std::cout<<mapSize.x<<std::endl;
-    float randomX =
-        std::rand() % (static_cast<int>(mapSize.x) - Window::WINDOW_WIDTH) +
-        Window::WINDOW_WIDTH; // tar inspraskion från  w3schools
-                              // //https://www.w3schools.com/cpp/cpp_howto_random_number.asp
-    float randomY = std::rand() % (static_cast<int>(mapSize.y) - Window::WINDOW_HEIGHT) +
-                    Window::WINDOW_HEIGHT; //+ gör två saker. den matimatska att öka max higden men
-                                           // också läga till en minsta värde som random kan va.
+    sf::Vector2i mapSize{TileManager::instance()->getMapDimensions()};
+    sf::Vector2f playerWindow{player->getPosition()};
+    // std::cout <<"map x  "<<mapSize.x<<std::endl;
+    // std::cout <<"map y  "<<mapSize.y<<std::endl;
 
+    // std::cout <<"Window x  "<<Window::WINDOW_WIDTH<<std::endl;
+    // std::cout <<"Window y  "<<Window::WINDOW_HEIGHT<<std::endl;
+
+    float randomX =
+        std::rand() % mapSize.x; // tar inspraskion från  w3schools
+                                 // //https://www.w3schools.com/cpp/cpp_howto_random_number.asp
+    float randomY = std::rand() % mapSize.y;
     sf::Vector2f nySpawnPos{randomX, randomY};
-    position = nySpawnPos;
+
+    float pPlusX{playerWindow.x + (Window::WINDOW_WIDTH / 2)}; // 512
+    float pMinusX{playerWindow.x - (Window::WINDOW_WIDTH / 2)};
+    float pPlusY{playerWindow.y + (Window::WINDOW_HEIGHT / 2)}; // 384
+    float pMinusY{playerWindow.y - (Window::WINDOW_HEIGHT / 2)};
+
+    bool insidaX =
+        (nySpawnPos.x > pMinusX &&
+         nySpawnPos.x < pPlusX); // tar insparaskion från w3schools
+                                 // https://www.w3schools.com/cpp/cpp_operators_logical.asp
+    bool insidaY = (nySpawnPos.y > pMinusY && nySpawnPos.y < pPlusY);
+
+    // std::cout <<"player x "<<playerWindow.x<<std::endl;
+    // std::cout <<"player y "<<playerWindow.y<<std::endl;
+    // std::cout <<"window +x "<<pPlusX<<std::endl;
+    // std::cout <<"window -x  "<<pMinusX<<std::endl;
+    // std::cout <<"spaw pos x  "<<nySpawnPos.x<<std::endl;
+    // std::cout <<"spaw pos y  "<<nySpawnPos.y<<std::endl;
+    if (insidaX and insidaY)
+    {
+        choseSpawnPos();
+    }
+    else
+    {
+        position = nySpawnPos;
+    }
 }
 
 void Spawner::increaseSpawnRate()
 {
     if (spawnRate > 1)
     {
-        spawnRate *= 0.99;
-        inKaboom = true; // tilfälig
-        inArcher = true; // tilfälig
+        spawnRate *= spawnRateIncrease;
     }
 }
 
@@ -78,8 +116,12 @@ void Spawner::addKaboom()
 {
     if (inKaboom)
     {
+        choseSpawnPos();
+        currentHP = 75;
+        damage = 5;
+        XP_DROP = 10;
         double explodeRange{150};
-        double explodeDamage{10};
+        double explodeDamage{30};
         float agroRange{300};
         Kaboom *enemyK = new Kaboom(currentHP,
                                     movementSpeed,
@@ -101,7 +143,13 @@ void Spawner::addArcher()
 {
     if (inArcher)
     {
-        float fireRange{400};
+        choseSpawnPos();
+        movementSpeed = 2;
+        damage = 5;
+        XP_DROP = 10;
+        attackSpeed = 10;
+        float fireRange{350};
+        attackRange = fireRange;
         Archer *enemyA = new Archer(currentHP,
                                     movementSpeed,
                                     position,

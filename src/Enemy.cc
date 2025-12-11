@@ -176,11 +176,14 @@ void Enemy::onBorderCollision()
 
 void Enemy::tryAttack(float len)
 {
-    if (len <= attackRange)
+    count --;
+    if (len <= attackRange and count <= 0)
     {
         attack();
-        // sleep(attackSpeed);//använd timestap istälet
+        count = 60 / attackSpeed;
+        
     }
+
 }
 
 // Footman
@@ -250,7 +253,7 @@ void Kaboom::move()
     }
     if (len <= agroRange)
     {
-        movementSpeed = 10.0;
+        movementSpeed = 8.0;
     }
     sf::Sprite::setRotation(calculateRotation());
     sf::Sprite::move(direction.x * movementSpeed, direction.y * movementSpeed);
