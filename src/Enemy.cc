@@ -168,6 +168,7 @@ void Enemy::onCollision(std::string const &other)
     }
     
 }
+
 void Enemy::tryAttack(float len)
 {
     if (len <= attackRange)

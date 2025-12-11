@@ -28,7 +28,7 @@ class Enemy : public Character
 
     // void move() override;
     void die() override;
-    void onCollision(std::string const &othe) override;
+    void onCollision(std::string const &other) override;
 
   protected:
     float calculateDistance();
