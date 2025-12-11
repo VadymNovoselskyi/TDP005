@@ -144,9 +144,9 @@ void Player::gainXp(int xp)
     StateMachine::instance()->startLevelUp();
 }
 
-void Player::onCollision(std::string const &other)
+void Player::onCollision(Entity *other)
 {
-    if (other == "box")
+    if (other->getTag() == "box")
     {
         sf::Sprite::setPosition(oldPosition);
     }

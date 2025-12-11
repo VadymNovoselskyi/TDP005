@@ -46,10 +46,11 @@ void Map::handelUpdate(sf::RenderWindow *window)
         {
             if ((*it1)->getGlobalBounds().intersects((*it2)->getGlobalBounds()))
             {
-                (*it1)->onCollision((*it2)->getTag());
-                (*it2)->onCollision((*it1)->getTag());
+                (*it1)->onCollision(*it2);
+                (*it2)->onCollision(*it1);
             }
         }
+        toRemove.erase(toRemove.begin());
     }
 }
 
@@ -73,9 +74,8 @@ void Map::addEntity(Entity *e)
 
 void Map::removeEntity(Entity *e)
 {
-    entities.erase(
         std::remove_if(entities.begin(), entities.end(), [e](Entity *e1) { return e == e1; }),
-        entities.end());
+        toRemove.end();
 }
 
 Map::Map(Player *player, std::vector<Obstacle *> const &obstacles)
@@ -83,7 +83,7 @@ Map::Map(Player *player, std::vector<Obstacle *> const &obstacles)
           {static_cast<float>(Window::WINDOW_WIDTH) / 2,
            static_cast<float>(Window::WINDOW_HEIGHT) / 2},
           {static_cast<float>(Window::WINDOW_WIDTH), static_cast<float>(Window::WINDOW_HEIGHT)}}},
-      player{player}, entities{}
+      player{player}, entities{}, toRemove {}
 {
     for (Obstacle *obstacle : obstacles)
     {

@@ -22,7 +22,7 @@ class Weapon : public sf::Sprite::Transformable
   public:
     Weapon(std::string const &name,
            std::string const &description,
-           double damage,
+           double const &damage,
            double const &attackSpeed,
            Rarity rarity,
            double speed);

@@ -2,8 +2,12 @@
 
 #include <iostream>
 
-Projectile::Projectile(sf::Vector2f const &pos, double rotation, double velocity, double damage)
-    : Entity(std::string{"projectile"}, pos), velocity{velocity}, damage{damage},
+#include "Enemy.h"
+#include "Map.h"
+
+Projectile::Projectile(
+    sf::Vector2f const &pos, double rotation, double velocity, double damage, double hp)
+    : Entity(std::string{"projectile"}, pos, hp), velocity{velocity}, damage{damage},
       texture{TextureManager::instance()->getTexture("AR_bullet.png")}
 {
     sf::Sprite::setTexture(*texture);
@@ -11,11 +15,14 @@ Projectile::Projectile(sf::Vector2f const &pos, double rotation, double velocity
     sf::Sprite::setOrigin(sf::Sprite::getScale().x / 2, sf::Sprite::getScale().y / 2);
 }
 
-void Projectile::onCollision(std::string const &other)
+void Projectile::onCollision(Entity *other)
 {
-    if (other == "enemy")
+    if (other->getTag() == "enemy")
     {
-        // other take damage
+        Enemy *e = dynamic_cast<Enemy *>(other);
+        e->takeDamage(damage);
+        takeDamage();
+        // Map::instance() -> removeEntity(this);
     }
 }
 
@@ -32,4 +39,18 @@ void Projectile::draw(sf::RenderWindow *window) const
 {
     window->draw(*this);
     // Draw HP and XP too plz
+}
+
+void Projectile::takeDamage()
+{
+    hp--;
+    if (hp <= 0)
+    {
+        die();
+    }
+}
+
+void Projectile::die()
+{
+    Map::instance()->removeEntity(this);
 }

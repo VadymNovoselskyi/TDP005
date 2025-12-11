@@ -17,5 +17,5 @@ void SniperRifle::shoot()
     Map::instance()->addEntity(new Projectile{Transformable::getPosition(),
                                               Transformable::getRotation(),
                                               speed,
-                                              damage * damageMultiplication});
+                                              damage * damageMultiplication, 2});
 }

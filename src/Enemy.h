@@ -28,7 +28,7 @@ class Enemy : public Character
 
     // void move() override;
     void die() override;
-    void onCollision(std::string const &othe) override;
+    void onCollision(Entity *other) override;
 
   protected:
     float calculateDistance();
@@ -44,10 +44,6 @@ class Enemy : public Character
     int score; // inte en privat för olika enyme är vär olika score
     Player *player;
     float rotation;
-
-  private:
-    std::string tag{"enemy"};
-    
 };
 
 class Footman : public Enemy

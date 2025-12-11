@@ -42,7 +42,7 @@ class Player : public Character
     void increaseDamageMultiplyer(double amount);
     void die() override;
 
-    void onCollision(std::string const &other) override;
+    void onCollision(Entity *other) override;
 
   private:
     double const startHP;
