@@ -57,7 +57,8 @@ Archer::Archer(/*Charactar*/
                int XP_DROP,
                double damage,
                int score,
-               Player *player)
+               Player *player,
+               float fireRange)
     : Enemy(
             currentHp,
             movementSpeed,
@@ -68,7 +69,8 @@ Archer::Archer(/*Charactar*/
             damage,
             score,
             player),
-      texture{TextureManager::instance()->getTexture("enemy.png")}
+            fireRange{fireRange},
+      texture{TextureManager::instance()->getTexture("fighter.png")}
 {
     auto playerSize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
@@ -86,7 +88,8 @@ Kaboom::Kaboom(/*Charactar*/
                int score,
                Player *player,
                double explodeDamage,
-               double explodeRange)
+               double explodeRange,
+                float agroRange)
     : Enemy(
             currentHp,
             movementSpeed,
@@ -97,7 +100,7 @@ Kaboom::Kaboom(/*Charactar*/
             damage,
             score,
             player),
-      explodeDamage{explodeDamage}, explodeRange{explodeRange},
+      explodeDamage{explodeDamage}, explodeRange{explodeRange},agroRange{agroRange},
       texture{TextureManager::instance()->getTexture("obstacle-gas.png")}
 {
     auto playerSize{texture->getSize()};
@@ -244,7 +247,7 @@ void Kaboom::move()
         direction.x = (directionResult.x / len);
         direction.y = (directionResult.y / len);
     }
-    if (len <= 300)
+    if (len <= agroRange)
     {
         movementSpeed = 10.0;
     }
@@ -271,7 +274,7 @@ void Archer::move()
         direction.x = (directionResult.x / len);
         direction.y = (directionResult.y / len);
     }
-    if (len > 500)
+    if (len > fireRange)
     {
         sf::Sprite::setRotation(calculateRotation());
         sf::Sprite::move(direction.x * movementSpeed, direction.y * movementSpeed);
