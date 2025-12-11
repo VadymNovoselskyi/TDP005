@@ -29,7 +29,7 @@ class Player : public Character
            std::function<void(std::vector<LevelUpInfo>)> const &onLevelUp);
     void resetState(sf::Vector2f const &newPosition);
 
-    void draw(sf::RenderWindow *window) const override;
+    void draw(sf::RenderWindow *window);
 
     void move() override;
     void updateRotation(sf::RenderWindow *window);
@@ -58,14 +58,14 @@ class Player : public Character
     WeaponsManager weaponManager;
     std::function<void(std::vector<LevelUpInfo>)> onLevelUp;
 
-    void drawInfo(sf::RenderWindow *window) const;
+    void drawInfo(sf::RenderWindow *window);
     void drawBox(sf::RenderWindow *window,
-                 sf::RectangleShape box,
-                 float boxPosX,
-                 float boxPosY,
-                 float boxWidth,
-                 float boxheight,
-                 sf::Color boxColor) const;
+                 sf::RectangleShape &box,
+                 float const &boxPosX,
+                 float const &boxPosY,
+                 float const &boxWidth,
+                 float const &boxheight,
+                 sf::Color const &boxColor);
 
     // create box for xp and hp
     sf::RectangleShape HPBox; // background box to show how much hp a player has lost
