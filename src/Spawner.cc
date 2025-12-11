@@ -11,23 +11,31 @@ Spawner::Spawner(Player* player):spawnRate{200.0}, player{player}
 
 void Spawner::resetState()
 {
+    enemies.clear();
+    spawnRate = 200.0;
+    counter = 0;
+    timeConter = 0;
+}
+
+void Spawner::spawnEnemies()
+{
     
     if(counter >= spawnRate)
     {
-        nyEnmey();
-        choseSpawnPos();
-        Footman *enemyF = new Footman(currentHP,
-                                      movementSpeed,
-                                      position,
-                                      attackRange,
-                                      attackSpeed,
-                                      XP_DROP,
-                                      damage,
-                                      score,
-                                      player);
+        newEnmey();
+        // choseSpawnPos();
+        // Footman *enemyF = new Footman(currentHP,
+        //                               movementSpeed,
+        //                               position,
+        //                               attackRange,
+        //                               attackSpeed,
+        //                               XP_DROP,
+        //                               damage,
+        //                               score,
+        //                               player);
 
-        Map::instance()->addEntity(enemyF);
-        addKaboom();
+        // Map::instance()->addEntity(enemyF);
+        // addKaboom();
         addArcher();
 
         counter = 0;
@@ -126,8 +134,9 @@ void Spawner::addArcher()
         XP_DROP = 10;
         attackSpeed = 10;
         float fireRange {350};
+        double velocity{3};
         attackRange = fireRange;
-        Archer* enemyA = new Archer( currentHP, movementSpeed, position, attackRange, attackSpeed, XP_DROP, damage, score, player, fireRange);
+        Archer* enemyA = new Archer( currentHP, movementSpeed, position, attackRange, attackSpeed, XP_DROP, damage, score, player, fireRange, velocity);
         Map::instance()->addEntity(enemyA);
     }
 }

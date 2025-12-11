@@ -27,8 +27,6 @@ class Spawner
         double spawnRate;
         double spawnRateIncres {0.99};
         sf::Vector2f spwanPoint;
-
-        double spawnRate;
         double counter;
         Player* player;
 
