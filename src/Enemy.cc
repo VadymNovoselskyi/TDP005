@@ -250,7 +250,7 @@ void Kaboom::move()
     }
     if (len <= agroRange)
     {
-        movementSpeed = 10.0;
+        movementSpeed = 8.0;
     }
     sf::Sprite::setRotation(calculateRotation());
     sf::Sprite::move(direction.x * movementSpeed, direction.y * movementSpeed);

@@ -1,5 +1,5 @@
 #include "Spawner.h"
-
+#include <iostream> // print test
 #include <cstdlib>
 #include "TileManager.h"
 #include "Window.h"
@@ -19,9 +19,7 @@ void Spawner::spwanEnemies()
         Footman* enemyF = new Footman(currentHP, movementSpeed, position, attackRange, attackSpeed, XP_DROP, damage, score, player);
 
         Map::instance()->addEntity(enemyF);
-        choseSpawnPos();
         addKaboom();
-        choseSpawnPos();
         addArcher();
 
         conter = 0;
@@ -50,13 +48,39 @@ void Spawner::nyEnmey()
 void Spawner::choseSpawnPos()
 {
     sf::Vector2i mapSize { TileManager::instance() -> getMapDimensions()};
-    //std::cout<<mapSize.x<<std::endl;
-    float randomX = std::rand() % (mapSize.x - Window::WINDOW_WIDTH) + Window::WINDOW_WIDTH; // tar inspraskion från  w3schools //https://www.w3schools.com/cpp/cpp_howto_random_number.asp
-    float randomY = std::rand() % (mapSize.y - Window::WINDOW_HEIGHT) + Window::WINDOW_HEIGHT;//+ gör två saker. den matimatska att öka max higden men också läga till en minsta värde som random kan va.  
- 
-    sf::Vector2f nySpawnPos {randomX, randomY};
-    position = nySpawnPos;
+    sf::Vector2f playerWindow {player -> getPosition()};
+    // std::cout <<"map x  "<<mapSize.x<<std::endl;
+    // std::cout <<"map y  "<<mapSize.y<<std::endl;
 
+    // std::cout <<"Window x  "<<Window::WINDOW_WIDTH<<std::endl;
+    // std::cout <<"Window y  "<<Window::WINDOW_HEIGHT<<std::endl;
+    
+    float randomX = std::rand() % mapSize.x; // tar inspraskion från  w3schools //https://www.w3schools.com/cpp/cpp_howto_random_number.asp
+    float randomY = std::rand() % mapSize.y;  
+    sf::Vector2f nySpawnPos {randomX, randomY};
+ 
+    float pPlusX {playerWindow.x + (Window::WINDOW_WIDTH/2)};//512
+    float pMinusX {playerWindow.x - (Window::WINDOW_WIDTH/2)};
+    float pPlusY {playerWindow.y + (Window::WINDOW_HEIGHT/2)};//384
+    float pMinusY {playerWindow.y - (Window::WINDOW_HEIGHT/2)};
+    
+    bool insidaX = (nySpawnPos.x > pMinusX && nySpawnPos.x < pPlusX); // tar insparaskion från w3schools https://www.w3schools.com/cpp/cpp_operators_logical.asp 
+    bool insidaY = (nySpawnPos.y > pMinusY && nySpawnPos.y < pPlusY);
+
+    // std::cout <<"player x "<<playerWindow.x<<std::endl;
+    // std::cout <<"player y "<<playerWindow.y<<std::endl;
+    // std::cout <<"window +x "<<pPlusX<<std::endl;
+    // std::cout <<"window -x  "<<pMinusX<<std::endl;
+    // std::cout <<"spaw pos x  "<<nySpawnPos.x<<std::endl;
+    // std::cout <<"spaw pos y  "<<nySpawnPos.y<<std::endl;
+    if(insidaX and insidaY)
+    {
+        choseSpawnPos();
+    }
+    else
+    {
+        position = nySpawnPos;
+    }
 }
 
 void Spawner::incresSpawnRate()
@@ -74,6 +98,7 @@ void Spawner::addKaboom()
 {
     if(inKaboom)
     {
+        choseSpawnPos();
         currentHP = 75;
         damage = 5;
         XP_DROP = 10;
@@ -89,6 +114,7 @@ void Spawner::addArcher()
 {
     if(inArcher)
     {
+        choseSpawnPos();
         movementSpeed = 2;
         damage = 5;
         XP_DROP = 10;
