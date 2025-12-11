@@ -29,7 +29,7 @@ GameEngine::GameEngine() : window{}, spawner{}, clock{}
     menus.push_back(levelUpMenu);
 
     auto mapDimensions{TileManager::instance()->getMapDimensions()};
-    auto mapCenter{sf::Vector2f{mapDimensions.x / 2.0, mapDimensions.y / 2.0}};
+    auto mapCenter{sf::Vector2f{mapDimensions.x / 2.0f, mapDimensions.y / 2.0f}};
 
     Player *player{new Player(100.0,
                               10,

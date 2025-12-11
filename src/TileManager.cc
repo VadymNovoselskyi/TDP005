@@ -38,7 +38,8 @@ TileManager::TileManager(std::string const &tileMapPath)
     : tiles{}, obstacles{}, columnCount{}, rowCount{}, mapRect{}
 {
     generateTiles(tileMapPath);
-    mapRect.setSize(sf::Vector2f{columnCount * TILE_SIZE, rowCount * TILE_SIZE});
+    mapRect.setSize(sf::Vector2f{static_cast<float>(columnCount * TILE_SIZE),
+                                 static_cast<float>(rowCount * TILE_SIZE)});
 }
 
 TileManager::~TileManager() = default;

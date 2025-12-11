@@ -25,8 +25,8 @@ Player::Player(double startHP,
                int levels,
                std::function<void(std::vector<LevelUpInfo>)> const &onLevelUp)
     : Character(tag, startHP, startSpeed, position), startHP{startHP}, maxHP{startHP},
-      startSpeed{startSpeed}, damageMultiplier{1}, rotation{}, levels{levels}, onLevelUp{onLevelUp},
-      oldPosition{position}, expManager{}, weaponManager{}
+      startSpeed{startSpeed}, damageMultiplier{1}, rotation{}, levels{levels},
+      oldPosition{position}, expManager{}, weaponManager{}, onLevelUp{onLevelUp}
 {
     auto texture{TextureManager::instance()->getTexture("player.png")};
     auto playerSize{texture->getSize()};
