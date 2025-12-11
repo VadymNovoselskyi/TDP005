@@ -56,7 +56,9 @@ void processMovementPE(sf::Sprite &figure1, sf::CircleShape &figure2)
         figure2.move(sf::Vector2f(new_direction.x * SPEED, new_direction.y * SPEED));
     }
 
-
+    //float randomY = std::rand() % 10 + 7; // mista efter plusen men adder höska med pluset
+    float randomY = std::rand() % (10 - 7) + 7;
+    std::cout << randomY << std::endl;
 }
 
 void update(sf::RenderWindow &window, sf::Drawable const &figure)

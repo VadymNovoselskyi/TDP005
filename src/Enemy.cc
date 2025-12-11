@@ -25,7 +25,6 @@ Footman::Footman(/*Charactar*/
                  double currentHp,
                  int movementSpeed,
                  sf::Vector2f positon,
-                 sf::Vector2f direction,
                  int attackRange,
                  int attackSpeed,
                  int XP_DROP,
@@ -53,7 +52,6 @@ Archer::Archer(/*Charactar*/
                double currentHp,
                int movementSpeed,
                sf::Vector2f positon,
-               sf::Vector2f direction,
                int attackRange,
                int attackSpeed,
                int XP_DROP,
@@ -81,7 +79,6 @@ Kaboom::Kaboom(/*Charactar*/
                double currentHp,
                int movementSpeed,
                sf::Vector2f positon,
-               sf::Vector2f direction,
                int attackRange,
                int attackSpeed,
                int XP_DROP,
@@ -101,16 +98,11 @@ Kaboom::Kaboom(/*Charactar*/
             score,
             player),
       explodeDamage{explodeDamage}, explodeRange{explodeRange},
-      texture{TextureManager::instance()->getTexture("enemy.png")}
+      texture{TextureManager::instance()->getTexture("obstacle-gas.png")}
 {
     auto playerSize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
     sf::Sprite::setOrigin(playerSize.x / 2.0, playerSize.y / 2.0);
-}
-
-double pythagoras(sf::Vector2f p) // ska vara en point
-{
-    return sqrt((p.x * p.x) + (p.y * p.y));
 }
 
 Enemy::~Enemy()
@@ -120,16 +112,39 @@ Enemy::~Enemy()
 void Enemy::die()
 {
     // ge xp och påeng
-    // Map::removeEntity(Entity *this);
+    //Map::removeEntity(Entity *this);
 }
 
 void Enemy::draw(sf::RenderWindow *window) const
 {
     window->draw(*this);
 }
-void Enemy::moveHelper()
+float Enemy::calculateDistance()
 {
-    
+    oldPosition = getPosition();
+    sf::Vector2f playerPositon = player->getPosition();
+    sf::Vector2f enemyPosition = oldPosition;
+
+    float direction_x = playerPositon.x - enemyPosition.x;
+    float direction_y = playerPositon.y - enemyPosition.y;
+
+    return std::sqrt(direction_x * direction_x + direction_y* direction_y);
+}
+sf::Vector2f Enemy::calculateDirection()
+{
+    sf::Vector2f playerPositon = player->getPosition();
+    sf::Vector2f enemyPosition = getPosition();
+    sf::Vector2f directionResult {playerPositon.x - enemyPosition.x, playerPositon.y - enemyPosition.y};
+    return directionResult;
+}
+float Enemy::calculateRotation()
+{
+
+    double rotationRadians =
+        std::atan2((player->getPosition().y - getPosition().y),
+                   (player->getPosition().x - getPosition().x));
+    rotation = rotationRadians * (180 / M_PI) + 90;
+    return rotation;
 }
 std::string Enemy::getTag()
 {
@@ -137,10 +152,21 @@ std::string Enemy::getTag()
 }
 void Enemy::onCollision(std::string const &other)
 {
-    if (other == "player")
+    if (other == "Player")
     {
         attack();
+        sf::Sprite::setPosition(oldPosition);
     }
+    else if ( other == "enemy")
+    {
+        //instead create a function that either gets a empty position close or a random position close
+        sf::Sprite::setPosition(oldPosition);
+    }
+    else if (other == "box")
+    {
+        sf::Sprite::setPosition(oldPosition);
+    }
+    
 }
 void Enemy::tryAttack(float len)
 {
@@ -157,26 +183,21 @@ void Footman::attack()
     player->takeDamage(damage);
 }
 
-void Footman::move()
-{
-    sf::Vector2f playerPositon = player->getPosition();
-    sf::Vector2f enemyPosition = getPosition();
+void Footman::move() // skapa en move hjälper 
+{ //TODO: calculate rotaiton
+    oldPosition = getPosition();
+    sf::Vector2f directionResult = calculateDirection();
+
     sf::Vector2f direction;
     direction.x = 0;
     direction.y = 0;
-
-    // Point player {figure1.getPosition()};
-    // Point enemy  {figure2.getPosition()};
-    float direction_x = playerPositon.x - enemyPosition.x;
-    float direction_y = playerPositon.y - enemyPosition.y;
-
-    float len = std::sqrt(direction_x * direction_x + direction_y* direction_y);
+    float len = calculateDistance();
     if (len != 0)
     {
-        direction.x = (direction_x / len);
-        direction.y = (direction_y/ len);
+        direction.x = (directionResult.x / len);
+        direction.y = (directionResult.y/ len);
     }
-
+    sf::Sprite::setRotation(calculateRotation());
     sf::Sprite::move(direction.x * movementSpeed, direction.y * movementSpeed);
     tryAttack(len);
 }
@@ -206,31 +227,28 @@ void Kaboom::explode(float len)
 void Kaboom::attack()
 {
     player->takeDamage(damage);
+    
 }
 void Kaboom::move()
 {
-    sf::Vector2f figure1 = player->getPosition();
-    sf::Vector2f figure2 = getPosition();
+    oldPosition = getPosition();
+    sf::Vector2f directionResult = calculateDirection();
+
+
     sf::Vector2f direction;
     direction.x = 0;
     direction.y = 0;
-
-    // Point player {figure1.getPosition()};
-    // Point enemy  {figure2.getPosition()};
-    float direction_x = figure1.x - figure2.x;
-    float direction_y = figure1.y - figure2.y;
-
-    float len = std::sqrt(direction_x * direction_x + direction_y * direction_y);
+    float len = calculateDistance();
     if (len != 0)
     {
-        direction.x = (direction_x / len);
-        direction.y = (direction_y / len);
+        direction.x = (directionResult.x / len);
+        direction.y = (directionResult.y / len);
     }
     if (len <= 300)
     {
         movementSpeed = 10.0;
     }
-
+    sf::Sprite::setRotation(calculateRotation());
     sf::Sprite::move(direction.x * movementSpeed, direction.y * movementSpeed);
     tryAttack(len);
 }
@@ -240,23 +258,22 @@ void Archer::attack()
 }
 void Archer::move()
 {
-    sf::Vector2f figure1 = player->getPosition();
-    sf::Vector2f figure2 = getPosition();
+     oldPosition = getPosition();
+    sf::Vector2f directionResult = calculateDirection();
+
+
     sf::Vector2f direction;
     direction.x = 0;
     direction.y = 0;
-
-    float direction_x = figure1.x - figure2.x;
-    float direction_y = figure1.y - figure2.y;
-
-    float len = std::sqrt(direction_x * direction_x + direction_y * direction_y);
+    float len = calculateDistance();
     if (len != 0)
     {
-        direction.x = (direction_x / len);
-        direction.y = (direction_y / len);
+        direction.x = (directionResult.x / len);
+        direction.y = (directionResult.y / len);
     }
     if (len > 500)
     {
+        sf::Sprite::setRotation(calculateRotation());
         sf::Sprite::move(direction.x * movementSpeed, direction.y * movementSpeed);
     }
     tryAttack(len);
