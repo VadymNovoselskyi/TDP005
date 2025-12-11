@@ -19,29 +19,32 @@ class Spawner
 
     private:
         void increaseSpawnRate();
+        void newEnemy();
         void addKaboom();
         void addArcher();
 
         std::vector <Enemy*> enemies;
+        double spawnRate;
+        double spawnRateIncrease {0.99};
         sf::Vector2f spwanPoint;
 
-        double spawnRate;
         double counter;
         Player* player;
+
+        double timeCounter; // resepterat tid föt tillfälet 
 
         bool inKaboom{false};
         bool inArcher{false};
 
         //det som ska kicas till enemy
-        double maxHP {100.0};
         double currentHP {100.0};
         int movementSpeed {4};
         sf::Vector2f position {};
         sf::Vector2f direction {0,0};
-        int attackRange {12};
-        int attackSpeed {6};
-        int XP_DROP {10};
-        double damage {5};
+        int attackRange {10};
+        int attackSpeed {10};
+        int XP_DROP {5};
+        double damage {15};
         int score {2};
         
         

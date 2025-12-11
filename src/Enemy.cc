@@ -149,6 +149,7 @@ std::string Enemy::getTag()
 {
     return "enemy";
 }
+
 void Enemy::onCollision(Entity *other)
 {
     if (other->getTag() == "player")
@@ -168,13 +169,21 @@ void Enemy::onCollision(Entity *other)
     }
 }
 
+void Enemy::onBorderCollision()
+{
+    sf::Sprite::setPosition(oldPosition);
+}
+
 void Enemy::tryAttack(float len)
 {
-    if (len <= attackRange)
+    count --;
+    if (len <= attackRange and count <= 0)
     {
         attack();
-        // sleep(attackSpeed);//använd timestap istälet
+        count = 60 / attackSpeed;
+        
     }
+
 }
 
 // Footman
@@ -244,7 +253,7 @@ void Kaboom::move()
     }
     if (len <= agroRange)
     {
-        movementSpeed = 10.0;
+        movementSpeed = 8.0;
     }
     sf::Sprite::setRotation(calculateRotation());
     sf::Sprite::move(direction.x * movementSpeed, direction.y * movementSpeed);

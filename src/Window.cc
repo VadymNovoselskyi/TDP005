@@ -57,7 +57,7 @@ void Window::draw()
 
 {
     window->clear();
-    // TileManager::instance()->drawTiles(window);
+    TileManager::instance()->drawTiles(window);
 
     if (StateMachine::instance()->state() == GameState::IN_GAME)
     {

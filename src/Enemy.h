@@ -29,6 +29,7 @@ class Enemy : public Character
     // void move() override;
     void die() override;
     void onCollision(Entity *other) override;
+    void onBorderCollision() override;
 
   protected:
     float calculateDistance();
@@ -39,6 +40,7 @@ class Enemy : public Character
     sf::Vector2f oldPosition;
     int attackRange;
     int attackSpeed;
+    int count {attackSpeed};
     int XP_DROP;
     double damage;
     int score; // inte en privat för olika enyme är vär olika score

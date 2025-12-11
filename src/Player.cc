@@ -151,6 +151,12 @@ void Player::onCollision(Entity *other)
         sf::Sprite::setPosition(oldPosition);
     }
 }
+
+void Player::onBorderCollision()
+{
+    sf::Sprite::setPosition(oldPosition);
+}
+
 // methods to increase amount
 void Player::heal(double amount)
 {
@@ -183,6 +189,7 @@ void Player::die()
 }
 // methods to visualise hp and xp with boxes
 void Player::draw(sf::RenderWindow *window)
+
 {
     window->draw(*this);
     drawInfo(window);
