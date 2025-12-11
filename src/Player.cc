@@ -128,7 +128,7 @@ void Player::gainXp(int xp)
 
 void Player::onCollision(Entity *other)
 {
-    if (other -> getTag() == "box")
+    if (other->getTag() == "box")
     {
         sf::Sprite::setPosition(oldPosition);
     }

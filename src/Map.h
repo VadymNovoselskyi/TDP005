@@ -20,6 +20,9 @@ class Map
 
     void addEntity(Entity *e);
     void removeEntity(Entity *e);
+
+    Entity *getClosestEnemy();
+
   private:
     Map(Player *player, std::vector<Obstacle *> const &obstacles);
     ~Map();
