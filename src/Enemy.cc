@@ -174,16 +174,14 @@ void Enemy::onCollision(std::string const &other)
 
 void Enemy::tryAttack(float len)
 {
-    if (len <= attackRange and attackSpeed == count)
+    count --;
+    if (len <= attackRange and count <= 0)
     {
         attack();
-        count = 0;
-        // sleep(attackSpeed);//använd timestap istälet
+        count = 60 / attackSpeed;
+        
     }
-    else
-    {
-        count ++;
-    }
+
 }
 
 // Footman
