@@ -42,6 +42,14 @@ Highscore::Highscore(int framesPerScore)
     highscoreText.setCharacterSize(40);
 }
 
+void Highscore::resetState()
+{
+    scoreCountdown = framesPerScore;
+    score = 0;
+    timeSurvived = 0;
+    enemiesKilled = 0;
+}
+
 void Highscore::draw(sf::RenderWindow *window)
 {
     auto viewCenter = window->getView().getCenter();
@@ -72,7 +80,7 @@ void Highscore::tickSurvivalScore()
         score++;
         scoreCountdown = framesPerScore;
     }
-    else 
+    else
     {
         scoreCountdown--;
     }

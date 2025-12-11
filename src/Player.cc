@@ -22,10 +22,9 @@ Player::Player(double startHP,
                int startSpeed,
                sf::Vector2f const &position,
                std::string const &tag,
-               int levels,
                std::function<void(std::vector<LevelUpInfo>)> const &onLevelUp)
     : Character(tag, startHP, startSpeed, position), startHP{startHP}, maxHP{startHP},
-      startSpeed{startSpeed}, damageMultiplier{1}, rotation{}, levels{levels},
+      startSpeed{startSpeed}, damageMultiplier{1}, rotation{},
       oldPosition{position}, expManager{}, weaponManager{}, onLevelUp{onLevelUp}
 {
     auto texture{TextureManager::instance()->getTexture("player.png")};
@@ -180,7 +179,7 @@ void Player::die()
 {
     // reset xp, hp ,damage
     StateMachine::instance()->finishGame();
-    sf::Sprite::move(sf::Vector2f(Window::WINDOW_WIDTH / 2, Window::WINDOW_HEIGHT / 2));
+    sf::Sprite::move(sf::Vector2f(Window::WINDOW_WIDTH / 2.0F, Window::WINDOW_HEIGHT / 2.0F));
     hp = startHP;
     maxHP = startHP;
     movementSpeed = startSpeed;

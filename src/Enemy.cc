@@ -2,7 +2,6 @@
 
 #include <cmath>
 #include <iostream>
-#include <unistd.h>
 
 #include "Map.h"
 #include "Highscore.h"
@@ -102,10 +101,6 @@ Kaboom::Kaboom(/*Charactar*/
     auto playerSize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
     sf::Sprite::setOrigin(playerSize.x / 2.0, playerSize.y / 2.0);
-}
-
-Enemy::~Enemy()
-{
 }
 
 void Enemy::die()

@@ -12,19 +12,6 @@ Menu::Menu(std::vector<ElementsInfo> const &elements, bool windowOpen)
     setButtons(elements);
 }
 
-Menu::~Menu()
-{
-    // std::cout << "Running the menu destructor" << std::endl;
-    // for (auto buttonEl : buttonElements)
-    // {
-    //     delete buttonEl;
-    // }
-    // for (auto textEl : textElements)
-    // {
-    //     delete textEl;
-    // }
-}
-
 void Menu::draw(sf::RenderWindow *window) const
 {
     // std::cout << "Running the draw loop in Menu" << std::endl;

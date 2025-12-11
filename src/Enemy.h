@@ -19,7 +19,7 @@ class Enemy : public Character
           double damage,
           int score,
           Player *player);
-    virtual ~Enemy();
+    ~Enemy() override = default;
 
     virtual void attack() = 0;
     std::string getTag();
@@ -40,7 +40,7 @@ class Enemy : public Character
     sf::Vector2f oldPosition;
     int attackRange;
     int attackSpeed;
-    int count {attackSpeed};
+    int count{attackSpeed};
     int XP_DROP;
     double damage;
     int score; // inte en privat för olika enyme är vär olika score
@@ -117,7 +117,7 @@ class Archer : public Enemy
 
   private:
     void shoot();
-    float fireRange; 
+    float fireRange;
     sf::Texture const *texture;
 };
 

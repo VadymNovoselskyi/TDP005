@@ -7,7 +7,7 @@ class Projectile : public Entity
 {
   public:
     Projectile(sf::Vector2f const &pos, double rotation, double velocity, double damage, double hp);
-    ~Projectile() = default;
+    ~Projectile() override = default;
 
     void onCollision(Entity *other) override;
     void onBorderCollision() override;
@@ -15,7 +15,7 @@ class Projectile : public Entity
     void move() override;
     void draw(sf::RenderWindow *window) const override;
 
-    void takeDamage(double damage = 1);
+    void takeDamage(double damage = 1) override;
     void die() override;
 
   private:

@@ -9,7 +9,6 @@
 #include "Spawner.h"
 #include "TextureManager.h"
 #include "TileManager.h"
-#include "WeaponsManager.h"
 
 int const GameEngine::FPS{60};
 sf::Time const GameEngine::UPDATE_INTERVAL{sf::milliseconds(1000.0 / GameEngine::FPS)};
@@ -37,7 +36,6 @@ GameEngine::GameEngine() : window{}, spawner{}, clock{}
                               10,
                               mapCenter,
                               "player",
-                              0,
                               [levelUpMenu](std::vector<LevelUpInfo> const &levelUpInfo)
                               { levelUpMenu->createOptions(levelUpInfo); })};
 
@@ -56,6 +54,7 @@ GameEngine::GameEngine() : window{}, spawner{}, clock{}
                                                   player->resetState(mapCenter);
                                                   spawner->resetState();
                                                   Map::instance()->resetState();
+                                                  Highscore::instance()->resetState();
 
                                                   StateMachine::instance()->setInGame();
                                               }

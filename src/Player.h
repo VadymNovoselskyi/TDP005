@@ -25,7 +25,6 @@ class Player : public Character
            int const startSpeed,
            sf::Vector2f const &position,
            std::string const &tag,
-           int levels,
            std::function<void(std::vector<LevelUpInfo>)> const &onLevelUp);
     void resetState(sf::Vector2f const &newPosition);
 
@@ -52,7 +51,6 @@ class Player : public Character
     double damageMultiplier;
 
     float rotation;
-    int levels;
     sf::Vector2f oldPosition;
 
     ExperienceManager expManager;

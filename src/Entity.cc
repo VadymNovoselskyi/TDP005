@@ -2,8 +2,6 @@
 
 #include <string>
 
-#include "TextureManager.h"
-
 Entity::Entity(std::string const &tag, sf::Vector2f const &pos, double hp)
     : Sprite(), hp{hp}, tag{tag}
 {
