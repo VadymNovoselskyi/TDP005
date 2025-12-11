@@ -20,7 +20,7 @@ void Entity::draw(sf::RenderWindow *window) const
     window->draw(*this);
 }
 
-void Entity::takeDamage(double &damage)
+void Entity::takeDamage(double damage)
 {
     hp -= damage;
     if (hp <= 0)

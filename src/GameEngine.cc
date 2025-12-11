@@ -29,11 +29,12 @@ GameEngine::GameEngine() : window{}, spawner{}, clock{}
     menus.push_back(levelUpMenu);
 
     auto mapDimensions{TileManager::instance()->getMapDimensions()};
+    auto mapCenter{sf::Vector2f{mapDimensions.x / 2.0, mapDimensions.y / 2.0}};
+
     Player *player{new Player(100.0,
                               10,
-                              sf::Vector2f{static_cast<float>(mapDimensions.x / 2.0),
-                                           static_cast<float>(mapDimensions.y / 2.0)},
-                              "Player",
+                              mapCenter,
+                              "player",
                               0,
                               [levelUpMenu](std::vector<LevelUpInfo> const &levelUpInfo)
                               { levelUpMenu->createOptions(levelUpInfo); })};
@@ -46,10 +47,14 @@ GameEngine::GameEngine() : window{}, spawner{}, clock{}
 
     // TODO: reset the game state onStart etc
     StateMachine::instance()->addListener("onStart",
-                                          [](GameState gameState)
+                                          [player, mapCenter, this](GameState gameState)
                                           {
                                               if (gameState == GameState::STARTING_GAME)
                                               {
+                                                  player->resetState(mapCenter);
+                                                  spawner->resetState();
+                                                  Map::instance()->resetState();
+
                                                   StateMachine::instance()->setInGame();
                                               }
                                           });
@@ -69,8 +74,6 @@ GameEngine::GameEngine() : window{}, spawner{}, clock{}
                                                   window->closeWindow();
                                               }
                                           });
-
-    Map::instance()->addEntity(player);
 }
 
 GameEngine::~GameEngine()
@@ -92,7 +95,7 @@ void GameEngine::run()
 
         if (StateMachine::instance()->state() == GameState::IN_GAME)
         {
-            spawner->spwanEnemies();
+            spawner->spawnEnemies();
             Map::instance()->handelUpdate(window->getRenderWindow());
         }
         window->draw();

@@ -24,15 +24,20 @@ class Enemy : public Character
     virtual void attack() = 0;
     std::string getTag();
 
+<<<<<<< HEAD
         void draw(sf::RenderWindow *window)const override;
         
         //void move() override;
         void die() override;
         void onCollision(Entity *other) override;
+=======
+    void draw(sf::RenderWindow *window) const override;
+>>>>>>> origin/personal/vadno575
 
     // void move() override;
     void die() override;
-    void onCollision(std::string const &other) override;
+    void onCollision(Entity *other) override;
+    void onBorderCollision() override;
 
   protected:
     float calculateDistance();
@@ -49,10 +54,6 @@ class Enemy : public Character
     int score; // inte en privat för olika enyme är vär olika score
     Player *player;
     float rotation;
-
-  private:
-    std::string tag{"enemy"};
-    
 };
 
 class Footman : public Enemy

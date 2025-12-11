@@ -4,7 +4,8 @@
 
 #include "Entity.h"
 
-Obstacle::Obstacle(sf::Texture const *texture, sf::Vector2f position, std::string const& tag) : Entity(tag, position, /*hp*/1)
+Obstacle::Obstacle(sf::Texture const *texture, sf::Vector2f position, std::string const &tag)
+    : Entity(tag, position, /*hp*/ 1)
 {
     // auto obstackeSize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
@@ -12,6 +13,10 @@ Obstacle::Obstacle(sf::Texture const *texture, sf::Vector2f position, std::strin
 }
 
 void Obstacle::onCollision(Entity *other)
+{
+}
+
+void Obstacle::onBorderCollision()
 {
 }
 
@@ -26,5 +31,4 @@ void Obstacle::draw(sf::RenderWindow *window) const
 
 void Obstacle::die()
 {
-
 }

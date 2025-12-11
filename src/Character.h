@@ -8,11 +8,9 @@
 class Character : public Entity
 {
   public:
-    Character(std::string const &tag,
-              double hp,
-              int movementSpeed,
-              sf::Vector2f const &position);
-    void setMovementSpeed(int);
+    Character(std::string const &tag, double hp, int movementSpeed, sf::Vector2f const &position);
+
+    void setMovementSpeed(int movementSpeed);
 
   protected:
     int movementSpeed;

@@ -18,7 +18,6 @@ enum Direction
     WEST = 1
 };
 
-// TODO: Increase hp, weapon damage , DIE SPEED -
 class Player : public Character
 {
   public:
@@ -28,6 +27,7 @@ class Player : public Character
            std::string const &tag,
            int levels,
            std::function<void(std::vector<LevelUpInfo>)> const &onLevelUp);
+    void resetState(sf::Vector2f const &newPosition);
 
     void draw(sf::RenderWindow *window) const override;
 
@@ -43,16 +43,16 @@ class Player : public Character
     void die() override;
 
     void onCollision(Entity *other) override;
+    void onBorderCollision() override;
 
   private:
     double const startHP;
-    double hp;
     double maxHP;
     int const startSpeed;
-    int movementSpeed;
+    double damageMultiplier;
+
     float rotation;
     int levels;
-    double damageMultiplier;
     sf::Vector2f oldPosition;
 
     ExperienceManager expManager;

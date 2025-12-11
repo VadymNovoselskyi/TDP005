@@ -12,21 +12,25 @@ class Spawner
 {
   public:
     Spawner(Player *player);
+    void resetState();
     
-    void spwanEnemies();
+    void spawnEnemies();
     void choseSpawnPos();
 
     private:
         void incresSpawnRate();
-        void nyEnmey();
+        void newEnmey();
         void addKaboom();
         void addArcher();
+
         std::vector <Enemy*> enemies;
         double spawnRate;
         double spawnRateIncres {0.99};
         sf::Vector2f spwanPoint;
+
+        double spawnRate;
+        double counter;
         Player* player;
-        double conter;
 
         double timeConter; // resepterat tid föt tillfälet 
 

@@ -24,9 +24,9 @@ Player::Player(double startHP,
                std::string const &tag,
                int levels,
                std::function<void(std::vector<LevelUpInfo>)> const &onLevelUp)
-    : Character(tag, startHP, startSpeed, position), startHP{startHP}, hp{startHP}, maxHP{startHP},
-      startSpeed{startSpeed}, movementSpeed{startSpeed}, damageMultiplier{1}, rotation{},
-      levels{levels}, onLevelUp{onLevelUp}, oldPosition{position}, expManager{}, weaponManager{}
+    : Character(tag, startHP, startSpeed, position), startHP{startHP}, maxHP{startHP},
+      startSpeed{startSpeed}, damageMultiplier{1}, rotation{}, levels{levels}, onLevelUp{onLevelUp},
+      oldPosition{position}, expManager{}, weaponManager{}
 {
     auto texture{TextureManager::instance()->getTexture("player.png")};
     auto playerSize{texture->getSize()};
@@ -60,6 +60,22 @@ Player::Player(double startHP,
                               }}});
     weaponManager.receiveNewWeapon("AR");
     weaponManager.receiveNewWeapon("Sniper");
+}
+
+void Player::resetState(sf::Vector2f const &newPosition)
+{
+    Character::hp = startHP;
+    maxHP = startHP;
+    Character::movementSpeed = startSpeed;
+
+    rotation = 0;
+    damageMultiplier = 1;
+
+    Entity::setPosition(newPosition);
+    oldPosition = newPosition;
+
+    expManager.resetState();
+    weaponManager.resetState();
 }
 
 void Player::move()
@@ -109,7 +125,7 @@ void Player::updateRotation(sf::RenderWindow *window)
         std::atan2((sf::Mouse::getPosition(*window).y - (Window::WINDOW_HEIGHT / 2)),
                    (sf::Mouse::getPosition(*window).x - (Window::WINDOW_WIDTH / 2)));
     rotation = rotationRadians * (180 / M_PI) + 90; // transform radians to rotation
-    
+
     sf::Sprite::setRotation(rotation);
     weaponManager.setWeaponsRotation(sf::Sprite::getRotation());
 }
@@ -133,6 +149,12 @@ void Player::onCollision(Entity *other)
         sf::Sprite::setPosition(oldPosition);
     }
 }
+
+void Player::onBorderCollision()
+{
+    sf::Sprite::setPosition(oldPosition);
+}
+
 // methods to increase amount
 void Player::heal(double amount)
 {
@@ -163,7 +185,7 @@ void Player::die()
     // ExperienceManager::resetxp();
     // waiting for method to remove every weapon exept start wepon
 }
-// methods to draw boxes
+// methods to visualise hp and xp with boxes
 void Player::draw(sf::RenderWindow *window) const
 {
     window->draw(*this);

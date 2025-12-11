@@ -35,9 +35,10 @@ void TileManager::deleteInstance()
 
 // Instance methods
 TileManager::TileManager(std::string const &tileMapPath)
-    : tiles{}, obstacles{}, columnCount{}, rowCount{}
+    : tiles{}, obstacles{}, columnCount{}, rowCount{}, mapRect{}
 {
     generateTiles(tileMapPath);
+    mapRect.setSize(sf::Vector2f{columnCount * TILE_SIZE, rowCount * TILE_SIZE});
 }
 
 TileManager::~TileManager() = default;
@@ -47,9 +48,14 @@ std::vector<Obstacle *> TileManager::getObstacles() const
     return obstacles;
 }
 
-sf::Vector2i TileManager::getMapDimensions() const
+bool TileManager::outOfBorder(sf::Sprite const *sprite) const
 {
-    return sf::Vector2i{columnCount * TILE_SIZE, rowCount * TILE_SIZE};
+    return !mapRect.getGlobalBounds().intersects(sprite->getGlobalBounds());
+}
+
+sf::Vector2f TileManager::getMapDimensions() const
+{
+    return mapRect.getSize();
 }
 
 void TileManager::drawTiles(sf::RenderWindow *window) const

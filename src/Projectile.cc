@@ -19,11 +19,14 @@ void Projectile::onCollision(Entity *other)
 {
     if (other->getTag() == "enemy")
     {
-        Enemy *e = dynamic_cast<Enemy *>(other);
-        e->takeDamage(damage);
+        other->takeDamage(damage);
         takeDamage();
-        // Map::instance() -> removeEntity(this);
     }
+}
+
+void Projectile::onBorderCollision()
+{
+    Map::instance()->removeEntity(this);
 }
 
 void Projectile::move()
@@ -38,12 +41,11 @@ void Projectile::move()
 void Projectile::draw(sf::RenderWindow *window) const
 {
     window->draw(*this);
-    // Draw HP and XP too plz
 }
 
-void Projectile::takeDamage()
+void Projectile::takeDamage(double damage)
 {
-    hp--;
+    hp -= damage;
     if (hp <= 0)
     {
         die();
