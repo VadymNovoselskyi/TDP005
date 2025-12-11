@@ -59,6 +59,7 @@ Player::Player(double startHP,
                                   StateMachine::instance()->continueGame();
                               }}});
     weaponManager.receiveNewWeapon("AR");
+    weaponManager.receiveNewWeapon("Sniper");
 }
 
 void Player::move()
@@ -95,10 +96,7 @@ void Player::move()
     sf::Sprite::move(sf::Vector2f(direction.x * movementSpeed, direction.y * movementSpeed));
 
     weaponManager.setWeaponsPos(sf::Sprite::getPosition());
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-    {
-        weaponManager.shoot();
-    }
+    weaponManager.shoot();
 }
 
 void Player::updateRotation(sf::RenderWindow *window)

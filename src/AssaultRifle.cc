@@ -8,7 +8,7 @@ AssaultRifle::AssaultRifle()
              /*dmg*/ 7.5f,
              /*attackSpeed (shoots per sec)*/ 10,
              Rarity::BASIC,
-             /*bullet speed*/ 80)
+             /*bullet speed*/ 80, /*bulletHP*/1)
 {
 }
 void AssaultRifle::tryToShoot()
@@ -26,5 +26,5 @@ void AssaultRifle::shoot()
     Map::instance()->addEntity(new Projectile{Transformable::getPosition(),
                                               Transformable::getRotation(),
                                               speed,
-                                              damage * damageMultiplication, 1});
+                                              damage * damageMultiplication, bulletHP, "AR_bullet.png"});
 }

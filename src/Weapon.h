@@ -25,7 +25,7 @@ class Weapon : public sf::Sprite::Transformable
            double const &damage,
            double const &attackSpeed,
            Rarity rarity,
-           double speed);
+           double speed, double bulletHP);
     virtual void tryToShoot();
     std::string getName() const;
 
@@ -40,6 +40,7 @@ class Weapon : public sf::Sprite::Transformable
 
     Rarity rarity;
     double speed;
+    double bulletHP;
 
     void update();
 

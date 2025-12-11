@@ -3,12 +3,12 @@
 #include "Map.h"
 
 SniperRifle::SniperRifle()
-    : Weapon("AR",
-             "Shoot kinda fast with a mediumlow damag",
-             /*dmg*/ 5.5f,
+    : Weapon("Sniper",
+             "Shoot slow with a High damag",
+             /*dmg*/ 100.0f,
              /*attackSpeed (shoots per sec)*/ 1,
              Rarity::BASIC,
-             /*bullet speed*/ 200)
+             /*bullet speed*/ 300,  /*bulletHP*/ 2)
 {
 }
 
@@ -17,5 +17,5 @@ void SniperRifle::shoot()
     Map::instance()->addEntity(new Projectile{Transformable::getPosition(),
                                               Transformable::getRotation(),
                                               speed,
-                                              damage * damageMultiplication, 2});
+                                              damage * damageMultiplication, bulletHP, "Sniper_bullet.png"});
 }
