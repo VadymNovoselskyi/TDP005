@@ -28,11 +28,12 @@ class Enemy : public Character
 
     // void move() override;
     void die() override;
-    void onCollision(std::string const &othe) override;
+    void onCollision(std::string const &other) override;
 
   protected:
     float calculateDistance();
     sf::Vector2f calculateDirection();
+    float calculateRotation();
     void tryAttack(float leng);
     // void calcPath(sf::Vector2f);
     sf::Vector2f oldPosition;
@@ -42,6 +43,7 @@ class Enemy : public Character
     double damage;
     int score; // inte en privat för olika enyme är vär olika score
     Player *player;
+    float rotation;
 
   private:
     std::string tag{"enemy"};

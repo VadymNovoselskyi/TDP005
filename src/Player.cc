@@ -89,7 +89,7 @@ void Player::updateRotation(sf::RenderWindow *window)
         std::atan2((sf::Mouse::getPosition(*window).y - (Window::WINDOW_HEIGHT / 2)),
                    (sf::Mouse::getPosition(*window).x - (Window::WINDOW_WIDTH / 2)));
     rotation = rotationRadians * (180 / M_PI) + 90; // transform radians to rotation
-
+    
     sf::Sprite::setRotation(rotation);
     weaponManager->setWeaponsRotation(sf::Sprite::getRotation());
 }
@@ -140,7 +140,7 @@ void Player::die()
     //ExperienceManager::resetxp();
     //waiting for method to remove every weapon exept start wepon
 }
-//methods to draw boxes
+//methods to visualise hp and xp with boxes
 void Player::draw(sf::RenderWindow *window) const
 {
     window->draw(*this);
