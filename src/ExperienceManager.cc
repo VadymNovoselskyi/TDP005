@@ -48,5 +48,5 @@ std::vector<LevelUpInfo> ExperienceManager::chooseLevelUps() const
 
 int ExperienceManager::getXpFilled() const
 {
-    return static_cast<int>(currentXp / LEVELS_PROGRESSION.at(level));
+    return currentXp == 0 ? 0 : static_cast<int>(currentXp / LEVELS_PROGRESSION.at(level));
 }
