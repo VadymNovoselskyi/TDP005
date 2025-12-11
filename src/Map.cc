@@ -23,6 +23,19 @@ Map *Map::init(Player *player, std::vector<Obstacle *> const &obstacles)
     return Map::instancePtr;
 }
 
+void Map::resetState()
+{
+    for (Entity *e : entities)
+    {
+        if (e->getTag() != "player")
+        {
+            delete e;
+        }
+    }
+
+    entities.erase(entities.begin() + 1, entities.end());
+}
+
 void Map::deleteInstance()
 {
     // std::cout << "Deleting the instance" << std::endl;
@@ -39,19 +52,19 @@ void Map::handelUpdate(sf::RenderWindow *window)
     player->updateRotation(window);
 
     // TODO: watching walls and gas is too expensive, come up with other ways to do it
-    for (auto it1{entities.begin()}; it1 != entities.end(); ++it1) // de som är i loopen är
-    // tagen från tdp004 https://www.ida.liu.se/~TDP004/current/sal/slides/tdp004_9.pdf s.20
-    {
-        for (auto it2{it1 + 1}; it2 != entities.end(); ++it2)
-        {
-            if ((*it1)->getGlobalBounds().intersects((*it2)->getGlobalBounds()))
-            {
-                (*it1)->onCollision(*it2);
-                (*it2)->onCollision(*it1);
-            }
-        }
-        toRemove.erase(toRemove.begin());
-    }
+    // for (auto it1{entities.begin()}; it1 != entities.end(); ++it1) // de som är i loopen är
+    // // tagen från tdp004 https://www.ida.liu.se/~TDP004/current/sal/slides/tdp004_9.pdf s.20
+    // {
+    //     for (auto it2{it1 + 1}; it2 != entities.end(); ++it2)
+    //     {
+    //         if ((*it1)->getGlobalBounds().intersects((*it2)->getGlobalBounds()))
+    //         {
+    //             (*it1)->onCollision(*it2);
+    //             (*it2)->onCollision(*it1);
+    //         }
+    //     }
+    // }
+    toRemove.erase(toRemove.begin());
 }
 
 void Map::draw(sf::RenderWindow *window) const
@@ -74,7 +87,7 @@ void Map::addEntity(Entity *e)
 
 void Map::removeEntity(Entity *e)
 {
-        std::remove_if(entities.begin(), entities.end(), [e](Entity *e1) { return e == e1; }),
+    std::remove_if(entities.begin(), entities.end(), [e](Entity *e1) { return e == e1; }),
         toRemove.end();
 }
 
@@ -83,8 +96,9 @@ Map::Map(Player *player, std::vector<Obstacle *> const &obstacles)
           {static_cast<float>(Window::WINDOW_WIDTH) / 2,
            static_cast<float>(Window::WINDOW_HEIGHT) / 2},
           {static_cast<float>(Window::WINDOW_WIDTH), static_cast<float>(Window::WINDOW_HEIGHT)}}},
-      player{player}, entities{}, toRemove {}
+      player{player}, entities{}, toRemove{}
 {
+    entities.push_back(player);
     for (Obstacle *obstacle : obstacles)
     {
         entities.push_back(obstacle);

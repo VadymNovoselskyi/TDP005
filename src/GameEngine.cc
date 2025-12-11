@@ -35,7 +35,7 @@ GameEngine::GameEngine() : window{}, spawner{}, clock{}
     Player *player{new Player(100.0,
                               10,
                               mapCenter,
-                              "Player",
+                              "player",
                               0,
                               [levelUpMenu](std::vector<LevelUpInfo> const &levelUpInfo)
                               { levelUpMenu->createOptions(levelUpInfo); })};
@@ -48,11 +48,14 @@ GameEngine::GameEngine() : window{}, spawner{}, clock{}
 
     // TODO: reset the game state onStart etc
     StateMachine::instance()->addListener("onStart",
-                                          [player, mapCenter](GameState gameState)
+                                          [player, mapCenter, this](GameState gameState)
                                           {
                                               if (gameState == GameState::STARTING_GAME)
                                               {
                                                   player->resetState(mapCenter);
+                                                  spawner->resetState();
+                                                  Map::instance()->resetState();
+
                                                   StateMachine::instance()->setInGame();
                                               }
                                           });
@@ -73,7 +76,6 @@ GameEngine::GameEngine() : window{}, spawner{}, clock{}
                                               }
                                           });
 
-    Map::instance()->addEntity(player);
 }
 
 GameEngine::~GameEngine()
@@ -95,7 +97,7 @@ void GameEngine::run()
 
         if (StateMachine::instance()->state() == GameState::IN_GAME)
         {
-            spawner->spwanEnemies();
+            spawner->spawnEnemies();
             Map::instance()->handelUpdate(window->getRenderWindow());
         }
         window->draw();

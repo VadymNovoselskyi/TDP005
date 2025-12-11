@@ -151,7 +151,7 @@ std::string Enemy::getTag()
 }
 void Enemy::onCollision(Entity *other)
 {
-    if (other->getTag() == "Player")
+    if (other->getTag() == "player")
     {
         attack();
         sf::Sprite::setPosition(oldPosition);
