@@ -57,7 +57,7 @@ Archer::Archer(/*Charactar*/
                double damage,
                int score,
                Player *player,
-               float fireRange,
+
                 double velocity)
     : Enemy(currentHp,
             movementSpeed,
@@ -68,7 +68,7 @@ Archer::Archer(/*Charactar*/
             damage,
             score,
             player),
-      fireRange{fireRange}, velocity{velocity}, texture{TextureManager::instance()->getTexture("fighter.png")}
+      velocity{velocity}, texture{TextureManager::instance()->getTexture("fighter.png")}
 {
     auto playerSize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
@@ -280,7 +280,7 @@ void Archer::move()
         direction.x = (directionResult.x / len);
         direction.y = (directionResult.y / len);
     }
-    if (len > fireRange)
+    if (len > attackRange)
     {
         sf::Sprite::setRotation(calculateRotation());
         sf::Sprite::move(direction.x * movementSpeed, direction.y * movementSpeed);

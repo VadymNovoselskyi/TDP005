@@ -110,7 +110,6 @@ class Archer : public Enemy
            double damage,
            int score,
            Player *player,
-           float fireRange,
            double velocity);
     void attack() override;
     void move() override;

@@ -23,19 +23,19 @@ void Spawner::spawnEnemies()
     if(counter >= spawnRate)
     {
         newEnmey();
-        // choseSpawnPos();
-        // Footman *enemyF = new Footman(currentHP,
-        //                               movementSpeed,
-        //                               position,
-        //                               attackRange,
-        //                               attackSpeed,
-        //                               XP_DROP,
-        //                               damage,
-        //                               score,
-        //                               player);
+        choseSpawnPos();
+        Footman *enemyF = new Footman(currentHP,
+                                      movementSpeed,
+                                      position,
+                                      attackRange,
+                                      attackSpeed,
+                                      XP_DROP,
+                                      damage,
+                                      score,
+                                      player);
 
-        // Map::instance()->addEntity(enemyF);
-        // addKaboom();
+        Map::instance()->addEntity(enemyF);
+        addKaboom();
         addArcher();
 
         counter = 0;
@@ -64,11 +64,7 @@ void Spawner::choseSpawnPos()
 {
     sf::Vector2i mapSize { TileManager::instance() -> getMapDimensions()};
     sf::Vector2f playerWindow {player -> getPosition()};
-    // std::cout <<"map x  "<<mapSize.x<<std::endl;
-    // std::cout <<"map y  "<<mapSize.y<<std::endl;
 
-    // std::cout <<"Window x  "<<Window::WINDOW_WIDTH<<std::endl;
-    // std::cout <<"Window y  "<<Window::WINDOW_HEIGHT<<std::endl;
     
     float randomX = std::rand() % mapSize.x; // tar inspraskion från  w3schools //https://www.w3schools.com/cpp/cpp_howto_random_number.asp
     float randomY = std::rand() % mapSize.y;  
@@ -82,12 +78,7 @@ void Spawner::choseSpawnPos()
     bool insidaX = (nySpawnPos.x > pMinusX && nySpawnPos.x < pPlusX); // tar insparaskion från w3schools https://www.w3schools.com/cpp/cpp_operators_logical.asp 
     bool insidaY = (nySpawnPos.y > pMinusY && nySpawnPos.y < pPlusY);
 
-    // std::cout <<"player x "<<playerWindow.x<<std::endl;
-    // std::cout <<"player y "<<playerWindow.y<<std::endl;
-    // std::cout <<"window +x "<<pPlusX<<std::endl;
-    // std::cout <<"window -x  "<<pMinusX<<std::endl;
-    // std::cout <<"spaw pos x  "<<nySpawnPos.x<<std::endl;
-    // std::cout <<"spaw pos y  "<<nySpawnPos.y<<std::endl;
+
     if(insidaX and insidaY)
     {
         choseSpawnPos();
@@ -133,10 +124,9 @@ void Spawner::addArcher()
         damage = 5;
         XP_DROP = 10;
         attackSpeed = 10;
-        float fireRange {350};
         double velocity{3};
-        attackRange = fireRange;
-        Archer* enemyA = new Archer( currentHP, movementSpeed, position, attackRange, attackSpeed, XP_DROP, damage, score, player, fireRange, velocity);
+        attackRange = 350;
+        Archer* enemyA = new Archer( currentHP, movementSpeed, position, attackRange, attackSpeed, XP_DROP, damage, score, player, velocity);
         Map::instance()->addEntity(enemyA);
     }
 }
