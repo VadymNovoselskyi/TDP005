@@ -153,9 +153,10 @@ void Player::drawInfo(sf::RenderWindow *window) const
             HPBox,
             sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2.0) + BOX_OFFSET,  // x
             sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2.0) + BOX_OFFSET, // y
-            BOX_WIDHT,                                                                      // lenght
-            BOX_HEIGTH,                                                                       // widht
+            BOX_WIDHT,                                                                      // widht
+            BOX_HEIGTH,                                                                       // heiht
             HP_BOX_COLOR);                                                            // color
+            
     drawBox(window,
             currentHPBox,
             sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2.0) + BOX_OFFSET,
