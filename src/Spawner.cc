@@ -14,21 +14,36 @@ void Spawner::spwanEnemies()
     
     if(conter >= spawnRate)
     {
+        nyEnmey();
         choseSpawnPos();
         Footman* enemyF = new Footman(currentHP, movementSpeed, position, attackRange, attackSpeed, XP_DROP, damage, score, player);
 
         Map::instance()->addEntity(enemyF);
         choseSpawnPos();
         addKaboom();
-    
         choseSpawnPos();
         addArcher();
+
         conter = 0;
+        timeConter +=1;
         Spawner::incresSpawnRate();
     }
     else
     {
         conter += 1;
+    }
+
+}
+
+void Spawner::nyEnmey()
+{
+    if(timeConter >= 10)
+    {
+        inKaboom = true;
+    }
+    if(timeConter >= 20)
+    {
+        inArcher = true;
     }
 }
 
@@ -46,11 +61,11 @@ void Spawner::choseSpawnPos()
 
 void Spawner::incresSpawnRate()
 {
+   
     if(spawnRate > 1)
     {
-        spawnRate *= 0.99;
-        inKaboom = true; // tilfälig
-        inArcher = true; // tilfälig
+        spawnRate *= spawnRateIncres;
+
     }
 }
 
@@ -71,7 +86,7 @@ void Spawner::addArcher()
 {
     if(inArcher)
     {
-        float fireRange {400};
+        float fireRange {350};
         Archer* enemyA = new Archer( currentHP, movementSpeed, position, attackRange, attackSpeed, XP_DROP, damage, score, player, fireRange);
         Map::instance()->addEntity(enemyA);
     }

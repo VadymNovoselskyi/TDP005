@@ -17,13 +17,17 @@ class Spawner
 
     private:
         void incresSpawnRate();
+        void nyEnmey();
         void addKaboom();
         void addArcher();
         std::vector <Enemy*> enemies;
         double spawnRate;
+        double spawnRateIncres {0.99};
         sf::Vector2f spwanPoint;
         Player* player;
         double conter;
+
+        double timeConter; // resepterat tid föt tillfälet 
 
         bool inKaboom{false};
         bool inArcher{false};
