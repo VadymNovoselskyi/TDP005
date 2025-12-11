@@ -156,16 +156,32 @@ void Enemy::onCollision(Entity *other)
     {
         attack();
         sf::Sprite::setPosition(oldPosition);
+        std::cout << "collided with player" << std::endl;
     }
     else if (other->getTag() == "enemy")
     {
-        // instead create a function that either gets a empty position close or a random position
-        // close
-        sf::Sprite::setPosition(oldPosition);
+        std::cout << "collided with enemy" << std::endl;
+        auto collidingEnemy = static_cast<Enemy *>(other);
+        sf::Vector2f diff = sf::Sprite::getPosition() - collidingEnemy->getPosition();
+        float lenDistance = std::sqrt(diff.x * diff.x + diff.y * diff.y);
+        sf::Vector2f direction;
+        if (lenDistance > 0)
+        {
+            direction = diff / lenDistance;
+        }
+        else
+        {
+            direction = sf::Vector2f(1.f, 0.f);
+        }
+        float push = collidingEnemy->getGlobalBounds().width / 6;
+        sf::Sprite::setPosition(sf::Sprite::getPosition() + direction * push);
+        return;
     }
     else if (other->getTag() == "box")
     {
-        sf::Sprite::setPosition(oldPosition);
+        std::cout << "collided with box" << std::endl;
+        sf::Sprite::setPosition(sf::Sprite::getPosition().x - 5, sf::Sprite::getPosition().y);
+        return;
     }
 }
 
@@ -176,14 +192,12 @@ void Enemy::onBorderCollision()
 
 void Enemy::tryAttack(float len)
 {
-    count --;
+    count--;
     if (len <= attackRange and count <= 0)
     {
         attack();
         count = 60 / attackSpeed;
-        
     }
-
 }
 
 // Footman
@@ -241,7 +255,6 @@ void Kaboom::move()
 {
     oldPosition = getPosition();
     sf::Vector2f directionResult = calculateDirection();
-
     sf::Vector2f direction;
     direction.x = 0;
     direction.y = 0;
