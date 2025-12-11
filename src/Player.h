@@ -43,6 +43,7 @@ class Player : public Character
     void die() override;
 
     void onCollision(Entity *other) override;
+    void onBorderCollision() override;
 
   private:
     double const startHP;

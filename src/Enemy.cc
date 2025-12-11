@@ -149,6 +149,7 @@ std::string Enemy::getTag()
 {
     return "enemy";
 }
+
 void Enemy::onCollision(Entity *other)
 {
     if (other->getTag() == "player")
@@ -166,6 +167,11 @@ void Enemy::onCollision(Entity *other)
     {
         sf::Sprite::setPosition(oldPosition);
     }
+}
+
+void Enemy::onBorderCollision()
+{
+    sf::Sprite::setPosition(oldPosition);
 }
 
 void Enemy::tryAttack(float len)

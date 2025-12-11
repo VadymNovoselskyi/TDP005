@@ -29,8 +29,7 @@ GameEngine::GameEngine() : window{}, spawner{}, clock{}
     menus.push_back(levelUpMenu);
 
     auto mapDimensions{TileManager::instance()->getMapDimensions()};
-    auto mapCenter{sf::Vector2f{static_cast<float>(mapDimensions.x / 2.0),
-                                static_cast<float>(mapDimensions.y / 2.0)}};
+    auto mapCenter{sf::Vector2f{mapDimensions.x / 2.0, mapDimensions.y / 2.0}};
 
     Player *player{new Player(100.0,
                               10,
@@ -75,7 +74,6 @@ GameEngine::GameEngine() : window{}, spawner{}, clock{}
                                                   window->closeWindow();
                                               }
                                           });
-
 }
 
 GameEngine::~GameEngine()

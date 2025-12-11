@@ -14,10 +14,11 @@ class TileManager
     static TileManager *init(std::string const &tileMapPath);
     static void deleteInstance();
 
+    bool outOfBorder(sf::Sprite const *sprite) const;
     void drawTiles(sf::RenderWindow *window) const;
-    std::vector<Obstacle *> getObstacles() const;
 
-    sf::Vector2i getMapDimensions() const;
+    std::vector<Obstacle *> getObstacles() const;
+    sf::Vector2f getMapDimensions() const;
 
   private:
     void generateTiles(std::string const &tileMapPath);
@@ -31,6 +32,8 @@ class TileManager
     std::vector<Obstacle *> obstacles;
     int columnCount;
     int rowCount;
+
+    sf::RectangleShape mapRect;
 };
 
 #endif

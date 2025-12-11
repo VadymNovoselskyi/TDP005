@@ -66,7 +66,7 @@ void Player::resetState(sf::Vector2f const &newPosition)
     Character::hp = startHP;
     maxHP = startHP;
     Character::movementSpeed = startSpeed;
-    
+
     rotation = 0;
     damageMultiplier = 1;
 
@@ -151,6 +151,12 @@ void Player::onCollision(Entity *other)
         sf::Sprite::setPosition(oldPosition);
     }
 }
+
+void Player::onBorderCollision()
+{
+    sf::Sprite::setPosition(oldPosition);
+}
+
 // methods to increase amount
 void Player::heal(double amount)
 {
@@ -181,7 +187,7 @@ void Player::die()
     // ExperienceManager::resetxp();
     // waiting for method to remove every weapon exept start wepon
 }
-//methods to visualise hp and xp with boxes
+// methods to visualise hp and xp with boxes
 void Player::draw(sf::RenderWindow *window) const
 {
     window->draw(*this);

@@ -21,6 +21,7 @@ class Map
 
     void addEntity(Entity *e);
     void removeEntity(Entity *e);
+
   private:
     Map(Player *player, std::vector<Obstacle *> const &obstacles);
     ~Map();
@@ -29,7 +30,7 @@ class Map
     sf::View *view;
     Player *player;
     std::vector<Entity *> entities;
-    std::vector<Entity *> toRemove;
+    std::vector<std::vector<Entity *>::iterator> entitiesToRemove;
 };
 
 #endif

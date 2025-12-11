@@ -50,13 +50,13 @@ void Spawner::spawnEnemies()
 
 void Spawner::choseSpawnPos()
 {
-    sf::Vector2i mapSize{TileManager::instance()->getMapDimensions()};
+    sf::Vector2f mapSize{TileManager::instance()->getMapDimensions()};
     // std::cout<<mapSize.x<<std::endl;
     float randomX =
-        std::rand() % (mapSize.x - Window::WINDOW_WIDTH) +
+        std::rand() % (static_cast<int>(mapSize.x) - Window::WINDOW_WIDTH) +
         Window::WINDOW_WIDTH; // tar inspraskion från  w3schools
                               // //https://www.w3schools.com/cpp/cpp_howto_random_number.asp
-    float randomY = std::rand() % (mapSize.y - Window::WINDOW_HEIGHT) +
+    float randomY = std::rand() % (static_cast<int>(mapSize.y) - Window::WINDOW_HEIGHT) +
                     Window::WINDOW_HEIGHT; //+ gör två saker. den matimatska att öka max higden men
                                            // också läga till en minsta värde som random kan va.
 

@@ -29,6 +29,7 @@ class Enemy : public Character
     // void move() override;
     void die() override;
     void onCollision(Entity *other) override;
+    void onBorderCollision() override;
 
   protected:
     float calculateDistance();
