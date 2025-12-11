@@ -5,6 +5,7 @@
 #include <unistd.h>
 
 #include "Map.h"
+#include "EnemyProjectile.h"
 
 Enemy::Enemy(/*Charactar*/ double currentHp,
              int movementSpeed,
@@ -262,6 +263,7 @@ void Kaboom::move()
 
 void Archer::attack()
 {
+    shoot();
 }
 void Archer::move()
 {
@@ -284,4 +286,9 @@ void Archer::move()
         sf::Sprite::move(direction.x * movementSpeed, direction.y * movementSpeed);
     }
     tryAttack(len);
+}
+
+void Archer::shoot()
+{
+
 }
