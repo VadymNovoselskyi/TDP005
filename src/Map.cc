@@ -169,14 +169,12 @@ Map::Map(Player *player, std::vector<Obstacle *> const &obstacles)
 
 Map::~Map()
 {
-    // std::cout << "Running the window destructor" << std::endl;
-    delete player;
-    delete view;
-    player = nullptr;
-    view = nullptr;
-
     for (Entity *e : entities)
     {
         delete e;
     }
+    player = nullptr;
+
+    delete view;
+    view = nullptr;
 }

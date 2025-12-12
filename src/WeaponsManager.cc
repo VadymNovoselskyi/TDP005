@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <iostream>
 
-//Weapon include
+// Weapon include
 #include "AssaultRifle.h"
 #include "SniperRifle.h"
 
@@ -19,6 +19,7 @@ void WeaponsManager::resetState()
     // Appending vectors taken from
     // https://www.geeksforgeeks.org/cpp/how-to-append-a-vector-to-a-vector-in-cpp/
     unequipedWeapons.insert(unequipedWeapons.end(), equipedWeapons.begin(), equipedWeapons.end());
+    equipedWeapons.clear();
 }
 
 WeaponsManager::~WeaponsManager()
@@ -74,7 +75,7 @@ void WeaponsManager::receiveRandomWeapon()
     }
 
     auto randIndex{std::rand() % unequipedWeapons.size()};
-    equipedWeapons.push_back(unequipedWeapons.at(randIndex));
+    equipWeapon(unequipedWeapons.at(randIndex));
 }
 
 void WeaponsManager::equipWeapon(Weapon *weaponToDelete)

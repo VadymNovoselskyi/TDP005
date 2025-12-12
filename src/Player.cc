@@ -60,7 +60,6 @@ Player::Player(double startHP,
                                   StateMachine::instance()->continueGame();
                               }}});
     weaponManager.receiveNewWeapon("AR");
-    weaponManager.receiveNewWeapon("Sniper");
 }
 
 void Player::resetState(sf::Vector2f const &newPosition)
@@ -77,6 +76,7 @@ void Player::resetState(sf::Vector2f const &newPosition)
 
     expManager.resetState();
     weaponManager.resetState();
+    weaponManager.receiveNewWeapon("AR");
 }
 
 void Player::move()

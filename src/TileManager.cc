@@ -120,14 +120,13 @@ void TileManager::generateTiles(std::string const &tileMapPath)
             tile.setPosition(position);
             tile.setTexture(texture);
 
-            if (auto idx{word.find("obstacle-")}; idx != std::string::npos)
+            if (word.find("obstacle-") != std::string::npos)
             {
                 std::string obstacleType = word.substr(9);
-                Obstacle *obstacle{new Obstacle{
-                    texture,
-                    position,
-                    (obstacleType == "wall" || obstacleType == "gas") ? obstacleType : "obstacle"}};
-                obstacles.push_back(obstacle);
+                if (obstacleType != "wall" && obstacleType != "gas")
+                {
+                    obstacles.push_back(new Obstacle{texture, position});
+                }
             }
 
             tiles.push_back(tile);

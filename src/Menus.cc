@@ -140,7 +140,7 @@ bool ChooseNameMenu::handleEvent(sf::Event event)
     // Only add the ASCII chars, seems good enough for now
     // The unicode values are taken from https://en.wikipedia.org/wiki/List_of_Unicode_characters
     {
-        if (event.text.unicode <= 126 && event.text.unicode >= 32 && username.length() < 16)
+        if (event.text.unicode <= 126 && event.text.unicode >= 33 && username.length() < 16)
         {
             username += event.text.unicode;
             Menu::setButtons(createButtons(username));
