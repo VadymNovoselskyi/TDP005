@@ -6,9 +6,9 @@
 #include "Map.h"
 
 Projectile::Projectile(
-    sf::Vector2f const &pos, double rotation, double velocity, double damage, double hp)
+    sf::Vector2f const &pos, double rotation, double velocity, double damage, double hp, std::string pngName)
     : Entity(std::string{"projectile"}, pos, hp), velocity{velocity}, damage{damage},
-      texture{TextureManager::instance()->getTexture("AR_bullet.png")}
+      texture{TextureManager::instance()->getTexture(pngName)}
 {
     sf::Sprite::setTexture(*texture);
     sf::Sprite::setRotation(rotation);

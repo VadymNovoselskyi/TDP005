@@ -8,6 +8,7 @@ AssaultRifle::AssaultRifle()
              /*dmg*/ 7.5f,
              /*attackSpeed (shoots per sec)*/ 10,
              /*bullet speed*/ 80,
+             /*bulletHP*/ 1,
              Rarity::BASIC)
 {
 }
@@ -27,5 +28,6 @@ void AssaultRifle::shoot()
                                               Transformable::getRotation(),
                                               speed,
                                               damage * damageMultiplication,
-                                              1});
+                                              bulletHP,
+                                              "AR_bullet.png"});
 }

@@ -19,6 +19,7 @@ class Window
     sf::RenderWindow* getRenderWindow() const;
     bool isClosed() const;
 
+    // TODO: Adjust after window resize
     int static const WINDOW_WIDTH;
     int static const WINDOW_HEIGHT;
 

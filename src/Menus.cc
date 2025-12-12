@@ -65,7 +65,7 @@ std::vector<ElementsInfo> LeaderboardMenu::createButtons() const
     int index{0};
     for (auto &[username, scoreInfo] : highscores)
     {
-        // TODO: Set the font
+        // TODO: Set the font size
         ElementsInfo leaderboardItem{
             username + " | " + std::to_string(scoreInfo.score) + " | " +
                 std::to_string(scoreInfo.timeSurvived) + " | " +

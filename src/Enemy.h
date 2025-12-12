@@ -24,9 +24,9 @@ class Enemy : public Character
     virtual void attack() = 0;
     std::string getTag();
 
-    void draw(sf::RenderWindow *window) const override;
-
-    // void move() override;
+    void draw(sf::RenderWindow *window)const override;
+    
+    //void move() override;
     void die() override;
     void onCollision(Entity *other) override;
     void onBorderCollision() override;
@@ -48,6 +48,10 @@ class Enemy : public Character
     int score; // inte en privat för olika enyme är vär olika score
     Player *player;
     float rotation;
+
+  private:
+    std::string tag{"enemy"};
+    
 };
 
 class Footman : public Enemy
@@ -108,7 +112,7 @@ class Archer : public Enemy
            double damage,
            int score,
            Player *player,
-           float fireRange);
+           double velocity);
     void attack() override;
     void move() override;
 
@@ -119,7 +123,8 @@ class Archer : public Enemy
 
   private:
     void shoot();
-    float fireRange;
+    float fireRange; 
+    double velocity;
     sf::Texture const *texture;
 };
 

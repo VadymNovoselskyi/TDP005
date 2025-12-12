@@ -2,12 +2,11 @@
 
 #include <cstdlib>
 #include <iostream> // print test
-#include <iostream>
-
+#include <cstdlib>
 #include "TileManager.h"
 #include "Window.h"
 
-Spawner::Spawner(Player *player) : spawnRate{200.0}, player{player}
+Spawner::Spawner(Player* player):spawnRate{200.0}, player{player}
 {
     Spawner::spawnEnemies();
 }
@@ -17,13 +16,15 @@ void Spawner::resetState()
     enemies.clear();
     spawnRate = 200.0;
     counter = 0;
+    timeCounter = 0;
 }
 
 void Spawner::spawnEnemies()
 {
-    if (counter >= spawnRate)
+    
+    if(counter >= spawnRate)
     {
-        newEnemy();
+        newEnmey();
         choseSpawnPos();
         Footman *enemyF = new Footman(currentHP,
                                       movementSpeed,
@@ -40,8 +41,8 @@ void Spawner::spawnEnemies()
         addArcher();
 
         counter = 0;
-        timeCounter += 1;
-        Spawner::increaseSpawnRate();
+        timeCounter +=1;
+        Spawner::incresSpawnRate();
     }
     else
     {
@@ -49,7 +50,7 @@ void Spawner::spawnEnemies()
     }
 }
 
-void Spawner::newEnemy()
+void Spawner::newEnmey()
 {
     if (timeCounter >= 10)
     {
@@ -62,50 +63,37 @@ void Spawner::newEnemy()
 }
 void Spawner::choseSpawnPos()
 {
-    sf::Vector2i mapSize{TileManager::instance()->getMapDimensions()};
-    sf::Vector2f playerWindow{player->getPosition()};
-    // std::cout <<"map x  "<<mapSize.x<<std::endl;
-    // std::cout <<"map y  "<<mapSize.y<<std::endl;
+    sf::Vector2i mapSize { TileManager::instance() -> getMapDimensions()};
+    sf::Vector2f playerWindow {player -> getPosition()};
 
-    // std::cout <<"Window x  "<<Window::WINDOW_WIDTH<<std::endl;
-    // std::cout <<"Window y  "<<Window::WINDOW_HEIGHT<<std::endl;
+    
+    float randomX = std::rand() % mapSize.x; // tar inspraskion från  w3schools //https://www.w3schools.com/cpp/cpp_howto_random_number.asp
+    float randomY = std::rand() % mapSize.y;  
+    sf::Vector2f nySpawnPos {randomX, randomY};
+ 
+    float pPlusX {playerWindow.x + (Window::WINDOW_WIDTH/2)};//512
+    float pMinusX {playerWindow.x - (Window::WINDOW_WIDTH/2)};
+    float pPlusY {playerWindow.y + (Window::WINDOW_HEIGHT/2)};//384
+    float pMinusY {playerWindow.y - (Window::WINDOW_HEIGHT/2)};
+    
+    bool insidaX = (nySpawnPos.x > pMinusX && nySpawnPos.x < pPlusX); // tar insparaskion från w3schools https://www.w3schools.com/cpp/cpp_operators_logical.asp 
+    bool insidaY = (nySpawnPos.y > pMinusY && nySpawnPos.y < pPlusY);
 
-    float randomX =
-        std::rand() % mapSize.x; // tar inspraskion från  w3schools
-                                 // //https://www.w3schools.com/cpp/cpp_howto_random_number.asp
-    float randomY = std::rand() % mapSize.y;
-    sf::Vector2f newSpawnPosition{randomX, randomY};
 
-    float pPlusX{playerWindow.x + (Window::WINDOW_WIDTH / 2)}; // 512
-    float pMinusX{playerWindow.x - (Window::WINDOW_WIDTH / 2)};
-    float pPlusY{playerWindow.y + (Window::WINDOW_HEIGHT / 2)}; // 384
-    float pMinusY{playerWindow.y - (Window::WINDOW_HEIGHT / 2)};
-
-    bool insideX =
-        (newSpawnPosition.x > pMinusX &&
-         newSpawnPosition.x < pPlusX); // tar insparaskion från w3schools
-                                 // https://www.w3schools.com/cpp/cpp_operators_logical.asp
-    bool insideY = (newSpawnPosition.y > pMinusY && newSpawnPosition.y < pPlusY);
-
-    // std::cout <<"player x "<<playerWindow.x<<std::endl;
-    // std::cout <<"player y "<<playerWindow.y<<std::endl;
-    // std::cout <<"window +x "<<pPlusX<<std::endl;
-    // std::cout <<"window -x  "<<pMinusX<<std::endl;
-    // std::cout <<"spaw pos x  "<<newSpawnPosition.x<<std::endl;
-    // std::cout <<"spaw pos y  "<<newSpawnPosition.y<<std::endl;
-    if (insideX and insideY)
+    if(insidaX and insidaY)
     {
         choseSpawnPos();
     }
     else
     {
-        position = newSpawnPosition;
+        position = nySpawnPos;
     }
 }
 
-void Spawner::increaseSpawnRate()
+void Spawner::incresSpawnRate()
 {
-    if (spawnRate > 1)
+   
+    if(spawnRate > 1)
     {
         spawnRate *= spawnRateIncrease;
     }
@@ -119,21 +107,10 @@ void Spawner::addKaboom()
         currentHP = 75;
         damage = 5;
         XP_DROP = 10;
-        double explodeRange{150};
-        double explodeDamage{30};
-        float agroRange{300};
-        Kaboom *enemyK = new Kaboom(currentHP,
-                                    movementSpeed,
-                                    position,
-                                    attackRange,
-                                    attackSpeed,
-                                    XP_DROP,
-                                    damage,
-                                    score,
-                                    player,
-                                    explodeRange,
-                                    explodeDamage,
-                                    agroRange);
+        double explodeRange {150};
+        double explodeDamage {30};
+        float agroRange {300};
+        Kaboom* enemyK = new Kaboom( currentHP, movementSpeed, position, attackRange, attackSpeed, XP_DROP, damage, score, player, explodeRange, explodeDamage, agroRange);
         Map::instance()->addEntity(enemyK);
     }
 }
@@ -147,18 +124,9 @@ void Spawner::addArcher()
         damage = 5;
         XP_DROP = 10;
         attackSpeed = 10;
-        float fireRange{350};
-        attackRange = fireRange;
-        Archer *enemyA = new Archer(currentHP,
-                                    movementSpeed,
-                                    position,
-                                    attackRange,
-                                    attackSpeed,
-                                    XP_DROP,
-                                    damage,
-                                    score,
-                                    player,
-                                    fireRange);
+        double velocity{3};
+        attackRange = 350;
+        Archer* enemyA = new Archer( currentHP, movementSpeed, position, attackRange, attackSpeed, XP_DROP, damage, score, player, velocity);
         Map::instance()->addEntity(enemyA);
     }
 }

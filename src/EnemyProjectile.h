@@ -1,21 +1,27 @@
-// #ifndef ENEMY_PROJECTILE_H
-// #define ENEMY_PROJECTILE_H
+#ifndef Enemy_PROJECTILE_H
+#define Enemy_PROJECTILE_H
 
-// #include "Entity.h"
+#include "Entity.h"
 
-// class EnemyProjectile : public Entity
-// {
-//   public:
-//     EnemyProjectile(sf::Vector2f const &pos, double rotation, double velocity, double damage);
-//     void onCollision(std::string const &other) override;
+class EnemyProjectile : public Entity
+{
+  public:
+    EnemyProjectile(sf::Vector2f const &pos, double rotation, double velocity, double damage, double hp, std::string pngName);
+    ~EnemyProjectile() = default;
 
-//     void move() override;
-//     void draw(sf::RenderWindow *window) const override;
+    void onCollision(Entity *other) override;
+    void onBorderCollision() override;
 
-//   private:
-//     double velocity;
-//     double damage;
-//     sf::Texture const *texture;
-// };
+    void move() override;
+    void draw(sf::RenderWindow *window) const override;
 
-// #endif
+    void takeDamage(double damage = 1);
+    void die() override;
+
+  private:
+    double velocity;
+    double damage;
+    sf::Texture const *texture;
+};
+
+#endif

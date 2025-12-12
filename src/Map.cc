@@ -128,6 +128,33 @@ void Map::removeEntity(Entity *e)
     // }
 }
 
+Entity *Map::getClosestEnemy()
+{
+    Entity *enemy{nullptr};
+    double minPos {999999.0};
+    for (Entity *e : entities)
+    {
+        if (e->getTag() != "enemy")
+        {
+            continue;
+        }
+
+        // get abs x and y fore e
+        double eX = abs(e->getPosition().x + player->getPosition().x);
+        double eY = abs(e->getPosition().y + player->getPosition().y);
+
+        double eXY = eX + eY;
+
+        if (eXY <= minPos)
+        {
+            // set new enemy
+            enemy = e;
+            minPos = eXY;
+        }
+    }
+    return enemy;
+}
+
 Map::Map(Player *player, std::vector<Obstacle *> const &obstacles)
     : view{new sf::View{
           {static_cast<float>(Window::WINDOW_WIDTH) / 2,

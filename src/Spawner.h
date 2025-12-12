@@ -18,8 +18,8 @@ class Spawner
     void choseSpawnPos();
 
     private:
-        void increaseSpawnRate();
-        void newEnemy();
+        void incresSpawnRate();
+        void newEnmey();
         void addKaboom();
         void addArcher();
 
@@ -27,7 +27,6 @@ class Spawner
         double spawnRate;
         double spawnRateIncrease {0.99};
         sf::Vector2f spwanPoint;
-
         double counter;
         Player* player;
 

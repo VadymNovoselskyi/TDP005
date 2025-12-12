@@ -5,6 +5,7 @@
 
 #include "Map.h"
 #include "Highscore.h"
+#include "EnemyProjectile.h"
 
 Enemy::Enemy(/*Charactar*/ double currentHp,
              int movementSpeed,
@@ -56,7 +57,8 @@ Archer::Archer(/*Charactar*/
                double damage,
                int score,
                Player *player,
-               float fireRange)
+
+                double velocity)
     : Enemy(currentHp,
             movementSpeed,
             positon,
@@ -66,7 +68,7 @@ Archer::Archer(/*Charactar*/
             damage,
             score,
             player),
-      fireRange{fireRange}, texture{TextureManager::instance()->getTexture("fighter.png")}
+      velocity{velocity}, texture{TextureManager::instance()->getTexture("fighter.png")}
 {
     auto playerSize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
@@ -278,6 +280,7 @@ void Kaboom::move()
 
 void Archer::attack()
 {
+    shoot();
 }
 void Archer::move()
 {
@@ -293,10 +296,19 @@ void Archer::move()
         direction.x = (directionResult.x / len);
         direction.y = (directionResult.y / len);
     }
-    if (len > fireRange)
+    if (len > attackRange)
     {
         sf::Sprite::setRotation(calculateRotation());
         sf::Sprite::move(direction.x * movementSpeed, direction.y * movementSpeed);
     }
+    sf::Sprite::setRotation(calculateRotation());
     tryAttack(len);
+}
+
+void Archer::shoot()
+{
+ Map::instance()->addEntity(new EnemyProjectile{Transformable::getPosition(),
+                                              Transformable::getRotation(),
+                                              velocity,
+                                              damage, 1, "Enemy_bullet.png"});
 }

@@ -48,7 +48,6 @@ GameEngine::GameEngine() : window{}, spawner{}, clock{}
     // Init the menu and add exit listener
     window = new Window(menus);
 
-    // TODO: reset the game state onStart etc
     StateMachine::instance()->addListener("onStart",
                                           [player, mapCenter, this](GameState gameState)
                                           {
