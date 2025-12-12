@@ -10,19 +10,19 @@
 #include "Spawner.h"
 #include "TextureManager.h"
 #include "TileManager.h"
+#include "Window.h"
 
 int const GameEngine::FPS{60};
 sf::Time const GameEngine::UPDATE_INTERVAL{sf::milliseconds(1000.0 / GameEngine::FPS)};
 
-GameEngine::GameEngine() : window{}, spawner{}, clock{}
+GameEngine::GameEngine() : spawner{}, clock{}
 {
-    // Init the StateMachine, TextureManager, Map and the menus
     StateMachine::init();
     TextureManager::init();
     Highscore::init(60);
     Leaderboard::init("static/leaderboard.txt");
     TileManager::init("static/tileMap.txt");
-
+    
     std::vector<Menu *> menus{};
     auto levelUpMenu{new LevelUpMenu()};
     menus.push_back(new StartMenu());
@@ -31,6 +31,7 @@ GameEngine::GameEngine() : window{}, spawner{}, clock{}
     menus.push_back(new PauseMenu());
     menus.push_back(new GameOverMenu());
     menus.push_back(levelUpMenu);
+    Window::init(menus);
 
     auto mapDimensions{TileManager::instance()->getMapDimensions()};
     auto mapCenter{sf::Vector2f{mapDimensions.x / 2.0f, mapDimensions.y / 2.0f}};
@@ -44,9 +45,6 @@ GameEngine::GameEngine() : window{}, spawner{}, clock{}
 
     Map::init(player, TileManager::instance()->getObstacles());
     spawner = new Spawner(player);
-
-    // Init the menu and add exit listener
-    window = new Window(menus);
 
     StateMachine::instance()->addListener("onStart",
                                           [player, mapCenter, this](GameState gameState)
@@ -71,14 +69,14 @@ GameEngine::GameEngine() : window{}, spawner{}, clock{}
                                               }
                                           });
     StateMachine::instance()->addListener("onExit",
-                                          [this](GameState gameState)
+                                          [](GameState gameState)
                                           {
                                               if (gameState == GameState::EXIT)
                                               {
                                                   Highscore::instance()->saveHighscore();
                                                   Leaderboard::instance()->saveLeaderboard(
                                                       "static/leaderboard.txt");
-                                                  window->closeWindow();
+                                                  Window::instance()->closeWindow();
                                               }
                                           });
 }
@@ -89,25 +87,23 @@ GameEngine::~GameEngine()
     StateMachine::deleteInstance();
     TextureManager::deleteInstance();
 
-    delete window;
     delete spawner;
-    window = nullptr;
     spawner = nullptr;
 }
 
 void GameEngine::run()
 {
-    while (!window->isClosed())
+    while (!Window::instance()->isClosed())
     {
         clock.restart();
-        window->handleEvents();
+        Window::instance()->handleEvents();
 
         if (StateMachine::instance()->state() == GameState::IN_GAME)
         {
             spawner->spawnEnemies();
-            Map::instance()->handelUpdate(window->getRenderWindow());
+            Map::instance()->handelUpdate(Window::instance()->getRenderWindow());
         }
-        window->draw();
+        Window::instance()->draw();
 
         sf::Time delta{UPDATE_INTERVAL - clock.getElapsedTime()};
         // std::cout << "FPS: " << (1000.0 / delta.asMilliseconds()) << std::endl;

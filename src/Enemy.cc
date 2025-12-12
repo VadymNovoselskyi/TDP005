@@ -213,8 +213,8 @@ void Footman::attack()
     player->takeDamage(damage);
 }
 
-void Footman::move() // skapa en move hjälper
-{                    // TODO: calculate rotaiton
+void Footman::move() 
+{                    
     oldPosition = getPosition();
     sf::Vector2f directionResult = calculateDirection();
 

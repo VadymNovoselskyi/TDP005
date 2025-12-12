@@ -6,8 +6,8 @@
 
 Menu::Menu(std::vector<ElementsInfo> const &elements, bool windowOpen)
     : defaultFont{}, buttonInfos{}, textElements{}, buttonElements{},
-      menuCenter{Window::WINDOW_WIDTH / 2.0F, Window::WINDOW_HEIGHT / 2.0F}, menuOpen{windowOpen},
-      focusedButtonIdx{0}
+      menuCenter{Window::DEFAULT_WINDOW_WIDTH / 2.0F, Window::DEFAULT_WINDOW_WIDTH / 2.0F},
+      menuOpen{windowOpen}, focusedButtonIdx{0}
 {
     defaultFont.loadFromFile("static/Orbitron-Bold.ttf");
     setButtons(elements);
@@ -88,8 +88,8 @@ void Menu::setButtons(std::vector<ElementsInfo> const &elements)
             sf::Text(elementInfo.text, defaultFont, elementInfo.fontSize.value_or(50))};
         auto textRect{element.getGlobalBounds()};
         element.setOrigin(textRect.width / 2, textRect.height / 2);
-        element.setPosition((Window::WINDOW_WIDTH * elementInfo.xAlignn),
-                            (Window::WINDOW_HEIGHT * elementInfo.yAlign));
+        element.setPosition((Window::getWindowWidth() * elementInfo.xAlignn),
+                            (Window::getWindowHeight() * elementInfo.yAlign));
 
         element.setOutlineColor(sf::Color::Green);
         element.setOutlineThickness(4.0);

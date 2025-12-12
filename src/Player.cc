@@ -25,14 +25,14 @@ Player::Player(double startHP,
                std::string const &tag,
                std::function<void(std::vector<LevelUpInfo>)> const &onLevelUp)
     : Character(tag, startHP, startSpeed, position), startHP{startHP}, maxHP{startHP},
-      startSpeed{startSpeed}, damageMultiplier{1}, rotation{},
-      oldPosition{position}, expManager{}, weaponManager{}, onLevelUp{onLevelUp}
+      startSpeed{startSpeed}, damageMultiplier{1}, rotation{}, oldPosition{position}, expManager{},
+      weaponManager{}, onLevelUp{onLevelUp}
 {
     auto texture{TextureManager::instance()->getTexture("player.png")};
     auto playerSize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
     sf::Sprite::setOrigin(playerSize.x / 2.0, playerSize.y / 2.0);
-   
+
     // sets the start value for player stats
 
     expManager.setCallbacks({{LevelUpChoice::HP,
@@ -123,8 +123,8 @@ void Player::updateRotation(sf::RenderWindow *window)
     // enhetscirklen:
     // https://www.matteboken.se/lektioner/gymnasiet/matte-fortsattning-niva-1/trigonometri/enhetscirkeln#!/
     double rotationRadians =
-        std::atan2((sf::Mouse::getPosition(*window).y - (Window::WINDOW_HEIGHT / 2)),
-                   (sf::Mouse::getPosition(*window).x - (Window::WINDOW_WIDTH / 2)));
+        std::atan2((sf::Mouse::getPosition(*window).y - (Window::getWindowHeight() / 2)),
+                   (sf::Mouse::getPosition(*window).x - (Window::getWindowWidth() / 2)));
     rotation = rotationRadians * (180 / M_PI) + 90; // transform radians to rotation
 
     sf::Sprite::setRotation(rotation);
@@ -145,7 +145,6 @@ void Player::gainXp(int xp)
 
 void Player::onCollision(Entity *other)
 {
-
     if (other->getTag() == "obstacle")
     {
         sf::Sprite::setPosition(oldPosition);
@@ -191,41 +190,40 @@ void Player::draw(sf::RenderWindow *window)
 
 void Player::drawInfo(sf::RenderWindow *window)
 {
-    drawBox(window,  // curent hp
+    drawBox(window, // curent hp
             HPBox,
-            sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2.0) + BOX_OFFSET,  // x
-            sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2.0) + BOX_OFFSET, // y
-            BOX_WIDHT,                                                                // widht
-            BOX_HEIGTH,                                                               // heiht
-            CURRENT_HP_BOX_COLLOR);                                                            // color
+            sf::Sprite::getPosition().x - (Window::getWindowWidth() / 2.0) + BOX_OFFSET,  // x
+            sf::Sprite::getPosition().y - (Window::getWindowHeight() / 2.0) + BOX_OFFSET, // y
+            BOX_WIDHT,                                                                    // widht
+            BOX_HEIGTH,                                                                   // heiht
+            CURRENT_HP_BOX_COLLOR);                                                       // color
     drawBox(window,
             currentHPBox,
-            sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2.0) + BOX_OFFSET,
-            sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2.0) + BOX_OFFSET,
+            sf::Sprite::getPosition().x - (Window::getWindowWidth() / 2.0) + BOX_OFFSET,
+            sf::Sprite::getPosition().y - (Window::getWindowHeight() / 2.0) + BOX_OFFSET,
             BOX_WIDHT * (hp / maxHP),
             BOX_HEIGTH,
             HP_BOX_COLOR);
     drawBox(window,
             xpBox,
-            sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2.0) + BOX_OFFSET,
-            sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2.0) + XP_BOX_Y_OFFSET,
+            sf::Sprite::getPosition().x - (Window::getWindowWidth() / 2.0) + BOX_OFFSET,
+            sf::Sprite::getPosition().y - (Window::getWindowHeight() / 2.0) + XP_BOX_Y_OFFSET,
             BOX_WIDHT * expManager.getXpFilled(),
             BOX_HEIGTH,
-             XP_BOX_COLOR); 
+            XP_BOX_COLOR);
     drawBox(window,
             currentXPBox,
-            sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2.0) + BOX_OFFSET,
-            sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2.0) + XP_BOX_Y_OFFSET,
+            sf::Sprite::getPosition().x - (Window::getWindowWidth() / 2.0) + BOX_OFFSET,
+            sf::Sprite::getPosition().y - (Window::getWindowHeight() / 2.0) + XP_BOX_Y_OFFSET,
             BOX_WIDHT,
             BOX_HEIGTH,
             CURRENT_XP_BOX_COLOR); // xp background
-    
 }
 
 void Player::drawBox(sf::RenderWindow *window,
                      sf::RectangleShape &box,
                      float const &boxPosX,
-                     float const&boxPosY,
+                     float const &boxPosY,
                      float const &boxWidth,
                      float const &boxheight,
                      sf::Color const &boxColor)

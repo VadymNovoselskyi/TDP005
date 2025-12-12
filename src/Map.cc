@@ -154,10 +154,10 @@ Entity *Map::getClosestEnemy()
 }
 
 Map::Map(Player *player, std::vector<Obstacle *> const &obstacles)
-    : view{new sf::View{
-          {static_cast<float>(Window::WINDOW_WIDTH) / 2,
-           static_cast<float>(Window::WINDOW_HEIGHT) / 2},
-          {static_cast<float>(Window::WINDOW_WIDTH), static_cast<float>(Window::WINDOW_HEIGHT)}}},
+    : view{new sf::View{{static_cast<float>(Window::getWindowWidth()) / 2.0F,
+                         static_cast<float>(Window::getWindowHeight()) / 2.0F},
+                        {static_cast<float>(Window::getWindowWidth()),
+                         static_cast<float>(Window::getWindowHeight())}}},
       player{player}, entities{}, entitiesToRemove{}
 {
     entities.push_back(player);

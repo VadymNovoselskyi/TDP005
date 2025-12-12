@@ -62,10 +62,10 @@ void Spawner::choseSpawnPos()
     float randomY = std::rand() % mapSize.y;
     sf::Vector2f nySpawnPos{randomX, randomY};
 
-    float pPlusX{playerWindow.x + (Window::WINDOW_WIDTH / 2)}; // 512
-    float pMinusX{playerWindow.x - (Window::WINDOW_WIDTH / 2)};
-    float pPlusY{playerWindow.y + (Window::WINDOW_HEIGHT / 2)}; // 384
-    float pMinusY{playerWindow.y - (Window::WINDOW_HEIGHT / 2)};
+    float pPlusX{playerWindow.x + (Window::getWindowWidth() / 2.0F)}; // 512
+    float pMinusX{playerWindow.x - (Window::getWindowWidth() / 2.0F)};
+    float pPlusY{playerWindow.y + (Window::getWindowHeight() / 2.0F)}; // 384
+    float pMinusY{playerWindow.y - (Window::getWindowHeight() / 2.0F)};
 
     bool insidaX =
         (nySpawnPos.x > pMinusX &&

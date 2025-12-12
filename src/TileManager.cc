@@ -6,8 +6,6 @@
 #include <sstream>
 #include <stdexcept>
 
-#include "Window.h"
-
 int const TileManager::TILE_SIZE{32};
 TileManager *TileManager::instancePtr{nullptr};
 
