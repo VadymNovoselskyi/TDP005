@@ -87,6 +87,7 @@ Kaboom::Kaboom(/*Charactar*/
                Player *player,
                double explodeDamage,
                double explodeRange,
+               int explodeCountdown,
                float agroRange)
     : Enemy(currentHp,
             movementSpeed,
@@ -97,7 +98,7 @@ Kaboom::Kaboom(/*Charactar*/
             damage,
             score,
             player),
-      explodeDamage{explodeDamage}, explodeRange{explodeRange}, agroRange{agroRange},
+      explodeDamage{explodeDamage}, explodeRange{explodeRange}, explodeCountdown{explodeCountdown}, agroRange{agroRange},
       texture{TextureManager::instance()->getTexture("obstacle-gas.png")}
 {
     auto playerSize{texture->getSize()};
@@ -171,9 +172,8 @@ void Enemy::onCollision(Entity *other)
 {
     if (other->getTag() == "player")
     {
-        // attack();
-        enemyCollision(other);
-        std::cout << "collided with player" << std::endl;
+        tryAttack(calculateDistance());
+        sf::Sprite::setPosition(oldPosition);
     }
     else if (other->getTag() == "enemy")
     {
@@ -201,7 +201,9 @@ void Enemy::tryAttack(float len)
     if (len <= attackRange and count <= 0)
     {
         attack();
-        count = 60 / attackSpeed;
+        count = 600 / attackSpeed;
+        
+        
     }
 }
 
@@ -242,14 +244,15 @@ void Kaboom::isInRange(float len)
 
 void Kaboom::explode(float len)
 {
-    if (len <= explodeRange)
+    if(explodeCountdown == 0)
     {
-        player->takeDamage(explodeDamage);
+        if (len <= explodeRange)
+        {
+            player->takeDamage(explodeDamage);
+        }
+        die();
     }
-    die();
-    // explodeRange
-    // explodeDamage
-    // kaboom die
+    explodeCountdown --;
 }
 
 void Kaboom::attack()
