@@ -6,6 +6,7 @@
 #include "StateMachine.h"
 #include "TextureManager.h"
 #include "Window.h"
+
 // variables that wont change and is used to make code easier to read
 float const Player::BOX_OFFSET{18};
 float const Player::XP_BOX_Y_OFFSET{78};
@@ -32,6 +33,7 @@ Player::Player(double startHP,
     auto playerSize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
     sf::Sprite::setOrigin(playerSize.x / 2.0, playerSize.y / 2.0);
+   
     // sets the start value for player stats
 
     expManager.setCallbacks({{LevelUpChoice::HP,
@@ -146,6 +148,7 @@ void Player::gainXp(int xp)
 
 void Player::onCollision(Entity *other)
 {
+
     if (other->getTag() == "box")
     {
         sf::Sprite::setPosition(oldPosition);
@@ -204,7 +207,6 @@ void Player::drawInfo(sf::RenderWindow *window)
             BOX_WIDHT,                                                                // widht
             BOX_HEIGTH,                                                               // heiht
             CURRENT_HP_BOX_COLLOR);                                                            // color
-    std::cout << "health bar length result:" << BOX_WIDHT * (hp / maxHP) << std::endl;
     drawBox(window,
             currentHPBox,
             sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2.0) + BOX_OFFSET,
@@ -212,22 +214,20 @@ void Player::drawInfo(sf::RenderWindow *window)
             BOX_WIDHT * (hp / maxHP),
             BOX_HEIGTH,
             HP_BOX_COLOR);
-
     drawBox(window,
             xpBox,
             sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2.0) + BOX_OFFSET,
             sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2.0) + XP_BOX_Y_OFFSET,
-            BOX_WIDHT ,
+            BOX_WIDHT * expManager.getXpFilled(),
             BOX_HEIGTH,
-             CURRENT_XP_BOX_COLOR); 
-
+             XP_BOX_COLOR); 
     drawBox(window,
             currentXPBox,
             sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2.0) + BOX_OFFSET,
             sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2.0) + XP_BOX_Y_OFFSET,
             BOX_WIDHT,
             BOX_HEIGTH,
-            XP_BOX_COLOR); // xp background
+            CURRENT_XP_BOX_COLOR); // xp background
     
 }
 

@@ -58,7 +58,6 @@ class Player : public Character
     ExperienceManager expManager;
     WeaponsManager weaponManager;
     std::function<void(std::vector<LevelUpInfo>)> onLevelUp;
-
     void drawInfo(sf::RenderWindow *window);
     void drawBox(sf::RenderWindow *window,
                  sf::RectangleShape &box,
