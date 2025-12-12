@@ -60,7 +60,6 @@ void Spawner::newEnemy()
         inArcher = true;
     }
 }
-
 void Spawner::choseSpawnPos()
 {
     sf::Vector2i mapSize{TileManager::instance()->getMapDimensions()};
@@ -75,32 +74,32 @@ void Spawner::choseSpawnPos()
         std::rand() % mapSize.x; // tar inspraskion från  w3schools
                                  // //https://www.w3schools.com/cpp/cpp_howto_random_number.asp
     float randomY = std::rand() % mapSize.y;
-    sf::Vector2f nySpawnPos{randomX, randomY};
+    sf::Vector2f newSpawnPosition{randomX, randomY};
 
     float pPlusX{playerWindow.x + (Window::WINDOW_WIDTH / 2)}; // 512
     float pMinusX{playerWindow.x - (Window::WINDOW_WIDTH / 2)};
     float pPlusY{playerWindow.y + (Window::WINDOW_HEIGHT / 2)}; // 384
     float pMinusY{playerWindow.y - (Window::WINDOW_HEIGHT / 2)};
 
-    bool insidaX =
-        (nySpawnPos.x > pMinusX &&
-         nySpawnPos.x < pPlusX); // tar insparaskion från w3schools
+    bool insideX =
+        (newSpawnPosition.x > pMinusX &&
+         newSpawnPosition.x < pPlusX); // tar insparaskion från w3schools
                                  // https://www.w3schools.com/cpp/cpp_operators_logical.asp
-    bool insidaY = (nySpawnPos.y > pMinusY && nySpawnPos.y < pPlusY);
+    bool insideY = (newSpawnPosition.y > pMinusY && newSpawnPosition.y < pPlusY);
 
     // std::cout <<"player x "<<playerWindow.x<<std::endl;
     // std::cout <<"player y "<<playerWindow.y<<std::endl;
     // std::cout <<"window +x "<<pPlusX<<std::endl;
     // std::cout <<"window -x  "<<pMinusX<<std::endl;
-    // std::cout <<"spaw pos x  "<<nySpawnPos.x<<std::endl;
-    // std::cout <<"spaw pos y  "<<nySpawnPos.y<<std::endl;
-    if (insidaX and insidaY)
+    // std::cout <<"spaw pos x  "<<newSpawnPosition.x<<std::endl;
+    // std::cout <<"spaw pos y  "<<newSpawnPosition.y<<std::endl;
+    if (insideX and insideY)
     {
         choseSpawnPos();
     }
     else
     {
-        position = nySpawnPos;
+        position = newSpawnPosition;
     }
 }
 

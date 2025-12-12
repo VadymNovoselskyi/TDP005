@@ -35,6 +35,8 @@ class Enemy : public Character
     float calculateDistance();
     sf::Vector2f calculateDirection();
     float calculateRotation();
+    void enemyCollision(Entity* collidingEnemy);
+    
     void tryAttack(float leng);
     // void calcPath(sf::Vector2f);
     sf::Vector2f oldPosition;

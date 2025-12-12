@@ -6,6 +6,7 @@
 #include "StateMachine.h"
 #include "TextureManager.h"
 #include "Window.h"
+
 // variables that wont change and is used to make code easier to read
 float const Player::BOX_OFFSET{18};
 float const Player::XP_BOX_Y_OFFSET{78};
@@ -31,6 +32,7 @@ Player::Player(double startHP,
     auto playerSize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
     sf::Sprite::setOrigin(playerSize.x / 2.0, playerSize.y / 2.0);
+   
     // sets the start value for player stats
 
     expManager.setCallbacks({{LevelUpChoice::HP,
@@ -145,6 +147,7 @@ void Player::gainXp(int xp)
 
 void Player::onCollision(Entity *other)
 {
+
     if (other->getTag() == "box")
     {
         sf::Sprite::setPosition(oldPosition);
@@ -187,54 +190,53 @@ void Player::die()
     // waiting for method to remove every weapon exept start wepon
 }
 // methods to visualise hp and xp with boxes
-void Player::draw(sf::RenderWindow *window) const
+void Player::draw(sf::RenderWindow *window)
+
 {
     window->draw(*this);
     drawInfo(window);
 }
 
-void Player::drawInfo(sf::RenderWindow *window) const
+void Player::drawInfo(sf::RenderWindow *window)
 {
-    drawBox(window, // hp boxbackground -- fixa static const för ofset, fixa sf
+    drawBox(window,  // curent hp
             HPBox,
             sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2.0) + BOX_OFFSET,  // x
             sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2.0) + BOX_OFFSET, // y
-            BOX_WIDHT,                                                                // lenght
-            BOX_HEIGTH,                                                               // widht
-            HP_BOX_COLOR);                                                            // color
+            BOX_WIDHT,                                                                // widht
+            BOX_HEIGTH,                                                               // heiht
+            CURRENT_HP_BOX_COLLOR);                                                            // color
     drawBox(window,
             currentHPBox,
             sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2.0) + BOX_OFFSET,
             sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2.0) + BOX_OFFSET,
             BOX_WIDHT * (hp / maxHP),
             BOX_HEIGTH,
-            CURRENT_HP_BOX_COLLOR); // curent hp
-
+            HP_BOX_COLOR);
     drawBox(window,
             xpBox,
             sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2.0) + BOX_OFFSET,
             sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2.0) + XP_BOX_Y_OFFSET,
-            BOX_WIDHT,
+            BOX_WIDHT * expManager.getXpFilled(),
             BOX_HEIGTH,
-            XP_BOX_COLOR); // xp background
-
+             XP_BOX_COLOR); 
     drawBox(window,
             currentXPBox,
             sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2.0) + BOX_OFFSET,
             sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2.0) + XP_BOX_Y_OFFSET,
             BOX_WIDHT,
             BOX_HEIGTH,
-            CURRENT_XP_BOX_COLOR);
-    // current xp -- if sats om xp 0 = 0 - sätt längd 0 annars räkna ut
+            CURRENT_XP_BOX_COLOR); // xp background
+    
 }
 
 void Player::drawBox(sf::RenderWindow *window,
-                     sf::RectangleShape box,
-                     float boxPosX,
-                     float boxPosY,
-                     float boxWidth,
-                     float boxheight,
-                     sf::Color boxColor) const
+                     sf::RectangleShape &box,
+                     float const &boxPosX,
+                     float const&boxPosY,
+                     float const &boxWidth,
+                     float const &boxheight,
+                     sf::Color const &boxColor)
 
 {
     box.setSize(sf::Vector2f(boxWidth, boxheight));

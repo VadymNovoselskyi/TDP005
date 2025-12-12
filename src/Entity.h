@@ -3,7 +3,6 @@
 
 #include <SFML/Graphics.hpp>
 #include <string>
-
 // to lower classes
 #include <cmath>
 
@@ -12,6 +11,7 @@
 class Entity : public sf::Sprite
 {
   public:
+
     Entity(std::string const &tag, sf::Vector2f const &pos, double hp);
     std::string getTag() const;
     

@@ -35,6 +35,7 @@ class Spawner
 
         bool inKaboom{false};
         bool inArcher{false};
+        bool canMove;
 
         //det som ska kicas till enemy
         double currentHP {100.0};
@@ -47,8 +48,6 @@ class Spawner
         double damage {15};
         int score {2};
         
-        
-
 };
 
 #endif
