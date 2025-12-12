@@ -178,15 +178,9 @@ void Player::increaseDamageMultiplyer(double amount)
 
 void Player::die()
 {
-    // reset xp, hp ,damage
     StateMachine::instance()->finishGame();
-    sf::Sprite::move(sf::Vector2f(Window::WINDOW_WIDTH / 2.0F, Window::WINDOW_HEIGHT / 2.0F));
-    hp = startHP;
-    maxHP = startHP;
-    movementSpeed = startSpeed;
-    // ExperienceManager::resetxp();
-    // waiting for method to remove every weapon exept start wepon
 }
+
 // methods to visualise hp and xp with boxes
 void Player::draw(sf::RenderWindow *window)
 

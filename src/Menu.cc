@@ -5,14 +5,15 @@
 #include "Window.h"
 
 Menu::Menu(std::vector<ElementsInfo> const &elements, bool windowOpen)
-    : defaultFont{}, buttonInfos{}, textElements{}, buttonElements{}, menuOpen{windowOpen},
+    : defaultFont{}, buttonInfos{}, textElements{}, buttonElements{},
+      menuCenter{Window::WINDOW_WIDTH / 2.0F, Window::WINDOW_HEIGHT / 2.0F}, menuOpen{windowOpen},
       focusedButtonIdx{0}
 {
     defaultFont.loadFromFile("static/Orbitron-Bold.ttf");
     setButtons(elements);
 }
 
-void Menu::draw(sf::RenderWindow *window) const
+void Menu::draw(sf::RenderWindow *window)
 {
     // std::cout << "Running the draw loop in Menu" << std::endl;
     if (!menuOpen)
@@ -20,14 +21,21 @@ void Menu::draw(sf::RenderWindow *window) const
         return;
     }
 
-    for (auto const &buttonEl : buttonElements)
+    auto viewCenter{window->getView().getCenter()};
+    sf::Vector2f centerOffset{viewCenter.x - menuCenter.x, viewCenter.y - menuCenter.y};
+
+    for (auto &buttonEl : buttonElements)
     {
+        buttonEl.move(centerOffset);
         window->draw(buttonEl);
     }
-    for (auto const &textEl : textElements)
+    for (auto &textEl : textElements)
     {
+        textEl.move(centerOffset);
         window->draw(textEl);
     }
+
+    menuCenter = viewCenter;
 }
 
 bool Menu::handleEvent(sf::Event event)

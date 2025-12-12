@@ -24,7 +24,7 @@ class Menu
     Menu(std::vector<ElementsInfo> const &elements, bool windowOpen);
     virtual ~Menu() = default;
 
-    void draw(sf::RenderWindow *window) const;
+    void draw(sf::RenderWindow *window);
     virtual bool handleEvent(sf::Event event);
     bool isOpen() const;
 
@@ -43,6 +43,7 @@ class Menu
     std::vector<ElementsInfo> buttonInfos;
     std::vector<sf::Text> textElements;
     std::vector<sf::Text> buttonElements;
+    sf::Vector2f menuCenter;
 
     bool menuOpen;
     int focusedButtonIdx;

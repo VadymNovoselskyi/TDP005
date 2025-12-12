@@ -60,18 +60,12 @@ void Window::draw()
     window->clear();
     TileManager::instance()->drawTiles(window);
 
-    if (StateMachine::instance()->state() == GameState::IN_GAME)
+    Map::instance()->draw(window);
+    Highscore::instance()->draw(window);
+
+    for (auto menu : menus)
     {
-        Map::instance()->draw(window);
-        Highscore::instance()->draw(window);
-     }
-    else
-    {
-        window->setView(window->getDefaultView());
-        for (auto menu : menus)
-        {
-            menu->draw(window);
-        }
+        menu->draw(window);
     }
 
     window->display();

@@ -3,7 +3,9 @@
 #include <iostream>
 #include <stdexcept>
 
+#include "GameState.h"
 #include "Leaderboard.h"
+#include "StateMachine.h"
 
 Highscore *Highscore::instancePtr{nullptr};
 
@@ -73,7 +75,10 @@ void Highscore::draw(sf::RenderWindow *window)
 
     window->draw(highscoreText);
 
-    tickSurvivalScore();
+    if (StateMachine::instance()->state() == GameState::IN_GAME)
+    {
+        tickSurvivalScore();
+    }
 }
 
 void Highscore::addKillScore(int extraScore)
