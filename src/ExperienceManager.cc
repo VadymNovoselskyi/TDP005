@@ -1,10 +1,9 @@
 #include "ExperienceManager.h"
 
-#include <algorithm>
 #include <iostream>
 
 std::vector<int> const ExperienceManager::LEVELS_PROGRESSION{
-    50, 100, 250, 500, 800, 1500, 2400, 3500, 999999999};
+    25, 75, 200, 400, 700, 1300, 2400, 3500, 999999999};
 
 ExperienceManager::ExperienceManager() : levelUps{}, currentXp{0}, level{0}
 {
