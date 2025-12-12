@@ -145,6 +145,23 @@ float Enemy::calculateRotation()
     rotation = rotationRadians * (180 / M_PI) + 90;
     return rotation;
 }
+void Enemy::enemyCollision(Entity *other)
+{
+    sf::Vector2f diff = sf::Sprite::getPosition() - other->getPosition();
+    float lenDistance = std::sqrt(diff.x * diff.x + diff.y * diff.y);
+    sf::Vector2f direction;
+    if (lenDistance > 0)
+    {
+        direction = diff / lenDistance;
+    }
+    else
+    {
+        direction = sf::Vector2f(1.f, 0.f);
+    }
+    float push = other->getGlobalBounds().width / 6;
+    sf::Sprite::setPosition(sf::Sprite::getPosition() + direction * push);
+}
+
 std::string Enemy::getTag()
 {
     return "enemy";
@@ -154,33 +171,21 @@ void Enemy::onCollision(Entity *other)
 {
     if (other->getTag() == "player")
     {
-        attack();
-        sf::Sprite::setPosition(oldPosition);
+        // attack();
+        enemyCollision(other);
         std::cout << "collided with player" << std::endl;
     }
     else if (other->getTag() == "enemy")
     {
         std::cout << "collided with enemy" << std::endl;
         auto collidingEnemy = static_cast<Enemy *>(other);
-        sf::Vector2f diff = sf::Sprite::getPosition() - collidingEnemy->getPosition();
-        float lenDistance = std::sqrt(diff.x * diff.x + diff.y * diff.y);
-        sf::Vector2f direction;
-        if (lenDistance > 0)
-        {
-            direction = diff / lenDistance;
-        }
-        else
-        {
-            direction = sf::Vector2f(1.f, 0.f);
-        }
-        float push = collidingEnemy->getGlobalBounds().width / 6;
-        sf::Sprite::setPosition(sf::Sprite::getPosition() + direction * push);
-        return;
+        enemyCollision(collidingEnemy);
     }
     else if (other->getTag() == "box")
     {
         std::cout << "collided with box" << std::endl;
-        sf::Sprite::setPosition(sf::Sprite::getPosition().x - 5, sf::Sprite::getPosition().y);
+        enemyCollision(this);
+
         return;
     }
 }
