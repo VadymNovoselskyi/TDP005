@@ -16,13 +16,13 @@ class Highscore
     static Highscore *instance();
     static Highscore *init(int framesPerScore);
     static void deleteInstance();
-
+    
+    void saveHighscore() const;
     void resetState();
-
+    void setUsername(std::string const &username);
+    
     void draw(sf::RenderWindow *window);
     void addKillScore(int extraScore);
-
-    ScoreInfo getScoreInfo() const;
 
   private:
     Highscore(int scorePerFrame);
@@ -36,6 +36,8 @@ class Highscore
     int score;
     int timeSurvived;
     int enemiesKilled;
+
+    std::string username;
 
     sf::Text highscoreText;
     sf::Font font;

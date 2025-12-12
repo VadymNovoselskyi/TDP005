@@ -64,9 +64,9 @@ void TileManager::drawTiles(sf::RenderWindow *window) const
     auto viewCenter = window->getView().getCenter();
     auto viewSize = window->getView().getSize();
     auto viewRect = sf::FloatRect{static_cast<float>(viewCenter.x - viewSize.x / 2.0),
-                                      static_cast<float>(viewCenter.y - viewSize.y / 2.0),
-                                      viewSize.x,
-                                      viewSize.y};
+                                  static_cast<float>(viewCenter.y - viewSize.y / 2.0),
+                                  viewSize.x,
+                                  viewSize.y};
 
     for (int column_idx{std::max(static_cast<int>(std::floor(viewRect.left / TILE_SIZE)), 0)};
          column_idx <
@@ -75,9 +75,9 @@ void TileManager::drawTiles(sf::RenderWindow *window) const
          column_idx++)
     {
         for (int row_idx{std::max(static_cast<int>(std::floor(viewRect.top / TILE_SIZE)), 0)};
-             row_idx < std::min(static_cast<int>(std::ceil(
-                                    (viewRect.top + viewRect.height) / TILE_SIZE)),
-                                rowCount);
+             row_idx <
+             std::min(static_cast<int>(std::ceil((viewRect.top + viewRect.height) / TILE_SIZE)),
+                      rowCount);
              row_idx++)
         {
             window->draw(tiles.at(row_idx * columnCount + column_idx));
@@ -95,14 +95,14 @@ void TileManager::generateTiles(std::string const &tileMapPath)
     }
     // TODO: Optimize drawing with sf::VertexArray
 
-    // The loop is taken from
+    // The loop is inspired from
     // https://stackoverflow.com/questions/12133379/c-using-ifstream-with-getline
     int lineCount{0};
     for (std::string line{}; std::getline(file, line, '\n');)
     {
-        std::istringstream line_stream{line};
+        std::istringstream lineStream{line};
         int wordCount{0};
-        for (std::string word{}; line_stream >> word;)
+        for (std::string word{}; lineStream >> word;)
         {
             sf::Texture *texture = TextureManager::instance()->getTexture(word + ".png");
             sf::Vector2f position = sf::Vector2f{static_cast<float>(wordCount * TILE_SIZE),

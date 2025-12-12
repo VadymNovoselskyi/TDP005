@@ -3,8 +3,7 @@
 #include <iostream>
 #include <stdexcept>
 
-#include "GameState.h"
-#include "Window.h"
+#include "Leaderboard.h"
 
 Highscore *Highscore::instancePtr{nullptr};
 
@@ -42,6 +41,11 @@ Highscore::Highscore(int framesPerScore)
     highscoreText.setCharacterSize(40);
 }
 
+void Highscore::saveHighscore() const
+{
+    Leaderboard::instance()->saveHighscore(username, {score, timeSurvived, enemiesKilled});
+}
+
 void Highscore::resetState()
 {
     scoreCountdown = framesPerScore;
@@ -50,11 +54,16 @@ void Highscore::resetState()
     enemiesKilled = 0;
 }
 
+void Highscore::setUsername(std::string const &username)
+{
+    this->username = username;
+}
+
 void Highscore::draw(sf::RenderWindow *window)
 {
     auto viewCenter = window->getView().getCenter();
     auto viewSize = window->getView().getSize();
-    sf::Vector2f pos{viewCenter.x + viewSize.x / 2.0f - 10, viewCenter.y - viewSize.y / 2.0f};
+    sf::Vector2f pos{viewCenter.x + (viewSize.x / 2.0F) - 10, viewCenter.y - (viewSize.y / 2.0F)};
 
     highscoreText.setPosition(pos);
     highscoreText.setString(std::to_string(score));
@@ -78,15 +87,11 @@ void Highscore::tickSurvivalScore()
     if (scoreCountdown == 0)
     {
         score++;
+        timeSurvived++;
         scoreCountdown = framesPerScore;
     }
     else
     {
         scoreCountdown--;
     }
-}
-
-ScoreInfo Highscore::getScoreInfo() const
-{
-    return {score, static_cast<int>(score * framesPerScore), enemiesKilled};
 }

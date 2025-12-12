@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 
+#include "Highscore.h"
 #include "Menu.h"
 #include "StateMachine.h"
 
@@ -62,7 +63,14 @@ std::vector<ElementsInfo> ChooseNameMenu::createButtons(std::string const &usern
     ElementsInfo nameField{username, 0.5, 0.4, std::nullopt};
     elements.push_back(nameField);
 
-    ElementsInfo submitButton{"SUBMIT", 0.5, 0.6, []() { StateMachine::instance()->startGame(); }};
+    ElementsInfo submitButton{"SUBMIT",
+                              0.5,
+                              0.6,
+                              [this]()
+                              {
+                                  Highscore::instance()->setUsername(this->username);
+                                  StateMachine::instance()->startGame();
+                              }};
     elements.push_back(submitButton);
 
     return elements;

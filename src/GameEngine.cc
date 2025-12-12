@@ -5,6 +5,7 @@
 
 #include "ExperienceManager.h"
 #include "Highscore.h"
+#include "Leaderboard.h"
 #include "Menus.h"
 #include "Spawner.h"
 #include "TextureManager.h"
@@ -19,6 +20,7 @@ GameEngine::GameEngine() : window{}, spawner{}, clock{}
     StateMachine::init();
     TextureManager::init();
     Highscore::init(60);
+    Leaderboard::init("static/leaderboard.txt");
     TileManager::init("static/tileMap.txt");
 
     std::vector<Menu *> menus{};
@@ -54,6 +56,7 @@ GameEngine::GameEngine() : window{}, spawner{}, clock{}
                                                   player->resetState(mapCenter);
                                                   spawner->resetState();
                                                   Map::instance()->resetState();
+                                                  Highscore::instance()->saveHighscore();
                                                   Highscore::instance()->resetState();
 
                                                   StateMachine::instance()->setInGame();
@@ -72,6 +75,9 @@ GameEngine::GameEngine() : window{}, spawner{}, clock{}
                                           {
                                               if (gameState == GameState::EXIT)
                                               {
+                                                  Highscore::instance()->saveHighscore();
+                                                  Leaderboard::instance()->saveLeaderboard(
+                                                      "static/leaderboard.txt");
                                                   window->closeWindow();
                                               }
                                           });
