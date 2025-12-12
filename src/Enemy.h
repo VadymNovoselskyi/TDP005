@@ -70,8 +70,6 @@ class Footman : public Enemy
     void attack() override;
     void move() override;
 
-  private:
-    sf::Texture const *texture;
 };
 
 class Kaboom : public Enemy
@@ -100,7 +98,6 @@ class Kaboom : public Enemy
     double explodeRange;
     int explodeCountdown;
     float agroRange;
-    sf::Texture const *texture;
 };
 
 class Archer : public Enemy
@@ -128,7 +125,6 @@ class Archer : public Enemy
     void shoot();
     float fireRange; 
     double velocity;
-    sf::Texture const *texture;
 };
 
 #endif
