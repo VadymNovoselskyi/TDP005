@@ -178,8 +178,7 @@ void Enemy::onCollision(Entity *other)
     else if (other->getTag() == "enemy")
     {
         std::cout << "collided with enemy" << std::endl;
-        auto collidingEnemy = static_cast<Enemy *>(other);
-        enemyCollision(collidingEnemy);
+        enemyCollision(other);
     }
     else if (other->getTag() == "box")
     {
