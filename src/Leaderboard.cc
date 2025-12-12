@@ -48,10 +48,10 @@ void Leaderboard::saveHighscore(std::string const &username, ScoreInfo const &sc
     }
 }
 
-void Leaderboard::saveLeaderboard(std::string const &leaderboard) const
+void Leaderboard::saveLeaderboard(std::string const &leaderboardPath) const
 {
     // File read syntax was taken from https: // www.w3schools.com/cpp/cpp_files.asp
-    std::ofstream file(leaderboard);
+    std::ofstream file(leaderboardPath);
 
     for (auto &[username, highscore] : highscores)
     {
@@ -61,9 +61,18 @@ void Leaderboard::saveLeaderboard(std::string const &leaderboard) const
     file.close();
 }
 
-std::map<std::string, ScoreInfo> Leaderboard::getHighscores() const
+// TODO: sort by total score
+std::map<std::string, ScoreInfo> Leaderboard::getLeaderboard(int maxSize) const
 {
-    return highscores;
+    std::map<std::string, ScoreInfo> leaderboard{};
+
+    for (auto it{highscores.begin()};
+         it != highscores.end() && static_cast<int>(leaderboard.size()) < maxSize;
+         ++it)
+    {
+        leaderboard.insert({it->first, it->second});
+    }
+    return leaderboard;
 }
 
 void Leaderboard::loadLeaderboard(std::string const &leaderboardPath)

@@ -20,6 +20,15 @@ class StartMenu : public Menu
     std::vector<ElementsInfo> createButtons() const override;
 };
 
+class LeaderboardMenu : public Menu
+{
+  public:
+    LeaderboardMenu();
+
+  private:
+    std::vector<ElementsInfo> createButtons() const override;
+};
+
 class ChooseNameMenu : public Menu
 {
   public:

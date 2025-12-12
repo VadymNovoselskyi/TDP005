@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "Highscore.h"
+#include "Leaderboard.h"
 #include "Menu.h"
 #include "StateMachine.h"
 
@@ -27,12 +28,58 @@ std::vector<ElementsInfo> StartMenu::createButtons() const
         "START", 0.5, 0.4, []() { StateMachine::instance()->chooseUsername(); }};
     elements.push_back(startButton);
 
-    ElementsInfo rankingsButton{"RANKINGS", 0.5, 0.6, []() {}};
-    // "RANKINGS", 0.5, 0.4, []() { StateMachine::instance()->startGame(); }};
+    ElementsInfo rankingsButton{
+        "RANKINGS", 0.5, 0.6, []() { StateMachine::instance()->openLeaderboard(); }};
     elements.push_back(rankingsButton);
 
     ElementsInfo exitButton{"EXIT", 0.5, 0.8, []() { StateMachine::instance()->exitGame(); }};
     elements.push_back(exitButton);
+
+    return elements;
+}
+
+// Leaderboard menu
+LeaderboardMenu::LeaderboardMenu()
+    : Menu(createButtons(), StateMachine::instance()->state() == GameState::LEADERBOARD)
+{
+    StateMachine::instance()->addListener("LeaderboardMenu",
+                                          [this](GameState gameState)
+                                          { setIsOpen(gameState == GameState::LEADERBOARD); });
+}
+
+std::vector<ElementsInfo> LeaderboardMenu::createButtons() const
+{
+    float const PADDING_TOP{0.3};
+    float const PADDING_BOTTOM{0.1};
+    int const MAX_LEADERBOARD_SIZE{5};
+    std::vector<ElementsInfo> elements{};
+    auto highscores = Leaderboard::instance()->getLeaderboard(MAX_LEADERBOARD_SIZE);
+
+    ElementsInfo title{"LEADERBOARD | TOP 5", 0.5, 0.1, std::nullopt};
+    elements.push_back(title);
+
+    ElementsInfo leaderboardHeader{
+        "USERNAME | SCORE | TIME SURVIVED | ENEMIES KILLED", 0.5, 0.2, std::nullopt};
+    elements.push_back(leaderboardHeader);
+
+    int index{0};
+    for (auto &[username, scoreInfo] : highscores)
+    {
+        // TODO: Set the font
+        ElementsInfo leaderboardItem{
+            username + " | " + std::to_string(scoreInfo.score) + " | " +
+                std::to_string(scoreInfo.timeSurvived) + " | " +
+                std::to_string(scoreInfo.enemiesKilled),
+            0.5,
+            (((1 - PADDING_TOP - PADDING_BOTTOM) / static_cast<int>(highscores.size()) * index) +
+             PADDING_TOP),
+            std::nullopt};
+        elements.push_back(leaderboardItem);
+        index++;
+    }
+
+    ElementsInfo backButton{"BACK", 0.5, 0.9, []() { StateMachine::instance()->openStartMenu(); }};
+    elements.push_back(backButton);
 
     return elements;
 }
@@ -68,6 +115,11 @@ std::vector<ElementsInfo> ChooseNameMenu::createButtons(std::string const &usern
                               0.6,
                               [this]()
                               {
+                                  if (this->username.length() < 1)
+                                  {
+                                      return;
+                                  }
+
                                   Highscore::instance()->setUsername(this->username);
                                   StateMachine::instance()->startGame();
                               }};
@@ -88,7 +140,7 @@ bool ChooseNameMenu::handleEvent(sf::Event event)
     // Only add the ASCII chars, seems good enough for now
     // The unicode values are taken from https://en.wikipedia.org/wiki/List_of_Unicode_characters
     {
-        if (event.text.unicode <= 126 && event.text.unicode >= 32 && username.length() < 20)
+        if (event.text.unicode <= 126 && event.text.unicode >= 32 && username.length() < 16)
         {
             username += event.text.unicode;
             Menu::setButtons(createButtons(username));

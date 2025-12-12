@@ -26,6 +26,7 @@ GameEngine::GameEngine() : window{}, spawner{}, clock{}
     std::vector<Menu *> menus{};
     auto levelUpMenu{new LevelUpMenu()};
     menus.push_back(new StartMenu());
+    menus.push_back(new LeaderboardMenu());
     menus.push_back(new ChooseNameMenu());
     menus.push_back(new PauseMenu());
     menus.push_back(new GameOverMenu());

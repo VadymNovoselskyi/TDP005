@@ -15,8 +15,8 @@ class Leaderboard
     static void deleteInstance();
 
     void saveHighscore(std::string const &username, ScoreInfo const &scoreInfo);
-    void saveLeaderboard(std::string const &leaderboard) const;
-    std::map<std::string, ScoreInfo> getHighscores() const;
+    void saveLeaderboard(std::string const &leaderboardPath) const;
+    std::map<std::string, ScoreInfo> getLeaderboard(int maxSize) const;
 
   private:
     Leaderboard(std::string const &leaderboardPath);
