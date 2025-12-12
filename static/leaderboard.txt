@@ -4,7 +4,11 @@ LOOOOOLLL 40 35 4
 NE_PERD1M 999999 99999 9999
 VAD1MKA 50 45 5
 lllllllll 42 28 7
+<<<<<<< HEAD
 lol 142 68 31
 nein 57 37 10
+=======
+lol 176 76 43
+>>>>>>> origin/personal/vadno575
 test:))) 6 6 0
 vadno575 1000 100 5

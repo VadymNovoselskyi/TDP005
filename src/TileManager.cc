@@ -50,7 +50,7 @@ std::vector<Obstacle *> TileManager::getObstacles() const
     return obstacles;
 }
 
-bool TileManager::outOfBorder(sf::Sprite const *sprite) const
+bool TileManager::outOfBounds(sf::Sprite const *sprite) const
 {
     auto mapBound{mapRect.getGlobalBounds()};
     auto spriteRect{sprite->getGlobalBounds()};
