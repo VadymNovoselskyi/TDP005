@@ -13,30 +13,28 @@ class Spawner
   public:
     Spawner(Player *player);
     void resetState();
-    
+
     void spawnEnemies();
     void choseSpawnPos();
 
-    private:
-        void incresSpawnRate();
-        void newEnmey();
-        void addFootman();
-        void addKaboom();
-        void addArcher();
+  private:
+    void incresSpawnRate();
+    void newEnmey();
+    void addFootman();
+    void addKaboom();
+    void addArcher();
 
-        std::vector <Enemy*> enemies;
-        double spawnRate;
-        double spawnRateIncrease {0.99};
-        sf::Vector2f spwanPoint;
-        double counter;
-        Player* player;
+    std::vector<Enemy *> enemies;
+    double spawnRate;
+    double spawnRateIncrease;
+    sf::Vector2f spawnPoint;
+    double counter;
+    Player *player;
 
-        double timeCounter; // resepterat tid föt tillfälet 
+    double timeCounter; // resepterat tid föt tillfälet
 
-        bool inKaboom{false};
-        bool inArcher{false};
-        
-        sf::Vector2f position {};
+    bool inKaboom;
+    bool inArcher;
 };
 
 #endif

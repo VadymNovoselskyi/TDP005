@@ -43,7 +43,7 @@ GameEngine::GameEngine() : window{}, spawner{}, clock{}
                               { levelUpMenu->createOptions(levelUpInfo); })};
 
     Map::init(player, TileManager::instance()->getObstacles());
-    spawner = {new Spawner(player)};
+    spawner = new Spawner(player);
 
     // Init the menu and add exit listener
     window = new Window(menus);
