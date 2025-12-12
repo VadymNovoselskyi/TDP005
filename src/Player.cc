@@ -145,11 +145,11 @@ void Player::gainXp(int xp)
 
 void Player::onCollision(Entity *other)
 {
-
     if (other->getTag() == "obstacle")
     {
         sf::Sprite::setPosition(oldPosition);
     }
+
 }
 
 void Player::onBorderCollision()
@@ -211,13 +211,15 @@ void Player::drawInfo(sf::RenderWindow *window)
             BOX_WIDHT * (hp / maxHP),
             BOX_HEIGTH,
             HP_BOX_COLOR);
+            
+            std::cout << "current xp len: " << BOX_WIDHT * expManager.getXpFilled() << std::endl;
     drawBox(window,
             xpBox,
             sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2.0) + BOX_OFFSET,
             sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2.0) + XP_BOX_Y_OFFSET,
             BOX_WIDHT * expManager.getXpFilled(),
             BOX_HEIGTH,
-             XP_BOX_COLOR); 
+            XP_BOX_COLOR);
     drawBox(window,
             currentXPBox,
             sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2.0) + BOX_OFFSET,
