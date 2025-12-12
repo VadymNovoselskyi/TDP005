@@ -85,8 +85,10 @@ GameEngine::GameEngine() : window{}, spawner{}, clock{}
 
 GameEngine::~GameEngine()
 {
+    Map::deleteInstance();
     StateMachine::deleteInstance();
     TextureManager::deleteInstance();
+
     delete window;
     delete spawner;
     window = nullptr;

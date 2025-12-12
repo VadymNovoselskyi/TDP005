@@ -4,7 +4,7 @@
 #include <iostream>
 
 std::vector<int> const ExperienceManager::LEVELS_PROGRESSION{
-    0, 1000, 2500, 5000, 8000, 15000, 24000, 35000, 999999999};
+    50, 100, 250, 500, 800, 1500, 2400, 3500, 999999999};
 
 ExperienceManager::ExperienceManager() : levelUps{}, currentXp{0}, level{0}
 {
@@ -46,7 +46,9 @@ std::vector<LevelUpInfo> ExperienceManager::chooseLevelUps() const
     return levelUps;
 }
 
-int ExperienceManager::getXpFilled() const
+double ExperienceManager::getXpFilled() const
 {
-    return currentXp == 0 ? 0 : static_cast<int>(currentXp / LEVELS_PROGRESSION.at(level));
+    return currentXp == 0
+               ? 0
+               : static_cast<double>(currentXp) / static_cast<double>(LEVELS_PROGRESSION.at(level));
 }
