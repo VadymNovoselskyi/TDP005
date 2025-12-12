@@ -23,24 +23,13 @@ void Spawner::spawnEnemies()
     if(counter >= spawnRate)
     {
         newEnmey();
-        choseSpawnPos();
-        Footman *enemyF = new Footman(currentHP,
-                                      movementSpeed,
-                                      position,
-                                      attackRange,
-                                      attackSpeed,
-                                      XP_DROP,
-                                      damage,
-                                      score,
-                                      player);
-
-        Map::instance()->addEntity(enemyF);
+        addFootman();
         addKaboom();
         addArcher();
 
         counter = 0;
         timeConter +=1;
-        Spawner::incresSpawnRate();
+        incresSpawnRate();
     }
     else
     {
@@ -64,6 +53,7 @@ void Spawner::choseSpawnPos()
 {
     sf::Vector2i mapSize { TileManager::instance() -> getMapDimensions()};
     sf::Vector2f playerWindow {player -> getPosition()};
+    
 
     
     float randomX = std::rand() % mapSize.x; // tar inspraskion från  w3schools //https://www.w3schools.com/cpp/cpp_howto_random_number.asp
@@ -99,14 +89,44 @@ void Spawner::incresSpawnRate()
     }
 }
 
+void Spawner::addFootman()
+{
+    choseSpawnPos();
+    double currentHP {100.0};
+    int movementSpeed {4};
+    sf::Vector2f direction {0,0};
+    int attackRange {10};
+    int attackSpeed {10};
+    int XP_DROP {5};
+    double damage {15};
+    int score {2};
+    Footman *enemyF = new Footman(currentHP,
+                                    movementSpeed,
+                                    position,
+                                    attackRange,
+                                    attackSpeed,
+                                    XP_DROP,
+                                    damage,
+                                    score,
+                                    player);
+
+    Map::instance()->addEntity(enemyF);
+
+}
+
 void Spawner::addKaboom()
 {
     if (inKaboom)
     {
         choseSpawnPos();
-        currentHP = 75;
-        damage = 5;
-        XP_DROP = 10;
+        double currentHP {75.0};
+        int movementSpeed {4};
+        sf::Vector2f direction {0,0};
+        int attackRange {10};
+        int attackSpeed {10};
+        int XP_DROP {10};
+        double damage {5};
+        int score {3};
         double explodeRange {150};
         double explodeDamage {30};
         float agroRange {300};
@@ -120,10 +140,14 @@ void Spawner::addArcher()
     if (inArcher)
     {
         choseSpawnPos();
-        movementSpeed = 2;
-        damage = 5;
-        XP_DROP = 10;
-        attackSpeed = 10;
+        double currentHP {100.0};
+        int movementSpeed {2};
+        sf::Vector2f direction {0,0};
+        int attackRange {10};
+        int attackSpeed {10};
+        int XP_DROP {10};
+        double damage {5};
+        int score {2};       
         double velocity{3};
         attackRange = 350;
         Archer* enemyA = new Archer( currentHP, movementSpeed, position, attackRange, attackSpeed, XP_DROP, damage, score, player, velocity);

@@ -20,6 +20,7 @@ class Spawner
     private:
         void incresSpawnRate();
         void newEnmey();
+        void addFootman();
         void addKaboom();
         void addArcher();
 
@@ -34,20 +35,8 @@ class Spawner
 
         bool inKaboom{false};
         bool inArcher{false};
-
-        //det som ska kicas till enemy
-        double currentHP {100.0};
-        int movementSpeed {4};
+        
         sf::Vector2f position {};
-        sf::Vector2f direction {0,0};
-        int attackRange {10};
-        int attackSpeed {10};
-        int XP_DROP {5};
-        double damage {15};
-        int score {2};
-        
-        
-
 };
 
 #endif
