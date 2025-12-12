@@ -48,7 +48,6 @@ class Enemy : public Character
     int score; // inte en privat för olika enyme är vär olika score
     Player *player;
     float rotation;
-
   private:
     std::string tag{"enemy"};
     
@@ -95,10 +94,10 @@ class Kaboom : public Enemy
   private:
     void isInRange(float len);
     void explode(float len);
-    double explodeRange;
     double explodeDamage;
-    float agroRange;
+    double explodeRange;
     int explodeCountdown;
+    float agroRange;
     sf::Texture const *texture;
 };
 

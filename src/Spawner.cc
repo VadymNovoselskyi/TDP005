@@ -123,7 +123,7 @@ void Spawner::addKaboom()
         double currentHP {75.0};
         int movementSpeed {4};
         sf::Vector2f direction {0,0};
-        int attackRange {10};
+        int attackRange {20};
         int attackSpeed {10};
         int XP_DROP {10};
         double damage {5};

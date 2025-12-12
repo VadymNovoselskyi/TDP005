@@ -104,6 +104,7 @@ Kaboom::Kaboom(/*Charactar*/
     auto playerSize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
     sf::Sprite::setOrigin(playerSize.x / 2.0, playerSize.y / 2.0);
+
 }
 
 void Enemy::die()
@@ -172,12 +173,13 @@ void Enemy::onCollision(Entity *other)
 {
     if (other->getTag() == "player")
     {
-        tryAttack(calculateDistance());
+        //tryAttack(calculateDistance());
         sf::Sprite::setPosition(oldPosition);
+        //std::cout << "collided with player" << std::endl;
     }
     else if (other->getTag() == "enemy")
     {
-        std::cout << "collided with enemy" << std::endl;
+        //std::cout << "collided with enemy" << std::endl;
         auto collidingEnemy = static_cast<Enemy *>(other);
         enemyCollision(collidingEnemy);
     }
@@ -197,6 +199,9 @@ void Enemy::onBorderCollision()
 
 void Enemy::tryAttack(float len)
 {
+   // std::cout <<"x "<<  eImage.x << std::endl;
+   // std::cout <<"y "<<  eImage.y << std::endl;
+   
     count--;
     if (len <= attackRange and count <= 0)
     {
