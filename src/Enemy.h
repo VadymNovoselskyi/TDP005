@@ -48,6 +48,8 @@ class Enemy : public Character
     int score; // inte en privat för olika enyme är vär olika score
     Player *player;
     float rotation;
+
+
   private:
     std::string tag{"enemy"};
     

@@ -45,6 +45,7 @@ Footman::Footman(/*Charactar*/
     auto playerSize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
     sf::Sprite::setOrigin(playerSize.x / 2.0, playerSize.y / 2.0);
+    sf::Vector2f eImage {playerSize};
 }
 
 Archer::Archer(/*Charactar*/
@@ -73,6 +74,7 @@ Archer::Archer(/*Charactar*/
     auto playerSize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
     sf::Sprite::setOrigin(playerSize.x / 2.0, playerSize.y / 2.0);
+    sf::Vector2f eImage {playerSize};
 }
 
 Kaboom::Kaboom(/*Charactar*/
@@ -104,6 +106,7 @@ Kaboom::Kaboom(/*Charactar*/
     auto playerSize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
     sf::Sprite::setOrigin(playerSize.x / 2.0, playerSize.y / 2.0);
+    sf::Vector2f eImage {playerSize};
 
 }
 
