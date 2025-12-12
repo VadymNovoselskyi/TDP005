@@ -15,5 +15,6 @@ lllllllll 42 28 7
 lol 142 68 31
 nein 238 97 60
 nej 592 174 179
+test 25 17 4
 test:))) 6 6 0
 vadno575 1000 100 5
