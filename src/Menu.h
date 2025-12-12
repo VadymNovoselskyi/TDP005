@@ -8,12 +8,14 @@
 
 #include "GameState.h"
 
+// Learned about optionals on cpp
 struct ElementsInfo
 {
     sf::String text;
     float xAlignn;
     float yAlign;
-    std::optional<std::function<void()>> onClick;
+    std::optional<std::function<void()>> onClick = std::nullopt;
+    std::optional<int> fontSize = std::nullopt;
 };
 
 class Menu

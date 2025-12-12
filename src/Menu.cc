@@ -76,7 +76,8 @@ void Menu::setButtons(std::vector<ElementsInfo> const &elements)
 
     for (auto &elementInfo : elements)
     {
-        sf::Text element{sf::Text(elementInfo.text, defaultFont, 50)};
+        sf::Text element{
+            sf::Text(elementInfo.text, defaultFont, elementInfo.fontSize.value_or(50))};
         auto textRect{element.getGlobalBounds()};
         element.setOrigin(textRect.width / 2, textRect.height / 2);
         element.setPosition((Window::WINDOW_WIDTH * elementInfo.xAlignn),

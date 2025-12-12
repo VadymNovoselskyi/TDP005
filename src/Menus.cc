@@ -1,6 +1,5 @@
 #include "Menus.h"
 
-#include <iostream>
 #include <vector>
 
 #include "Highscore.h"
@@ -21,7 +20,7 @@ std::vector<ElementsInfo> StartMenu::createButtons() const
 {
     std::vector<ElementsInfo> elements{};
 
-    ElementsInfo title{"GAME NAME", 0.5, 0.1, std::nullopt};
+    ElementsInfo title{"GAME NAME", 0.5, 0.1};
     elements.push_back(title);
 
     ElementsInfo startButton{
@@ -49,23 +48,22 @@ LeaderboardMenu::LeaderboardMenu()
 
 std::vector<ElementsInfo> LeaderboardMenu::createButtons() const
 {
-    float const PADDING_TOP{0.3};
-    float const PADDING_BOTTOM{0.1};
+    float const PADDING_TOP{0.35};
+    float const PADDING_BOTTOM{0.15};
     int const MAX_LEADERBOARD_SIZE{5};
     std::vector<ElementsInfo> elements{};
     auto highscores = Leaderboard::instance()->getLeaderboard(MAX_LEADERBOARD_SIZE);
 
-    ElementsInfo title{"LEADERBOARD | TOP 5", 0.5, 0.1, std::nullopt};
+    ElementsInfo title{"LEADERBOARD | TOP 5", 0.5, 0.1};
     elements.push_back(title);
 
     ElementsInfo leaderboardHeader{
-        "USERNAME | SCORE | TIME SURVIVED | ENEMIES KILLED", 0.5, 0.2, std::nullopt};
+        "USERNAME | SCORE | TIME SURVIVED | ENEMIES KILLED", 0.5, 0.25, std::nullopt, 28};
     elements.push_back(leaderboardHeader);
 
     int index{0};
     for (auto &[username, scoreInfo] : highscores)
     {
-        // TODO: Set the font size
         ElementsInfo leaderboardItem{
             username + " | " + std::to_string(scoreInfo.score) + " | " +
                 std::to_string(scoreInfo.timeSurvived) + " | " +
@@ -73,7 +71,8 @@ std::vector<ElementsInfo> LeaderboardMenu::createButtons() const
             0.5,
             (((1 - PADDING_TOP - PADDING_BOTTOM) / static_cast<int>(highscores.size()) * index) +
              PADDING_TOP),
-            std::nullopt};
+            std::nullopt,
+            38};
         elements.push_back(leaderboardItem);
         index++;
     }
@@ -104,10 +103,10 @@ std::vector<ElementsInfo> ChooseNameMenu::createButtons(std::string const &usern
 {
     std::vector<ElementsInfo> elements{};
 
-    ElementsInfo title{"CHOOSE YOUR USERNAME", 0.5, 0.1, std::nullopt};
+    ElementsInfo title{"CHOOSE YOUR USERNAME", 0.5, 0.1};
     elements.push_back(title);
 
-    ElementsInfo nameField{username, 0.5, 0.4, std::nullopt};
+    ElementsInfo nameField{username, 0.5, 0.4};
     elements.push_back(nameField);
 
     ElementsInfo submitButton{"SUBMIT",
@@ -173,7 +172,7 @@ std::vector<ElementsInfo> PauseMenu::createButtons() const
 {
     std::vector<ElementsInfo> elements{};
 
-    ElementsInfo title{"GAME PAUSED", 0.5, 0.1, std::nullopt};
+    ElementsInfo title{"GAME PAUSED", 0.5, 0.1};
     elements.push_back(title);
 
     ElementsInfo continueButton{
@@ -222,7 +221,7 @@ std::vector<ElementsInfo> GameOverMenu::createButtons() const
 {
     std::vector<ElementsInfo> elements{};
 
-    ElementsInfo title{"GAME OVER", 0.5, 0.1, std::nullopt};
+    ElementsInfo title{"GAME OVER", 0.5, 0.1};
     elements.push_back(title);
 
     ElementsInfo restartButton{
@@ -261,7 +260,7 @@ LevelUpMenu::createButtons(std::vector<LevelUpInfo> const &levelUpOptions) const
     int optionsSize{static_cast<int>(levelUpOptions.size())};
     std::vector<ElementsInfo> elements{static_cast<unsigned long>(optionsSize + 1)};
 
-    ElementsInfo title{"Choose your level up", 0.5, 0.1, std::nullopt};
+    ElementsInfo title{"Choose your level up", 0.5, 0.1};
     elements.push_back(title);
     for (int i{0}; i < optionsSize; ++i)
     {
