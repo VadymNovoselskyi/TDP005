@@ -14,7 +14,7 @@ class TileManager
     static TileManager *init(std::string const &tileMapPath);
     static void deleteInstance();
 
-    bool outOfBorder(sf::Sprite const *sprite) const;
+    bool outOfBounds(sf::Sprite const *sprite) const;
     void drawTiles(sf::RenderWindow *window) const;
 
     std::vector<Obstacle *> getObstacles() const;
