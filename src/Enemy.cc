@@ -156,7 +156,7 @@ void Enemy::onCollision(Entity *other)
 {
     if (other->getTag() == "player")
     {
-        attack();
+        //tryAttack(calculateDistance());
         sf::Sprite::setPosition(oldPosition);
     }
     else if (other->getTag() == "enemy")
@@ -182,7 +182,8 @@ void Enemy::tryAttack(float len)
     if (len <= attackRange and count <= 0)
     {
         attack();
-        count = 60 / attackSpeed;
+        count = 600 / attackSpeed;
+        
         
     }
 
