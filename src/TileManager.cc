@@ -38,6 +38,7 @@ TileManager::TileManager(std::string const &tileMapPath)
     : tiles{}, obstacles{}, columnCount{}, rowCount{}, mapRect{}
 {
     generateTiles(tileMapPath);
+
     mapRect.setSize(sf::Vector2f{static_cast<float>(columnCount * TILE_SIZE),
                                  static_cast<float>(rowCount * TILE_SIZE)});
 }
@@ -51,7 +52,12 @@ std::vector<Obstacle *> TileManager::getObstacles() const
 
 bool TileManager::outOfBorder(sf::Sprite const *sprite) const
 {
-    return !mapRect.getGlobalBounds().intersects(sprite->getGlobalBounds());
+    auto mapBound{mapRect.getGlobalBounds()};
+    auto spriteRect{sprite->getGlobalBounds()};
+
+    return spriteRect.left < mapBound.left || spriteRect.top < mapBound.top ||
+           spriteRect.left + spriteRect.width > mapBound.left + mapBound.width ||
+           spriteRect.top + spriteRect.height > mapBound.top + mapBound.height;
 }
 
 sf::Vector2f TileManager::getMapDimensions() const
