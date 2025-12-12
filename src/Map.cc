@@ -25,15 +25,13 @@ Map *Map::init(Player *player, std::vector<Obstacle *> const &obstacles)
 
 void Map::resetState()
 {
-    for (Entity *e : entities)
+    auto obstaclesSize{TileManager::instance()->getObstacles().size()};
+    for (auto it{entities.begin() + obstaclesSize + 1}; it != entities.end(); ++it)
     {
-        if (e->getTag() != "player")
-        {
-            delete e;
-        }
+        delete *it;
     }
 
-    entities.erase(entities.begin() + 1, entities.end());
+    entities.erase(entities.begin() + obstaclesSize + 1, entities.end());
 }
 
 void Map::deleteInstance()
@@ -56,7 +54,7 @@ void Map::handelUpdate(sf::RenderWindow *window)
     // tagen från tdp004 https://www.ida.liu.se/~TDP004/current/sal/slides/tdp004_9.pdf s.20
 
     {
-        if (TileManager::instance()->outOfBorder(*it1))
+        if (TileManager::instance()->outOfBounds(*it1))
         {
             (*it1)->onBorderCollision();
         }
@@ -131,7 +129,7 @@ void Map::removeEntity(Entity *e)
 Entity *Map::getClosestEnemy()
 {
     Entity *enemy{nullptr};
-    double minPos {999999.0};
+    double minPos{999999.0};
     for (Entity *e : entities)
     {
         if (e->getTag() != "enemy")
