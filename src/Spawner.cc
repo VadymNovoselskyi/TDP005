@@ -129,8 +129,9 @@ void Spawner::addKaboom()
         int score {3};
         double explodeRange {150};
         double explodeDamage {30};
+        int explodeCountdown {60};
         float agroRange {300};
-        Kaboom* enemyK = new Kaboom( currentHP, movementSpeed, position, attackRange, attackSpeed, XP_DROP, damage, score, player, explodeRange, explodeDamage, agroRange);
+        Kaboom* enemyK = new Kaboom( currentHP, movementSpeed, position, attackRange, attackSpeed, XP_DROP, damage, score, player, explodeRange, explodeDamage, explodeCountdown, agroRange);
         Map::instance()->addEntity(enemyK);
     }
 }

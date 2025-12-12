@@ -85,6 +85,7 @@ class Kaboom : public Enemy
            Player *player,
            double explodeDamage,
            double explodeRange,
+           int explodeCountdown,
            float agroRange);
     void attack() override;
     void move() override;
@@ -95,6 +96,7 @@ class Kaboom : public Enemy
     double explodeRange;
     double explodeDamage;
     float agroRange;
+    int explodeCountdown;
     sf::Texture const *texture;
 };
 
