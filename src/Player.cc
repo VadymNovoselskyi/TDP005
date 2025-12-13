@@ -5,6 +5,7 @@
 #include "GameState.h"
 #include "StateMachine.h"
 #include "TextureManager.h"
+#include "WeaponsManager.h"
 #include "Window.h"
 
 // variables that wont change and is used to make code easier to read
@@ -24,9 +25,9 @@ Player::Player(double startHP,
                sf::Vector2f const &position,
                std::string const &tag,
                std::function<void(std::vector<LevelUpInfo>)> const &onLevelUp)
-    : Character(tag, startHP, startSpeed, position), startHP{startHP}, maxHP{startHP},
-      startSpeed{startSpeed}, damageMultiplier{1}, rotation{}, oldPosition{position}, expManager{},
-      weaponManager{}, onLevelUp{onLevelUp}
+    : Character(tag, startHP, startSpeed, position), START_HP{startHP}, maxHP{startHP},
+      START_SPEED{startSpeed}, damageMultiplier{1}, rotation{}, oldPosition{position}, expManager{},
+      weaponsManager{}, onLevelUp{onLevelUp}
 {
     auto texture{TextureManager::instance()->getTexture("player.png")};
     auto playerSize{texture->getSize()};
@@ -56,17 +57,17 @@ Player::Player(double startHP,
                              {LevelUpChoice::WEAPON,
                               [this]()
                               {
-                                  weaponManager.receiveRandomWeapon();
+                                  weaponsManager.receiveRandomWeapon();
                                   StateMachine::instance()->continueGame();
                               }}});
-    weaponManager.receiveNewWeapon("AR");
+    weaponsManager.receiveNewWeapon("AR");
 }
 
 void Player::resetState(sf::Vector2f const &newPosition)
 {
-    Character::hp = startHP;
-    maxHP = startHP;
-    Character::movementSpeed = startSpeed;
+    Character::hp = START_HP;
+    maxHP = START_HP;
+    Character::movementSpeed = START_SPEED;
 
     rotation = 0;
     damageMultiplier = 1;
@@ -75,8 +76,8 @@ void Player::resetState(sf::Vector2f const &newPosition)
     oldPosition = newPosition;
 
     expManager.resetState();
-    weaponManager.resetState();
-    weaponManager.receiveNewWeapon("AR");
+    weaponsManager.resetState();
+    weaponsManager.receiveNewWeapon("AR");
 }
 
 void Player::move()
@@ -112,8 +113,8 @@ void Player::move()
 
     sf::Sprite::move(sf::Vector2f(direction.x * movementSpeed, direction.y * movementSpeed));
 
-    weaponManager.setWeaponsPos(sf::Sprite::getPosition());
-    weaponManager.shoot();
+    weaponsManager.setWeaponsPos(sf::Sprite::getPosition());
+    weaponsManager.shoot();
 }
 
 void Player::updateRotation(sf::RenderWindow *window)
@@ -128,7 +129,7 @@ void Player::updateRotation(sf::RenderWindow *window)
     rotation = rotationRadians * (180 / M_PI) + 90; // transform radians to rotation
 
     sf::Sprite::setRotation(rotation);
-    weaponManager.setWeaponsRotation(sf::Sprite::getRotation());
+    weaponsManager.setWeaponsRotation(sf::Sprite::getRotation());
 }
 
 void Player::gainXp(int xp)
@@ -139,7 +140,7 @@ void Player::gainXp(int xp)
         return;
     }
 
-    onLevelUp(expManager.chooseLevelUps());
+    onLevelUp(expManager.chooseLevelUps(weaponsManager.canGetNewWeapon()));
     StateMachine::instance()->startLevelUp();
 }
 

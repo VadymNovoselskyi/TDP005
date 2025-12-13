@@ -78,6 +78,11 @@ void WeaponsManager::receiveRandomWeapon()
     equipWeapon(unequipedWeapons.at(randIndex));
 }
 
+bool WeaponsManager::canGetNewWeapon() const
+{
+    return unequipedWeapons.size() > 0;
+}
+
 void WeaponsManager::equipWeapon(Weapon *weaponToDelete)
 {
     unequipedWeapons.erase(

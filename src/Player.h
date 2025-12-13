@@ -22,7 +22,7 @@ class Player : public Character
 {
   public:
     Player(double startHP,
-           int const startSpeed,
+           int startSpeed,
            sf::Vector2f const &position,
            std::string const &tag,
            std::function<void(std::vector<LevelUpInfo>)> const &onLevelUp);
@@ -45,16 +45,16 @@ class Player : public Character
     void onBorderCollision() override;
 
   private:
-    double const startHP;
+    double const START_HP;
     double maxHP;
-    int const startSpeed;
+    int const START_SPEED;
     double damageMultiplier;
 
     float rotation;
     sf::Vector2f oldPosition;
 
     ExperienceManager expManager;
-    WeaponsManager weaponManager;
+    WeaponsManager weaponsManager;
     std::function<void(std::vector<LevelUpInfo>)> onLevelUp;
     void drawInfo(sf::RenderWindow *window);
     void drawBox(sf::RenderWindow *window,

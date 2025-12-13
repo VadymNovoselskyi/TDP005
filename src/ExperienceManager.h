@@ -28,7 +28,7 @@ class ExperienceManager
     void resetState();
 
     bool gainXp(int gainedXp);
-    std::vector<LevelUpInfo> chooseLevelUps() const;
+    std::vector<LevelUpInfo> chooseLevelUps(bool weaponsAvailable) const;
 
     double getXpFilled() const;
 
