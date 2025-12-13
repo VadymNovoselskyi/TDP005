@@ -49,6 +49,7 @@ class Enemy : public Character
     Player *player;
     float rotation;
 
+
   private:
     std::string tag{"enemy"};
     
@@ -69,8 +70,6 @@ class Footman : public Enemy
     void attack() override;
     void move() override;
 
-  private:
-    sf::Texture const *texture;
 };
 
 class Kaboom : public Enemy
@@ -95,11 +94,10 @@ class Kaboom : public Enemy
   private:
     void isInRange(float len);
     void explode(float len);
-    double explodeRange;
     double explodeDamage;
-    float agroRange;
+    double explodeRange;
     int explodeCountdown;
-    sf::Texture const *texture;
+    float agroRange;
 };
 
 class Archer : public Enemy
@@ -127,7 +125,6 @@ class Archer : public Enemy
     void shoot();
     float fireRange; 
     double velocity;
-    sf::Texture const *texture;
 };
 
 #endif

@@ -39,12 +39,14 @@ Footman::Footman(/*Charactar*/
             XP_DROP,
             damage,
             score,
-            player),
-      texture{TextureManager::instance()->getTexture("enemy.png")}
+            player)
+      
 {
-    auto playerSize{texture->getSize()};
+    auto texture{TextureManager::instance()->getTexture("enemy.png")};
+    auto enemySize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
-    sf::Sprite::setOrigin(playerSize.x / 2.0, playerSize.y / 2.0);
+    sf::Sprite::setOrigin(enemySize.x / 2.0, enemySize.y / 2.0);
+
 }
 
 Archer::Archer(/*Charactar*/
@@ -68,11 +70,13 @@ Archer::Archer(/*Charactar*/
             damage,
             score,
             player),
-      velocity{velocity}, texture{TextureManager::instance()->getTexture("fighter.png")}
+      velocity{velocity}
 {
-    auto playerSize{texture->getSize()};
+    auto texture{TextureManager::instance()->getTexture("fighter.png")};
+    auto enemySize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
-    sf::Sprite::setOrigin(playerSize.x / 2.0, playerSize.y / 2.0);
+    sf::Sprite::setOrigin(enemySize.x / 2.0, enemySize.y / 2.0);
+
 }
 
 Kaboom::Kaboom(/*Charactar*/
@@ -98,12 +102,13 @@ Kaboom::Kaboom(/*Charactar*/
             damage,
             score,
             player),
-      explodeDamage{explodeDamage}, explodeRange{explodeRange}, explodeCountdown{explodeCountdown}, agroRange{agroRange},
-      texture{TextureManager::instance()->getTexture("obstacle-gas.png")}
+      explodeDamage{explodeDamage}, explodeRange{explodeRange}, explodeCountdown{explodeCountdown}, agroRange{agroRange}
 {
-    auto playerSize{texture->getSize()};
+    auto texture{TextureManager::instance()->getTexture("obstacle-gas.png")};
+    auto enemySize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
-    sf::Sprite::setOrigin(playerSize.x / 2.0, playerSize.y / 2.0);
+    sf::Sprite::setOrigin(enemySize.x / 2.0, enemySize.y / 2.0);
+
 }
 
 void Enemy::die()
@@ -120,6 +125,7 @@ void Enemy::draw(sf::RenderWindow *window) const
 {
     window->draw(*this);
 }
+
 float Enemy::calculateDistance()
 {
     oldPosition = getPosition();
@@ -131,6 +137,7 @@ float Enemy::calculateDistance()
 
     return std::sqrt(direction_x * direction_x + direction_y * direction_y);
 }
+
 sf::Vector2f Enemy::calculateDirection()
 {
     sf::Vector2f playerPositon = player->getPosition();
@@ -139,6 +146,7 @@ sf::Vector2f Enemy::calculateDirection()
                                  playerPositon.y - enemyPosition.y};
     return directionResult;
 }
+
 float Enemy::calculateRotation()
 {
     double rotationRadians = std::atan2((player->getPosition().y - getPosition().y),
@@ -146,6 +154,7 @@ float Enemy::calculateRotation()
     rotation = rotationRadians * (180 / M_PI) + 90;
     return rotation;
 }
+
 void Enemy::enemyCollision(Entity *other)
 {
     sf::Vector2f diff = sf::Sprite::getPosition() - other->getPosition();
@@ -172,12 +181,13 @@ void Enemy::onCollision(Entity *other)
 {
     if (other->getTag() == "player")
     {
-        tryAttack(calculateDistance());
+        //tryAttack(calculateDistance());
         sf::Sprite::setPosition(oldPosition);
+        //std::cout << "collided with player" << std::endl;
     }
     else if (other->getTag() == "enemy")
     {
-        std::cout << "collided with enemy" << std::endl;
+        //std::cout << "collided with enemy" << std::endl;
         auto collidingEnemy = static_cast<Enemy *>(other);
         enemyCollision(collidingEnemy);
     }
@@ -197,13 +207,18 @@ void Enemy::onBorderCollision()
 
 void Enemy::tryAttack(float len)
 {
+
+    auto p { player -> getTexture()-> getSize()};
+    auto e {this -> getTexture()-> getSize()};
+
+    float imageRange{attackRange};
+    imageRange += sqrt((p.x/2)*(p.x/2)+(p.y/2)*(p.y/2))+sqrt((e.x/2)*(e.x/2)+(e.y/2)*(e.y/2));
+
     count--;
-    if (len <= attackRange and count <= 0)
+    if (len <= imageRange and count <= 0)
     {
         attack();
         count = 600 / attackSpeed;
-        
-        
     }
 }
 
