@@ -2,7 +2,6 @@
 
 #include <iostream>
 
-#include "GameState.h"
 #include "StateMachine.h"
 #include "TextureManager.h"
 #include "WeaponsManager.h"

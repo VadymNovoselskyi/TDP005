@@ -2,8 +2,6 @@
 
 #include <iostream>
 
-#include "Map.h"
-
 Weapon::Weapon(std::string const &name,
                std::string const &description,
                double const &damage,

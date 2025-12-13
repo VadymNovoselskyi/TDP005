@@ -69,7 +69,7 @@ void Map::handelUpdate(sf::RenderWindow *window)
         }
     }
 
-    if (entitiesToRemove.size())
+    if (entitiesToRemove.size() > 0)
     {
         // std::cout << "Removing from entities " << entitiesToRemove.size() << std::endl;
         for (auto it = entitiesToRemove.rbegin(); it != entitiesToRemove.rend(); ++it)

@@ -89,6 +89,6 @@ void WeaponsManager::equipWeapon(Weapon *weaponToDelete)
         std::remove_if(unequipedWeapons.begin(),
                        unequipedWeapons.end(),
                        [weaponToDelete](Weapon *weapon)
-                       { return weaponToDelete->getName() == weapon->getName(); }));
+                       { return weaponToDelete->getName() == weapon->getName(); }), unequipedWeapons.end());
     equipedWeapons.push_back(weaponToDelete);
 }

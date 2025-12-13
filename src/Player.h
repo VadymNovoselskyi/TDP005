@@ -37,7 +37,7 @@ class Player : public Character
 
     void gainXp(int xp);
     void heal(double amount);
-    void increaseMaxHP(double amount);
+    void increaseMaxHP(double hp);
 
     void increaseSpeed(int amount);
     void increaseDamageMultiplyer(double amount);

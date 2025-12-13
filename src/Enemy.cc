@@ -12,12 +12,12 @@ Enemy::Enemy(/*Charactar*/ double currentHp,
              sf::Vector2f positon,
              int attackRange,
              int attackSpeed,
-             int XP_DROP,
+             int const XP_DROP,
              double damage,
              int score,
              Player *player)
     : Character("enemy", currentHp, movementSpeed, positon), attackRange{attackRange},
-      attackSpeed{attackSpeed}, XP_DROP{XP_DROP}, damage{damage}, score{score}, player{player}
+      attackSpeed{attackSpeed}, XP_DROP{XP_DROP}, damage{damage}, score{score}, player{player}, rotation{0}
 {
 }
 
@@ -27,7 +27,7 @@ Footman::Footman(/*Charactar*/
                  sf::Vector2f positon,
                  int attackRange,
                  int attackSpeed,
-                 int XP_DROP,
+                 int const XP_DROP,
                  double damage,
                  int score,
                  Player *player)
@@ -54,7 +54,7 @@ Archer::Archer(/*Charactar*/
                sf::Vector2f positon,
                int attackRange,
                int attackSpeed,
-               int XP_DROP,
+               int const XP_DROP,
                double damage,
                int score,
                Player *player,
@@ -83,7 +83,7 @@ Kaboom::Kaboom(/*Charactar*/
                sf::Vector2f positon,
                int attackRange,
                int attackSpeed,
-               int XP_DROP,
+               int const XP_DROP,
                double damage,
                int score,
                Player *player,

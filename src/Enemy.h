@@ -15,7 +15,7 @@ class Enemy : public Character
           sf::Vector2f positon,
           /*Enemy*/ int attackRange,
           int attackSpeed,
-          int XP_DROP,
+          int const XP_DROP,
           double damage,
           int score,
           Player *player);
@@ -41,7 +41,7 @@ class Enemy : public Character
     int attackRange;
     int attackSpeed;
     int count{attackSpeed};
-    int XP_DROP;
+    int const XP_DROP;
     double damage;
     int score; // inte en privat för olika enyme är vär olika score
     Player *player;
@@ -59,7 +59,7 @@ class Footman : public Enemy
             sf::Vector2f positon,
             /*Enemy*/ int attackRange,
             int attackSpeed,
-            int XP_DROP,
+            int const XP_DROP,
             double damage,
             int score,
             Player *player);
@@ -75,7 +75,7 @@ class Kaboom : public Enemy
            sf::Vector2f positon,
            /*Enemy*/ int attackRange,
            int attackSpeed,
-           int XP_DROP,
+           int const XP_DROP,
            double damage,
            int score,
            Player *player,
@@ -103,7 +103,7 @@ class Archer : public Enemy
            sf::Vector2f positon,
            /*Enemy*/ int attackRange,
            int attackSpeed,
-           int XP_DROP,
+           int const XP_DROP,
            double damage,
            int score,
            Player *player,
