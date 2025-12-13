@@ -1,7 +1,7 @@
 #include "Menus.h"
 
-#include <vector>
 #include <iostream>
+#include <vector>
 
 #include "Highscore.h"
 #include "Leaderboard.h"
@@ -51,11 +51,11 @@ std::vector<ElementsInfo> LeaderboardMenu::createButtons() const
 {
     float const PADDING_TOP{0.35};
     float const PADDING_BOTTOM{0.15};
-    int const MAX_LEADERBOARD_SIZE{5};
+    int const MAX_LEADERBOARD_SIZE{7};
     std::vector<ElementsInfo> elements{};
     auto highscores = Leaderboard::instance()->getLeaderboard(MAX_LEADERBOARD_SIZE);
 
-    ElementsInfo title{"LEADERBOARD | TOP 5", 0.5, 0.1};
+    ElementsInfo title{"LEADERBOARD | TOP 7", 0.5, 0.1};
     elements.push_back(title);
 
     ElementsInfo leaderboardHeader{
@@ -270,7 +270,8 @@ LevelUpMenu::createButtons(std::vector<LevelUpInfo> const &levelUpOptions) const
             levelUpOption.description,
             0.5,
             (((1 - PADDING_TOP - PADDING_BOTTOM) / optionsSize * i) + PADDING_TOP),
-            levelUpOption.onClick, 40};
+            levelUpOption.onClick,
+            40};
         elements.push_back(levelUpButton);
     }
 

@@ -1,7 +1,9 @@
 #include "Leaderboard.h"
 
+#include <algorithm>
 #include <fstream>
 #include <iostream>
+#include <iterator>
 #include <sstream>
 #include <stdexcept>
 
@@ -37,14 +39,17 @@ Leaderboard::Leaderboard(std::string const &leaderboardPath) : highscores{}
 
 void Leaderboard::saveHighscore(std::string const &username, ScoreInfo const &scoreInfo)
 {
-    auto existingHighscore = highscores.find(username);
+    auto existingHighscore =
+        std::find_if(highscores.begin(),
+                     highscores.end(),
+                     [&username](auto &highscore) { return highscore.first == username; });
     if (existingHighscore == highscores.end())
     {
-        highscores.insert({username, scoreInfo});
+        highscores.emplace_back(username, scoreInfo);
     }
     else if (scoreInfo.score > existingHighscore->second.score)
     {
-        highscores.insert_or_assign(username, scoreInfo);
+        existingHighscore->second = scoreInfo;
     }
 }
 
@@ -61,17 +66,14 @@ void Leaderboard::saveLeaderboard(std::string const &leaderboardPath) const
     file.close();
 }
 
-// TODO: sort by total score
-std::map<std::string, ScoreInfo> Leaderboard::getLeaderboard(int maxSize) const
+std::vector<std::pair<std::string, ScoreInfo>> Leaderboard::getLeaderboard(int maxSize)
 {
-    std::map<std::string, ScoreInfo> leaderboard{};
+    std::vector<std::pair<std::string, ScoreInfo>> leaderboard{};
+    std::sort(highscores.begin(),
+              highscores.end(),
+              [](auto &a, auto &b) { return a.second.score > b.second.score; });
+    std::copy_n(highscores.begin(), maxSize, std::back_inserter(leaderboard));
 
-    for (auto it{highscores.begin()};
-         it != highscores.end() && static_cast<int>(leaderboard.size()) < maxSize;
-         ++it)
-    {
-        leaderboard.insert({it->first, it->second});
-    }
     return leaderboard;
 }
 
@@ -94,6 +96,6 @@ void Leaderboard::loadLeaderboard(std::string const &leaderboardPath)
         int enemiesKilled{};
 
         lineStream >> username >> score >> timeSurvived >> enemiesKilled;
-        highscores.insert({username, {score, timeSurvived, enemiesKilled}});
+        highscores.push_back({username, {score, timeSurvived, enemiesKilled}});
     }
 }
