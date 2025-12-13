@@ -24,9 +24,7 @@ class Enemy : public Character
     virtual void attack() = 0;
     std::string getTag();
 
-    void draw(sf::RenderWindow *window)const override;
-    
-    //void move() override;
+    // void move() override;
     void die() override;
     void onCollision(Entity *other) override;
     void onBorderCollision() override;
@@ -35,8 +33,8 @@ class Enemy : public Character
     float calculateDistance();
     sf::Vector2f calculateDirection();
     float calculateRotation();
-    void collisionHandler(Entity* collidingEnemy);
-    
+    void collisionHandler(Entity *other);
+
     void tryAttack(float leng);
     // void calcPath(sf::Vector2f);
     sf::Vector2f oldPosition;
@@ -49,10 +47,8 @@ class Enemy : public Character
     Player *player;
     float rotation;
 
-
   private:
     std::string tag{"enemy"};
-    
 };
 
 class Footman : public Enemy
@@ -69,7 +65,6 @@ class Footman : public Enemy
             Player *player);
     void attack() override;
     void move() override;
-
 };
 
 class Kaboom : public Enemy
@@ -123,7 +118,7 @@ class Archer : public Enemy
 
   private:
     void shoot();
-    float fireRange; 
+    // float fireRange;
     double velocity;
 };
 

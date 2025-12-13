@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "Character.h"
+#include "Entity.h"
 #include "ExperienceManager.h"
 #include "GameState.h"
 #include "StateMachine.h"
@@ -28,7 +29,8 @@ class Player : public Character
            std::function<void(std::vector<LevelUpInfo>)> const &onLevelUp);
     void resetState(sf::Vector2f const &newPosition);
 
-    void draw(sf::RenderWindow *window);
+    void drawInfo(sf::RenderWindow *window);
+
 
     void move() override;
     void updateRotation(sf::RenderWindow *window);
@@ -56,7 +58,6 @@ class Player : public Character
     ExperienceManager expManager;
     WeaponsManager weaponsManager;
     std::function<void(std::vector<LevelUpInfo>)> onLevelUp;
-    void drawInfo(sf::RenderWindow *window);
     void drawBox(sf::RenderWindow *window,
                  sf::RectangleShape &box,
                  float const &boxPosX,
@@ -84,6 +85,8 @@ class Player : public Character
                                         // box
     float static const BOX_WIDHT;
     float static const BOX_HEIGTH;
+
+    // using Character::draw;
 };
 
 #endif /*PLAYER_H*/

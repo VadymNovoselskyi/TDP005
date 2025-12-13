@@ -29,9 +29,10 @@ class Spawner
     double spawnRateIncrease;
     sf::Vector2f spawnPoint;
     double counter;
+    double timeCounter; // resepterat tid föt tillfälet
+    
     Player *player;
 
-    double timeCounter; // resepterat tid föt tillfälet
 
     bool inKaboom;
     bool inArcher;

@@ -151,7 +151,6 @@ void Player::onCollision(Entity *other)
     {
         sf::Sprite::setPosition(oldPosition);
     }
-
 }
 
 void Player::onBorderCollision()
@@ -183,14 +182,6 @@ void Player::die()
     StateMachine::instance()->finishGame();
 }
 
-// methods to visualise hp and xp with boxes
-void Player::draw(sf::RenderWindow *window)
-
-{
-    window->draw(*this);
-    drawInfo(window);
-}
-
 void Player::drawInfo(sf::RenderWindow *window)
 {
     drawBox(window, // curent hp
@@ -207,13 +198,12 @@ void Player::drawInfo(sf::RenderWindow *window)
             BOX_WIDHT * (hp / maxHP),
             BOX_HEIGTH,
             HP_BOX_COLOR);
-            
-            std::cout << "current xp len: " << BOX_WIDHT * expManager.getXpFilled() << std::endl;
+
     drawBox(window,
             xpBox,
             sf::Sprite::getPosition().x - (Window::getWindowWidth() / 2.0) + BOX_OFFSET,
             sf::Sprite::getPosition().y - (Window::getWindowHeight() / 2.0) + XP_BOX_Y_OFFSET,
-            BOX_WIDHT ,
+            BOX_WIDHT,
             BOX_HEIGTH,
             CURRENT_XP_BOX_COLOR);
     drawBox(window,
@@ -222,8 +212,7 @@ void Player::drawInfo(sf::RenderWindow *window)
             sf::Sprite::getPosition().y - (Window::getWindowHeight() / 2.0) + XP_BOX_Y_OFFSET,
             BOX_WIDHT * expManager.getXpFilled(),
             BOX_HEIGTH,
-            XP_BOX_COLOR); // xp background 
-    
+            XP_BOX_COLOR); // xp background
 }
 
 void Player::drawBox(sf::RenderWindow *window,

@@ -91,7 +91,7 @@ void Map::draw(sf::RenderWindow *window) const
     {
         e->draw(window);
     }
-    player->draw(window);
+    player->drawInfo(window);
 }
 
 void Map::addEntity(Entity *e)
