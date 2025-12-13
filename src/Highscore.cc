@@ -1,6 +1,5 @@
 #include "Highscore.h"
 
-#include <iostream>
 #include <stdexcept>
 
 #include "GameState.h"
@@ -19,9 +18,9 @@ Highscore *Highscore::instance()
     return Highscore::instancePtr;
 }
 
-Highscore *Highscore::init(int scorePerFrame)
+Highscore *Highscore::init(int framesPerScore)
 {
-    Highscore::instancePtr = new Highscore(scorePerFrame);
+    Highscore::instancePtr = new Highscore(framesPerScore);
     return Highscore::instancePtr;
 }
 
