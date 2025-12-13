@@ -154,8 +154,7 @@ float Enemy::calculateRotation()
     rotation = rotationRadians * (180 / M_PI) + 90;
     return rotation;
 }
-
-void Enemy::enemyCollision(Entity *other)
+void Enemy::collisionHandler(Entity *other)
 {
     sf::Vector2f diff = sf::Sprite::getPosition() - other->getPosition();
     float lenDistance = std::sqrt(diff.x * diff.x + diff.y * diff.y);
@@ -166,7 +165,7 @@ void Enemy::enemyCollision(Entity *other)
     }
     else
     {
-        direction = sf::Vector2f(1.f, 0.f);
+        direction = sf::Vector2f(1.f, 1.f);
     }
     float push = other->getGlobalBounds().width / 6;
     sf::Sprite::setPosition(sf::Sprite::getPosition() + direction * push);
@@ -187,15 +186,14 @@ void Enemy::onCollision(Entity *other)
     }
     else if (other->getTag() == "enemy")
     {
-        //std::cout << "collided with enemy" << std::endl;
-        auto collidingEnemy = static_cast<Enemy *>(other);
-        enemyCollision(collidingEnemy);
+        // std::cout << "collided with enemy" << std::endl;
+        collisionHandler(other);
     }
-    else if (other->getTag() == "box")
+    else if (other->getTag() == "obstacle")
     {
-        std::cout << "collided with box" << std::endl;
-        enemyCollision(this);
-
+        // std::cout << "collided with box" << std::endl;
+        
+        collisionHandler(this);
         return;
     }
 }
@@ -211,7 +209,7 @@ void Enemy::tryAttack(float len)
     auto p { player -> getTexture()-> getSize()};
     auto e {this -> getTexture()-> getSize()};
 
-    float imageRange{attackRange};
+    float imageRange{static_cast<float>(attackRange)};
     imageRange += sqrt((p.x/2)*(p.x/2)+(p.y/2)*(p.y/2))+sqrt((e.x/2)*(e.x/2)+(e.y/2)*(e.y/2));
 
     count--;
