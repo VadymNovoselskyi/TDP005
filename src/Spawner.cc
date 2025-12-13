@@ -32,7 +32,7 @@ void Spawner::spawnEnemies()
 
         counter = 0;
         timeCounter += 1;
-        incresSpawnRate();
+        increaseSpawnRate();
     }
     else
     {
@@ -51,7 +51,7 @@ void Spawner::newEnmey()
         inArcher = true;
     }
 }
-void Spawner::choseSpawnPos()
+void Spawner::chooseSpawnPos()
 {
     sf::Vector2i mapSize{TileManager::instance()->getMapDimensions()};
     sf::Vector2f playerWindow{player->getPosition()};
@@ -75,7 +75,7 @@ void Spawner::choseSpawnPos()
 
     if (insidaX and insidaY)
     {
-        choseSpawnPos();
+        chooseSpawnPos();
     }
     else
     {
@@ -83,7 +83,7 @@ void Spawner::choseSpawnPos()
     }
 }
 
-void Spawner::incresSpawnRate()
+void Spawner::increaseSpawnRate()
 {
     if (spawnRate > 1)
     {
@@ -93,13 +93,13 @@ void Spawner::incresSpawnRate()
 
 void Spawner::addFootman()
 {
-    choseSpawnPos();
+    chooseSpawnPos();
     double currentHP{100.0};
     int movementSpeed{4};
     sf::Vector2f direction{0, 0};
     int attackRange{10};
     int attackSpeed{10};
-    int XP_DROP{5};
+    int const XP_DROP{5};
     double damage{15};
     int score{2};
     Footman *enemyF = new Footman(currentHP,
@@ -119,13 +119,13 @@ void Spawner::addKaboom()
 {
     if (inKaboom)
     {
-        choseSpawnPos();
+        chooseSpawnPos();
         double currentHP{75.0};
         int movementSpeed{4};
         sf::Vector2f direction{0, 0};
         int attackRange{10};
         int attackSpeed{10};
-        int XP_DROP{10};
+        int const XP_DROP{10};
         double damage{5};
         int score{3};
         double explodeRange{150};
@@ -153,13 +153,13 @@ void Spawner::addArcher()
 {
     if (inArcher)
     {
-        choseSpawnPos();
+        chooseSpawnPos();
         double currentHP{100.0};
         int movementSpeed{2};
         sf::Vector2f direction{0, 0};
         int attackRange{10};
         int attackSpeed{10};
-        int XP_DROP{10};
+        int const XP_DROP{10};
         double damage{5};
         int score{2};
         double velocity{3};

@@ -256,8 +256,8 @@ void LevelUpMenu::createOptions(std::vector<LevelUpInfo> const &levelUpOptions)
 std::vector<ElementsInfo>
 LevelUpMenu::createButtons(std::vector<LevelUpInfo> const &levelUpOptions) const
 {
-    float PADDING_TOP{0.3};
-    float PADDING_BOTTOM{0.1};
+    float const PADDING_TOP{0.3};
+    float const PADDING_BOTTOM{0.1};
     int optionsSize{static_cast<int>(levelUpOptions.size())};
     std::vector<ElementsInfo> elements{static_cast<unsigned long>(optionsSize + 1)};
 

@@ -10,7 +10,7 @@
 class Enemy : public Character
 {
   public:
-    Enemy(/*Charactar*/ double currentHP,
+    Enemy(/*Character*/ double currentHP,
           int movementSpeed,
           sf::Vector2f positon,
           /*Enemy*/ int attackRange,
@@ -54,7 +54,7 @@ class Enemy : public Character
 class Footman : public Enemy
 {
   public:
-    Footman(/*Charactar*/ double currentHp,
+    Footman(/*Character*/ double currentHp,
             int movementSpeed,
             sf::Vector2f positon,
             /*Enemy*/ int attackRange,
@@ -70,7 +70,7 @@ class Footman : public Enemy
 class Kaboom : public Enemy
 {
   public:
-    Kaboom(/*Charactar*/ double currentHp,
+    Kaboom(/*Character*/ double currentHp,
            int movementSpeed,
            sf::Vector2f positon,
            /*Enemy*/ int attackRange,
@@ -98,7 +98,7 @@ class Kaboom : public Enemy
 class Archer : public Enemy
 {
   public:
-    Archer(/*Charactar*/ double currentHp,
+    Archer(/*Character*/ double currentHp,
            int movementSpeed,
            sf::Vector2f positon,
            /*Enemy*/ int attackRange,
@@ -110,11 +110,6 @@ class Archer : public Enemy
            double velocity);
     void attack() override;
     void move() override;
-
-  protected:
-    struct Projectles
-    {
-    };
 
   private:
     void shoot();

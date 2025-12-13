@@ -15,10 +15,10 @@ class Spawner
     void resetState();
 
     void spawnEnemies();
-    void choseSpawnPos();
+    void chooseSpawnPos();
 
   private:
-    void incresSpawnRate();
+    void increaseSpawnRate();
     void newEnmey();
     void addFootman();
     void addKaboom();
@@ -29,8 +29,8 @@ class Spawner
     double spawnRateIncrease;
     sf::Vector2f spawnPoint;
     double counter;
-    double timeCounter; // resepterat tid föt tillfälet
-    
+    double timeCounter;
+
     Player *player;
 
 
