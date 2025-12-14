@@ -49,6 +49,10 @@ void Map::handelUpdate(sf::RenderWindow *window)
     }
 
     player->updateRotation(window);
+    if (TilesManager::instance()->inDangerZone(player))
+    {
+        player->takeDamage(0.2);
+    }
 
     for (auto it1{entities.begin()}; it1 != entities.end(); ++it1) // de som är i loopen är
     // tagen från tdp004 https://www.ida.liu.se/~TDP004/current/sal/slides/tdp004_9.pdf s.20
