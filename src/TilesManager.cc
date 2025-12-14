@@ -145,8 +145,8 @@ void TilesManager::generateTiles(std::string const &tileMapPath)
     // https://stackoverflow.com/questions/12133379/c-using-ifstream-with-getline
     for (std::string line{}; std::getline(file, line);)
     {
-        std::string lineWithBorders{repeat("wall ", wallCount) + repeat("gas ", dangerZoneCount) +
-                                    line + " " + repeat("gas ", dangerZoneCount) +
+        std::string lineWithBorders{repeat("wall ", wallCount) + repeat("dangerTile ", dangerZoneCount) +
+                                    line + " " + repeat("dangerTile ", dangerZoneCount) +
                                     repeat("wall ", wallCount)};
 
         processLine(lineWithBorders, rowIndex);
@@ -174,7 +174,7 @@ void TilesManager::insertDangerZoneRow(int linesCount,
                                        int dangerZoneCount,
                                        int rowIndex)
 {
-    std::string dangerZoneRow{repeat("wall ", wallsCount) + repeat("gas ", dangerZoneCount) +
+    std::string dangerZoneRow{repeat("wall ", wallsCount) + repeat("dangerTile ", dangerZoneCount) +
                               repeat("wall ", wallsCount)};
 
     for (int i{0}; i < linesCount; ++i)
