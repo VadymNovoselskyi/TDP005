@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <iostream>
 
-#include "TileManager.h"
+#include "TilesManager.h"
 #include "Window.h"
 
 Map *Map::instancePtr{nullptr};
@@ -25,7 +25,7 @@ Map *Map::init(Player *player, std::vector<Obstacle *> const &obstacles)
 
 void Map::resetState()
 {
-    auto obstaclesSize{TileManager::instance()->getObstacles().size()};
+    auto obstaclesSize{TilesManager::instance()->getObstacles().size()};
     for (auto it{entities.begin() + obstaclesSize + 1}; it != entities.end(); ++it)
     {
         delete *it;
@@ -47,14 +47,14 @@ void Map::handelUpdate(sf::RenderWindow *window)
     {
         e->move();
     }
+
     player->updateRotation(window);
 
-    // TODO: watching walls and gas is too expensive, come up with other ways to do it
     for (auto it1{entities.begin()}; it1 != entities.end(); ++it1) // de som är i loopen är
     // tagen från tdp004 https://www.ida.liu.se/~TDP004/current/sal/slides/tdp004_9.pdf s.20
 
     {
-        if (TileManager::instance()->outOfBounds(*it1))
+        if (TilesManager::instance()->outOfBorders(*it1))
         {
             (*it1)->onBorderCollision();
         }

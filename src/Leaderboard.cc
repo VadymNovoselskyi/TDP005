@@ -86,7 +86,7 @@ void Leaderboard::loadLeaderboard(std::string const &leaderboardPath)
         throw std::logic_error("Couldn't open the leaderboard file");
     }
 
-    // The loop is kinda taken from TileManager
+    // The loop is kinda taken from TilesManager
     for (std::string line{}; std::getline(file, line, '\n');)
     {
         std::istringstream lineStream{line};

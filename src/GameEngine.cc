@@ -9,7 +9,7 @@
 #include "Menus.h"
 #include "Spawner.h"
 #include "TextureManager.h"
-#include "TileManager.h"
+#include "TilesManager.h"
 #include "Window.h"
 
 int const GameEngine::FPS{60};
@@ -21,7 +21,7 @@ GameEngine::GameEngine() : spawner{}, clock{}
     TextureManager::init();
     Highscore::init(60);
     Leaderboard::init("static/leaderboard.txt");
-    TileManager::init("static/tileMap.txt");
+    TilesManager::init("static/tileMap.txt");
     
     std::vector<Menu *> menus{};
     auto levelUpMenu{new LevelUpMenu()};
@@ -33,7 +33,7 @@ GameEngine::GameEngine() : spawner{}, clock{}
     menus.push_back(levelUpMenu);
     Window::init(menus);
 
-    auto mapDimensions{TileManager::instance()->getMapDimensions()};
+    auto mapDimensions{TilesManager::instance()->getMapDimensions()};
     auto mapCenter{sf::Vector2f{mapDimensions.x / 2.0f, mapDimensions.y / 2.0f}};
 
     Player *player{new Player(100.0,
@@ -43,7 +43,7 @@ GameEngine::GameEngine() : spawner{}, clock{}
                               [levelUpMenu](std::vector<LevelUpInfo> const &levelUpInfo)
                               { levelUpMenu->createOptions(levelUpInfo); })};
 
-    Map::init(player, TileManager::instance()->getObstacles());
+    Map::init(player, TilesManager::instance()->getObstacles());
     spawner = new Spawner(player);
 
     StateMachine::instance()->addListener("onStart",

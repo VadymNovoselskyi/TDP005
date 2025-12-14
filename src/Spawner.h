@@ -6,7 +6,7 @@
 #include "Enemy.h"
 #include "Map.h"
 #include "Player.h"
-#include "TileManager.h"
+#include "TilesManager.h"
 
 class Spawner
 {

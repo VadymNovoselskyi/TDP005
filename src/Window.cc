@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include "Highscore.h"
-#include "TileManager.h"
+#include "TilesManager.h"
 
 int const Window::DEFAULT_WINDOW_WIDTH{1024};
 int const Window::DEFAULT_WINDOW_HEIGHT{768};
@@ -106,7 +106,7 @@ void Window::draw()
 
 {
     window->clear();
-    TileManager::instance()->drawTiles(window);
+    TilesManager::instance()->drawTiles(window);
 
     Map::instance()->draw(window);
     Highscore::instance()->draw(window);

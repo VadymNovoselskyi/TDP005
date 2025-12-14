@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <iostream> // print test
 
-#include "TileManager.h"
+#include "TilesManager.h"
 #include "Window.h"
 
 Spawner::Spawner(Player *player)
@@ -53,7 +53,7 @@ void Spawner::newEnmey()
 }
 void Spawner::chooseSpawnPos()
 {
-    sf::Vector2i mapSize{TileManager::instance()->getMapDimensions()};
+    sf::Vector2i mapSize{TilesManager::instance()->getMapDimensions()};
     sf::Vector2f playerWindow{player->getPosition()};
 
     float randomX =
