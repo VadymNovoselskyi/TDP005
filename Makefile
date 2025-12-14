@@ -1,3 +1,5 @@
+# The make file wasn't done by us
+
 CXX = g++
 CXXFLAGS = -g -std=c++17 -Wall -Wextra -MMD -MP
 LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
