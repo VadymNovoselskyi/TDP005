@@ -3,6 +3,8 @@
 #include <iostream>
 #include <vector>
 
+#include "Highscore.h"
+#include "Leaderboard.h"
 #include "Menu.h"
 #include "StateMachine.h"
 
@@ -19,19 +21,65 @@ std::vector<ElementsInfo> StartMenu::createButtons() const
 {
     std::vector<ElementsInfo> elements{};
 
-    ElementsInfo title{"GAME NAME", 0.5, 0.1, std::nullopt};
+    ElementsInfo title{"GAME NAME", 0.5, 0.1};
     elements.push_back(title);
 
     ElementsInfo startButton{
         "START", 0.5, 0.4, []() { StateMachine::instance()->chooseUsername(); }};
     elements.push_back(startButton);
 
-    ElementsInfo rankingsButton{"RANKINGS", 0.5, 0.6, []() {}};
-    // "RANKINGS", 0.5, 0.4, []() { StateMachine::instance()->startGame(); }};
+    ElementsInfo rankingsButton{
+        "RANKINGS", 0.5, 0.6, []() { StateMachine::instance()->openLeaderboard(); }};
     elements.push_back(rankingsButton);
 
     ElementsInfo exitButton{"EXIT", 0.5, 0.8, []() { StateMachine::instance()->exitGame(); }};
     elements.push_back(exitButton);
+
+    return elements;
+}
+
+// Leaderboard menu
+LeaderboardMenu::LeaderboardMenu()
+    : Menu(createButtons(), StateMachine::instance()->state() == GameState::LEADERBOARD)
+{
+    StateMachine::instance()->addListener("LeaderboardMenu",
+                                          [this](GameState gameState)
+                                          { setIsOpen(gameState == GameState::LEADERBOARD); });
+}
+
+std::vector<ElementsInfo> LeaderboardMenu::createButtons() const
+{
+    float const PADDING_TOP{0.35};
+    float const PADDING_BOTTOM{0.15};
+    int const MAX_LEADERBOARD_SIZE{7};
+    std::vector<ElementsInfo> elements{};
+    auto highscores = Leaderboard::instance()->getLeaderboard(MAX_LEADERBOARD_SIZE);
+
+    ElementsInfo title{"LEADERBOARD | TOP 7", 0.5, 0.1};
+    elements.push_back(title);
+
+    ElementsInfo leaderboardHeader{
+        "USERNAME | SCORE | TIME SURVIVED | ENEMIES KILLED", 0.5, 0.25, std::nullopt, 28};
+    elements.push_back(leaderboardHeader);
+
+    int index{0};
+    for (auto &[username, scoreInfo] : highscores)
+    {
+        ElementsInfo leaderboardItem{
+            username + " | " + std::to_string(scoreInfo.score) + " | " +
+                std::to_string(scoreInfo.timeSurvived) + " | " +
+                std::to_string(scoreInfo.enemiesKilled),
+            0.5,
+            (((1 - PADDING_TOP - PADDING_BOTTOM) / static_cast<int>(highscores.size()) * index) +
+             PADDING_TOP),
+            std::nullopt,
+            38};
+        elements.push_back(leaderboardItem);
+        index++;
+    }
+
+    ElementsInfo backButton{"BACK", 0.5, 0.9, []() { StateMachine::instance()->openStartMenu(); }};
+    elements.push_back(backButton);
 
     return elements;
 }
@@ -56,13 +104,25 @@ std::vector<ElementsInfo> ChooseNameMenu::createButtons(std::string const &usern
 {
     std::vector<ElementsInfo> elements{};
 
-    ElementsInfo title{"CHOOSE YOUR USERNAME", 0.5, 0.1, std::nullopt};
+    ElementsInfo title{"CHOOSE YOUR USERNAME", 0.5, 0.1};
     elements.push_back(title);
 
-    ElementsInfo nameField{username, 0.5, 0.4, std::nullopt};
+    ElementsInfo nameField{username, 0.5, 0.4};
     elements.push_back(nameField);
 
-    ElementsInfo submitButton{"SUBMIT", 0.5, 0.6, []() { StateMachine::instance()->startGame(); }};
+    ElementsInfo submitButton{"SUBMIT",
+                              0.5,
+                              0.6,
+                              [this]()
+                              {
+                                  if (this->username.length() < 1)
+                                  {
+                                      return;
+                                  }
+
+                                  Highscore::instance()->setUsername(this->username);
+                                  StateMachine::instance()->startGame();
+                              }};
     elements.push_back(submitButton);
 
     return elements;
@@ -80,7 +140,7 @@ bool ChooseNameMenu::handleEvent(sf::Event event)
     // Only add the ASCII chars, seems good enough for now
     // The unicode values are taken from https://en.wikipedia.org/wiki/List_of_Unicode_characters
     {
-        if (event.text.unicode <= 126 && event.text.unicode >= 32 && username.length() < 20)
+        if (event.text.unicode <= 126 && event.text.unicode >= 33 && username.length() < 16)
         {
             username += event.text.unicode;
             Menu::setButtons(createButtons(username));
@@ -113,7 +173,7 @@ std::vector<ElementsInfo> PauseMenu::createButtons() const
 {
     std::vector<ElementsInfo> elements{};
 
-    ElementsInfo title{"GAME PAUSED", 0.5, 0.1, std::nullopt};
+    ElementsInfo title{"GAME PAUSED", 0.5, 0.1};
     elements.push_back(title);
 
     ElementsInfo continueButton{
@@ -162,7 +222,7 @@ std::vector<ElementsInfo> GameOverMenu::createButtons() const
 {
     std::vector<ElementsInfo> elements{};
 
-    ElementsInfo title{"GAME OVER", 0.5, 0.1, std::nullopt};
+    ElementsInfo title{"GAME OVER", 0.5, 0.1};
     elements.push_back(title);
 
     ElementsInfo restartButton{
@@ -196,12 +256,12 @@ void LevelUpMenu::createOptions(std::vector<LevelUpInfo> const &levelUpOptions)
 std::vector<ElementsInfo>
 LevelUpMenu::createButtons(std::vector<LevelUpInfo> const &levelUpOptions) const
 {
-    float PADDING_TOP{0.3};
-    float PADDING_BOTTOM{0.2};
+    float const PADDING_TOP{0.3};
+    float const PADDING_BOTTOM{0.1};
     int optionsSize{static_cast<int>(levelUpOptions.size())};
     std::vector<ElementsInfo> elements{static_cast<unsigned long>(optionsSize + 1)};
 
-    ElementsInfo title{"Choose your level up", 0.5, 0.1, std::nullopt};
+    ElementsInfo title{"Choose your level up", 0.5, 0.1};
     elements.push_back(title);
     for (int i{0}; i < optionsSize; ++i)
     {
@@ -210,7 +270,8 @@ LevelUpMenu::createButtons(std::vector<LevelUpInfo> const &levelUpOptions) const
             levelUpOption.description,
             0.5,
             (((1 - PADDING_TOP - PADDING_BOTTOM) / optionsSize * i) + PADDING_TOP),
-            levelUpOption.onClick};
+            levelUpOption.onClick,
+            40};
         elements.push_back(levelUpButton);
     }
 

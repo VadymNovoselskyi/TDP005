@@ -19,6 +19,7 @@ class StateMachine
     GameState state() const;
 
     void openStartMenu();
+    void openLeaderboard();
     void chooseUsername();
     void startGame();
     void setInGame();

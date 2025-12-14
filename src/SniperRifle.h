@@ -8,6 +8,8 @@ public:
     SniperRifle();
 private:
     void shoot() override;
+    void calculateRotation(Entity * closeEnemy);
+    double bulletRotation;
     /* data */
 };
 

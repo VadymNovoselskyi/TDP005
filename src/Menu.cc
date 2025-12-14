@@ -5,27 +5,15 @@
 #include "Window.h"
 
 Menu::Menu(std::vector<ElementsInfo> const &elements, bool windowOpen)
-    : defaultFont{}, buttonInfos{}, textElements{}, buttonElements{}, menuOpen{windowOpen},
-      focusedButtonIdx{0}
+    : defaultFont{}, buttonInfos{}, textElements{}, buttonElements{},
+      menuCenter{Window::DEFAULT_WINDOW_WIDTH / 2.0F, Window::DEFAULT_WINDOW_HEIGHT / 2.0F},
+      menuOpen{windowOpen}, focusedButtonIdx{0}
 {
     defaultFont.loadFromFile("static/Orbitron-Bold.ttf");
     setButtons(elements);
 }
 
-Menu::~Menu()
-{
-    // std::cout << "Running the menu destructor" << std::endl;
-    // for (auto buttonEl : buttonElements)
-    // {
-    //     delete buttonEl;
-    // }
-    // for (auto textEl : textElements)
-    // {
-    //     delete textEl;
-    // }
-}
-
-void Menu::draw(sf::RenderWindow *window) const
+void Menu::draw(sf::RenderWindow *window)
 {
     // std::cout << "Running the draw loop in Menu" << std::endl;
     if (!menuOpen)
@@ -33,14 +21,21 @@ void Menu::draw(sf::RenderWindow *window) const
         return;
     }
 
-    for (auto const &buttonEl : buttonElements)
+    auto viewCenter{window->getView().getCenter()};
+    sf::Vector2f centerOffset{viewCenter.x - menuCenter.x, viewCenter.y - menuCenter.y};
+
+    for (auto &buttonEl : buttonElements)
     {
+        buttonEl.move(centerOffset);
         window->draw(buttonEl);
     }
-    for (auto const &textEl : textElements)
+    for (auto &textEl : textElements)
     {
+        textEl.move(centerOffset);
         window->draw(textEl);
     }
+
+    menuCenter = viewCenter;
 }
 
 bool Menu::handleEvent(sf::Event event)
@@ -86,14 +81,16 @@ void Menu::setButtons(std::vector<ElementsInfo> const &elements)
     buttonElements.clear();
     textElements.clear();
     buttonInfos.clear();
+    menuCenter = {Window::DEFAULT_WINDOW_WIDTH / 2.0F, Window::DEFAULT_WINDOW_HEIGHT / 2.0F};
 
     for (auto &elementInfo : elements)
     {
-        sf::Text element{sf::Text(elementInfo.text, defaultFont, 50)};
+        sf::Text element{
+            sf::Text(elementInfo.text, defaultFont, elementInfo.fontSize.value_or(50))};
         auto textRect{element.getGlobalBounds()};
         element.setOrigin(textRect.width / 2, textRect.height / 2);
-        element.setPosition((Window::WINDOW_WIDTH * elementInfo.xAlignn),
-                            (Window::WINDOW_HEIGHT * elementInfo.yAlign));
+        element.setPosition((Window::getWindowWidth() * elementInfo.xAlignn),
+                            (Window::getWindowHeight() * elementInfo.yAlign));
 
         element.setOutlineColor(sf::Color::Green);
         element.setOutlineThickness(4.0);

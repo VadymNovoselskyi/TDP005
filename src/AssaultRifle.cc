@@ -5,10 +5,11 @@
 AssaultRifle::AssaultRifle()
     : Weapon("AR",
              "Shoot kinda fast with a mediumlow damag",
-             /*dmg*/ 5.5f,
+             /*dmg*/ 7.5f,
              /*attackSpeed (shoots per sec)*/ 10,
-             Rarity::BASIC,
-             /*bullet speed*/ 80)
+             /*bullet speed*/ 80,
+             /*bulletHP*/ 1,
+             Rarity::BASIC)
 {
 }
 void AssaultRifle::tryToShoot()
@@ -26,5 +27,7 @@ void AssaultRifle::shoot()
     Map::instance()->addEntity(new Projectile{Transformable::getPosition(),
                                               Transformable::getRotation(),
                                               speed,
-                                              damage * damageMultiplication});
+                                              damage * damageMultiplication,
+                                              bulletHP,
+                                              "AR_bullet.png"});
 }

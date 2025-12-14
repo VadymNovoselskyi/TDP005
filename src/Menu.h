@@ -8,21 +8,23 @@
 
 #include "GameState.h"
 
+// Learned about optionals on cpp
 struct ElementsInfo
 {
     sf::String text;
     float xAlignn;
     float yAlign;
-    std::optional<std::function<void()>> onClick;
+    std::optional<std::function<void()>> onClick = std::nullopt;
+    std::optional<int> fontSize = std::nullopt;
 };
 
 class Menu
 {
   public:
     Menu(std::vector<ElementsInfo> const &elements, bool windowOpen);
-    virtual ~Menu();
+    virtual ~Menu() = default;
 
-    void draw(sf::RenderWindow *window) const;
+    void draw(sf::RenderWindow *window);
     virtual bool handleEvent(sf::Event event);
     bool isOpen() const;
 
@@ -41,6 +43,7 @@ class Menu
     std::vector<ElementsInfo> buttonInfos;
     std::vector<sf::Text> textElements;
     std::vector<sf::Text> buttonElements;
+    sf::Vector2f menuCenter;
 
     bool menuOpen;
     int focusedButtonIdx;

@@ -4,52 +4,59 @@
 #include <vector>
 
 #include "ExperienceManager.h"
+#include "Highscore.h"
+#include "Leaderboard.h"
 #include "Menus.h"
 #include "Spawner.h"
 #include "TextureManager.h"
-#include "TileManager.h"
-#include "WeaponsManager.h"
+#include "TilesManager.h"
+#include "Window.h"
 
 int const GameEngine::FPS{60};
 sf::Time const GameEngine::UPDATE_INTERVAL{sf::milliseconds(1000.0 / GameEngine::FPS)};
 
-GameEngine::GameEngine() : window{}, spawner{}, clock{}
+GameEngine::GameEngine() : spawner{}, clock{}
 {
-    // Init the StateMachine, TextureManager, Map and the menus
     StateMachine::init();
     TextureManager::init();
-    TileManager::init("static/tileMap.txt");
-
+    Highscore::init(60);
+    Leaderboard::init("static/leaderboard.txt");
+    TilesManager::init("static/tileMap.txt");
+    
     std::vector<Menu *> menus{};
     auto levelUpMenu{new LevelUpMenu()};
     menus.push_back(new StartMenu());
+    menus.push_back(new LeaderboardMenu());
     menus.push_back(new ChooseNameMenu());
     menus.push_back(new PauseMenu());
     menus.push_back(new GameOverMenu());
     menus.push_back(levelUpMenu);
+    Window::init(menus);
 
-    auto mapDimensions{TileManager::instance()->getMapDimensions()};
+    auto mapDimensions{TilesManager::instance()->getMapDimensions()};
+    auto mapCenter{sf::Vector2f{mapDimensions.x / 2.0f, mapDimensions.y / 2.0f}};
+
     Player *player{new Player(100.0,
                               10,
-                              sf::Vector2f{static_cast<float>(mapDimensions.x / 2.0),
-                                           static_cast<float>(mapDimensions.y / 2.0)},
-                              "Player",
-                              0,
+                              mapCenter,
+                              "player",
                               [levelUpMenu](std::vector<LevelUpInfo> const &levelUpInfo)
                               { levelUpMenu->createOptions(levelUpInfo); })};
 
-    Map::init(player, TileManager::instance()->getObstacles());
-    spawner = {new Spawner(player)};
+    Map::init(player, TilesManager::instance()->getObstacles());
+    spawner = new Spawner(player);
 
-    // Init the menu and add exit listener
-    window = new Window(menus);
-
-    // TODO: reset the game state onStart etc
     StateMachine::instance()->addListener("onStart",
-                                          [](GameState gameState)
+                                          [player, mapCenter, this](GameState gameState)
                                           {
                                               if (gameState == GameState::STARTING_GAME)
                                               {
+                                                  player->resetState(mapCenter);
+                                                  spawner->resetState();
+                                                  Map::instance()->resetState();
+                                                  Highscore::instance()->saveHighscore();
+                                                  Highscore::instance()->resetState();
+
                                                   StateMachine::instance()->setInGame();
                                               }
                                           });
@@ -62,40 +69,41 @@ GameEngine::GameEngine() : window{}, spawner{}, clock{}
                                               }
                                           });
     StateMachine::instance()->addListener("onExit",
-                                          [this](GameState gameState)
+                                          [](GameState gameState)
                                           {
                                               if (gameState == GameState::EXIT)
                                               {
-                                                  window->closeWindow();
+                                                  Highscore::instance()->saveHighscore();
+                                                  Leaderboard::instance()->saveLeaderboard(
+                                                      "static/leaderboard.txt");
+                                                  Window::instance()->closeWindow();
                                               }
                                           });
-
-    Map::instance()->addEntity(player);
 }
 
 GameEngine::~GameEngine()
 {
+    Map::deleteInstance();
     StateMachine::deleteInstance();
     TextureManager::deleteInstance();
-    delete window;
+
     delete spawner;
-    window = nullptr;
     spawner = nullptr;
 }
 
 void GameEngine::run()
 {
-    while (!window->isClosed())
+    while (!Window::instance()->isClosed())
     {
         clock.restart();
-        window->handleEvents();
+        Window::instance()->handleEvents();
 
         if (StateMachine::instance()->state() == GameState::IN_GAME)
         {
-            spawner->spwanEnemies();
-            Map::instance()->handelUpdate(window->getRenderWindow());
+            spawner->spawnEnemies();
+            Map::instance()->handelUpdate(Window::instance()->getRenderWindow());
         }
-        window->draw();
+        Window::instance()->draw();
 
         sf::Time delta{UPDATE_INTERVAL - clock.getElapsedTime()};
         // std::cout << "FPS: " << (1000.0 / delta.asMilliseconds()) << std::endl;

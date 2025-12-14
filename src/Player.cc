@@ -2,10 +2,11 @@
 
 #include <iostream>
 
-#include "GameState.h"
 #include "StateMachine.h"
 #include "TextureManager.h"
+#include "WeaponsManager.h"
 #include "Window.h"
+
 // variables that wont change and is used to make code easier to read
 float const Player::BOX_OFFSET{18};
 float const Player::XP_BOX_Y_OFFSET{78};
@@ -22,28 +23,28 @@ Player::Player(double startHP,
                int startSpeed,
                sf::Vector2f const &position,
                std::string const &tag,
-               int levels,
                std::function<void(std::vector<LevelUpInfo>)> const &onLevelUp)
-    : Character(tag, startHP, startSpeed, position), startHP{startHP}, hp{startHP}, maxHP{startHP},
-      startSpeed{startSpeed}, movementSpeed{startSpeed}, damageMultiplier{1}, rotation{},
-      levels{levels}, onLevelUp{onLevelUp}, oldPosition{position}, expManager{}, weaponManager{}
+    : Character(tag, startHP, startSpeed, position), START_HP{startHP}, maxHP{startHP},
+      START_SPEED{startSpeed}, damageMultiplier{1}, rotation{}, oldPosition{position}, expManager{},
+      weaponsManager{}, onLevelUp{onLevelUp}
 {
     auto texture{TextureManager::instance()->getTexture("player.png")};
     auto playerSize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
     sf::Sprite::setOrigin(playerSize.x / 2.0, playerSize.y / 2.0);
-    // sets the start value for player stats
 
+    // Set the start value for player stats
     expManager.setCallbacks({{LevelUpChoice::HP,
                               [this]()
                               {
-                                  increaseMaxHP(100);
+                                  increaseMaxHP(60);
+                                  heal(40);
                                   StateMachine::instance()->continueGame();
                               }},
                              {LevelUpChoice::SPEED,
                               [this]()
                               {
-                                  increaseSpeed(5);
+                                  increaseSpeed(3);
                                   StateMachine::instance()->continueGame();
                               }},
                              {LevelUpChoice::DAMAGE,
@@ -55,10 +56,27 @@ Player::Player(double startHP,
                              {LevelUpChoice::WEAPON,
                               [this]()
                               {
-                                  weaponManager.receiveRandomWeapon();
+                                  weaponsManager.receiveRandomWeapon();
                                   StateMachine::instance()->continueGame();
                               }}});
-    weaponManager.receiveNewWeapon("AR");
+    weaponsManager.receiveNewWeapon("AR");
+}
+
+void Player::resetState(sf::Vector2f const &newPosition)
+{
+    Character::hp = START_HP;
+    maxHP = START_HP;
+    Character::movementSpeed = START_SPEED;
+
+    rotation = 0;
+    damageMultiplier = 1;
+
+    Entity::setPosition(newPosition);
+    oldPosition = newPosition;
+
+    expManager.resetState();
+    weaponsManager.resetState();
+    weaponsManager.receiveNewWeapon("AR");
 }
 
 void Player::move()
@@ -94,11 +112,8 @@ void Player::move()
 
     sf::Sprite::move(sf::Vector2f(direction.x * movementSpeed, direction.y * movementSpeed));
 
-    weaponManager.setWeaponsPos(sf::Sprite::getPosition());
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-    {
-        weaponManager.shoot();
-    }
+    weaponsManager.setWeaponsPos(sf::Sprite::getPosition());
+    weaponsManager.shoot();
 }
 
 void Player::updateRotation(sf::RenderWindow *window)
@@ -108,12 +123,12 @@ void Player::updateRotation(sf::RenderWindow *window)
     // enhetscirklen:
     // https://www.matteboken.se/lektioner/gymnasiet/matte-fortsattning-niva-1/trigonometri/enhetscirkeln#!/
     double rotationRadians =
-        std::atan2((sf::Mouse::getPosition(*window).y - (Window::WINDOW_HEIGHT / 2)),
-                   (sf::Mouse::getPosition(*window).x - (Window::WINDOW_WIDTH / 2)));
+        std::atan2((sf::Mouse::getPosition(*window).y - (Window::getWindowHeight() / 2)),
+                   (sf::Mouse::getPosition(*window).x - (Window::getWindowWidth() / 2)));
     rotation = rotationRadians * (180 / M_PI) + 90; // transform radians to rotation
 
     sf::Sprite::setRotation(rotation);
-    weaponManager.setWeaponsRotation(sf::Sprite::getRotation());
+    weaponsManager.setWeaponsRotation(sf::Sprite::getRotation());
 }
 
 void Player::gainXp(int xp)
@@ -124,22 +139,23 @@ void Player::gainXp(int xp)
         return;
     }
 
-    onLevelUp(expManager.chooseLevelUps());
+    onLevelUp(expManager.chooseLevelUps(weaponsManager.canGetNewWeapon()));
     StateMachine::instance()->startLevelUp();
 }
 
-void Player::onCollision(std::string const &other)
+void Player::onCollision(Entity *other)
 {
-    if (other == "enemy")
-    {
-        sf::Sprite::setPosition(oldPosition);
-        takeDamage(5);
-    }
-    if (other == "box")
+    if (other->getTag() == "obstacle")
     {
         sf::Sprite::setPosition(oldPosition);
     }
 }
+
+void Player::onBorderCollision()
+{
+    sf::Sprite::setPosition(oldPosition);
+}
+
 // methods to increase amount
 void Player::heal(double amount)
 {
@@ -161,64 +177,49 @@ void Player::increaseDamageMultiplyer(double amount)
 
 void Player::die()
 {
-    // reset xp, hp ,damage
     StateMachine::instance()->finishGame();
-    sf::Sprite::move(sf::Vector2f(Window::WINDOW_WIDTH / 2, Window::WINDOW_HEIGHT / 2));
-    hp = startHP;
-    maxHP = startHP;
-    movementSpeed = startSpeed;
-    // ExperienceManager::resetxp();
-    // waiting for method to remove every weapon exept start wepon
-}
-// methods to draw boxes
-void Player::draw(sf::RenderWindow *window) const
-{
-    window->draw(*this);
-    drawInfo(window);
 }
 
-void Player::drawInfo(sf::RenderWindow *window) const
+void Player::drawInfo(sf::RenderWindow *window)
 {
-    drawBox(window, // hp boxbackground -- fixa static const för ofset, fixa sf
+    drawBox(window, // curent hp
             HPBox,
-            sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2.0) + BOX_OFFSET,  // x
-            sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2.0) + BOX_OFFSET, // y
-            BOX_WIDHT,                                                                // lenght
-            BOX_HEIGTH,                                                               // widht
-            HP_BOX_COLOR);                                                            // color
+            sf::Sprite::getPosition().x - (Window::getWindowWidth() / 2.0) + BOX_OFFSET,  // x
+            sf::Sprite::getPosition().y - (Window::getWindowHeight() / 2.0) + BOX_OFFSET, // y
+            BOX_WIDHT,                                                                    // widht
+            BOX_HEIGTH,                                                                   // heiht
+            CURRENT_HP_BOX_COLLOR);                                                       // color
     drawBox(window,
             currentHPBox,
-            sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2.0) + BOX_OFFSET,
-            sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2.0) + BOX_OFFSET,
+            sf::Sprite::getPosition().x - (Window::getWindowWidth() / 2.0) + BOX_OFFSET,
+            sf::Sprite::getPosition().y - (Window::getWindowHeight() / 2.0) + BOX_OFFSET,
             BOX_WIDHT * (hp / maxHP),
             BOX_HEIGTH,
-            CURRENT_HP_BOX_COLLOR); // curent hp
+            HP_BOX_COLOR);
 
     drawBox(window,
             xpBox,
-            sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2.0) + BOX_OFFSET,
-            sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2.0) + XP_BOX_Y_OFFSET,
-            BOX_WIDHT,
-            BOX_HEIGTH,
-            XP_BOX_COLOR); // xp background
-
-    drawBox(window,
-            currentXPBox,
-            sf::Sprite::getPosition().x - (Window::WINDOW_WIDTH / 2.0) + BOX_OFFSET,
-            sf::Sprite::getPosition().y - (Window::WINDOW_HEIGHT / 2.0) + XP_BOX_Y_OFFSET,
+            sf::Sprite::getPosition().x - (Window::getWindowWidth() / 2.0) + BOX_OFFSET,
+            sf::Sprite::getPosition().y - (Window::getWindowHeight() / 2.0) + XP_BOX_Y_OFFSET,
             BOX_WIDHT,
             BOX_HEIGTH,
             CURRENT_XP_BOX_COLOR);
-    // current xp -- if sats om xp 0 = 0 - sätt längd 0 annars räkna ut
+    drawBox(window,
+            currentXPBox,
+            sf::Sprite::getPosition().x - (Window::getWindowWidth() / 2.0) + BOX_OFFSET,
+            sf::Sprite::getPosition().y - (Window::getWindowHeight() / 2.0) + XP_BOX_Y_OFFSET,
+            BOX_WIDHT * expManager.getXpFilled(),
+            BOX_HEIGTH,
+            XP_BOX_COLOR); // xp background
 }
 
 void Player::drawBox(sf::RenderWindow *window,
-                     sf::RectangleShape box,
-                     float boxPosX,
-                     float boxPosY,
-                     float boxWidth,
-                     float boxheight,
-                     sf::Color boxColor) const
+                     sf::RectangleShape &box,
+                     float const &boxPosX,
+                     float const &boxPosY,
+                     float const &boxWidth,
+                     float const &boxheight,
+                     sf::Color const &boxColor)
 
 {
     box.setSize(sf::Vector2f(boxWidth, boxheight));

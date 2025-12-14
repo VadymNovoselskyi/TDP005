@@ -1,11 +1,12 @@
-#include "Projectile.h"
+#include "EnemyProjectile.h"
 
-#include <iostream>
+// #include <iostream>
 
 #include "Enemy.h"
 #include "Map.h"
 
-Projectile::Projectile(
+
+EnemyProjectile::EnemyProjectile(
     sf::Vector2f const &pos, double rotation, double velocity, double damage, double hp, std::string pngName)
     : Entity(std::string{"projectile"}, pos, hp), velocity{velocity}, damage{damage},
       texture{TextureManager::instance()->getTexture(pngName)}
@@ -15,21 +16,21 @@ Projectile::Projectile(
     sf::Sprite::setOrigin(sf::Sprite::getScale().x / 2, sf::Sprite::getScale().y / 2);
 }
 
-void Projectile::onCollision(Entity *other)
+void EnemyProjectile::onCollision(Entity *other)
 {
-    if (other->getTag() == "enemy")
+    if (other->getTag() == "player")
     {
         other->takeDamage(damage);
         takeDamage();
     }
 }
 
-void Projectile::onBorderCollision()
+void EnemyProjectile::onBorderCollision()
 {
     Map::instance()->removeEntity(this);
 }
 
-void Projectile::move()
+void EnemyProjectile::move()
 {
     sf::Vector2f dir{
         static_cast<float>(std::cos((sf::Sprite::getRotation() + 90) * M_PI / 180.0f)),
@@ -38,12 +39,12 @@ void Projectile::move()
     sf::Sprite::Transformable::move(-dir.x * velocity, -dir.y * velocity);
 }
 
-void Projectile::draw(sf::RenderWindow *window) const
+void EnemyProjectile::draw(sf::RenderWindow *window) const
 {
     window->draw(*this);
 }
 
-void Projectile::takeDamage(double damage)
+void EnemyProjectile::takeDamage(double damage)
 {
     hp -= damage;
     if (hp <= 0)
@@ -52,7 +53,7 @@ void Projectile::takeDamage(double damage)
     }
 }
 
-void Projectile::die()
+void EnemyProjectile::die()
 {
     Map::instance()->removeEntity(this);
 }

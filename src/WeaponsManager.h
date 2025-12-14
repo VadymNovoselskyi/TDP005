@@ -20,6 +20,8 @@ class WeaponsManager
     void receiveNewWeapon(std::string const &name);
     void receiveRandomWeapon();
 
+    bool canGetNewWeapon() const;
+
   private:
     void equipWeapon(Weapon *weapon);
 

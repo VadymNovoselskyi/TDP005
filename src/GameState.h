@@ -12,7 +12,7 @@ enum GameState
     GAME_PAUSED,
     GAME_OVER,
     EXIT,
-    // LEADERBOARD,
+    LEADERBOARD,
     // SETTINGS
 };
 
