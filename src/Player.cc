@@ -33,19 +33,18 @@ Player::Player(double startHP,
     sf::Sprite::setTexture(*texture);
     sf::Sprite::setOrigin(playerSize.x / 2.0, playerSize.y / 2.0);
 
-    // sets the start value for player stats
-
+    // Set the start value for player stats
     expManager.setCallbacks({{LevelUpChoice::HP,
                               [this]()
                               {
-                                  increaseMaxHP(100);
-                                  heal(50);
+                                  increaseMaxHP(60);
+                                  heal(40);
                                   StateMachine::instance()->continueGame();
                               }},
                              {LevelUpChoice::SPEED,
                               [this]()
                               {
-                                  increaseSpeed(5);
+                                  increaseSpeed(3);
                                   StateMachine::instance()->continueGame();
                               }},
                              {LevelUpChoice::DAMAGE,

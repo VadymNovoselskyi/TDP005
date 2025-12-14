@@ -30,14 +30,12 @@ void ExperienceManager::resetState()
 
 bool ExperienceManager::gainXp(int gainedXP)
 {
-    std::cout << "gained xp+ " << gainedXP << std::endl;
     currentXp += gainedXP;
     if (currentXp >= LEVELS_PROGRESSION.at(level))
     {
         level++;
         return true;
     }
-    std::cout << "current xp+ " << currentXp << std::endl;
     return false;
 }
 

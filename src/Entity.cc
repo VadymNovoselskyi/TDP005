@@ -23,6 +23,7 @@ void Entity::takeDamage(double damage)
     hp -= damage;
     if (hp <= 0)
     {
+        hp = 0;
         die();
     }
 }
