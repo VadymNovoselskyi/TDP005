@@ -19,7 +19,6 @@ class Highscore
     
     void saveHighscore() const;
     void resetState();
-    void setUsername(std::string const &username);
     
     void draw(sf::RenderWindow *window);
     void addKillScore(int extraScore);
