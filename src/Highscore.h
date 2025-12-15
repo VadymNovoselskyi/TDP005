@@ -25,7 +25,7 @@ class Highscore
     void addKillScore(int extraScore);
 
   private:
-    Highscore(int scorePerFrame);
+    Highscore(int framesPerScore);
     static Highscore *instancePtr;
 
     void tickSurvivalScore();

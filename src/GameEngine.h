@@ -18,7 +18,6 @@ class GameEngine
     
     int static const FPS;
   private:
-    Window *window;
     Spawner *spawner;
     sf::Clock clock;
     

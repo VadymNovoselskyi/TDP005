@@ -6,7 +6,7 @@
 #include "Enemy.h"
 #include "Map.h"
 #include "Player.h"
-#include "TileManager.h"
+#include "TilesManager.h"
 
 class Spawner
 {
@@ -15,10 +15,10 @@ class Spawner
     void resetState();
 
     void spawnEnemies();
-    void choseSpawnPos();
+    void chooseSpawnPos();
 
   private:
-    void incresSpawnRate();
+    void increaseSpawnRate();
     void newEnmey();
     void addFootman();
     void addKaboom();
@@ -29,9 +29,10 @@ class Spawner
     double spawnRateIncrease;
     sf::Vector2f spawnPoint;
     double counter;
+    double timeCounter;
+
     Player *player;
 
-    double timeCounter; // resepterat tid föt tillfälet
 
     bool inKaboom;
     bool inArcher;

@@ -1,18 +1,16 @@
 #include "ExperienceManager.h"
 
-#include <algorithm>
 #include <iostream>
 
 std::vector<int> const ExperienceManager::LEVELS_PROGRESSION{
-
-    50, 100, 250, 500, 800, 1500, 2400, 3500, 999999999};
+    25, 75, 200, 400, 700, 1300, 2400, 3500, 999999999};
 
 ExperienceManager::ExperienceManager() : levelUps{}, currentXp{0}, level{0}
 {
     levelUps = {{LevelUpChoice::HP, "Buff your HP stats", []() {}},
                 {LevelUpChoice::SPEED, "Buff your SPEED stats", []() {}},
                 {LevelUpChoice::DAMAGE, "Buff your DAMAGE stats", []() {}},
-                {LevelUpChoice::WEAPON, "Choose a WEAPON", []() {}}};
+                {LevelUpChoice::WEAPON, "Choose a random WEAPON", []() {}}};
 }
 
 void ExperienceManager::setCallbacks(
@@ -32,20 +30,20 @@ void ExperienceManager::resetState()
 
 bool ExperienceManager::gainXp(int gainedXP)
 {
-    std::cout << "gained xp+ " << gainedXP << std::endl;
     currentXp += gainedXP;
     if (currentXp >= LEVELS_PROGRESSION.at(level))
     {
         level++;
         return true;
     }
-    std::cout << "current xp+ " << currentXp << std::endl;
     return false;
 }
 
-std::vector<LevelUpInfo> ExperienceManager::chooseLevelUps() const
+std::vector<LevelUpInfo> ExperienceManager::chooseLevelUps(bool weaponsAvailable) const
 {
-    return levelUps;
+    // This asumes the weapon level up always lies last (not best, but kinda ok)
+    return weaponsAvailable ? levelUps
+                            : std::vector<LevelUpInfo>{levelUps.begin(), levelUps.end() - 1};
 }
 
 double ExperienceManager::getXpFilled() const

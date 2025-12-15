@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <iostream>
 
-#include "TileManager.h"
+#include "TilesManager.h"
 #include "Window.h"
 
 Map *Map::instancePtr{nullptr};
@@ -25,7 +25,7 @@ Map *Map::init(Player *player, std::vector<Obstacle *> const &obstacles)
 
 void Map::resetState()
 {
-    auto obstaclesSize{TileManager::instance()->getObstacles().size()};
+    auto obstaclesSize{TilesManager::instance()->getObstacles().size()};
     for (auto it{entities.begin() + obstaclesSize + 1}; it != entities.end(); ++it)
     {
         delete *it;
@@ -47,14 +47,18 @@ void Map::handelUpdate(sf::RenderWindow *window)
     {
         e->move();
     }
-    player->updateRotation(window);
 
-    // TODO: watching walls and gas is too expensive, come up with other ways to do it
+    player->updateRotation(window);
+    if (TilesManager::instance()->inDangerZone(player))
+    {
+        player->takeDamage(0.2);
+    }
+
     for (auto it1{entities.begin()}; it1 != entities.end(); ++it1) // de som är i loopen är
     // tagen från tdp004 https://www.ida.liu.se/~TDP004/current/sal/slides/tdp004_9.pdf s.20
 
     {
-        if (TileManager::instance()->outOfBounds(*it1))
+        if (TilesManager::instance()->outOfBorders(*it1))
         {
             (*it1)->onBorderCollision();
         }
@@ -69,7 +73,7 @@ void Map::handelUpdate(sf::RenderWindow *window)
         }
     }
 
-    if (entitiesToRemove.size())
+    if (entitiesToRemove.size() > 0)
     {
         // std::cout << "Removing from entities " << entitiesToRemove.size() << std::endl;
         for (auto it = entitiesToRemove.rbegin(); it != entitiesToRemove.rend(); ++it)
@@ -91,7 +95,11 @@ void Map::draw(sf::RenderWindow *window) const
     {
         e->draw(window);
     }
-    player->draw(window);
+
+    if (StateMachine::instance()->state() != GameState::LEADERBOARD)
+    {
+        player->drawInfo(window);
+    }
 }
 
 void Map::addEntity(Entity *e)
@@ -154,10 +162,10 @@ Entity *Map::getClosestEnemy()
 }
 
 Map::Map(Player *player, std::vector<Obstacle *> const &obstacles)
-    : view{new sf::View{
-          {static_cast<float>(Window::WINDOW_WIDTH) / 2,
-           static_cast<float>(Window::WINDOW_HEIGHT) / 2},
-          {static_cast<float>(Window::WINDOW_WIDTH), static_cast<float>(Window::WINDOW_HEIGHT)}}},
+    : view{new sf::View{{static_cast<float>(Window::getWindowWidth()) / 2.0F,
+                         static_cast<float>(Window::getWindowHeight()) / 2.0F},
+                        {static_cast<float>(Window::getWindowWidth()),
+                         static_cast<float>(Window::getWindowHeight())}}},
       player{player}, entities{}, entitiesToRemove{}
 {
     entities.push_back(player);

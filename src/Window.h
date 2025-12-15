@@ -11,19 +11,28 @@
 class Window
 {
   public:
-    Window(std::vector<Menu *> const &menus);
-    ~Window();
+    static Window *instance();
+    static Window *init(std::vector<Menu *> const &menus);
+    static void deleteInstance();
+
     void handleEvents();
     void draw();
     void closeWindow();
-    sf::RenderWindow* getRenderWindow() const;
+    sf::RenderWindow *getRenderWindow() const;
     bool isClosed() const;
 
-    // TODO: Adjust after window resize
-    int static const WINDOW_WIDTH;
-    int static const WINDOW_HEIGHT;
+    static sf::Vector2u getWindowSize();
+    static int getWindowWidth();
+    static int getWindowHeight();
+
+    int static const DEFAULT_WINDOW_WIDTH;  
+    int static const DEFAULT_WINDOW_HEIGHT;
 
   private:
+    Window(std::vector<Menu *> const &menus);
+    ~Window();
+    static Window *instancePtr;
+
     std::string static const GAME_TITLE;
 
     sf::RenderWindow *window;

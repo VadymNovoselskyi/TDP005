@@ -16,16 +16,16 @@ class Leaderboard
 
     void saveHighscore(std::string const &username, ScoreInfo const &scoreInfo);
     void saveLeaderboard(std::string const &leaderboardPath) const;
-    std::map<std::string, ScoreInfo> getLeaderboard(int maxSize) const;
+    std::vector<std::pair<std::string, ScoreInfo>> getLeaderboard(int maxSize);
 
   private:
     Leaderboard(std::string const &leaderboardPath);
 
     static Leaderboard *instancePtr;
 
-    void loadLeaderboard(std::string const &leaderboard);
+    void loadLeaderboard(std::string const &leaderboardPath);
 
-    std::map<std::string, ScoreInfo> highscores;
+    std::vector<std::pair<std::string, ScoreInfo>> highscores;
 };
 
 #endif

@@ -78,12 +78,17 @@ void WeaponsManager::receiveRandomWeapon()
     equipWeapon(unequipedWeapons.at(randIndex));
 }
 
+bool WeaponsManager::canGetNewWeapon() const
+{
+    return unequipedWeapons.size() > 0;
+}
+
 void WeaponsManager::equipWeapon(Weapon *weaponToDelete)
 {
     unequipedWeapons.erase(
         std::remove_if(unequipedWeapons.begin(),
                        unequipedWeapons.end(),
                        [weaponToDelete](Weapon *weapon)
-                       { return weaponToDelete->getName() == weapon->getName(); }));
+                       { return weaponToDelete->getName() == weapon->getName(); }), unequipedWeapons.end());
     equipedWeapons.push_back(weaponToDelete);
 }

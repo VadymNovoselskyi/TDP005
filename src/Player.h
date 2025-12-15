@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "Character.h"
+#include "Entity.h"
 #include "ExperienceManager.h"
 #include "GameState.h"
 #include "StateMachine.h"
@@ -22,21 +23,22 @@ class Player : public Character
 {
   public:
     Player(double startHP,
-           int const startSpeed,
+           int startSpeed,
            sf::Vector2f const &position,
            std::string const &tag,
            std::function<void(std::vector<LevelUpInfo>)> const &onLevelUp);
     void resetState(sf::Vector2f const &newPosition);
 
-    void draw(sf::RenderWindow *window);
-    
+    void drawInfo(sf::RenderWindow *window);
+
+
     void move() override;
     sf::Vector2f getOldPosition() const;
     void updateRotation(sf::RenderWindow *window);
 
     void gainXp(int xp);
     void heal(double amount);
-    void increaseMaxHP(double amount);
+    void increaseMaxHP(double hp);
 
     void increaseSpeed(int amount);
     void increaseDamageMultiplyer(double amount);
@@ -46,18 +48,17 @@ class Player : public Character
     void onBorderCollision() override;
 
   private:
-    double const startHP;
+    double const START_HP;
     double maxHP;
-    int const startSpeed;
+    int const START_SPEED;
     double damageMultiplier;
 
     float rotation;
     sf::Vector2f oldPosition;
 
     ExperienceManager expManager;
-    WeaponsManager weaponManager;
+    WeaponsManager weaponsManager;
     std::function<void(std::vector<LevelUpInfo>)> onLevelUp;
-    void drawInfo(sf::RenderWindow *window);
     void drawBox(sf::RenderWindow *window,
                  sf::RectangleShape &box,
                  float const &boxPosX,
@@ -85,6 +86,8 @@ class Player : public Character
                                         // box
     float static const BOX_WIDHT;
     float static const BOX_HEIGTH;
+
+    // using Character::draw;
 };
 
 #endif /*PLAYER_H*/
