@@ -95,7 +95,11 @@ void Map::draw(sf::RenderWindow *window) const
     {
         e->draw(window);
     }
-    player->drawInfo(window);
+
+    if (StateMachine::instance()->state() != GameState::LEADERBOARD)
+    {
+        player->drawInfo(window);
+    }
 }
 
 void Map::addEntity(Entity *e)
