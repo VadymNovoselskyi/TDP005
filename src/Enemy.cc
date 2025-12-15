@@ -7,6 +7,8 @@
 #include "Highscore.h"
 #include "EnemyProjectile.h"
 
+
+
 Enemy::Enemy(/*Charactar*/ double currentHp,
              int movementSpeed,
              sf::Vector2f positon,
@@ -250,24 +252,54 @@ void Footman::move() // skapa en move hjälper
 // kaboom
 void Kaboom::isInRange(float len)
 {
-    if (len <= attackRange)
+    auto p { player -> getTexture()-> getSize()};
+    auto e {this -> getTexture()-> getSize()};
+
+    float imageRange{attackRange};
+    imageRange += sqrt((p.x/2)*(p.x/2)+(p.y/2)*(p.y/2))+sqrt((e.x/2)*(e.x/2)+(e.y/2)*(e.y/2));
+
+    if (len <= imageRange)
     {
         // sleep(15);
-        Kaboom::explode(len);
+        //Kaboom::explode(len);
+        contuneBegin = true;
+    }
+    if(contuneBegin && explodeCountdown > 0)
+    {
+        explodeCountdown --;
+    }
+    if(contuneBegin)
+    {
+        explode(len);
     }
 }
 
 void Kaboom::explode(float len)
 {
-    if(explodeCountdown == 0)
+    if (hasExploded)
     {
-        if (len <= explodeRange)
+        return; //här för att stoppa att en kabom kan explodera fellera gånger
+    }
+    if(explodeCountdown <= 0)
+    {
+        hasExploded = true;
+        auto texture{TextureManager::instance()->getTexture("explosion.png")};
+        sf::Sprite::setTexture(*texture);
+
+        auto p { player -> getTexture()-> getSize()};
+        auto e {this -> getTexture()-> getSize()};
+
+        float imageRange{explodeRange};
+        imageRange += sqrt((p.x/2)*(p.x/2)+(p.y/2)*(p.y/2))+sqrt((e.x/2)*(e.x/2)+(e.y/2)*(e.y/2));
+
+        if (len <= imageRange)
         {
             player->takeDamage(explodeDamage);
         }
+        
         die();
     }
-    explodeCountdown --;
+    
 }
 
 void Kaboom::attack()
@@ -294,6 +326,7 @@ void Kaboom::move()
     sf::Sprite::setRotation(calculateRotation());
     sf::Sprite::move(direction.x * movementSpeed, direction.y * movementSpeed);
     tryAttack(len);
+    isInRange(len);
 }
 
 void Archer::attack()

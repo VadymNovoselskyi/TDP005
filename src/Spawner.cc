@@ -26,9 +26,9 @@ void Spawner::spawnEnemies()
     if (counter >= spawnRate)
     {
         newEnmey();
-        addFootman();
+        //addFootman();
         addKaboom();
-        addArcher();
+        //addArcher();
 
         counter = 0;
         timeCounter += 1;
@@ -97,7 +97,7 @@ void Spawner::addFootman()
     double currentHP{100.0};
     int movementSpeed{4};
     sf::Vector2f direction{0, 0};
-    int attackRange{10};
+    int attackRange{20};
     int attackSpeed{10};
     int XP_DROP{5};
     double damage{15};
@@ -128,9 +128,9 @@ void Spawner::addKaboom()
         int XP_DROP{10};
         double damage{5};
         int score{3};
-        double explodeRange{150};
+        double explodeRange{60};
         double explodeDamage{30};
-        int explodeCountdown{60};
+        int explodeCountdown{20};
         float agroRange{300};
         Kaboom *enemyK = new Kaboom(currentHP,
                                     movementSpeed,

@@ -98,6 +98,8 @@ class Kaboom : public Enemy
     double explodeRange;
     int explodeCountdown;
     float agroRange;
+    bool contuneBegin{false};
+    bool hasExploded{false};
 };
 
 class Archer : public Enemy
