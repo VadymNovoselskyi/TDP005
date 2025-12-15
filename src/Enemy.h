@@ -117,7 +117,7 @@ class Archer : public Enemy
            double velocity);
     void attack() override;
     void move() override;
-    
+
   private:
     void shoot();
     float fireRange; 
