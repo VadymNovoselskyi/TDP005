@@ -116,7 +116,10 @@ void Player::move()
     weaponManager.setWeaponsPos(sf::Sprite::getPosition());
     weaponManager.shoot();
 }
-
+sf::Vector2f Player::getOldPosition() const
+{
+    return oldPosition;
+}
 void Player::updateRotation(sf::RenderWindow *window)
 {
     // kollade upp om det fans någon atan funktion och hittad:

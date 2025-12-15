@@ -29,8 +29,9 @@ class Player : public Character
     void resetState(sf::Vector2f const &newPosition);
 
     void draw(sf::RenderWindow *window);
-
+    
     void move() override;
+    sf::Vector2f getOldPosition() const;
     void updateRotation(sf::RenderWindow *window);
 
     void gainXp(int xp);

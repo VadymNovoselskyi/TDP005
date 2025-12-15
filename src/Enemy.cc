@@ -58,7 +58,7 @@ Archer::Archer(/*Charactar*/
                int score,
                Player *player,
 
-                double velocity)
+               double velocity)
     : Enemy(currentHp,
             movementSpeed,
             positon,
@@ -173,7 +173,7 @@ void Enemy::onCollision(Entity *other)
     if (other->getTag() == "player")
     {
         tryAttack(calculateDistance());
-        sf::Sprite::setPosition(oldPosition);
+        collisionHandler(other);
     }
     else if (other->getTag() == "enemy")
     {
@@ -183,7 +183,7 @@ void Enemy::onCollision(Entity *other)
     else if (other->getTag() == "obstacle")
     {
         std::cout << "collided with box" << std::endl;
-        
+
         collisionHandler(this);
         return;
     }
@@ -201,8 +201,6 @@ void Enemy::tryAttack(float len)
     {
         attack();
         count = 600 / attackSpeed;
-        
-        
     }
 }
 
@@ -243,7 +241,7 @@ void Kaboom::isInRange(float len)
 
 void Kaboom::explode(float len)
 {
-    if(explodeCountdown == 0)
+    if (explodeCountdown == 0)
     {
         if (len <= explodeRange)
         {
@@ -251,7 +249,7 @@ void Kaboom::explode(float len)
         }
         die();
     }
-    explodeCountdown --;
+    explodeCountdown--;
 }
 
 void Kaboom::attack()
@@ -309,8 +307,8 @@ void Archer::move()
 
 void Archer::shoot()
 {
- Map::instance()->addEntity(new EnemyProjectile{Transformable::getPosition(),
-                                              Transformable::getRotation(),
-                                              velocity,
-                                              damage, 1, "Enemy_bullet.png"});
+    Map::instance()->addEntity(new EnemyProjectile{Transformable::getPosition(),
+                                                   Transformable::getRotation(),
+                                                   velocity,
+                                                   damage, 1, "Enemy_bullet.png"});
 }

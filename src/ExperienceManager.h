@@ -35,7 +35,6 @@ class ExperienceManager
   private:
     std::vector<int> static const LEVELS_PROGRESSION;
     std::vector<LevelUpInfo> levelUps;
-
     int currentXp;
     int level;
 };
