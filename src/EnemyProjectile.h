@@ -8,7 +8,6 @@ class EnemyProjectile : public Projectile
 {
   public:
     EnemyProjectile(sf::Vector2f const &pos, double rotation, double velocity, double damage, double hp, std::string pngName);
-    ~EnemyProjectile() = default;
 
     void onCollision(Entity *other) override;
 

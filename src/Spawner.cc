@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <iostream> // print test
 
-#include "TileManager.h"
+#include "TilesManager.h"
 #include "Window.h"
 
 Spawner::Spawner(Player *player)
@@ -34,7 +34,7 @@ void Spawner::spawnEnemies()
 
         counter = 0;
         timeCounter += 1;
-        incresSpawnRate();
+        increaseSpawnRate();
     }
     else
     {
@@ -53,9 +53,9 @@ void Spawner::newEnmey()
         canSpawnArcher = true;
     }
 }
-void Spawner::choseSpawnPos()
+void Spawner::chooseSpawnPos()
 {
-    sf::Vector2i mapSize{TileManager::instance()->getMapDimensions()};
+    sf::Vector2i mapSize{TilesManager::instance()->getMapDimensions()};
     sf::Vector2f playerWindow{player->getPosition()};
 
     float randomX =
@@ -64,10 +64,10 @@ void Spawner::choseSpawnPos()
     float randomY = std::rand() % mapSize.y;
     sf::Vector2f nySpawnPos{randomX, randomY};
 
-    float pPlusX{playerWindow.x + (Window::WINDOW_WIDTH / 2)}; // 512
-    float pMinusX{playerWindow.x - (Window::WINDOW_WIDTH / 2)};
-    float pPlusY{playerWindow.y + (Window::WINDOW_HEIGHT / 2)}; // 384
-    float pMinusY{playerWindow.y - (Window::WINDOW_HEIGHT / 2)};
+    float pPlusX{playerWindow.x + (Window::getWindowWidth() / 2.0F)}; // 512
+    float pMinusX{playerWindow.x - (Window::getWindowWidth() / 2.0F)};
+    float pPlusY{playerWindow.y + (Window::getWindowHeight() / 2.0F)}; // 384
+    float pMinusY{playerWindow.y - (Window::getWindowHeight() / 2.0F)};
 
     bool insidaX =
         (nySpawnPos.x > pMinusX &&
@@ -77,7 +77,7 @@ void Spawner::choseSpawnPos()
 
     if (insidaX and insidaY)
     {
-        choseSpawnPos();
+        chooseSpawnPos();
     }
     else
     {
@@ -85,7 +85,7 @@ void Spawner::choseSpawnPos()
     }
 }
 
-void Spawner::incresSpawnRate()
+void Spawner::increaseSpawnRate()
 {
     if (spawnRate > 1)
     {
@@ -95,13 +95,13 @@ void Spawner::incresSpawnRate()
 
 void Spawner::addFootman()
 {
-    choseSpawnPos();
+    chooseSpawnPos();
     double currentHP{100.0};
     int movementSpeed{4};
     sf::Vector2f direction{0, 0};
     int attackRange{20};
     int attackSpeed{10};
-    int XP_DROP{5};
+    int const XP_DROP{5};
     double damage{15};
     int score{2};
     Footman *enemyF = new Footman(currentHP,
@@ -121,13 +121,13 @@ void Spawner::addKaboom()
 {
     if (canSpawnKaboom)
     {
-        choseSpawnPos();
+        chooseSpawnPos();
         double currentHP{75.0};
         int movementSpeed{4};
         sf::Vector2f direction{0, 0};
         int attackRange{10};
         int attackSpeed{10};
-        int XP_DROP{10};
+        int const XP_DROP{10};
         double damage{5};
         int score{3};
         double explodeRange{60};
@@ -155,13 +155,13 @@ void Spawner::addArcher()
 {
     if (canSpawnArcher)
     {
-        choseSpawnPos();
+        chooseSpawnPos();
         double currentHP{100.0};
         int movementSpeed{2};
         sf::Vector2f direction{0, 0};
         int attackRange{10};
         int attackSpeed{10};
-        int XP_DROP{10};
+        int const XP_DROP{10};
         double damage{5};
         int score{2};
         double velocity{3};

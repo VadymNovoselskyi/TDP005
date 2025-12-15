@@ -1,17 +1,16 @@
 #include "ExperienceManager.h"
 
-#include <algorithm>
 #include <iostream>
 
 std::vector<int> const ExperienceManager::LEVELS_PROGRESSION{
-    0, 1000, 2500, 5000, 8000, 15000, 24000, 35000, 999999999};
+    25, 75, 200, 400, 700, 1300, 2400, 3500, 999999999};
 
 ExperienceManager::ExperienceManager() : levelUps{}, currentXp{0}, level{0}
 {
     levelUps = {{LevelUpChoice::HP, "Buff your HP stats", []() {}},
                 {LevelUpChoice::SPEED, "Buff your SPEED stats", []() {}},
                 {LevelUpChoice::DAMAGE, "Buff your DAMAGE stats", []() {}},
-                {LevelUpChoice::WEAPON, "Choose a WEAPON", []() {}}};
+                {LevelUpChoice::WEAPON, "Choose a random WEAPON", []() {}}};
 }
 
 void ExperienceManager::setCallbacks(
@@ -37,16 +36,19 @@ bool ExperienceManager::gainXp(int gainedXP)
         level++;
         return true;
     }
-
     return false;
 }
 
-std::vector<LevelUpInfo> ExperienceManager::chooseLevelUps() const
+std::vector<LevelUpInfo> ExperienceManager::chooseLevelUps(bool weaponsAvailable) const
 {
-    return levelUps;
+    // This asumes the weapon level up always lies last (not best, but kinda ok)
+    return weaponsAvailable ? levelUps
+                            : std::vector<LevelUpInfo>{levelUps.begin(), levelUps.end() - 1};
 }
 
-int ExperienceManager::getXpFilled() const
+double ExperienceManager::getXpFilled() const
 {
-    return currentXp == 0 ? 0 : static_cast<int>(currentXp / LEVELS_PROGRESSION.at(level));
+    return currentXp == 0
+               ? 0
+               : static_cast<double>(currentXp) / static_cast<double>(LEVELS_PROGRESSION.at(level));
 }

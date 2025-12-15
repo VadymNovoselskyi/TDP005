@@ -1,9 +1,10 @@
 #include "Highscore.h"
 
-#include <iostream>
 #include <stdexcept>
 
+#include "GameState.h"
 #include "Leaderboard.h"
+#include "StateMachine.h"
 
 Highscore *Highscore::instancePtr{nullptr};
 
@@ -17,9 +18,9 @@ Highscore *Highscore::instance()
     return Highscore::instancePtr;
 }
 
-Highscore *Highscore::init(int scorePerFrame)
+Highscore *Highscore::init(int framesPerScore)
 {
-    Highscore::instancePtr = new Highscore(scorePerFrame);
+    Highscore::instancePtr = new Highscore(framesPerScore);
     return Highscore::instancePtr;
 }
 
@@ -73,7 +74,10 @@ void Highscore::draw(sf::RenderWindow *window)
 
     window->draw(highscoreText);
 
-    tickSurvivalScore();
+    if (StateMachine::instance()->state() == GameState::IN_GAME)
+    {
+        tickSurvivalScore();
+    }
 }
 
 void Highscore::addKillScore(int extraScore)

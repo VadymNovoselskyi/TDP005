@@ -10,12 +10,12 @@
 class Enemy : public Character
 {
   public:
-    Enemy(/*Charactar*/ double currentHP,
+    Enemy(/*Character*/ double currentHP,
           int movementSpeed,
           sf::Vector2f positon,
           /*Enemy*/ int attackRange,
           int attackSpeed,
-          int XP_DROP,
+          int const XP_DROP,
           double damage,
           int score,
           Player *player);
@@ -24,9 +24,7 @@ class Enemy : public Character
     virtual void attack() = 0;
     std::string getTag();
 
-    void draw(sf::RenderWindow *window)const override;
-    
-    //void move() override;
+    // void move() override;
     void die() override;
     void onCollision(Entity *other) override;
     void onBorderCollision() override;
@@ -35,52 +33,49 @@ class Enemy : public Character
     float calculateDistance();
     sf::Vector2f calculateDirection();
     float calculateRotation();
-    void enemyCollision(Entity* collidingEnemy);
-    
+    void collisionHandler(Entity *other);
+
     void tryAttack(float leng);
     // void calcPath(sf::Vector2f);
     sf::Vector2f oldPosition;
     int attackRange;
     int attackSpeed;
     int count{attackSpeed};
-    int XP_DROP;
+    int const XP_DROP;
     double damage;
     int score; // inte en privat för olika enyme är vär olika score
     Player *player;
     float rotation;
 
-
   private:
     std::string tag{"enemy"};
-    
 };
 
 class Footman : public Enemy
 {
   public:
-    Footman(/*Charactar*/ double currentHp,
+    Footman(/*Character*/ double currentHp,
             int movementSpeed,
             sf::Vector2f positon,
             /*Enemy*/ int attackRange,
             int attackSpeed,
-            int XP_DROP,
+            int const XP_DROP,
             double damage,
             int score,
             Player *player);
     void attack() override;
     void move() override;
-
 };
 
 class Kaboom : public Enemy
 {
   public:
-    Kaboom(/*Charactar*/ double currentHp,
+    Kaboom(/*Character*/ double currentHp,
            int movementSpeed,
            sf::Vector2f positon,
            /*Enemy*/ int attackRange,
            int attackSpeed,
-           int XP_DROP,
+           int const XP_DROP,
            double damage,
            int score,
            Player *player,
@@ -105,12 +100,12 @@ class Kaboom : public Enemy
 class Archer : public Enemy
 {
   public:
-    Archer(/*Charactar*/ double currentHp,
+    Archer(/*Character*/ double currentHp,
            int movementSpeed,
            sf::Vector2f positon,
            /*Enemy*/ int attackRange,
            int attackSpeed,
-           int XP_DROP,
+           int const XP_DROP,
            double damage,
            int score,
            Player *player,
@@ -120,7 +115,7 @@ class Archer : public Enemy
 
   private:
     void shoot();
-    float fireRange; 
+    // float fireRange;
     double velocity;
 };
 
