@@ -127,7 +127,7 @@ std::vector<ElementsInfo> ChooseNameMenu::createButtons(std::string const &usern
 
     return elements;
 }
-bool ChooseNameMenu::handleEvent(sf::Event event)
+bool ChooseNameMenu::handleEvent(sf::Event const &event)
 {
     bool handled = Menu::handleEvent(event);
     if (handled)
@@ -190,7 +190,7 @@ std::vector<ElementsInfo> PauseMenu::createButtons() const
     return elements;
 }
 
-bool PauseMenu::handleEvent(sf::Event event)
+bool PauseMenu::handleEvent(sf::Event const &event)
 {
     bool handled = Menu::handleEvent(event);
     if (handled)

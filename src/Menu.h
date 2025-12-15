@@ -25,7 +25,7 @@ class Menu
     virtual ~Menu() = default;
 
     void draw(sf::RenderWindow *window);
-    virtual bool handleEvent(sf::Event event);
+    virtual bool handleEvent(sf::Event const &event);
     bool isOpen() const;
 
   protected:
