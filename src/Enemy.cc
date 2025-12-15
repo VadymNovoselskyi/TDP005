@@ -9,6 +9,7 @@
 
 
 
+
 Enemy::Enemy(/*Charactar*/ double currentHp,
              int movementSpeed,
              sf::Vector2f positon,
@@ -283,9 +284,14 @@ void Kaboom::explode(float len)
     if(explodeCountdown <= 0)
     {
         hasExploded = true;
-        auto texture{TextureManager::instance()->getTexture("explosion.png")};
-        sf::Sprite::setTexture(*texture);
+        auto texture{TextureManager::instance()->getTexture("fighter.png")};
+        sf::Sprite setTexture(*texture);
+        //sf::Sprite s;
+        //s.setTexture(*texture);
 
+        //s.setScale(1.5f, 1.5f);
+
+        std::cout<<"kaboom"<<std::endl;
         auto p { player -> getTexture()-> getSize()};
         auto e {this -> getTexture()-> getSize()};
 
@@ -297,7 +303,7 @@ void Kaboom::explode(float len)
             player->takeDamage(explodeDamage);
         }
         
-        die();
+        //die();
     }
     
 }
@@ -329,6 +335,7 @@ void Kaboom::move()
     isInRange(len);
 }
 
+//Archer
 void Archer::attack()
 {
     shoot();

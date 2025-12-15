@@ -24,7 +24,7 @@ class Spawner
     void addKaboom();
     void addArcher();
 
-    std::vector<Enemy *> enemies;
+    //std::vector<Enemy *> enemies;
     double spawnRate;
     double spawnRateIncrease;
     sf::Vector2f spawnPoint;
@@ -33,8 +33,8 @@ class Spawner
 
     double timeCounter; // resepterat tid föt tillfälet
 
-    bool inKaboom;
-    bool inArcher;
+    bool canSpawnKaboom;
+    bool canSpawnArcher;
 };
 
 #endif

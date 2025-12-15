@@ -117,12 +117,7 @@ class Archer : public Enemy
            double velocity);
     void attack() override;
     void move() override;
-
-  protected:
-    struct Projectles
-    {
-    };
-
+    
   private:
     void shoot();
     float fireRange; 
