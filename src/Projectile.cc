@@ -6,7 +6,7 @@
 #include "Map.h"
 
 Projectile::Projectile(
-    sf::Vector2f const &pos, double rotation, double velocity, double damage, double hp, std::string pngName)
+    sf::Vector2f const &pos, double rotation, double velocity, double damage, double hp, std::string const &pngName)
     : Entity(std::string{"projectile"}, pos, hp), velocity{velocity}, damage{damage},
       texture{TextureManager::instance()->getTexture(pngName)}, isDying{false}
 {
@@ -54,11 +54,11 @@ void Projectile::takeDamage(double damage)
 
 void Projectile::die()
 {
-    std::cout << "Removing projectile: " << this << std::endl;
+    // std::cout << "Removing projectile: " << this << std::endl;
     if (!isDying)
     {
         Map::instance()->removeEntity(this);
     }
-    std::cout << "Removed projectile" << std::endl;
+    // std::cout << "Removed projectile" << std::endl;
     isDying = true;
 }

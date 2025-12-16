@@ -32,7 +32,8 @@ class Map
     sf::View *view;
     Player *player;
     std::vector<Entity *> entities;
-    std::vector<Entity *> entitiesToRemove;
+    std::vector<Entity *> entitiesToDelete;
+    std::vector<Entity *> entitiesToAdd;
 };
 
 #endif
