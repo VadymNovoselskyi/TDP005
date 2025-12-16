@@ -9,9 +9,9 @@ SniperRifle::SniperRifle()
              "Shoot slow with a High damag",
              /*dmg*/ 100.0f,
              /*attackSpeed (shoots per sec)*/ 1,
-             Rarity::BASIC,
              /*bullet speed*/ 30,
-             /*bulletHP*/ 2),
+             /*bulletHP*/ 2,
+             Rarity::BASIC),
       bulletRotation{}
 {
 }

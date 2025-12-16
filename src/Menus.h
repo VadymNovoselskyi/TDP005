@@ -20,12 +20,20 @@ class StartMenu : public Menu
     std::vector<ElementsInfo> createButtons() const override;
 };
 
+class LeaderboardMenu : public Menu
+{
+  public:
+    LeaderboardMenu();
+
+  private:
+    std::vector<ElementsInfo> createButtons() const override;
+};
+
 class ChooseNameMenu : public Menu
 {
   public:
     ChooseNameMenu();
-    bool handleEvent(sf::Event event) override;
-    // using Menu::setButtons;
+    bool handleEvent(sf::Event const &event) override;
 
   private:
     std::vector<ElementsInfo> createButtons() const override;
@@ -38,7 +46,7 @@ class PauseMenu : public Menu
 {
   public:
     PauseMenu();
-    bool handleEvent(sf::Event event) override;
+    bool handleEvent(sf::Event const &event) override;
 
   private:
     std::vector<ElementsInfo> createButtons() const override;

@@ -6,23 +6,36 @@
 #include "Enemy.h"
 #include "Map.h"
 #include "Player.h"
+#include "TilesManager.h"
 
 class Spawner
 {
   public:
     Spawner(Player *player);
-    
-    void spwanEnemies();
-    sf::Vector2f choseSpawnPos();
+    void resetState();
 
-    private:
-        void incresSpawnRate();
-        std::vector <Enemy*> enemies;
-        double spawnRate;
-        sf::Vector2f spwanPoint;
-        Player* player;
-        double conter;
+    void spawnEnemies();
+    void chooseSpawnPos();
 
+  private:
+    void increaseSpawnRate();
+    void newEnmey();
+    void addFootman();
+    void addKaboom();
+    void addArcher();
+
+    std::vector<Enemy *> enemies;
+    double spawnRate;
+    double spawnRateIncrease;
+    sf::Vector2f spawnPoint;
+    double counter;
+    double timeCounter;
+
+    Player *player;
+
+
+    bool inKaboom;
+    bool inArcher;
 };
 
 #endif

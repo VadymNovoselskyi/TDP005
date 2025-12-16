@@ -28,12 +28,13 @@ class ExperienceManager
     void resetState();
 
     bool gainXp(int gainedXp);
-    std::vector<LevelUpInfo> chooseLevelUps() const;
+    std::vector<LevelUpInfo> chooseLevelUps(bool weaponsAvailable) const;
+
+    double getXpFilled() const;
 
   private:
     std::vector<int> static const LEVELS_PROGRESSION;
     std::vector<LevelUpInfo> levelUps;
-
     int currentXp;
     int level;
 };

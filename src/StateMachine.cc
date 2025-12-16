@@ -53,11 +53,22 @@ GameState StateMachine::state() const
 void StateMachine::openStartMenu()
 {
     // std::cout << "Opening the start menu from " << currentState << std::endl;
-    if (currentState != GameState::GAME_PAUSED && currentState != GameState::GAME_OVER)
+    if (currentState != GameState::GAME_PAUSED && currentState != GameState::GAME_OVER &&
+        currentState != GameState::LEADERBOARD)
     {
-        throw std::logic_error("Can open the start menu only if the game is paused or over");
+        throw std::logic_error("Can open the start menu only if the game is paused or over or in the leaderboard");
     }
     setState(GameState::IN_START_MENU);
+}
+
+void StateMachine::openLeaderboard()
+{
+    // std::cout << "Opening the leaderboard from " << currentState << std::endl;
+    if (currentState != GameState::IN_START_MENU)
+    {
+        throw std::logic_error("Can open the leaderboard only if the start menu is open");
+    }
+    setState(GameState::LEADERBOARD);
 }
 
 void StateMachine::chooseUsername()
@@ -76,7 +87,8 @@ void StateMachine::startGame()
     if (currentState != GameState::IN_START_MENU && currentState != GameState::GAME_OVER &&
         currentState != GameState::CHOOSING_USERNAME)
     {
-        throw std::logic_error("Can start the game only if in the main menu, choosing name or the game is over");
+        throw std::logic_error(
+            "Can start the game only if in the main menu, choosing name or the game is over");
     }
     setState(GameState::STARTING_GAME);
 }

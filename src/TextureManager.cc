@@ -21,7 +21,7 @@ TextureManager *TextureManager::init()
 
 void TextureManager::deleteInstance()
 {
-    for (auto [name, texture] : TextureManager::instancePtr->textureMap)
+    for (auto &[name, texture] : TextureManager::instancePtr->textureMap)
     {
         delete texture;
     }
@@ -37,11 +37,9 @@ sf::Texture *TextureManager::getTexture(std::string const &name)
     {
         return result->second;
     }
-    else
-    {
-        sf::Texture *t{new sf::Texture{}};
-        t->loadFromFile("static/" + name);
-        textureMap[name] = t;
-        return t;
-    }
+    
+    sf::Texture *t{new sf::Texture{}};
+    t->loadFromFile("static/" + name);
+    textureMap[name] = t;
+    return t;
 }

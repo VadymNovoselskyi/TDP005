@@ -3,7 +3,6 @@
 
 #include <SFML/Graphics.hpp>
 #include <string>
-
 // to lower classes
 #include <cmath>
 
@@ -12,13 +11,17 @@
 class Entity : public sf::Sprite
 {
   public:
+
     Entity(std::string const &tag, sf::Vector2f const &pos, double hp);
-    virtual void onCollision(Entity *other) = 0;
     std::string getTag() const;
+    
+    virtual void draw(sf::RenderWindow *window) const;
+    virtual void takeDamage(double damage);
+
+    virtual void onCollision(Entity *other) = 0;
+    virtual void onBorderCollision() = 0;
     virtual void move() = 0;
 
-    virtual void draw(sf::RenderWindow *window) const;
-    void takeDamage(double &);
 
   protected:
     double hp;

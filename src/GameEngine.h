@@ -15,13 +15,12 @@ class GameEngine
     GameEngine();
     ~GameEngine();
     void run();
-
+    
+    int static const FPS;
   private:
-    Window *window;
     Spawner *spawner;
     sf::Clock clock;
     
-    int static const FPS;
     sf::Time static const UPDATE_INTERVAL;
 };
 

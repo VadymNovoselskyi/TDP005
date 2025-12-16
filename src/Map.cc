@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <iostream>
 
-#include "StateMachine.h"
+#include "TilesManager.h"
 #include "Window.h"
 
 Map *Map::instancePtr{nullptr};
@@ -23,6 +23,17 @@ Map *Map::init(Player *player, std::vector<Obstacle *> const &obstacles)
     return Map::instancePtr;
 }
 
+void Map::resetState()
+{
+    auto obstaclesSize{TilesManager::instance()->getObstacles().size()};
+    for (auto it{entities.begin() + obstaclesSize + 1}; it != entities.end(); ++it)
+    {
+        delete *it;
+    }
+
+    entities.erase(entities.begin() + obstaclesSize + 1, entities.end());
+}
+
 void Map::deleteInstance()
 {
     // std::cout << "Deleting the instance" << std::endl;
@@ -36,13 +47,22 @@ void Map::handelUpdate(sf::RenderWindow *window)
     {
         e->move();
     }
-    toRemove.erase(toRemove.begin());
-    player->updateRotation(window);
 
-    // TODO: watching walls and gas is too expensive, come up with other ways to do it
+    player->updateRotation(window);
+    if (TilesManager::instance()->inDangerZone(player))
+    {
+        player->takeDamage(0.2);
+    }
+
     for (auto it1{entities.begin()}; it1 != entities.end(); ++it1) // de som är i loopen är
     // tagen från tdp004 https://www.ida.liu.se/~TDP004/current/sal/slides/tdp004_9.pdf s.20
+
     {
+        if (TilesManager::instance()->outOfBorders(*it1))
+        {
+            (*it1)->onBorderCollision();
+        }
+
         for (auto it2{it1 + 1}; it2 != entities.end(); ++it2)
         {
             if ((*it1)->getGlobalBounds().intersects((*it2)->getGlobalBounds()))
@@ -53,12 +73,21 @@ void Map::handelUpdate(sf::RenderWindow *window)
         }
     }
 
-    toRemove.erase(toRemove.begin());
+    if (entitiesToRemove.size() > 0)
+    {
+        // std::cout << "Removing from entities " << entitiesToRemove.size() << std::endl;
+        for (auto it = entitiesToRemove.rbegin(); it != entitiesToRemove.rend(); ++it)
+        {
+            // std::cout << *it << std::endl;
+            delete *(*it);
+            entities.erase(*it);
+        }
+        entitiesToRemove.clear();
+    }
 }
 
 void Map::draw(sf::RenderWindow *window) const
 {
-    // std::cout << "Rendering the player" << std::endl;
     view->setCenter(player->getPosition());
     window->setView(*view);
 
@@ -66,28 +95,49 @@ void Map::draw(sf::RenderWindow *window) const
     {
         e->draw(window);
     }
-    player->draw(window);
+
+    if (StateMachine::instance()->state() != GameState::LEADERBOARD)
+    {
+        player->drawInfo(window);
+    }
 }
 
 void Map::addEntity(Entity *e)
 {
     entities.push_back(e);
-
-    std::cout << "+" << entities.size() << std::endl;
 }
 
 void Map::removeEntity(Entity *e)
 {
-    std::remove_if(entities.begin(), entities.end(), [e](Entity *e1) { return e == e1; }),
-        toRemove.end();
+    // std::cout << "Request to delete: " << e->getTag() << std::endl;
+    // std::cout << "Request to delete mem address: " << e << std::endl;
+    // for (auto e : entities)
+    // {
+    //     std::cout << e << std::endl;
+    // }
+    // std::cout << "After delete" << std::endl;
 
-    std::cout << "-" << entities.size() << std::endl;
+    auto entitieToDelete =
+        std::find_if(entities.begin(), entities.end(), [&e](Entity *e1) { return e == e1; });
+    auto existingEntity = std::find_if(entitiesToRemove.begin(),
+                                       entitiesToRemove.end(),
+                                       [&entitieToDelete](std::vector<Entity *>::iterator e1)
+                                       { return entitieToDelete == e1; });
+    if (entitieToDelete != entities.end() && existingEntity == entitiesToRemove.end())
+    {
+        entitiesToRemove.push_back(entitieToDelete);
+    }
+    // std::remove_if(entities.begin(), entities.end(), [&e](Entity *e1) { return e == e1; });
+    // for (auto e : entities)
+    // {
+    //     std::cout << e << std::endl;
+    // }
 }
 
 Entity *Map::getClosestEnemy()
 {
     Entity *enemy{nullptr};
-    double minPos {999999.0};
+    double minPos{999999.0};
     for (Entity *e : entities)
     {
         if (e->getTag() != "enemy")
@@ -112,12 +162,13 @@ Entity *Map::getClosestEnemy()
 }
 
 Map::Map(Player *player, std::vector<Obstacle *> const &obstacles)
-    : view{new sf::View{
-          {static_cast<float>(Window::WINDOW_WIDTH) / 2,
-           static_cast<float>(Window::WINDOW_HEIGHT) / 2},
-          {static_cast<float>(Window::WINDOW_WIDTH), static_cast<float>(Window::WINDOW_HEIGHT)}}},
-      player{player}, entities{}, toRemove{}
+    : view{new sf::View{{static_cast<float>(Window::getWindowWidth()) / 2.0F,
+                         static_cast<float>(Window::getWindowHeight()) / 2.0F},
+                        {static_cast<float>(Window::getWindowWidth()),
+                         static_cast<float>(Window::getWindowHeight())}}},
+      player{player}, entities{}, entitiesToRemove{}
 {
+    entities.push_back(player);
     for (Obstacle *obstacle : obstacles)
     {
         entities.push_back(obstacle);
@@ -126,14 +177,12 @@ Map::Map(Player *player, std::vector<Obstacle *> const &obstacles)
 
 Map::~Map()
 {
-    // std::cout << "Running the window destructor" << std::endl;
-    delete player;
-    delete view;
-    player = nullptr;
-    view = nullptr;
-
     for (Entity *e : entities)
     {
         delete e;
     }
+    player = nullptr;
+
+    delete view;
+    view = nullptr;
 }

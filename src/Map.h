@@ -14,6 +14,7 @@ class Map
     static Map *instance();
     static Map *init(Player *player, std::vector<Obstacle *> const &obstacles);
     static void deleteInstance();
+    void resetState();
 
     void handelUpdate(sf::RenderWindow *window);
     void draw(sf::RenderWindow *window) const;
@@ -31,7 +32,7 @@ class Map
     sf::View *view;
     Player *player;
     std::vector<Entity *> entities;
-    std::vector<Entity *> toRemove;
+    std::vector<std::vector<Entity *>::iterator> entitiesToRemove;
 };
 
 #endif

@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <map>
+#include <string>
 
 #include "Highscore.h"
 
@@ -13,18 +14,18 @@ class Leaderboard
     static Leaderboard *init(std::string const &leaderboardPath);
     static void deleteInstance();
 
-    void saveHighscore() const;
-    std::map<std::string, ScoreInfo> getHighscores() const;
+    void saveHighscore(std::string const &username, ScoreInfo const &scoreInfo);
+    void saveLeaderboard(std::string const &leaderboardPath) const;
+    std::vector<std::pair<std::string, ScoreInfo>> getLeaderboard(int maxSize);
 
   private:
     Leaderboard(std::string const &leaderboardPath);
-    ~Leaderboard();
 
     static Leaderboard *instancePtr;
 
-    void loadLeaderboard(std::string const &leaderboard);
+    void loadLeaderboard(std::string const &leaderboardPath);
 
-    std::map<std::string, ScoreInfo> highscores;
+    std::vector<std::pair<std::string, ScoreInfo>> highscores;
 };
 
 #endif

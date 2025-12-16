@@ -7,9 +7,9 @@ AssaultRifle::AssaultRifle()
              "Shoot kinda fast with a mediumlow damag",
              /*dmg*/ 7.5f,
              /*attackSpeed (shoots per sec)*/ 10,
-             Rarity::BASIC,
              /*bullet speed*/ 80,
-             /*bulletHP*/ 1)
+             /*bulletHP*/ 1,
+             Rarity::BASIC)
 {
 }
 void AssaultRifle::tryToShoot()

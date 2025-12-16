@@ -2,8 +2,9 @@
 
 #include <cmath>
 #include <iostream>
-#include <unistd.h>
 
+#include "EnemyProjectile.h"
+#include "Highscore.h"
 #include "Map.h"
 
 Enemy::Enemy(/*Charactar*/ double currentHp,
@@ -11,13 +12,12 @@ Enemy::Enemy(/*Charactar*/ double currentHp,
              sf::Vector2f positon,
              int attackRange,
              int attackSpeed,
-             int XP_DROP,
+             int const XP_DROP,
              double damage,
              int score,
              Player *player)
-    : Character("enemy", currentHp, movementSpeed, positon),
-      attackRange{attackRange}, attackSpeed{attackSpeed}, XP_DROP{XP_DROP}, damage{damage},
-      score{score}, player{player}
+    : Character("enemy", currentHp, movementSpeed, positon), attackRange{attackRange},
+      attackSpeed{attackSpeed}, XP_DROP{XP_DROP}, damage{damage}, score{score}, player{player}, rotation{0}
 {
 }
 
@@ -25,15 +25,13 @@ Footman::Footman(/*Charactar*/
                  double currentHp,
                  int movementSpeed,
                  sf::Vector2f positon,
-                 sf::Vector2f direction,
                  int attackRange,
                  int attackSpeed,
-                 int XP_DROP,
+                 int const XP_DROP,
                  double damage,
                  int score,
                  Player *player)
-    : Enemy(
-            currentHp,
+    : Enemy(currentHp,
             movementSpeed,
             positon,
             attackRange,
@@ -41,27 +39,28 @@ Footman::Footman(/*Charactar*/
             XP_DROP,
             damage,
             score,
-            player),
-      texture{TextureManager::instance()->getTexture("enemy.png")}
+            player)
+
 {
-    auto playerSize{texture->getSize()};
+    auto texture{TextureManager::instance()->getTexture("enemy.png")};
+    auto enemySize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
-    sf::Sprite::setOrigin(playerSize.x / 2.0, playerSize.y / 2.0);
+    sf::Sprite::setOrigin(enemySize.x / 2.0, enemySize.y / 2.0);
 }
 
-Archer::Archer(/*Charactar*/ 
+Archer::Archer(/*Charactar*/
                double currentHp,
                int movementSpeed,
                sf::Vector2f positon,
-               sf::Vector2f direction,
                int attackRange,
                int attackSpeed,
-               int XP_DROP,
+               int const XP_DROP,
                double damage,
                int score,
-               Player *player)
-    : Enemy(
-            currentHp,
+               Player *player,
+
+               double velocity)
+    : Enemy(currentHp,
             movementSpeed,
             positon,
             attackRange,
@@ -70,28 +69,29 @@ Archer::Archer(/*Charactar*/
             damage,
             score,
             player),
-      texture{TextureManager::instance()->getTexture("enemy.png")}
+      velocity{velocity}
 {
-    auto playerSize{texture->getSize()};
+    auto texture{TextureManager::instance()->getTexture("fighter.png")};
+    auto enemySize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
-    sf::Sprite::setOrigin(playerSize.x / 2.0, playerSize.y / 2.0);
+    sf::Sprite::setOrigin(enemySize.x / 2.0, enemySize.y / 2.0);
 }
 
 Kaboom::Kaboom(/*Charactar*/
                double currentHp,
                int movementSpeed,
                sf::Vector2f positon,
-               sf::Vector2f direction,
                int attackRange,
                int attackSpeed,
-               int XP_DROP,
+               int const XP_DROP,
                double damage,
                int score,
                Player *player,
                double explodeDamage,
-               double explodeRange)
-    : Enemy(
-            currentHp,
+               double explodeRange,
+               int explodeCountdown,
+               float agroRange)
+    : Enemy(currentHp,
             movementSpeed,
             positon,
             attackRange,
@@ -100,21 +100,13 @@ Kaboom::Kaboom(/*Charactar*/
             damage,
             score,
             player),
-      explodeDamage{explodeDamage}, explodeRange{explodeRange},
-      texture{TextureManager::instance()->getTexture("enemy.png")}
+      explodeDamage{explodeDamage}, explodeRange{explodeRange}, explodeCountdown{explodeCountdown},
+      agroRange{agroRange}
 {
-    auto playerSize{texture->getSize()};
+    auto texture{TextureManager::instance()->getTexture("kaboom.png")};
+    auto enemySize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
-    sf::Sprite::setOrigin(playerSize.x / 2.0, playerSize.y / 2.0);
-}
-
-double pythagoras(sf::Vector2f p) // ska vara en point
-{
-    return sqrt((p.x * p.x) + (p.y * p.y));
-}
-
-Enemy::~Enemy()
-{
+    sf::Sprite::setOrigin(enemySize.x / 2.0, enemySize.y / 2.0);
 }
 
 void Enemy::die()
@@ -123,33 +115,101 @@ void Enemy::die()
     // Map::removeEntity(Entity *this);
 
     Map::instance()->removeEntity(this);
+    player->gainXp(XP_DROP);
+    Highscore::instance()->addKillScore(score);
 }
 
-void Enemy::draw(sf::RenderWindow *window) const
+float Enemy::calculateDistance()
 {
-    window->draw(*this);
+    oldPosition = getPosition();
+    sf::Vector2f playerPositon = player->getPosition();
+    sf::Vector2f enemyPosition = oldPosition;
+
+    float directionX = playerPositon.x - enemyPosition.x;
+    float directionY = playerPositon.y - enemyPosition.y;
+
+    return std::sqrt((directionX * directionX) + (directionY * directionY));
 }
-void Enemy::moveHelper()
+
+sf::Vector2f Enemy::calculateDirection()
 {
-    
+    sf::Vector2f playerPositon = player->getPosition();
+    sf::Vector2f enemyPosition = getPosition();
+    sf::Vector2f directionResult{playerPositon.x - enemyPosition.x,
+                                 playerPositon.y - enemyPosition.y};
+    return directionResult;
 }
+
+float Enemy::calculateRotation()
+{
+    double rotationRadians = std::atan2((player->getPosition().y - getPosition().y),
+                                        (player->getPosition().x - getPosition().x));
+    rotation = rotationRadians * (180 / M_PI) + 90;
+    return rotation;
+}
+void Enemy::collisionHandler(Entity *other)
+{
+    sf::Vector2f diff = sf::Sprite::getPosition() - other->getPosition();
+    float lenDistance = std::sqrt((diff.x * diff.x) + (diff.y * diff.y));
+    sf::Vector2f direction;
+    if (lenDistance > 0)
+    {
+        direction = diff / lenDistance;
+    }
+    else
+    {
+        direction = sf::Vector2f(1.0F, 1.0F);
+    }
+    float push = other->getGlobalBounds().width / 6;
+    sf::Sprite::setPosition(sf::Sprite::getPosition() + direction * push);
+}
+
 std::string Enemy::getTag()
 {
-    return tag;
+    return "enemy";
 }
+
 void Enemy::onCollision(Entity *other)
 {
-    if (other -> getTag() == "player")
+    if (other->getTag() == "player")
     {
-        attack();
+        // tryAttack(calculateDistance());
+        sf::Sprite::setPosition(oldPosition);
+        // std::cout << "collided with player" << std::endl;
+    }
+    else if (other->getTag() == "enemy")
+    {
+        // std::cout << "collided with enemy" << std::endl;
+        collisionHandler(other);
+    }
+    else if (other->getTag() == "obstacle")
+    {
+        // std::cout << "collided with box" << std::endl;
+
+        collisionHandler(this);
+        return;
     }
 }
+
+void Enemy::onBorderCollision()
+{
+    sf::Sprite::setPosition(oldPosition);
+}
+
 void Enemy::tryAttack(float len)
 {
-    if (len <= attackRange)
+    auto p{player->getTexture()->getSize()};
+    auto e{this->getTexture()->getSize()};
+
+    float imageRange{static_cast<float>(attackRange)};
+    imageRange += sqrt((p.x / 2) * (p.x / 2) + (p.y / 2) * (p.y / 2)) +
+                  sqrt((e.x / 2) * (e.x / 2) + (e.y / 2) * (e.y / 2));
+
+    count--;
+    if (len <= imageRange and count <= 0)
     {
         attack();
-        // sleep(attackSpeed);//använd timestap istälet
+        count = 600 / attackSpeed;
     }
 }
 
@@ -161,24 +221,19 @@ void Footman::attack()
 
 void Footman::move()
 {
-    sf::Vector2f playerPositon = player->getPosition();
-    sf::Vector2f enemyPosition = getPosition();
+    oldPosition = getPosition();
+    sf::Vector2f directionResult = calculateDirection();
+
     sf::Vector2f direction;
     direction.x = 0;
     direction.y = 0;
-
-    // Point player {figure1.getPosition()};
-    // Point enemy  {figure2.getPosition()};
-    float direction_x = playerPositon.x - enemyPosition.x;
-    float direction_y = playerPositon.y - enemyPosition.y;
-
-    float len = std::sqrt(direction_x * direction_x + direction_y* direction_y);
+    float len = calculateDistance();
     if (len != 0)
     {
-        direction.x = (direction_x / len);
-        direction.y = (direction_y/ len);
+        direction.x = (directionResult.x / len);
+        direction.y = (directionResult.y / len);
     }
-
+    sf::Sprite::setRotation(calculateRotation());
     sf::Sprite::move(direction.x * movementSpeed, direction.y * movementSpeed);
     tryAttack(len);
 }
@@ -195,14 +250,15 @@ void Kaboom::isInRange(float len)
 
 void Kaboom::explode(float len)
 {
-    if (len <= explodeRange)
+    if (explodeCountdown == 0)
     {
-        player->takeDamage(explodeDamage);
+        if (len <= explodeRange)
+        {
+            player->takeDamage(explodeDamage);
+        }
+        die();
     }
-    die();
-    // explodeRange
-    // explodeDamage
-    // kaboom die
+    explodeCountdown--;
 }
 
 void Kaboom::attack()
@@ -211,55 +267,59 @@ void Kaboom::attack()
 }
 void Kaboom::move()
 {
-    sf::Vector2f figure1 = player->getPosition();
-    sf::Vector2f figure2 = getPosition();
+    oldPosition = getPosition();
+    sf::Vector2f directionResult = calculateDirection();
     sf::Vector2f direction;
     direction.x = 0;
     direction.y = 0;
-
-    // Point player {figure1.getPosition()};
-    // Point enemy  {figure2.getPosition()};
-    float direction_x = figure1.x - figure2.x;
-    float direction_y = figure1.y - figure2.y;
-
-    float len = std::sqrt(direction_x * direction_x + direction_y * direction_y);
+    float len = calculateDistance();
     if (len != 0)
     {
-        direction.x = (direction_x / len);
-        direction.y = (direction_y / len);
+        direction.x = (directionResult.x / len);
+        direction.y = (directionResult.y / len);
     }
-    if (len <= 300)
+    if (len <= agroRange)
     {
-        movementSpeed = 10.0;
+        movementSpeed = 8.0;
     }
-
+    sf::Sprite::setRotation(calculateRotation());
     sf::Sprite::move(direction.x * movementSpeed, direction.y * movementSpeed);
     tryAttack(len);
 }
 
 void Archer::attack()
 {
+    shoot();
 }
 void Archer::move()
 {
-    sf::Vector2f figure1 = player->getPosition();
-    sf::Vector2f figure2 = getPosition();
+    oldPosition = getPosition();
+    sf::Vector2f directionResult = calculateDirection();
+
     sf::Vector2f direction;
     direction.x = 0;
     direction.y = 0;
-
-    float direction_x = figure1.x - figure2.x;
-    float direction_y = figure1.y - figure2.y;
-
-    float len = std::sqrt(direction_x * direction_x + direction_y * direction_y);
+    float len = calculateDistance();
     if (len != 0)
     {
-        direction.x = (direction_x / len);
-        direction.y = (direction_y / len);
+        direction.x = (directionResult.x / len);
+        direction.y = (directionResult.y / len);
     }
-    if (len > 500)
+    if (len > attackRange)
     {
+        sf::Sprite::setRotation(calculateRotation());
         sf::Sprite::move(direction.x * movementSpeed, direction.y * movementSpeed);
     }
+    sf::Sprite::setRotation(calculateRotation());
     tryAttack(len);
+}
+
+void Archer::shoot()
+{
+    Map::instance()->addEntity(new EnemyProjectile{Transformable::getPosition(),
+                                                   Transformable::getRotation(),
+                                                   velocity,
+                                                   damage,
+                                                   1,
+                                                   "Enemy_bullet.png"});
 }

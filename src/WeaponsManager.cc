@@ -4,14 +4,16 @@
 #include <cstdlib>
 #include <iostream>
 
-//Weapon include
+// Weapon include
 #include "AssaultRifle.h"
 #include "SniperRifle.h"
+#include "Shootgun.h"
 
 WeaponsManager::WeaponsManager() : equipedWeapons{}, unequipedWeapons{}
 {
     unequipedWeapons.push_back(new AssaultRifle());
-    //unequipedWeapons.push_back(new SniperRifle());
+    unequipedWeapons.push_back(new SniperRifle());
+    unequipedWeapons.push_back(new Shootgun());
 }
 
 void WeaponsManager::resetState()
@@ -19,6 +21,7 @@ void WeaponsManager::resetState()
     // Appending vectors taken from
     // https://www.geeksforgeeks.org/cpp/how-to-append-a-vector-to-a-vector-in-cpp/
     unequipedWeapons.insert(unequipedWeapons.end(), equipedWeapons.begin(), equipedWeapons.end());
+    equipedWeapons.clear();
 }
 
 WeaponsManager::~WeaponsManager()
@@ -74,7 +77,12 @@ void WeaponsManager::receiveRandomWeapon()
     }
 
     auto randIndex{std::rand() % unequipedWeapons.size()};
-    equipedWeapons.push_back(unequipedWeapons.at(randIndex));
+    equipWeapon(unequipedWeapons.at(randIndex));
+}
+
+bool WeaponsManager::canGetNewWeapon() const
+{
+    return unequipedWeapons.size() > 0;
 }
 
 void WeaponsManager::equipWeapon(Weapon *weaponToDelete)
@@ -83,6 +91,6 @@ void WeaponsManager::equipWeapon(Weapon *weaponToDelete)
         std::remove_if(unequipedWeapons.begin(),
                        unequipedWeapons.end(),
                        [weaponToDelete](Weapon *weapon)
-                       { return weaponToDelete->getName() == weapon->getName(); }));
+                       { return weaponToDelete->getName() == weapon->getName(); }), unequipedWeapons.end());
     equipedWeapons.push_back(weaponToDelete);
 }

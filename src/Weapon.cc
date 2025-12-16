@@ -2,16 +2,15 @@
 
 #include <iostream>
 
-#include "Map.h"
-
 Weapon::Weapon(std::string const &name,
                std::string const &description,
                double const &damage,
                double const &attackSpeed,
-               Rarity rarity,
-               double speed, double bulletHP)
+               double speed,
+               double bulletHP,
+               Rarity rarity)
     : name{name}, description{description}, damage{damage}, damageMultiplication{1},
-      attackSpeed{attackSpeed}, counter {}, rarity{rarity}, speed{speed}, bulletHP{bulletHP}
+      attackSpeed{attackSpeed}, speed{speed}, bulletHP{bulletHP}, counter{}, rarity{rarity}
 {
 }
 
