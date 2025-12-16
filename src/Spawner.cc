@@ -8,17 +8,19 @@
 
 Spawner::Spawner(Player *player)
     : spawnRate{200.0}, spawnRateIncrease{0.99}, spawnPoint{}, counter{0}, timeCounter{0},
-      player{player}, inKaboom{false}, inArcher{false}
+      player{player}, canSpawnKaboom{false}, canSpawnArcher{false}
 {
     Spawner::spawnEnemies();
 }
 
 void Spawner::resetState()
 {
-    enemies.clear();
+    //enemies.clear();
     spawnRate = 200.0;
     counter = 0;
     timeCounter = 0;
+    canSpawnKaboom = false;
+    canSpawnArcher = false;
 }
 
 void Spawner::spawnEnemies()
@@ -26,9 +28,9 @@ void Spawner::spawnEnemies()
     if (counter >= spawnRate)
     {
         newEnmey();
-        addFootman();
+        //addFootman();
         addKaboom();
-        addArcher();
+        //addArcher();
 
         counter = 0;
         timeCounter += 1;
@@ -44,11 +46,11 @@ void Spawner::newEnmey()
 {
     if (timeCounter >= 10)
     {
-        inKaboom = true;
+        canSpawnKaboom = true;
     }
     if (timeCounter >= 20)
     {
-        inArcher = true;
+        canSpawnArcher = true;
     }
 }
 void Spawner::chooseSpawnPos()
@@ -98,7 +100,7 @@ void Spawner::addFootman()
     double currentHP{100.0};
     int movementSpeed{4};
     sf::Vector2f direction{0, 0};
-    int attackRange{10};
+    int attackRange{20};
     int attackSpeed{10};
     int const XP_DROP{5};
     double damage{15};
@@ -119,7 +121,7 @@ void Spawner::addFootman()
 
 void Spawner::addKaboom()
 {
-    if (inKaboom)
+    if (canSpawnKaboom)
     {
         chooseSpawnPos();
         std::string const pngName{"kaboom.png"};
@@ -131,9 +133,9 @@ void Spawner::addKaboom()
         int const XP_DROP{10};
         double damage{5};
         int score{3};
-        double explodeRange{150};
+        double explodeRange{60};
         double explodeDamage{30};
-        int explodeCountdown{60};
+        int explodeCountdown{20};
         float agroRange{300};
         Kaboom *enemyK = new Kaboom(pngName,
                                     currentHP,
@@ -155,7 +157,7 @@ void Spawner::addKaboom()
 
 void Spawner::addArcher() 
 {
-    if (inArcher)
+    if (canSpawnArcher)
     {
         chooseSpawnPos();
         std::string const pngName{"fighter.png"};
