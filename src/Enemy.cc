@@ -277,12 +277,6 @@ void Kaboom::explode(float len)
     if(explodeCountdown <= 0)
     {
         hasExploded = true;
-        auto texture{TextureManager::instance()->getTexture("explod.png")};
-        this -> setTexture(*texture);
-        //sf::Sprite s;
-        //s.setTexture(*texture);
-
-        //s.setScale(1.5f, 1.5f);
 
         std::cout<<"kaboom"<<std::endl;
         auto p { player -> getTexture()-> getSize()};
@@ -295,7 +289,13 @@ void Kaboom::explode(float len)
         {
             player->takeDamage(explodeDamage);
         }
-        
+        auto texture{TextureManager::instance()->getTexture("explod.png")};
+        this -> setTexture(*texture, true); // tog delen från SFML att om man säter true i setTExur så får bilden bhåla sin storlek när den ritas ut https://www.sfml-dev.org/documentation/3.0.2/classsf_1_1Sprite.html#a3729c88d88ac38c19317c18e87242560
+        //sf::Sprite s;
+        //s.setTexture(*texture);
+        auto explodSize{texture->getSize()};
+        std::cout<<"x "<<explodSize.x<<" y "<<explodSize.y<<std::endl;
+        this-> setOrigin(explodSize.x / 2.0, explodSize.y / 2.0);
     }
     
 }

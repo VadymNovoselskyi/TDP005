@@ -28,9 +28,9 @@ void Spawner::spawnEnemies()
     if (counter >= spawnRate)
     {
         newEnmey();
-        addFootman();
+        //addFootman();
         addKaboom();
-        addArcher();
+        //addArcher();
 
         counter = 0;
         timeCounter += 1;
