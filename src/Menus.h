@@ -33,7 +33,7 @@ class ChooseNameMenu : public Menu
 {
   public:
     ChooseNameMenu();
-    bool handleEvent(sf::Event event) override;
+    bool handleEvent(sf::Event const &event) override;
 
   private:
     std::vector<ElementsInfo> createButtons() const override;
