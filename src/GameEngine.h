@@ -6,21 +6,28 @@
 
 #include "Menu.h"
 #include "Player.h"
-#include "Window.h"
 #include "Spawner.h"
+#include "Window.h"
 
 class GameEngine
 {
   public:
+    static GameEngine *instance();
+    static GameEngine *init();
+    static void deleteInstance();
+
+    void run();
+
+    int static const FPS;
+
+  private:
     GameEngine();
     ~GameEngine();
-    void run();
-    
-    int static const FPS;
-  private:
+    GameEngine static *instancePtr;
+
     Spawner *spawner;
     sf::Clock clock;
-    
+
     sf::Time static const UPDATE_INTERVAL;
 };
 

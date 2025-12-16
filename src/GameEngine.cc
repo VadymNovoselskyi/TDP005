@@ -12,8 +12,31 @@
 #include "TilesManager.h"
 #include "Window.h"
 
-int const GameEngine::FPS{200};
+int const GameEngine::FPS{60};
 sf::Time const GameEngine::UPDATE_INTERVAL{sf::milliseconds(1000.0 / GameEngine::FPS)};
+
+GameEngine *GameEngine::instancePtr{nullptr};
+
+GameEngine *GameEngine::instance()
+{
+    if (GameEngine::instancePtr == nullptr)
+    {
+        throw std::logic_error("Didn't init GameEngine before calling instance on it");
+    }
+    return GameEngine::instancePtr;
+}
+
+GameEngine *GameEngine::init()
+{
+    GameEngine::instancePtr = new GameEngine();
+    return GameEngine::instancePtr;
+}
+
+void GameEngine::deleteInstance()
+{
+    delete GameEngine::instancePtr;
+    GameEngine::instancePtr = nullptr;
+}
 
 GameEngine::GameEngine() : spawner{}, clock{}
 {
