@@ -2,8 +2,9 @@
 
 int main()
 {
-    GameEngine gameEngine{GameEngine()};
-    gameEngine.run();
+    GameEngine::init();
+    GameEngine::instance()->run();
+    GameEngine::deleteInstance();
 
     return 0;
 }

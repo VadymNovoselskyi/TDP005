@@ -152,6 +152,7 @@ void Map::draw(sf::RenderWindow *window) const
         // std::cout << "Is nullptr? " << (e == nullptr) << std::endl;
         e->draw(window);
     }
+    player->draw(window);
     // std::cout << "Finished drawing all entities" << std::endl;
 
     if (StateMachine::instance()->state() != GameState::LEADERBOARD)
