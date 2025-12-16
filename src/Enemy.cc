@@ -103,7 +103,7 @@ Kaboom::Kaboom(/*Charactar*/
       explodeDamage{explodeDamage}, explodeRange{explodeRange}, explodeCountdown{explodeCountdown},
       agroRange{agroRange}
 {
-    auto texture{TextureManager::instance()->getTexture("obstacle-gas.png")};
+    auto texture{TextureManager::instance()->getTexture("kaboom.png")};
     auto enemySize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
     sf::Sprite::setOrigin(enemySize.x / 2.0, enemySize.y / 2.0);
