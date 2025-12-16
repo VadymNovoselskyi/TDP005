@@ -5,8 +5,12 @@
 #include "Enemy.h"
 #include "Map.h"
 
-Projectile::Projectile(
-    sf::Vector2f const &pos, double rotation, double velocity, double damage, double hp, std::string const &pngName)
+Projectile::Projectile(sf::Vector2f const &pos,
+                       double rotation,
+                       double velocity,
+                       double damage,
+                       double hp,
+                       std::string const &pngName)
     : Entity(std::string{"projectile"}, pos, hp), velocity{velocity}, damage{damage},
       texture{TextureManager::instance()->getTexture(pngName)}, isDying{false}
 {
@@ -21,6 +25,10 @@ void Projectile::onCollision(Entity *other)
     {
         other->takeDamage(damage);
         takeDamage();
+    }
+    if (other->getTag() == "obstacle")
+    {
+        die();
     }
 }
 

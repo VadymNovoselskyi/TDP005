@@ -7,11 +7,13 @@
 // Weapon include
 #include "AssaultRifle.h"
 #include "SniperRifle.h"
+#include "Shootgun.h"
 
 WeaponsManager::WeaponsManager() : equipedWeapons{}, unequipedWeapons{}
 {
     unequipedWeapons.push_back(new AssaultRifle());
     unequipedWeapons.push_back(new SniperRifle());
+    unequipedWeapons.push_back(new Shootgun());
 }
 
 void WeaponsManager::resetState()
