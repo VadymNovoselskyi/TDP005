@@ -271,13 +271,14 @@ void Kaboom::explode(float len)
 {
     if (hasExploded)
     {
+        die();
         return; //här för att stoppa att en kabom kan explodera fellera gånger
     }
     if(explodeCountdown <= 0)
     {
         hasExploded = true;
-        auto texture{TextureManager::instance()->getTexture("fighter.png")};
-        sf::Sprite setTexture(*texture);
+        auto texture{TextureManager::instance()->getTexture("explod.png")};
+        this -> setTexture(*texture);
         //sf::Sprite s;
         //s.setTexture(*texture);
 
@@ -295,7 +296,6 @@ void Kaboom::explode(float len)
             player->takeDamage(explodeDamage);
         }
         
-        //die();
     }
     
 }
