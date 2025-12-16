@@ -155,7 +155,7 @@ void Map::draw(sf::RenderWindow *window) const
     player->draw(window);
     // std::cout << "Finished drawing all entities" << std::endl;
 
-    if (StateMachine::instance()->state() != GameState::LEADERBOARD)
+    if (StateMachine::instance()->state() != GameState::LEADERBOARD && StateMachine::instance()->state() != GameState::IN_START_MENU)
     {
         player->drawInfo(window);
     }

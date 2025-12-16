@@ -1,7 +1,6 @@
 #include "Spawner.h"
 
 #include <cstdlib>
-#include <iostream> // print test
 
 #include "TilesManager.h"
 #include "Window.h"
@@ -28,9 +27,9 @@ void Spawner::spawnEnemies()
     if (counter >= spawnRate)
     {
         newEnmey();
-        //addFootman();
+        addFootman();
         addKaboom();
-        //addArcher();
+        addArcher();
 
         counter = 0;
         timeCounter += 1;
