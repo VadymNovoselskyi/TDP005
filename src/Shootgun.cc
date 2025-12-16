@@ -12,10 +12,10 @@ Shootgun::Shootgun()
     : Weapon("Shootgun",
              "Shoot slow with a medium damag",
              /*dmg*/ 20.0f,
-             /*attackSpeed (shoots per sec)*/ 1,
+             /*attackSpeed (shoots per sec)*/ 2,
              /*bullet speed*/ 30,
              /*bulletHP*/ 1,
-             Rarity::BASIC)
+             Rarity::EPIC)
 {
 }
 

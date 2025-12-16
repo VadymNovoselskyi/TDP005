@@ -1,4 +1,5 @@
 #include "Weapon.h"
+#include "GameEngine.h"
 
 #include <iostream>
 
@@ -20,7 +21,7 @@ void Weapon::tryToShoot()
     if (counter <= 0)
     {
         shoot();
-        counter = 60 / attackSpeed;
+        counter =  GameEngine::FPS / attackSpeed;
     }
 }
 
