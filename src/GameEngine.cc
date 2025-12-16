@@ -45,7 +45,7 @@ GameEngine::GameEngine() : spawner{}, clock{}
     Highscore::init(FPS);
     Leaderboard::init("static/leaderboard.txt");
     TilesManager::init("static/tileMap.txt");
-    
+
     std::vector<Menu *> menus{};
     auto levelUpMenu{new LevelUpMenu()};
     menus.push_back(new StartMenu());
@@ -69,39 +69,38 @@ GameEngine::GameEngine() : spawner{}, clock{}
     Map::init(player, TilesManager::instance()->getObstacles());
     spawner = new Spawner(player);
 
-    StateMachine::instance()->addListener("onStart",
-                                          [player, mapCenter, this](GameState gameState)
-                                          {
-                                              if (gameState == GameState::STARTING_GAME)
-                                              {
-                                                  player->resetState(mapCenter);
-                                                  spawner->resetState();
-                                                  Map::instance()->resetState();
-                                                  Highscore::instance()->saveHighscore();
-                                                  Highscore::instance()->resetState();
+    StateMachine::instance()->addListener(
+        [player, mapCenter, this](GameState gameState)
+        {
+            if (gameState == GameState::STARTING_GAME)
+            {
+                player->resetState(mapCenter);
+                spawner->resetState();
+                Map::instance()->resetState();
+                Highscore::instance()->saveHighscore();
+                Highscore::instance()->resetState();
 
-                                                  StateMachine::instance()->setInGame();
-                                              }
-                                          });
-    StateMachine::instance()->addListener("onContinue",
-                                          [](GameState gameState)
-                                          {
-                                              if (gameState == GameState::CONTINUING_GAME)
-                                              {
-                                                  StateMachine::instance()->setInGame();
-                                              }
-                                          });
-    StateMachine::instance()->addListener("onExit",
-                                          [](GameState gameState)
-                                          {
-                                              if (gameState == GameState::EXIT)
-                                              {
-                                                  Highscore::instance()->saveHighscore();
-                                                  Leaderboard::instance()->saveLeaderboard(
-                                                      "static/leaderboard.txt");
-                                                  Window::instance()->closeWindow();
-                                              }
-                                          });
+                StateMachine::instance()->setInGame();
+            }
+        });
+    StateMachine::instance()->addListener(
+        [](GameState gameState)
+        {
+            if (gameState == GameState::CONTINUING_GAME)
+            {
+                StateMachine::instance()->setInGame();
+            }
+        });
+    StateMachine::instance()->addListener(
+        [](GameState gameState)
+        {
+            if (gameState == GameState::EXIT)
+            {
+                Highscore::instance()->saveHighscore();
+                Leaderboard::instance()->saveLeaderboard("static/leaderboard.txt");
+                Window::instance()->closeWindow();
+            }
+        });
 }
 
 GameEngine::~GameEngine()
