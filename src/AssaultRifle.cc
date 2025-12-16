@@ -29,6 +29,5 @@ void AssaultRifle::shoot()
                                               speed,
                                               damage * damageMultiplication,
                                               bulletHP,
-                                              60,
                                               "AR_bullet.png"});
 }

@@ -36,6 +36,7 @@ void Map::handelUpdate(sf::RenderWindow *window)
     {
         e->move();
     }
+    toRemove.erase(toRemove.begin());
     player->updateRotation(window);
 
     // TODO: watching walls and gas is too expensive, come up with other ways to do it
@@ -50,8 +51,9 @@ void Map::handelUpdate(sf::RenderWindow *window)
                 (*it2)->onCollision(*it1);
             }
         }
-        toRemove.erase(toRemove.begin());
     }
+
+    toRemove.erase(toRemove.begin());
 }
 
 void Map::draw(sf::RenderWindow *window) const
@@ -70,12 +72,16 @@ void Map::draw(sf::RenderWindow *window) const
 void Map::addEntity(Entity *e)
 {
     entities.push_back(e);
+
+    std::cout << "+" << entities.size() << std::endl;
 }
 
 void Map::removeEntity(Entity *e)
 {
     std::remove_if(entities.begin(), entities.end(), [e](Entity *e1) { return e == e1; }),
         toRemove.end();
+
+    std::cout << "-" << entities.size() << std::endl;
 }
 
 Entity *Map::getClosestEnemy()

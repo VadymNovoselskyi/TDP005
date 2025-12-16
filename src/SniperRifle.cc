@@ -28,7 +28,6 @@ void SniperRifle::shoot()
                                               speed,
                                               damage * damageMultiplication,
                                               bulletHP,
-                                              2,
                                               "Sniper_bullet.png"});
 }
 

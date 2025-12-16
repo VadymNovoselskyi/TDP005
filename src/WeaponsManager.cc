@@ -11,7 +11,7 @@
 WeaponsManager::WeaponsManager() : equipedWeapons{}, unequipedWeapons{}
 {
     unequipedWeapons.push_back(new AssaultRifle());
-    unequipedWeapons.push_back(new SniperRifle());
+    //unequipedWeapons.push_back(new SniperRifle());
 }
 
 void WeaponsManager::resetState()

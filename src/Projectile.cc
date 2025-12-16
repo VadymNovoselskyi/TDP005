@@ -10,9 +10,8 @@ Projectile::Projectile(sf::Vector2f const &pos,
                        double velocity,
                        double damage,
                        double hp,
-                       double lifeTime,
                        std::string pngName)
-    : Entity(std::string{"projectile"}, pos, hp), velocity{velocity}, damage{damage}, lifeTime{lifeTime},
+    : Entity(std::string{"projectile"}, pos, hp), velocity{velocity}, damage{damage}, lifeTime{360},
       texture{TextureManager::instance()->getTexture(pngName)}
 {
     sf::Sprite::setTexture(*texture);
