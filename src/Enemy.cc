@@ -17,9 +17,9 @@ Enemy::Enemy(/*Charactar*/ std::string const& pngName,
              double damage,
              int score,
              Player *player)
-    : Character("enemy", currentHp, movementSpeed, positon), pngName{pngName},
-      attackRange{attackRange}, attackSpeed{attackSpeed}, count{attackSpeed}, XP_DROP{XP_DROP},
-      damage{damage}, score{score}, player{player}, rotation{0}
+    : Character("enemy", currentHp, movementSpeed, positon), attackRange{attackRange},
+      attackSpeed{attackSpeed}, count{attackSpeed}, XP_DROP{XP_DROP}, damage{damage},
+      score{score}, player{player}, rotation{0}, pngName{pngName}
 {
     auto texture{TextureManager::instance()->getTexture(pngName)};
     auto enemySize{texture->getSize()};
@@ -236,7 +236,7 @@ void Kaboom::isInRange(float len)
     auto p { player -> getTexture()-> getSize()};
     auto e {this -> getTexture()-> getSize()};
 
-    float imageRange{attackRange};
+    double imageRange{static_cast<double>(attackRange)};
     imageRange += sqrt((p.x/2)*(p.x/2)+(p.y/2)*(p.y/2))+sqrt((e.x/2)*(e.x/2)+(e.y/2)*(e.y/2));
 
     if (len <= imageRange)
@@ -270,7 +270,7 @@ void Kaboom::explode(float len)
         auto p { player -> getTexture()-> getSize()};
         auto e {this -> getTexture()-> getSize()};
 
-        float imageRange{explodeRange};
+        double imageRange{explodeRange};
         imageRange += sqrt((p.x/2)*(p.x/2)+(p.y/2)*(p.y/2))+sqrt((e.x/2)*(e.x/2)+(e.y/2)*(e.y/2));
 
         if (len <= imageRange)
