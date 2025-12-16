@@ -103,7 +103,7 @@ Kaboom::Kaboom(/*Charactar*/
       explodeDamage{explodeDamage}, explodeRange{explodeRange}, explodeCountdown{explodeCountdown},
       agroRange{agroRange}
 {
-    auto texture{TextureManager::instance()->getTexture("obstacle-gas.png")};
+    auto texture{TextureManager::instance()->getTexture("kaboom.png")};
     auto enemySize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
     sf::Sprite::setOrigin(enemySize.x / 2.0, enemySize.y / 2.0);
@@ -114,9 +114,11 @@ void Enemy::die()
     // ge xp och påeng
     // Map::removeEntity(Entity *this);
 
+    std::cout << "Dying: " << this << std::endl;
     Map::instance()->removeEntity(this);
     player->gainXp(XP_DROP);
     Highscore::instance()->addKillScore(score);
+    std::cout << "Died" << std::endl;
 }
 
 float Enemy::calculateDistance()

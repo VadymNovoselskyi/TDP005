@@ -21,7 +21,6 @@ class Window
     sf::RenderWindow *getRenderWindow() const;
     bool isClosed() const;
 
-    static sf::Vector2u getWindowSize();
     static int getWindowWidth();
     static int getWindowHeight();
 

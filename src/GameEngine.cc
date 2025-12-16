@@ -12,7 +12,7 @@
 #include "TilesManager.h"
 #include "Window.h"
 
-int const GameEngine::FPS{60};
+int const GameEngine::FPS{200};
 sf::Time const GameEngine::UPDATE_INTERVAL{sf::milliseconds(1000.0 / GameEngine::FPS)};
 
 GameEngine::GameEngine() : spawner{}, clock{}

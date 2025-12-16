@@ -33,6 +33,7 @@ class Player : public Character
 
 
     void move() override;
+    sf::Vector2f getOldPosition() const;
     void updateRotation(sf::RenderWindow *window);
 
     void gainXp(int xp);

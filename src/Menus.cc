@@ -51,11 +51,11 @@ std::vector<ElementsInfo> LeaderboardMenu::createButtons() const
 {
     float const PADDING_TOP{0.35};
     float const PADDING_BOTTOM{0.15};
-    int const MAX_LEADERBOARD_SIZE{7};
+    int const MAX_LEADERBOARD_SIZE{5};
     std::vector<ElementsInfo> elements{};
     auto highscores = Leaderboard::instance()->getLeaderboard(MAX_LEADERBOARD_SIZE);
 
-    ElementsInfo title{"LEADERBOARD | TOP 7", 0.5, 0.1};
+    ElementsInfo title{"LEADERBOARD | TOP 5", 0.5, 0.1};
     elements.push_back(title);
 
     ElementsInfo leaderboardHeader{
@@ -73,7 +73,7 @@ std::vector<ElementsInfo> LeaderboardMenu::createButtons() const
             (((1 - PADDING_TOP - PADDING_BOTTOM) / static_cast<int>(highscores.size()) * index) +
              PADDING_TOP),
             std::nullopt,
-            38};
+            40};
         elements.push_back(leaderboardItem);
         index++;
     }
@@ -200,8 +200,8 @@ bool PauseMenu::handleEvent(sf::Event event)
 
     if (StateMachine::instance()->state() == GameState::IN_GAME &&
         event.type == sf::Event::KeyPressed &&
-        (event.key.scancode == sf::Keyboard::Scan::Space ||
-         event.key.scancode == sf::Keyboard::Scan::Escape))
+        (event.key.code == sf::Keyboard::Space ||
+         event.key.code == sf::Keyboard::Escape))
     {
         StateMachine::instance()->pauseGame();
         return true;
