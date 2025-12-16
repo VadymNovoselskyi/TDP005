@@ -5,9 +5,14 @@
 #include "Enemy.h"
 #include "Map.h"
 
-Projectile::Projectile(
-    sf::Vector2f const &pos, double rotation, double velocity, double damage, double hp, std::string pngName)
-    : Entity(std::string{"projectile"}, pos, hp), velocity{velocity}, damage{damage},
+Projectile::Projectile(sf::Vector2f const &pos,
+                       double rotation,
+                       double velocity,
+                       double damage,
+                       double hp,
+                       double lifeTime,
+                       std::string pngName)
+    : Entity(std::string{"projectile"}, pos, hp), velocity{velocity}, damage{damage}, lifeTime{lifeTime},
       texture{TextureManager::instance()->getTexture(pngName)}
 {
     sf::Sprite::setTexture(*texture);
@@ -28,6 +33,14 @@ void Projectile::onCollision(Entity *other)
 
 void Projectile::move()
 {
+    lifeTime--;
+
+    if (lifeTime <= 0)
+    {
+        die();
+        return;
+    }
+
     sf::Vector2f dir{
         static_cast<float>(std::cos((sf::Sprite::getRotation() + 90) * M_PI / 180.0f)),
         static_cast<float>(std::sin((sf::Sprite::getRotation() + 90) * M_PI / 180.0f))};

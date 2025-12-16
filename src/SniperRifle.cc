@@ -1,8 +1,8 @@
 #include "SniperRifle.h"
 
-#include "Map.h"
-
 #include <iostream>
+
+#include "Map.h"
 
 SniperRifle::SniperRifle()
     : Weapon("Sniper",
@@ -24,21 +24,26 @@ void SniperRifle::shoot()
     }
 
     Map::instance()->addEntity(new Projectile{Transformable::getPosition(),
-                                                  /*bulletRotation*/ Transformable::getRotation(),
-                                                  speed,
-                                                  damage * damageMultiplication,
-                                                  bulletHP,
-                                                  "Sniper_bullet.png"});
+                                              /*bulletRotation*/ Transformable::getRotation(),
+                                              speed,
+                                              damage * damageMultiplication,
+                                              bulletHP,
+                                              2,
+                                              "Sniper_bullet.png"});
 }
 
 void SniperRifle::calculateRotation(Entity *closeEnemy)
 {
     // detta är taget från classen player fuktionen updateRotation
-    double rotationRadians = std::atan2(Transformable::getPosition().x - closeEnemy->getPosition().x, Transformable::getPosition().y - closeEnemy->getPosition().y);
+    double rotationRadians =
+        std::atan2(Transformable::getPosition().x - closeEnemy->getPosition().x,
+                   Transformable::getPosition().y - closeEnemy->getPosition().y);
     double rotation = rotationRadians * (180 / M_PI); // transform radians to rotation
-    
-    std::cout << "enemy "<< closeEnemy->getPosition().x << " | "<< closeEnemy->getPosition().y << std::endl;
-    std::cout << "weapon "<< closeEnemy->getPosition().x << " | "<< Transformable::getPosition().y << std::endl;
+
+    std::cout << "enemy " << closeEnemy->getPosition().x << " | " << closeEnemy->getPosition().y
+              << std::endl;
+    std::cout << "weapon " << closeEnemy->getPosition().x << " | " << Transformable::getPosition().y
+              << std::endl;
     bulletRotation = rotation;
-    std::cout << rotation << " | "<< rotationRadians << std::endl;
+    std::cout << rotation << " | " << rotationRadians << std::endl;
 }

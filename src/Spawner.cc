@@ -9,7 +9,7 @@ Spawner::Spawner(Player *player) : spawnRate{200.0}, player{player}
 }
 
 void Spawner::spwanEnemies()
-{
+{/*
     double currentHP{100.0};
     int movementSpeed{4};
     sf::Vector2f position{10, 10};
@@ -41,7 +41,7 @@ void Spawner::spwanEnemies()
     else
     {
         conter += 1;
-    }
+    }*/
 }
 
 sf::Vector2f Spawner::choseSpawnPos()
