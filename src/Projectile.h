@@ -22,6 +22,8 @@ class Projectile : public Entity
     double velocity;
     double damage;
     sf::Texture const *texture;
+
+    bool isDying;
 };
 
 #endif

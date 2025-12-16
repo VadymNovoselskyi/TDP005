@@ -200,8 +200,8 @@ bool PauseMenu::handleEvent(sf::Event const &event)
 
     if (StateMachine::instance()->state() == GameState::IN_GAME &&
         event.type == sf::Event::KeyPressed &&
-        (event.key.scancode == sf::Keyboard::Scan::Space ||
-         event.key.scancode == sf::Keyboard::Scan::Escape))
+        (event.key.code == sf::Keyboard::Space ||
+         event.key.code == sf::Keyboard::Escape))
     {
         StateMachine::instance()->pauseGame();
         return true;

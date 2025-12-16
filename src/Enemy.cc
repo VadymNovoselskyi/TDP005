@@ -114,9 +114,11 @@ void Enemy::die()
     // ge xp och påeng
     // Map::removeEntity(Entity *this);
 
+    std::cout << "Dying: " << this << std::endl;
     Map::instance()->removeEntity(this);
     player->gainXp(XP_DROP);
     Highscore::instance()->addKillScore(score);
+    std::cout << "Died" << std::endl;
 }
 
 float Enemy::calculateDistance()
