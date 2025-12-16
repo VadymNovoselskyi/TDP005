@@ -8,6 +8,9 @@ public:
     Shootgun();
 private:
     void shoot() override;
+    int static const BULLETS_COUNT;
+    float static const BULLETS_SPREAD_ANGLE;
+    float static const angleStep;
     /* data */
 };
 

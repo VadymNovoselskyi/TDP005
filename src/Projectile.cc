@@ -10,9 +10,9 @@ Projectile::Projectile(sf::Vector2f const &pos,
                        double velocity,
                        double damage,
                        double hp,
-                       std::string pngName)
+                       std::string const &pngName)
     : Entity(std::string{"projectile"}, pos, hp), velocity{velocity}, damage{damage},
-      texture{TextureManager::instance()->getTexture(pngName)}
+      texture{TextureManager::instance()->getTexture(pngName)}, isDying{false}
 {
     sf::Sprite::setTexture(*texture);
     sf::Sprite::setRotation(rotation);
@@ -25,6 +25,10 @@ void Projectile::onCollision(Entity *other)
     {
         other->takeDamage(damage);
         takeDamage();
+    }
+    if (other->getTag() == "obstacle")
+    {
+        die();
     }
 }
 
@@ -58,5 +62,11 @@ void Projectile::takeDamage(double damage)
 
 void Projectile::die()
 {
-    Map::instance()->removeEntity(this);
+    // std::cout << "Removing projectile: " << this << std::endl;
+    if (!isDying)
+    {
+        Map::instance()->removeEntity(this);
+    }
+    // std::cout << "Removed projectile" << std::endl;
+    isDying = true;
 }
