@@ -51,14 +51,6 @@ Window::~Window()
     }
 }
 
-sf::Vector2u Window::getWindowSize()
-{
-    if (instancePtr == nullptr)
-    {
-        return {DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT};
-    }
-    return instancePtr->window->getSize();
-}
 int Window::getWindowWidth()
 {
     if (instancePtr == nullptr)

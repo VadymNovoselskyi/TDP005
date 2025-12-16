@@ -38,7 +38,7 @@ void Menu::draw(sf::RenderWindow *window)
     menuCenter = viewCenter;
 }
 
-bool Menu::handleEvent(sf::Event event)
+bool Menu::handleEvent(sf::Event const &event)
 {
     if (!menuOpen)
     {

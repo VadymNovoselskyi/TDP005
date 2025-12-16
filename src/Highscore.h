@@ -17,9 +17,9 @@ class Highscore
     static Highscore *init(int framesPerScore);
     static void deleteInstance();
     
+    void setUsername(std::string const& username);
     void saveHighscore() const;
     void resetState();
-    void setUsername(std::string const &username);
     
     void draw(sf::RenderWindow *window);
     void addKillScore(int extraScore);
