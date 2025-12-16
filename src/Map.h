@@ -97,10 +97,6 @@ class Map
      * @param obstacles List of obstacle pointers to add as entities
      */
     Map(Player *player, std::vector<Obstacle *> const &obstacles);
-
-    /**
-     * Destroy the Map and delete owned entities
-     */
     ~Map();
     static Map *instancePtr;
 
