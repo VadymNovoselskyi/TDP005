@@ -42,7 +42,7 @@ GameEngine::GameEngine() : spawner{}, clock{}
 {
     StateMachine::init();
     TextureManager::init();
-    Highscore::init(60);
+    Highscore::init(FPS);
     Leaderboard::init("static/leaderboard.txt");
     TilesManager::init("static/tileMap.txt");
     
