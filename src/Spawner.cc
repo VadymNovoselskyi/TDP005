@@ -94,6 +94,7 @@ void Spawner::increaseSpawnRate()
 void Spawner::addFootman()
 {
     chooseSpawnPos();
+    std::string const pngName{"enemy.png"};
     double currentHP{100.0};
     int movementSpeed{4};
     sf::Vector2f direction{0, 0};
@@ -102,7 +103,8 @@ void Spawner::addFootman()
     int const XP_DROP{5};
     double damage{15};
     int score{2};
-    Footman *enemyF = new Footman(currentHP,
+    Footman *enemyF = new Footman(pngName,
+                                  currentHP,
                                   movementSpeed,
                                   spawnPoint,
                                   attackRange,
@@ -120,6 +122,7 @@ void Spawner::addKaboom()
     if (inKaboom)
     {
         chooseSpawnPos();
+        std::string const pngName{"kaboom.png"};
         double currentHP{75.0};
         int movementSpeed{4};
         sf::Vector2f direction{0, 0};
@@ -132,7 +135,8 @@ void Spawner::addKaboom()
         double explodeDamage{30};
         int explodeCountdown{60};
         float agroRange{300};
-        Kaboom *enemyK = new Kaboom(currentHP,
+        Kaboom *enemyK = new Kaboom(pngName,
+                                    currentHP,
                                     movementSpeed,
                                     spawnPoint,
                                     attackRange,
@@ -149,11 +153,12 @@ void Spawner::addKaboom()
     }
 }
 
-void Spawner::addArcher()
+void Spawner::addArcher() 
 {
     if (inArcher)
     {
         chooseSpawnPos();
+        std::string const pngName{"fighter.png"};
         double currentHP{100.0};
         int movementSpeed{2};
         sf::Vector2f direction{0, 0};
@@ -164,7 +169,8 @@ void Spawner::addArcher()
         int score{2};
         double velocity{3};
         attackRange = 350;
-        Archer *enemyA = new Archer(currentHP,
+        Archer *enemyA = new Archer(pngName,
+                                    currentHP,
                                     movementSpeed,
                                     spawnPoint,
                                     attackRange,

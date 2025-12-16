@@ -38,7 +38,7 @@ class Player : public Character
 
     void gainXp(int xp);
     void heal(double amount);
-    void increaseMaxHP(double hp);
+    void increaseMaxHp(double hp);
 
     void increaseSpeed(int amount);
     void increaseDamageMultiplyer(double amount);
@@ -48,9 +48,9 @@ class Player : public Character
     void onBorderCollision() override;
 
   private:
-    double const START_HP;
-    double maxHP;
-    int const START_SPEED;
+    double const startHp;
+    double maxHp;
+    int const startSpeed;
     double damageMultiplier;
 
     float rotation;
@@ -68,18 +68,19 @@ class Player : public Character
                  sf::Color const &boxColor);
 
     // create box for xp and hp
-    sf::RectangleShape HPBox; // background box to show how much hp a player has lost
+    sf::RectangleShape hpBox; // background box to show how much hp a player has lost
     sf::RectangleShape
-        currentHPBox; // shows the current hp lenght changes on % left of currenthp / maxhp
+        currentHpBox; // shows the current hp lenght changes on % left of currenthp / maxhp
 
     sf::RectangleShape xpBox; // background box to show how much xp is left until next level
     sf::RectangleShape
-        currentXPBox; // shows the current xp lengt changs on the % left of xp / maxXP to next level
+        currentXpBox; // shows the current xp lengt changs on the % left of xp / maxXP to next level
 
     sf::Color static const CURRENT_HP_BOX_COLLOR; // lighter red to show current hp
     sf::Color static const HP_BOX_COLOR;          // darker red to show max hp
     sf::Color static const CURRENT_XP_BOX_COLOR;
     sf::Color static const XP_BOX_COLOR;
+
     float static const BOX_OFFSET; // a set offset to be 18 pixles away from screen top left corner
                                    // used by both xp and hp
     float static const XP_BOX_Y_OFFSET; // a set offset by 78 for the xp box to be set under the hp
