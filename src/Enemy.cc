@@ -7,7 +7,8 @@
 #include "Highscore.h"
 #include "Map.h"
 
-Enemy::Enemy(/*Charactar*/ double currentHp,
+Enemy::Enemy(/*Charactar*/ std::string const& pngName,
+             double currentHp,
              int movementSpeed,
              sf::Vector2f positon,
              int attackRange,
@@ -16,12 +17,18 @@ Enemy::Enemy(/*Charactar*/ double currentHp,
              double damage,
              int score,
              Player *player)
-    : Character("enemy", currentHp, movementSpeed, positon), attackRange{attackRange},
-      attackSpeed{attackSpeed}, XP_DROP{XP_DROP}, damage{damage}, score{score}, player{player}, rotation{0}
+    : Character("enemy", currentHp, movementSpeed, positon), pngName{pngName},
+      attackRange{attackRange}, attackSpeed{attackSpeed}, count{attackSpeed}, XP_DROP{XP_DROP},
+      damage{damage}, score{score}, player{player}, rotation{0}
 {
+    auto texture{TextureManager::instance()->getTexture(pngName)};
+    auto enemySize{texture->getSize()};
+    sf::Sprite::setTexture(*texture);
+    sf::Sprite::setOrigin(enemySize.x / 2.0f, enemySize.y / 2.0);
 }
 
 Footman::Footman(/*Charactar*/
+                 std::string const& pngName,
                  double currentHp,
                  int movementSpeed,
                  sf::Vector2f positon,
@@ -31,7 +38,8 @@ Footman::Footman(/*Charactar*/
                  double damage,
                  int score,
                  Player *player)
-    : Enemy(currentHp,
+    : Enemy(pngName,
+            currentHp,
             movementSpeed,
             positon,
             attackRange,
@@ -42,13 +50,10 @@ Footman::Footman(/*Charactar*/
             player)
 
 {
-    auto texture{TextureManager::instance()->getTexture("enemy.png")};
-    auto enemySize{texture->getSize()};
-    sf::Sprite::setTexture(*texture);
-    sf::Sprite::setOrigin(enemySize.x / 2.0, enemySize.y / 2.0);
+
 }
 
-Archer::Archer(/*Charactar*/
+Archer::Archer(/*Charactar*/std::string const& pngName,
                double currentHp,
                int movementSpeed,
                sf::Vector2f positon,
@@ -58,9 +63,9 @@ Archer::Archer(/*Charactar*/
                double damage,
                int score,
                Player *player,
-
                double velocity)
-    : Enemy(currentHp,
+    : Enemy(pngName,
+            currentHp,
             movementSpeed,
             positon,
             attackRange,
@@ -71,13 +76,10 @@ Archer::Archer(/*Charactar*/
             player),
       velocity{velocity}
 {
-    auto texture{TextureManager::instance()->getTexture("fighter.png")};
-    auto enemySize{texture->getSize()};
-    sf::Sprite::setTexture(*texture);
-    sf::Sprite::setOrigin(enemySize.x / 2.0, enemySize.y / 2.0);
+
 }
 
-Kaboom::Kaboom(/*Charactar*/
+Kaboom::Kaboom(/*Charactar*/ std::string const& pngName,
                double currentHp,
                int movementSpeed,
                sf::Vector2f positon,
@@ -91,7 +93,8 @@ Kaboom::Kaboom(/*Charactar*/
                double explodeRange,
                int explodeCountdown,
                float agroRange)
-    : Enemy(currentHp,
+    : Enemy(pngName,
+            currentHp,
             movementSpeed,
             positon,
             attackRange,
@@ -103,16 +106,11 @@ Kaboom::Kaboom(/*Charactar*/
       explodeDamage{explodeDamage}, explodeRange{explodeRange}, explodeCountdown{explodeCountdown},
       agroRange{agroRange}
 {
-    auto texture{TextureManager::instance()->getTexture("kaboom.png")};
-    auto enemySize{texture->getSize()};
-    sf::Sprite::setTexture(*texture);
-    sf::Sprite::setOrigin(enemySize.x / 2.0, enemySize.y / 2.0);
+    
 }
 
 void Enemy::die()
 {
-    // ge xp och påeng
-    // Map::removeEntity(Entity *this);
 
     Map::instance()->removeEntity(this);
     player->gainXp(XP_DROP);
@@ -144,7 +142,7 @@ float Enemy::calculateRotation()
 {
     double rotationRadians = std::atan2((player->getPosition().y - getPosition().y),
                                         (player->getPosition().x - getPosition().x));
-    rotation = rotationRadians * (180 / M_PI) + 90;
+    rotation = rotationRadians * (180.f / M_PI) + 90.f;
     return rotation;
 }
 void Enemy::collisionHandler(Entity *other)
@@ -160,7 +158,8 @@ void Enemy::collisionHandler(Entity *other)
     {
         direction = sf::Vector2f(0.5F, 0.0F);
     }
-    float push = other->getGlobalBounds().width / 6;
+    // using a set variable to lower the push force
+    float push = other->getGlobalBounds().width / 6.0f;
     sf::Sprite::setPosition(sf::Sprite::getPosition() + direction * push);
 }
 
@@ -173,19 +172,14 @@ void Enemy::onCollision(Entity *other)
 {
     if (other->getTag() == "player")
     {
-        // tryAttack(calculateDistance());
-         collisionHandler(other);
-        // std::cout << "collided with player" << std::endl;
+        collisionHandler(other);
     }
     else if (other->getTag() == "enemy")
     {
-        // std::cout << "collided with enemy" << std::endl;
         collisionHandler(other);
     }
     else if (other->getTag() == "obstacle")
     {
-        // std::cout << "collided with box" << std::endl;
-
         collisionHandler(this);
         return;
     }
