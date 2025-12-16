@@ -158,7 +158,7 @@ void Enemy::collisionHandler(Entity *other)
     }
     else
     {
-        direction = sf::Vector2f(1.0F, 1.0F);
+        direction = sf::Vector2f(0.5F, 0.0F);
     }
     float push = other->getGlobalBounds().width / 6;
     sf::Sprite::setPosition(sf::Sprite::getPosition() + direction * push);
@@ -174,7 +174,7 @@ void Enemy::onCollision(Entity *other)
     if (other->getTag() == "player")
     {
         // tryAttack(calculateDistance());
-        sf::Sprite::setPosition(oldPosition);
+         collisionHandler(other);
         // std::cout << "collided with player" << std::endl;
     }
     else if (other->getTag() == "enemy")

@@ -106,7 +106,7 @@ void Window::draw()
 
 {
     window->clear();
-    TilesManager::instance()->drawTiles(window);
+    // TilesManager::instance()->drawTiles(window);
 
     Map::instance()->draw(window);
     Highscore::instance()->draw(window);

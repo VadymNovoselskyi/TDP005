@@ -19,13 +19,13 @@ sf::Color const Player::CURRENT_HP_BOX_COLLOR{128, 0, 0};
 sf::Color const Player::XP_BOX_COLOR{118, 186, 27};
 sf::Color const Player::CURRENT_XP_BOX_COLOR{76, 154, 42};
 
-Player::Player(double startHP,
+Player::Player(double startHp,
                int startSpeed,
                sf::Vector2f const &position,
                std::string const &tag,
                std::function<void(std::vector<LevelUpInfo>)> const &onLevelUp)
-    : Character(tag, startHP, startSpeed, position), START_HP{startHP}, maxHP{startHP},
-      START_SPEED{startSpeed}, damageMultiplier{1}, rotation{}, oldPosition{position}, expManager{},
+    : Character(tag, startHp, startSpeed, position), startHp{startHp}, maxHp{startHp},
+      startSpeed{startSpeed}, damageMultiplier{1}, rotation{}, oldPosition{position}, expManager{},
       weaponsManager{}, onLevelUp{onLevelUp}
 {
     auto texture{TextureManager::instance()->getTexture("player.png")};
@@ -37,7 +37,7 @@ Player::Player(double startHP,
     expManager.setCallbacks({{LevelUpChoice::HP,
                               [this]()
                               {
-                                  increaseMaxHP(60);
+                                  increaseMaxHp(60);
                                   heal(40);
                                   StateMachine::instance()->continueGame();
                               }},
@@ -64,9 +64,9 @@ Player::Player(double startHP,
 
 void Player::resetState(sf::Vector2f const &newPosition)
 {
-    Character::hp = START_HP;
-    maxHP = START_HP;
-    Character::movementSpeed = START_SPEED;
+    Character::hp = startHp;
+    maxHp = startHp;
+    Character::movementSpeed = startSpeed;
 
     rotation = 0;
     damageMultiplier = 1;
@@ -165,9 +165,9 @@ void Player::heal(double amount)
     hp += amount;
 }
 
-void Player::increaseMaxHP(double hp)
+void Player::increaseMaxHp(double hp)
 {
-    maxHP += hp;
+    maxHp += hp;
 }
 void Player::increaseSpeed(int amount)
 {
@@ -186,17 +186,17 @@ void Player::die()
 void Player::drawInfo(sf::RenderWindow *window)
 {
     drawBox(window, // curent hp
-            HPBox,
+            hpBox,
             sf::Sprite::getPosition().x - (Window::getWindowWidth() / 2.0) + BOX_OFFSET,  // x
             sf::Sprite::getPosition().y - (Window::getWindowHeight() / 2.0) + BOX_OFFSET, // y
             BOX_WIDHT,                                                                    // widht
             BOX_HEIGTH,                                                                   // heiht
             CURRENT_HP_BOX_COLLOR);                                                       // color
     drawBox(window,
-            currentHPBox,
+            currentHpBox,
             sf::Sprite::getPosition().x - (Window::getWindowWidth() / 2.0) + BOX_OFFSET,
             sf::Sprite::getPosition().y - (Window::getWindowHeight() / 2.0) + BOX_OFFSET,
-            BOX_WIDHT * (hp / maxHP),
+            BOX_WIDHT * (hp / maxHp),
             BOX_HEIGTH,
             HP_BOX_COLOR);
 
@@ -208,7 +208,7 @@ void Player::drawInfo(sf::RenderWindow *window)
             BOX_HEIGTH,
             CURRENT_XP_BOX_COLOR);
     drawBox(window,
-            currentXPBox,
+            currentXpBox,
             sf::Sprite::getPosition().x - (Window::getWindowWidth() / 2.0) + BOX_OFFSET,
             sf::Sprite::getPosition().y - (Window::getWindowHeight() / 2.0) + XP_BOX_Y_OFFSET,
             BOX_WIDHT * expManager.getXpFilled(),
