@@ -106,7 +106,7 @@ Kaboom::Kaboom(/*Charactar*/
       explodeDamage{explodeDamage}, explodeRange{explodeRange}, explodeCountdown{explodeCountdown},
       agroRange{agroRange}
 {
-    auto texture{TextureManager::instance()->getTexture("obstacle-gas.png")};
+    auto texture{TextureManager::instance()->getTexture("kaboom.png")};
     auto enemySize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
     sf::Sprite::setOrigin(enemySize.x / 2.0, enemySize.y / 2.0);
@@ -123,7 +123,7 @@ void Enemy::die()
 }
 
 float Enemy::calculateDistance()
-{
+{ 
     oldPosition = getPosition();
     sf::Vector2f playerPositon = player->getPosition();
     sf::Vector2f enemyPosition = oldPosition;
@@ -176,7 +176,8 @@ void Enemy::onCollision(Entity *other)
 {
     if (other->getTag() == "player")
     {
-        // tryAttack(calculateDistance());
+        //attack(); inte attack för då rar man för mycke skada
+        tryAttack(calculateDistance());
         sf::Sprite::setPosition(oldPosition);
         // std::cout << "collided with player" << std::endl;
     }
