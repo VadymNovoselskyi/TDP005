@@ -1,6 +1,5 @@
 #include "GameEngine.h"
 
-#include <iostream>
 #include <vector>
 
 #include "ExperienceManager.h"
@@ -56,8 +55,7 @@ GameEngine::GameEngine() : spawner{}, clock{}
     menus.push_back(levelUpMenu);
     Window::init(menus);
 
-    auto mapDimensions{TilesManager::instance()->getMapDimensions()};
-    auto mapCenter{sf::Vector2f{mapDimensions.x / 2.0f, mapDimensions.y / 2.0f}};
+    auto mapCenter{TilesManager::instance()->getMapDimensions() / 2.0F};
 
     Player *player{new Player(100.0,
                               10,
@@ -69,6 +67,7 @@ GameEngine::GameEngine() : spawner{}, clock{}
     Map::init(player, TilesManager::instance()->getObstacles());
     spawner = new Spawner(player);
 
+    // Resets the game states on each game start
     StateMachine::instance()->addListener(
         [player, mapCenter, this](GameState gameState)
         {
@@ -91,6 +90,7 @@ GameEngine::GameEngine() : spawner{}, clock{}
                 StateMachine::instance()->setInGame();
             }
         });
+
     StateMachine::instance()->addListener(
         [](GameState gameState)
         {
@@ -128,7 +128,6 @@ void GameEngine::run()
         Window::instance()->draw();
 
         sf::Time delta{UPDATE_INTERVAL - clock.getElapsedTime()};
-        // std::cout << "FPS: " << (1000.0 / delta.asMilliseconds()) << std::endl;
         sf::sleep(delta);
     }
 }

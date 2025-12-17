@@ -85,10 +85,7 @@ void TilesManager::drawTiles(sf::RenderWindow *window) const
 {
     auto viewCenter = window->getView().getCenter();
     auto viewSize = window->getView().getSize();
-    auto viewRect = sf::FloatRect{static_cast<float>(viewCenter.x - viewSize.x / 2.0),
-                                  static_cast<float>(viewCenter.y - viewSize.y / 2.0),
-                                  viewSize.x,
-                                  viewSize.y};
+    auto viewRect = sf::FloatRect{viewCenter - viewSize / 2.0F, viewSize};
 
     for (int columnIdx{std::max(static_cast<int>(std::floor(viewRect.left / TILE_SIZE)), 0)};
          columnIdx <
@@ -129,8 +126,12 @@ void TilesManager::generateTiles(std::string const &tileMapPath)
     std::string bordersDefinition{};
     std::getline(file, bordersDefinition);
 
+    // The first row in the tilemap defines the map dimensions and the number of walls and danger
+    // zones
     std::istringstream borderDefStream{bordersDefinition};
     borderDefStream >> columnCount >> rowCount >> wallCount >> dangerZoneCount;
+
+    // Calculate the total number of rows and columns including the borders
     rowCount += 2 * (wallCount + dangerZoneCount);
     columnCount += 2 * (wallCount + dangerZoneCount);
 
@@ -145,9 +146,9 @@ void TilesManager::generateTiles(std::string const &tileMapPath)
     // https://stackoverflow.com/questions/12133379/c-using-ifstream-with-getline
     for (std::string line{}; std::getline(file, line);)
     {
-        std::string lineWithBorders{repeat("wall ", wallCount) + repeat("dangerTile ", dangerZoneCount) +
-                                    line + " " + repeat("dangerTile ", dangerZoneCount) +
-                                    repeat("wall ", wallCount)};
+        std::string lineWithBorders{
+            repeat("wall ", wallCount) + repeat("dangerTile ", dangerZoneCount) + line + " " +
+            repeat("dangerTile ", dangerZoneCount) + repeat("wall ", wallCount)};
 
         processLine(lineWithBorders, rowIndex);
         rowIndex++;

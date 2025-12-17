@@ -66,7 +66,7 @@ class Map
 
     /**
      * Schedule an entity to be added to the world
-     * The entity is added after the update loop
+     * The entity is added after the move loop in handelUpdate
      *
      * @param e Pointer to the entity to add
      */
@@ -74,20 +74,11 @@ class Map
 
     /**
      * Schedule an entity to be removed from the world
-     * The entity is deleted and removed after the collision loop completes
+     * The entity is deleted and removed after the collision loop in handelUpdate
      *
      * @param e Pointer to the entity to remove
      */
     void removeEntity(Entity *e);
-
-    /**
-     * Find the closest enemy entity relative to the player
-     * Iterates all entities, filters by tag "enemy", and returns the closest one based on
-     * a simple distance by pythagoras
-     *
-     * @return Pointer to the closest enemy or nullptr if no enemies exist
-     */
-    Entity *getClosestEnemy();
 
   private:
     /**

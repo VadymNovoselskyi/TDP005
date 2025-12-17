@@ -1,7 +1,5 @@
 #include "Menu.h"
 
-#include <iostream>
-
 #include "Window.h"
 
 Menu::Menu(std::vector<ElementsInfo> const &elements, bool windowOpen)
@@ -15,14 +13,13 @@ Menu::Menu(std::vector<ElementsInfo> const &elements, bool windowOpen)
 
 void Menu::draw(sf::RenderWindow *window)
 {
-    // std::cout << "Running the draw loop in Menu" << std::endl;
     if (!menuOpen)
     {
         return;
     }
 
     auto viewCenter{window->getView().getCenter()};
-    sf::Vector2f centerOffset{viewCenter.x - menuCenter.x, viewCenter.y - menuCenter.y};
+    sf::Vector2f centerOffset{viewCenter - menuCenter};
 
     for (auto &buttonEl : buttonElements)
     {
@@ -47,23 +44,19 @@ bool Menu::handleEvent(sf::Event const &event)
 
     if (event.type == sf::Event::KeyPressed)
     {
-        // std::cout << sf::Keyboard::getDescription(event.key.scancode).toAnsiString() <<
         // std::endl;
 
         switch (event.key.code)
         {
         case sf::Keyboard::Up:
-            // std::cout << "pageUp" << std::endl;
             changeFocusedIdx(-1);
             return true;
 
         case sf::Keyboard::Down:
-            // std::cout << "pageDown" << std::endl;
             changeFocusedIdx(1);
             return true;
 
         case sf::Keyboard::Enter:
-            // std::cout << "Enter" << std::endl;
             if (!buttonElements.empty() && focusedButtonIdx < static_cast<int>(buttonInfos.size()))
             {
                 buttonInfos.at(focusedButtonIdx).onClick->operator()();

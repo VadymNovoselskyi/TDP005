@@ -1,12 +1,11 @@
 #include "ExperienceManager.h"
 
-#include <iostream>
-
 std::vector<int> const ExperienceManager::LEVELS_PROGRESSION{
     25, 75, 200, 400, 700, 1300, 2400, 3500, 999999999};
 
 ExperienceManager::ExperienceManager() : levelUps{}, currentXp{0}, level{0}
 {
+    // Generate the LevelUpInfos but without the callbacks (they are provided by Player)
     levelUps = {{LevelUpChoice::HP, "Buff your HP stats", []() {}},
                 {LevelUpChoice::SPEED, "Buff your SPEED stats", []() {}},
                 {LevelUpChoice::DAMAGE, "Buff your DAMAGE stats", []() {}},

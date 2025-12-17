@@ -1,6 +1,5 @@
 #include "Menus.h"
 
-#include <iostream>
 #include <vector>
 
 #include "Highscore.h"

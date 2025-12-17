@@ -1,7 +1,5 @@
 #include "Window.h"
 
-#include <iostream>
-
 #include "Highscore.h"
 #include "TilesManager.h"
 
@@ -41,7 +39,6 @@ Window::Window(std::vector<Menu *> const &menus)
 
 Window::~Window()
 {
-    // std::cout << "Running the window destructor" << std::endl;
     delete window;
     window = nullptr;
 
@@ -95,7 +92,6 @@ void Window::handleEvents()
 }
 
 void Window::draw()
-
 {
     window->clear();
     TilesManager::instance()->drawTiles(window);
