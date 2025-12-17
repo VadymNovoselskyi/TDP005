@@ -5,12 +5,11 @@
 #include <string>
 
 /**
- * Declares the TextureManager singleton which owns all texture
+ * Declares the TextureManager singleton which owns all textures
  *
  * TextureManager is responsible for:
- * - Keeping a list of active `Entity` objects (player, obstacles, enemies, projectiles, ...)
- * - Updating movement, border checks, and collision callbacks each tick
- * - Drawing the world using an `sf::View` centered on the player
+ * - Keeping a list of active textures
+ * - Providing the texture by name
  */
 class TextureManager
 {
@@ -27,12 +26,12 @@ class TextureManager
     /**
      * Create and initialize the TextureManager singleton
      *
-     * @return Pointer to the created singleton Map instance
+     * @return Pointer to the created singleton TextureManager instance
      */
     static TextureManager *init();
 
     /**
-     * Destroy the Map singleton instance and reset the stored pointer
+     * Destroy the TextureManager singleton instance and reset the stored pointer
      */
     static void deleteInstance();
 
