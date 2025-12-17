@@ -89,7 +89,16 @@ class Window
     int static const DEFAULT_WINDOW_HEIGHT;
 
   private:
+    /**
+     * Create a Window and take ownership of menus
+     *
+     * @param menus Menus owned by Window
+     */
     Window(std::vector<Menu *> const &menus);
+
+    /**
+     * Destroy the Window and delete owned resources
+     */
     ~Window();
     static Window *instancePtr;
 

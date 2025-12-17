@@ -106,9 +106,17 @@ class StateMachine
     void addListener(std::function<void(GameState)> const &handler);
 
   private:
+    /**
+     * Set current state and notify all listeners
+     *
+     * @param gameState New state to set
+     */
     void setState(GameState gameState);
 
     static StateMachine *instancePtr;
+    /**
+     * Create a StateMachine with initial state IN_START_MENU
+     */
     StateMachine();
     GameState currentState;
 

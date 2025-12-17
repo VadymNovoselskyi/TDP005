@@ -72,6 +72,11 @@ class WeaponsManager
     bool canGetNewWeapon() const;
 
   private:
+    /**
+     * Move a weapon from unequipped to equipped list
+     *
+     * @param weapon Weapon pointer to equip
+     */
     void equipWeapon(Weapon *weapon);
 
     std::vector<Weapon *> equipedWeapons;

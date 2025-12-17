@@ -77,9 +77,17 @@ class Highscore
     void addKillScore(int extraScore);
 
   private:
+    /**
+     * Create a Highscore tracker
+     *
+     * @param framesPerScore Frames between survival score increments
+     */
     Highscore(int framesPerScore);
     static Highscore *instancePtr;
 
+    /**
+     * Tick survival score counter and increase score when countdown reaches zero
+     */
     void tickSurvivalScore();
 
     int framesPerScore;

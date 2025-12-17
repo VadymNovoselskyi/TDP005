@@ -66,10 +66,20 @@ class Leaderboard
     std::vector<std::pair<std::string, ScoreInfo>> getLeaderboard(int maxSize);
 
   private:
+    /**
+     * Create a Leaderboard and load highscores from file
+     *
+     * @param leaderboardPath Path to the leaderboard file
+     */
     Leaderboard(std::string const &leaderboardPath);
 
     static Leaderboard *instancePtr;
 
+    /**
+     * Load highscores from a leaderboard file
+     *
+     * @param leaderboardPath Path to the leaderboard file
+     */
     void loadLeaderboard(std::string const &leaderboardPath);
 
     std::vector<std::pair<std::string, ScoreInfo>> highscores;

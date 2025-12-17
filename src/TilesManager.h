@@ -79,12 +79,46 @@ class TilesManager
     sf::Vector2f getMapDimensions() const;
 
   private:
+    /**
+     * Create a TilesManager and generate tiles from a tile map file
+     *
+     * @param tileMapPath Path to tile map file
+     */
     TilesManager(std::string const &tileMapPath);
     static TilesManager *instancePtr;
 
+    /**
+     * Generate tiles and obstacles from tile map file
+     *
+     * @param tileMapPath Path to tile map file
+     */
     void generateTiles(std::string const &tileMapPath);
+
+    /**
+     * Insert a number of wall rows into the tile list
+     *
+     * @param linesCount Number of rows to insert
+     * @param wallsCount Number of wall tiles in the row
+     * @param rowIndex Starting row index the first wall row will lie on
+     */
     void insertWallRow(int linesCount, int wallsCount, int rowIndex);
+
+    /**
+     * Insert a number of danger zone (with walls on each side) rows into the tile list
+     *
+     * @param linesCount Number of rows to insert
+     * @param wallsCount Number of wall tiles on each side
+     * @param dangerZoneCount Number of danger tiles between the walls
+     * @param rowIndex Starting row index to insert at
+     */
     void insertDangerZoneRow(int linesCount, int wallsCount, int dangerZoneCount, int rowIndex);
+
+    /**
+     * Process one line of tile as strings and append tiles and obstacles
+     *
+     * @param line Line containing tile tokens
+     * @param rowIndex Row index used for positioning tiles
+     */
     void processLine(std::string const &line, int rowIndex);
 
     int static const TILE_SIZE;

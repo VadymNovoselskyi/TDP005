@@ -119,7 +119,7 @@ void Menu::focusButton(int index)
     sf::Text &button = buttonElements.at(index);
     button.setFillColor(sf::Color::Red);
 }
-void Menu::unFocusButton(int index)
+void Menu::unfocusButton(int index)
 {
     sf::Text &button = buttonElements.at(index);
     button.setFillColor(sf::Color::Blue);
@@ -133,7 +133,7 @@ void Menu::changeFocusedIdx(int change)
     }
     int targetIndex = (focusedButtonIdx + change) % buttonElements.size();
 
-    unFocusButton(focusedButtonIdx);
+    unfocusButton(focusedButtonIdx);
     focusedButtonIdx = targetIndex;
     focusButton(focusedButtonIdx);
 }
@@ -148,7 +148,7 @@ void Menu::setIsOpen(bool isOpen)
     menuOpen = isOpen;
     if (!buttonElements.empty())
     {
-        unFocusButton(focusedButtonIdx);
+        unfocusButton(focusedButtonIdx);
         focusedButtonIdx = 0;
         focusButton(focusedButtonIdx);
     }

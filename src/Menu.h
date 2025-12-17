@@ -84,9 +84,25 @@ class Menu
     virtual std::vector<ElementsInfo> createButtons() const = 0;
 
   private:
+    /**
+     * Set focus highlight on a button by index
+     *
+     * @param index Index of the button to focus
+     */
     void focusButton(int index);
-    void unFocusButton(int index);
 
+    /**
+     * Remove focus highlight from a button by index
+     *
+     * @param index Index of the button to unfocus
+     */
+    void unfocusButton(int index);
+
+    /**
+     * Change focused button index by a delta
+     *
+     * @param change Change applied to the current focused index
+     */
     void changeFocusedIdx(int change);
 
     sf::Font defaultFont;

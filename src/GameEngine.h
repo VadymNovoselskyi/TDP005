@@ -50,7 +50,14 @@ class GameEngine
     int static const FPS;
 
   private:
+    /**
+     * Create a GameEngine and initialize game systems
+     */
     GameEngine();
+
+    /**
+     * Destroy the GameEngine and clean up owned systems
+     */
     ~GameEngine();
     GameEngine static *instancePtr;
 
