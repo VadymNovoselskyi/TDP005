@@ -30,7 +30,7 @@ class Highscore
      * @throws std::logic_error if the Highscore has not been initialized
      */
     static Highscore *instance();
-    
+
     /**
      * Create and initialize the Highscore singleton
      *
@@ -38,29 +38,29 @@ class Highscore
      * @return Pointer to the created singleton Highscore instance
      */
     static Highscore *init(int framesPerScore);
-    
+
     /**
      * Destroy the Highscore singleton instance
      */
     static void deleteInstance();
-    
+
     /**
      * Set the username associated with the highscore
      *
      * @param username The username to set
      */
-    void setUsername(std::string const& username);
-    
+    void setUsername(std::string const &username);
+
     /**
      * Save the current highscore to the Leaderboard
      */
     void saveHighscore() const;
-    
+
     /**
      * Reset score, time survived, and enemies killed to initial state
      */
     void resetState();
-    
+
     /**
      * Draw the current score on the RenderWindow
      * Also ticks survival score if in game state
@@ -68,7 +68,7 @@ class Highscore
      * @param window The RenderWindow to draw into
      */
     void draw(sf::RenderWindow *window);
-    
+
     /**
      * Add score for killing an enemy
      *

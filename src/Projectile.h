@@ -6,7 +6,12 @@
 class Projectile : public Entity
 {
   public:
-    Projectile(sf::Vector2f const &pos, double rotation, double velocity, double damage, double hp, std::string const &pngName);
+    Projectile(sf::Vector2f const &pos,
+               double rotation,
+               double velocity,
+               double damage,
+               double hp,
+               std::string const &pngName);
     ~Projectile() override = default;
 
     void onCollision(Entity *other) override;

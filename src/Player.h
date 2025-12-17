@@ -31,7 +31,6 @@ class Player : public Character
 
     void drawInfo(sf::RenderWindow *window);
 
-
     void move() override;
     sf::Vector2f getOldPosition() const;
     void updateRotation(sf::RenderWindow *window);

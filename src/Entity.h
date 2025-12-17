@@ -11,17 +11,15 @@
 class Entity : public sf::Sprite
 {
   public:
-
     Entity(std::string const &tag, sf::Vector2f const &pos, double hp);
     std::string getTag() const;
-    
+
     virtual void draw(sf::RenderWindow *window) const;
     virtual void takeDamage(double damage);
 
     virtual void onCollision(Entity *other) = 0;
     virtual void onBorderCollision() = 0;
     virtual void move() = 0;
-
 
   protected:
     double hp;

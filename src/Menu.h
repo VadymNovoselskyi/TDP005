@@ -46,7 +46,7 @@ class Menu
     void draw(sf::RenderWindow *window);
 
     /**
-     * Handle an input event when the menu is open 
+     * Handle an input event when the menu is open
      * Keyboard navigation and activating the focused button
      *
      * @param event The event to handle

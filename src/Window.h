@@ -85,7 +85,7 @@ class Window
      */
     static int getWindowHeight();
 
-    int static const DEFAULT_WINDOW_WIDTH;  
+    int static const DEFAULT_WINDOW_WIDTH;
     int static const DEFAULT_WINDOW_HEIGHT;
 
   private:

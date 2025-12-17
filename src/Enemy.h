@@ -10,7 +10,7 @@
 class Enemy : public Character
 {
   public:
-    Enemy(/*Character*/ std::string const& pngName,
+    Enemy(/*Character*/ std::string const &pngName,
           double currentHP,
           int movementSpeed,
           sf::Vector2f positon,
@@ -51,7 +51,7 @@ class Enemy : public Character
 class Footman : public Enemy
 {
   public:
-    Footman(/*Character*/ std::string const& pngName,
+    Footman(/*Character*/ std::string const &pngName,
             double currentHp,
             int movementSpeed,
             sf::Vector2f positon,
@@ -68,7 +68,7 @@ class Footman : public Enemy
 class Kaboom : public Enemy
 {
   public:
-    Kaboom(/*Character*/ std::string const& pngName,
+    Kaboom(/*Character*/ std::string const &pngName,
            double currentHp,
            int movementSpeed,
            sf::Vector2f positon,
@@ -99,7 +99,7 @@ class Kaboom : public Enemy
 class Archer : public Enemy
 {
   public:
-    Archer(/*Character*/ std::string const& pngName,
+    Archer(/*Character*/ std::string const &pngName,
            double currentHp,
            int movementSpeed,
            sf::Vector2f positon,

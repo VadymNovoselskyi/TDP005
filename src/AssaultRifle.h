@@ -4,10 +4,10 @@
 
 class AssaultRifle : public Weapon
 {
-public:
+  public:
     AssaultRifle();
-    
-private:
+
+  private:
     void shoot() override;
     /* data */
 };
