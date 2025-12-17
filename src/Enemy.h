@@ -29,9 +29,10 @@ class Enemy : public Character
     void die() override;
 
     /**
-     * Handles enemys collision with other enemies and player.
-     * when a collision occurs it calculates how long the images are overeach other and then puches
-     * one of the enemy awy with the full distance divided by 6 to get a smaller force push
+     * Handles enems collision with other enemies and player.
+
+     * When a collision occurs it calculates how long the images are over each other and then pushes
+     * one of the enemy away with the full distance divided by 6 to get a smaller force push
      * @param other stores the object the enemy
      */
     void onCollision(Entity *other) override;
@@ -50,8 +51,9 @@ class Enemy : public Character
      * 5. enemy.position += direction * push
      */
     void boxCollisionHandler(Entity *box);
+
     /**
-     * Sets the enemys current position to the old position
+     * Sets the enemies current position to the old position
      */
     void onBorderCollision() override;
 
@@ -67,19 +69,19 @@ class Enemy : public Character
 
     /**
      * Calculates the direction vector from the enemy to the player.
-     * The vector is calculated by subtracting the enemy position from the player positon. THe
+     * The vector is calculated by subtracting the enemy position from the player position. The
      * resulting vector points towards the player positon and still contains the distance.
      * Formula:
      * direction = playerPosition - enemyPosition
      *
-     * @return Vector pointing from hte enemy to the player
+     * @return Vector pointing from the enemy to the player
      */
     sf::Vector2f calculateDirection();
 
     /**
      * Calculates the rotaiton angle needed for the eneme to look at the player.
-     * THe angle is ontained by using atan2 which gives the angle between the x axis and the vector
-     * from the enemy to the player. THe value is converted from radians to degrees adn offset by +
+     * The angle is obtained by using atan2 which gives the angle between the x axis and the vector
+     * from the enemy to the player. The value is converted from radians to degrees and offset by +
      * 90 degrees to align with the sprite.
      *
      * Formula:
@@ -92,9 +94,9 @@ class Enemy : public Character
     /**
      * Handles collision by pushing the enemy away from another entity.
      *
-     * The method calculates th vector difference between the enemy and the other entity,
+     * The method calculates the vector difference between the enemy and the other entity,
      * then normalizes it to a direction. The enemy is moved in that direction ny a small amount
-     * based on the enemys size.
+     * based on the enemies size.
      *
      * Formula steps:
      * 1. diff = enemy.position - other.position
@@ -104,7 +106,8 @@ class Enemy : public Character
      * enemy is teleporting
      * 5. enemy.position += direction * push
      */
-    void EntetyCollisionHandler(Entity *other);
+    void entityCollisionHandler(Entity *other);
+
     void tryAttack(float leng);
     sf::Vector2f oldPosition;
     int attackRange;
@@ -112,7 +115,7 @@ class Enemy : public Character
     int count{};
     int const XP_DROP;
     double damage;
-    int score; // inte en privat för olika enyme är vär olika score
+    int score;
     Player *player;
     float rotation;
     std::string const &pngName;
@@ -148,22 +151,22 @@ class Kaboom : public Enemy
            double damage,
            int score,
            Player *player,
-           double explodeDamage,
-           double explodeRange,
-           int explodeCountdown,
+           double exploadeDamage,
+           double exploadeRange,
+           int exploadeCountdown,
            float agroRange);
     void attack() override;
     void move() override;
 
   private:
     void isInRange(float len);
-    void explode(float len);
-    double explodeDamage;
-    double explodeRange;
-    int explodeCountdown;
+    void exploade(float len);
+    double explosionDamage;
+    double explosionRange;
+    int explosionCountdown;
     float agroRange;
     bool contuneBegin{false};
-    bool hasExploded{false};
+    bool hasExploaded{false};
 };
 
 class Archer : public Enemy
@@ -185,7 +188,6 @@ class Archer : public Enemy
 
   private:
     void shoot();
-    // float fireRange;
     double velocity;
 };
 
