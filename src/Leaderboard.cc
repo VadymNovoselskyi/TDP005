@@ -72,7 +72,9 @@ std::vector<std::pair<std::string, ScoreInfo>> Leaderboard::getLeaderboard(int m
     std::sort(highscores.begin(),
               highscores.end(),
               [](auto &a, auto &b) { return a.second.score > b.second.score; });
-    std::copy_n(highscores.begin(), maxSize, std::back_inserter(leaderboard));
+    std::copy_n(highscores.begin(),
+                std::min(static_cast<int>(highscores.size()), maxSize),
+                std::back_inserter(leaderboard));
 
     return leaderboard;
 }
