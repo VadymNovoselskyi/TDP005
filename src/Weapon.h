@@ -7,16 +7,23 @@
 
 #include "Projectile.h"
 
+// https://en.cppreference.com/w/cpp/language/enum.html
+// kollade hur ennums funka (kolade på exempel svårt för mig att säga om jag koppiera då de bara
+// står exemplet hur man skriver den)
 enum Rarity
 {
     BASIC,
     RARE,
     EPIC
 };
-// https://en.cppreference.com/w/cpp/language/enum.html
-// kollade hur ennums funka (kolade på exempel svårt för mig att säga om jag koppiera då de bara
-// står exemplet hur man skriver den)
 
+/**
+ * Weapom
+ *
+ * Weapom is responsible for:
+ * - Heritage to the lower classes
+ * - To not repeat kode in the lower classes
+ */
 class Weapon : public sf::Sprite::Transformable
 {
   public:
@@ -67,8 +74,6 @@ class Weapon : public sf::Sprite::Transformable
     double counter;
 
     Rarity rarity;
-
-    void update();
 
   private:
     /**
