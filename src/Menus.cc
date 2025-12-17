@@ -67,7 +67,7 @@ std::vector<ElementsInfo> LeaderboardMenu::createButtons() const
                 std::to_string(scoreInfo.timeSurvived) + " | " +
                 std::to_string(scoreInfo.enemiesKilled),
             0.5,
-            (((1 - PADDING_TOP - PADDING_BOTTOM) / static_cast<int>(highscores.size()) * index) +
+            (((1 - PADDING_TOP - PADDING_BOTTOM) / static_cast<int>(MAX_LEADERBOARD_SIZE) * index) +
              PADDING_TOP),
             std::nullopt,
             40};
