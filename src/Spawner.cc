@@ -1,24 +1,25 @@
 #include "Spawner.h"
 
 #include <cstdlib>
-#include <iostream> // print test
 
 #include "TilesManager.h"
 #include "Window.h"
 
 Spawner::Spawner(Player *player)
     : spawnRate{200.0}, spawnRateIncrease{0.99}, spawnPoint{}, counter{0}, timeCounter{0},
-      player{player}, inKaboom{false}, inArcher{false}
+      player{player}, canSpawnKaboom{false}, canSpawnArcher{false}
 {
     Spawner::spawnEnemies();
 }
 
 void Spawner::resetState()
 {
-    enemies.clear();
+    //enemies.clear();
     spawnRate = 200.0;
     counter = 0;
     timeCounter = 0;
+    canSpawnKaboom = false;
+    canSpawnArcher = false;
 }
 
 void Spawner::spawnEnemies()
@@ -44,11 +45,11 @@ void Spawner::newEnmey()
 {
     if (timeCounter >= 10)
     {
-        inKaboom = true;
+        canSpawnKaboom = true;
     }
     if (timeCounter >= 20)
     {
-        inArcher = true;
+        canSpawnArcher = true;
     }
 }
 void Spawner::chooseSpawnPos()
@@ -94,15 +95,17 @@ void Spawner::increaseSpawnRate()
 void Spawner::addFootman()
 {
     chooseSpawnPos();
+    std::string const pngName{"enemy.png"};
     double currentHP{100.0};
     int movementSpeed{4};
     sf::Vector2f direction{0, 0};
-    int attackRange{10};
+    int attackRange{20};
     int attackSpeed{10};
     int const XP_DROP{5};
     double damage{15};
     int score{2};
-    Footman *enemyF = new Footman(currentHP,
+    Footman *enemyF = new Footman(pngName,
+                                  currentHP,
                                   movementSpeed,
                                   spawnPoint,
                                   attackRange,
@@ -117,9 +120,10 @@ void Spawner::addFootman()
 
 void Spawner::addKaboom()
 {
-    if (inKaboom)
+    if (canSpawnKaboom)
     {
         chooseSpawnPos();
+        std::string const pngName{"kaboom.png"};
         double currentHP{75.0};
         int movementSpeed{4};
         sf::Vector2f direction{0, 0};
@@ -128,11 +132,12 @@ void Spawner::addKaboom()
         int const XP_DROP{10};
         double damage{5};
         int score{3};
-        double explodeRange{150};
+        double explodeRange{60};
         double explodeDamage{30};
-        int explodeCountdown{60};
+        int explodeCountdown{20};
         float agroRange{300};
-        Kaboom *enemyK = new Kaboom(currentHP,
+        Kaboom *enemyK = new Kaboom(pngName,
+                                    currentHP,
                                     movementSpeed,
                                     spawnPoint,
                                     attackRange,
@@ -149,11 +154,12 @@ void Spawner::addKaboom()
     }
 }
 
-void Spawner::addArcher()
+void Spawner::addArcher() 
 {
-    if (inArcher)
+    if (canSpawnArcher)
     {
         chooseSpawnPos();
+        std::string const pngName{"fighter.png"};
         double currentHP{100.0};
         int movementSpeed{2};
         sf::Vector2f direction{0, 0};
@@ -164,7 +170,8 @@ void Spawner::addArcher()
         int score{2};
         double velocity{3};
         attackRange = 350;
-        Archer *enemyA = new Archer(currentHP,
+        Archer *enemyA = new Archer(pngName,
+                                    currentHP,
                                     movementSpeed,
                                     spawnPoint,
                                     attackRange,

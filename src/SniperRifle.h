@@ -4,13 +4,11 @@
 
 class SniperRifle : public Weapon
 {
-public:
+  public:
     SniperRifle();
-private:
+
+  private:
     void shoot() override;
-    void calculateRotation(Entity * closeEnemy);
-    double bulletRotation;
-    /* data */
 };
 
 #endif

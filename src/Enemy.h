@@ -10,7 +10,8 @@
 class Enemy : public Character
 {
   public:
-    Enemy(/*Character*/ double currentHP,
+    Enemy(/*Character*/ std::string const& pngName,
+          double currentHP,
           int movementSpeed,
           sf::Vector2f positon,
           /*Enemy*/ int attackRange,
@@ -34,27 +35,24 @@ class Enemy : public Character
     sf::Vector2f calculateDirection();
     float calculateRotation();
     void collisionHandler(Entity *other);
-
     void tryAttack(float leng);
-    // void calcPath(sf::Vector2f);
     sf::Vector2f oldPosition;
     int attackRange;
     int attackSpeed;
-    int count{attackSpeed};
+    int count{};
     int const XP_DROP;
     double damage;
     int score; // inte en privat för olika enyme är vär olika score
     Player *player;
     float rotation;
-
-  private:
-    std::string tag{"enemy"};
+    std::string const &pngName;
 };
 
 class Footman : public Enemy
 {
   public:
-    Footman(/*Character*/ double currentHp,
+    Footman(/*Character*/ std::string const& pngName,
+            double currentHp,
             int movementSpeed,
             sf::Vector2f positon,
             /*Enemy*/ int attackRange,
@@ -70,7 +68,8 @@ class Footman : public Enemy
 class Kaboom : public Enemy
 {
   public:
-    Kaboom(/*Character*/ double currentHp,
+    Kaboom(/*Character*/ std::string const& pngName,
+           double currentHp,
            int movementSpeed,
            sf::Vector2f positon,
            /*Enemy*/ int attackRange,
@@ -93,12 +92,15 @@ class Kaboom : public Enemy
     double explodeRange;
     int explodeCountdown;
     float agroRange;
+    bool contuneBegin{false};
+    bool hasExploded{false};
 };
 
 class Archer : public Enemy
 {
   public:
-    Archer(/*Character*/ double currentHp,
+    Archer(/*Character*/ std::string const& pngName,
+           double currentHp,
            int movementSpeed,
            sf::Vector2f positon,
            /*Enemy*/ int attackRange,

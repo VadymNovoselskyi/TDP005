@@ -36,13 +36,9 @@ StateMachine::StateMachine() : currentState{GameState::IN_START_MENU}
     // std::cout << "Constructed the StartMenu" << std::endl;
 }
 
-void StateMachine::addListener(std::string const &id, std::function<void(GameState)> handler)
+void StateMachine::addListener(std::function<void(GameState)> const &handler)
 {
-    listenersMap.insert_or_assign(id, handler);
-}
-void StateMachine::removeListener(std::string const &id)
-{
-    listenersMap.erase(listenersMap.find(id));
+    listeners.push_back(handler);
 }
 
 GameState StateMachine::state() const
@@ -56,7 +52,8 @@ void StateMachine::openStartMenu()
     if (currentState != GameState::GAME_PAUSED && currentState != GameState::GAME_OVER &&
         currentState != GameState::LEADERBOARD)
     {
-        throw std::logic_error("Can open the start menu only if the game is paused or over or in the leaderboard");
+        throw std::logic_error(
+            "Can open the start menu only if the game is paused or over or in the leaderboard");
     }
     setState(GameState::IN_START_MENU);
 }
@@ -158,7 +155,7 @@ void StateMachine::exitGame()
 void StateMachine::setState(GameState gameState)
 {
     this->currentState = gameState;
-    for (auto const &[id, handler] : listenersMap)
+    for (auto &handler : listeners)
     {
         handler(currentState);
     }
