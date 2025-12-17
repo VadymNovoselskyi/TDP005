@@ -44,6 +44,7 @@ GameEngine::GameEngine() : spawner{}, clock{}
     Highscore::init(FPS);
     Leaderboard::init("static/leaderboard.txt");
     TilesManager::init("static/tileMap.txt");
+    Window::init();
 
     std::vector<Menu *> menus{};
     auto levelUpMenu{new LevelUpMenu()};
@@ -53,7 +54,7 @@ GameEngine::GameEngine() : spawner{}, clock{}
     menus.push_back(new PauseMenu());
     menus.push_back(new GameOverMenu());
     menus.push_back(levelUpMenu);
-    Window::init(menus);
+    Window::instance()->setMenus(menus);
 
     auto mapCenter{TilesManager::instance()->getMapDimensions() / 2.0F};
 

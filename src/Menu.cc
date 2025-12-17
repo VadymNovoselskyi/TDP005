@@ -4,7 +4,7 @@
 
 Menu::Menu(std::vector<ElementsInfo> const &elements, bool windowOpen)
     : defaultFont{}, buttonInfos{}, textElements{}, buttonElements{},
-      menuCenter{Window::DEFAULT_WINDOW_WIDTH / 2.0F, Window::DEFAULT_WINDOW_HEIGHT / 2.0F},
+      menuCenter{Window::getWindowWidth() / 2.0F, Window::getWindowHeight() / 2.0F},
       menuOpen{windowOpen}, focusedButtonIdx{0}
 {
     defaultFont.loadFromFile("static/Orbitron-Bold.ttf");
@@ -74,7 +74,7 @@ void Menu::setButtons(std::vector<ElementsInfo> const &elements)
     buttonElements.clear();
     textElements.clear();
     buttonInfos.clear();
-    menuCenter = {Window::DEFAULT_WINDOW_WIDTH / 2.0F, Window::DEFAULT_WINDOW_HEIGHT / 2.0F};
+    menuCenter = {Window::getWindowWidth() / 2.0F, Window::getWindowHeight() / 2.0F};
 
     for (auto &elementInfo : elements)
     {

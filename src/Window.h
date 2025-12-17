@@ -32,15 +32,21 @@ class Window
     /**
      * Create and initialize the Window singleton
      *
-     * @param menus Menus owned by Window and used for event handling and drawing
      * @return Pointer to the created singleton Window instance
      */
-    static Window *init(std::vector<Menu *> const &menus);
+    static Window *init();
 
     /**
      * Destroy the Window singleton instance
      */
     static void deleteInstance();
+
+    /**
+     * Set menus to the Window
+     *
+     * @param menus Menus to set to the Window
+     */
+    void setMenus(std::vector<Menu *> const &menus);
 
     /**
      * Poll window events and forward them to menus if not closing
@@ -72,6 +78,14 @@ class Window
     bool isClosed() const;
 
     /**
+     * Get the window size
+     *
+     * @return Window size in pixels
+     */
+    static sf::Vector2u getWindowSize();
+
+    /**
+     * Get the default window height
      * Get the current window width
      *
      * @return Window width in pixels
@@ -85,16 +99,11 @@ class Window
      */
     static int getWindowHeight();
 
-    int static const DEFAULT_WINDOW_WIDTH;
-    int static const DEFAULT_WINDOW_HEIGHT;
-
   private:
     /**
-     * Create a Window and take ownership of menus
-     *
-     * @param menus Menus owned by Window
+     * Create a Window
      */
-    Window(std::vector<Menu *> const &menus);
+    Window();
 
     /**
      * Destroy the Window and delete owned resources

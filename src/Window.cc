@@ -3,8 +3,6 @@
 #include "Highscore.h"
 #include "TilesManager.h"
 
-int const Window::DEFAULT_WINDOW_WIDTH{1024};
-int const Window::DEFAULT_WINDOW_HEIGHT{768};
 std::string const Window::GAME_TITLE{"THE GAME"};
 
 Window *Window::instancePtr{nullptr};
@@ -18,9 +16,9 @@ Window *Window::instance()
     return Window::instancePtr;
 }
 
-Window *Window::init(std::vector<Menu *> const &menus)
+Window *Window::init()
 {
-    Window::instancePtr = new Window(menus);
+    Window::instancePtr = new Window();
     return Window::instancePtr;
 }
 void Window::deleteInstance()
@@ -29,11 +27,10 @@ void Window::deleteInstance()
     Window::instancePtr = nullptr;
 }
 
-Window::Window(std::vector<Menu *> const &menus)
+Window::Window()
     : window{new sf::RenderWindow{
-          sf::VideoMode(Window::DEFAULT_WINDOW_WIDTH, Window::DEFAULT_WINDOW_HEIGHT),
-          Window::GAME_TITLE}},
-      windowClosed{false}, menus{menus}
+          sf::VideoMode::getDesktopMode(), Window::GAME_TITLE, sf::Style::Fullscreen}},
+      windowClosed{false}, menus{}
 {
 }
 
@@ -48,21 +45,24 @@ Window::~Window()
     }
 }
 
+sf::Vector2u Window::getWindowSize()
+{
+    return instancePtr->window->getSize();
+}
+
 int Window::getWindowWidth()
 {
-    if (instancePtr == nullptr)
-    {
-        return DEFAULT_WINDOW_WIDTH;
-    }
     return instancePtr->window->getSize().x;
 }
+
 int Window::getWindowHeight()
 {
-    if (instancePtr == nullptr)
-    {
-        return DEFAULT_WINDOW_HEIGHT;
-    }
     return instancePtr->window->getSize().y;
+}
+
+void Window::setMenus(std::vector<Menu *> const &menus)
+{
+    this->menus = menus;
 }
 
 sf::RenderWindow *Window::getRenderWindow() const
