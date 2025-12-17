@@ -64,7 +64,7 @@ class Entity : public sf::Sprite
 
   protected:
     double hp;
-    
+
     /**
      * Every Entity need it but reakt diffrently
      */

@@ -48,8 +48,9 @@ GameEngine::GameEngine() : spawner{}, clock{}
 
     std::vector<Menu *> menus{};
     auto levelUpMenu{new LevelUpMenu()};
+    auto leaderboardMenu{new LeaderboardMenu()};
     menus.push_back(new StartMenu());
-    menus.push_back(new LeaderboardMenu());
+    menus.push_back(leaderboardMenu);
     menus.push_back(new ChooseNameMenu());
     menus.push_back(new PauseMenu());
     menus.push_back(new GameOverMenu());
@@ -77,18 +78,19 @@ GameEngine::GameEngine() : spawner{}, clock{}
                 player->resetState(mapCenter);
                 spawner->resetState();
                 Map::instance()->resetState();
-                Highscore::instance()->saveHighscore();
                 Highscore::instance()->resetState();
 
                 StateMachine::instance()->setInGame();
             }
         });
+
     StateMachine::instance()->addListener(
-        [](GameState gameState)
+        [leaderboardMenu](GameState gameState)
         {
-            if (gameState == GameState::CONTINUING_GAME)
+            if (gameState == GameState::GAME_OVER)
             {
-                StateMachine::instance()->setInGame();
+                Highscore::instance()->saveHighscore();
+                leaderboardMenu->resetLeaderboard();
             }
         });
 

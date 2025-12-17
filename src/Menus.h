@@ -45,6 +45,8 @@ class LeaderboardMenu : public Menu
   public:
     LeaderboardMenu();
 
+    void resetLeaderboard();
+
   private:
     /**
      * Create the menu elements for the leaderboard menu

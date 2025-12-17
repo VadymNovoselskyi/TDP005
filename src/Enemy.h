@@ -37,18 +37,18 @@ class Enemy : public Character
     void onCollision(Entity *other) override;
 
     /**
- * Handles enemy collision with obstacles by calculating the minimum distance it has to move.
- *
- * The method compares the intersection along the x and y axes and moves the enemy along the
- * smallest intersecting axis to avoid contact by pushing the enemy in the other direction.
- * 
- * Formula steps:
- * 1. diff = enemy.position - other.position
- * 2. lenDistance = sqrt(diff.x * diff.x + diff.y * diff.y)
- * 3. direction = diff / lenDistance   // fallback if lenDistance is 0
- * 4. push = other.width / 6
- * 5. enemy.position += direction * push
- */
+     * Handles enemy collision with obstacles by calculating the minimum distance it has to move.
+     *
+     * The method compares the intersection along the x and y axes and moves the enemy along the
+     * smallest intersecting axis to avoid contact by pushing the enemy in the other direction.
+     *
+     * Formula steps:
+     * 1. diff = enemy.position - other.position
+     * 2. lenDistance = sqrt(diff.x * diff.x + diff.y * diff.y)
+     * 3. direction = diff / lenDistance   // fallback if lenDistance is 0
+     * 4. push = other.width / 6
+     * 5. enemy.position += direction * push
+     */
     void boxCollisionHandler(Entity *box);
     /**
      * Sets the enemys current position to the old position

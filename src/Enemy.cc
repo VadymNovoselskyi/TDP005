@@ -1,13 +1,12 @@
 #include "Enemy.h"
 
 #include <cmath>
-#include <iostream>
 
 #include "EnemyProjectile.h"
 #include "Highscore.h"
 #include "Map.h"
 
-Enemy::Enemy(/*Charactar*/ std::string const& pngName,
+Enemy::Enemy(/*Charactar*/ std::string const &pngName,
              double currentHp,
              int movementSpeed,
              sf::Vector2f positon,
@@ -18,8 +17,8 @@ Enemy::Enemy(/*Charactar*/ std::string const& pngName,
              int score,
              Player *player)
     : Character("enemy", currentHp, movementSpeed, positon), attackRange{attackRange},
-      attackSpeed{attackSpeed}, count{attackSpeed}, XP_DROP{XP_DROP}, damage{damage},
-      score{score}, player{player}, rotation{0}, pngName{pngName}
+      attackSpeed{attackSpeed}, count{attackSpeed}, XP_DROP{XP_DROP}, damage{damage}, score{score},
+      player{player}, rotation{0}, pngName{pngName}
 {
     auto texture{TextureManager::instance()->getTexture(pngName)};
     auto enemySize{texture->getSize()};
@@ -28,7 +27,7 @@ Enemy::Enemy(/*Charactar*/ std::string const& pngName,
 }
 
 Footman::Footman(/*Charactar*/
-                 std::string const& pngName,
+                 std::string const &pngName,
                  double currentHp,
                  int movementSpeed,
                  sf::Vector2f positon,
@@ -50,10 +49,9 @@ Footman::Footman(/*Charactar*/
             player)
 
 {
-
 }
 
-Archer::Archer(/*Charactar*/std::string const& pngName,
+Archer::Archer(/*Charactar*/ std::string const &pngName,
                double currentHp,
                int movementSpeed,
                sf::Vector2f positon,
@@ -76,10 +74,9 @@ Archer::Archer(/*Charactar*/std::string const& pngName,
             player),
       velocity{velocity}
 {
-
 }
 
-Kaboom::Kaboom(/*Charactar*/ std::string const& pngName,
+Kaboom::Kaboom(/*Charactar*/ std::string const &pngName,
                double currentHp,
                int movementSpeed,
                sf::Vector2f positon,
@@ -106,21 +103,18 @@ Kaboom::Kaboom(/*Charactar*/ std::string const& pngName,
       explodeDamage{explodeDamage}, explodeRange{explodeRange}, explodeCountdown{explodeCountdown},
       agroRange{agroRange}
 {
-    
 }
 
 void Enemy::die()
 {
-
     Map::instance()->removeEntity(this);
     player->gainXp(XP_DROP);
     Highscore::instance()->addKillScore(score);
 }
 
 float Enemy::calculateDistance()
-{ 
-
-    sf::Vector2 direction {calculateDirection()};
+{
+    sf::Vector2 direction{calculateDirection()};
 
     return std::sqrt((direction.x * direction.x) + (direction.y * direction.y));
 }
@@ -157,43 +151,44 @@ void Enemy::EntetyCollisionHandler(Entity *other)
     }
 
     // using a set variable to lower the push force
-       
+
     sf::Sprite::setPosition(sf::Sprite::getPosition() + direction * push);
 }
-void Enemy::boxCollisionHandler(Entity* box)
+void Enemy::boxCollisionHandler(Entity *box)
 {
     sf::FloatRect enemyBounds = getGlobalBounds();
     sf::FloatRect boxBounds = box->getGlobalBounds();
     // calculates the distance between enemy and box
-    float horizontalDistance = (enemyBounds.left + enemyBounds.width / 2) - (boxBounds.left + boxBounds.width / 2);
-    float verticalDistance = (enemyBounds.top + enemyBounds.height / 2) - (boxBounds.top + boxBounds.height / 2);
-    //calculates how much the enemy image is above the box
+    float horizontalDistance =
+        (enemyBounds.left + enemyBounds.width / 2) - (boxBounds.left + boxBounds.width / 2);
+    float verticalDistance =
+        (enemyBounds.top + enemyBounds.height / 2) - (boxBounds.top + boxBounds.height / 2);
+    // calculates how much the enemy image is above the box
     float overlapX = (enemyBounds.width + boxBounds.width) / 2 - std::abs(horizontalDistance);
     float overlapY = (enemyBounds.height + boxBounds.height) / 2 - std::abs(verticalDistance);
-    //moves along the smaller intersection to seperate enemy from the box
+    // moves along the smaller intersection to seperate enemy from the box
     sf::Vector2f move;
-    if (overlapX < overlapY) 
+    if (overlapX < overlapY)
     {
-        if (horizontalDistance < 0) 
+        if (horizontalDistance < 0)
         {
-            overlapX = - overlapX; //left
-        } 
+            overlapX = -overlapX; // left
+        }
 
-        move = sf::Vector2f(overlapX, 0.f); //right
-    } 
-    else 
+        move = sf::Vector2f(overlapX, 0.f); // right
+    }
+    else
     {
-        if (verticalDistance < 0) 
+        if (verticalDistance < 0)
         {
-            overlapY = -overlapY; //top
-        } 
+            overlapY = -overlapY; // top
+        }
 
-        move = sf::Vector2f(0.f, overlapY); //bottom
+        move = sf::Vector2f(0.f, overlapY); // bottom
     }
 
     setPosition(getPosition() + move);
 }
-
 
 std::string Enemy::getTag()
 {
@@ -263,21 +258,22 @@ void Footman::move()
 // kaboom
 void Kaboom::isInRange(float len)
 {
-    auto p { player -> getTexture()-> getSize()};
-    auto e {this -> getTexture()-> getSize()};
+    auto p{player->getTexture()->getSize()};
+    auto e{this->getTexture()->getSize()};
 
     double imageRange{static_cast<double>(attackRange)};
-    imageRange += sqrt((p.x/2)*(p.x/2)+(p.y/2)*(p.y/2))+sqrt((e.x/2)*(e.x/2)+(e.y/2)*(e.y/2));
+    imageRange += sqrt((p.x / 2) * (p.x / 2) + (p.y / 2) * (p.y / 2)) +
+                  sqrt((e.x / 2) * (e.x / 2) + (e.y / 2) * (e.y / 2));
 
     if (len <= imageRange)
     {
         contuneBegin = true;
     }
-    if(contuneBegin && explodeCountdown > 0)
+    if (contuneBegin && explodeCountdown > 0)
     {
-        explodeCountdown --;
+        explodeCountdown--;
     }
-    if(contuneBegin)
+    if (contuneBegin)
     {
         explode(len);
     }
@@ -288,32 +284,34 @@ void Kaboom::explode(float len)
     if (hasExploded)
     {
         die();
-        return; //här för att stoppa att en kabom kan explodera fellera gånger
+        return; // här för att stoppa att en kabom kan explodera fellera gånger
     }
-    if(explodeCountdown <= 0)
+    if (explodeCountdown <= 0)
     {
         hasExploded = true;
 
-        std::cout<<"kaboom"<<std::endl;
-        auto p { player -> getTexture()-> getSize()};
-        auto e {this -> getTexture()-> getSize()};
+        auto p{player->getTexture()->getSize()};
+        auto e{this->getTexture()->getSize()};
 
         double imageRange{explodeRange};
-        imageRange += sqrt((p.x/2)*(p.x/2)+(p.y/2)*(p.y/2))+sqrt((e.x/2)*(e.x/2)+(e.y/2)*(e.y/2));
+        imageRange += sqrt((p.x / 2) * (p.x / 2) + (p.y / 2) * (p.y / 2)) +
+                      sqrt((e.x / 2) * (e.x / 2) + (e.y / 2) * (e.y / 2));
 
         if (len <= imageRange)
         {
             player->takeDamage(explodeDamage);
         }
         auto texture{TextureManager::instance()->getTexture("explod.png")};
-        this -> setTexture(*texture, true); // tog delen från SFML att om man säter true i setTExur så får bilden bhåla sin storlek när den ritas ut https://www.sfml-dev.org/documentation/3.0.2/classsf_1_1Sprite.html#a3729c88d88ac38c19317c18e87242560
-        //sf::Sprite s;
-        //s.setTexture(*texture);
+        this->setTexture(
+            *texture,
+            true); // tog delen från SFML att om man säter true i setTExur så får bilden bhåla sin
+                   // storlek när den ritas ut
+                   // https://www.sfml-dev.org/documentation/3.0.2/classsf_1_1Sprite.html#a3729c88d88ac38c19317c18e87242560
+        // sf::Sprite s;
+        // s.setTexture(*texture);
         auto explodSize{texture->getSize()};
-        std::cout<<"x "<<explodSize.x<<" y "<<explodSize.y<<std::endl;
-        this-> setOrigin(explodSize.x / 2.0, explodSize.y / 2.0);
+        this->setOrigin(explodSize.x / 2.0, explodSize.y / 2.0);
     }
-    
 }
 
 void Kaboom::attack()
@@ -343,7 +341,7 @@ void Kaboom::move()
     isInRange(len);
 }
 
-//Archer
+// Archer
 void Archer::attack()
 {
     shoot();

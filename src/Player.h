@@ -61,20 +61,21 @@ class Player : public Character
     /**
      * Moves the player based on keyboard inputs
      * Checks wads keys to decide movement direction. If the player moves diagonal the direction
-     * vector is normalized by dividing with squrt(2) to keep an even speed. 
-     * 
-     * Then it sets the weapons position to the players new position and calls the shooting function automatically. 
-     * 
+     * vector is normalized by dividing with squrt(2) to keep an even speed.
+     *
+     * Then it sets the weapons position to the players new position and calls the shooting function
+     * automatically.
+     *
      * Before the calculations begin sets the direction x and y values to 0
      * oldPosition is saved to allow reseting movement with collision of obstacles
-     * 
+     *
      * Formula steps:
-     * 1. uppdates direction  based on wasd 
+     * 1. uppdates direction  based on wasd
      * 2. if moving diagonally (checked with abs(direction.x) + abs(direction.y) > 1)
      * direction.x /= sqrt(2)
      * directiony /= squrt(2)
      * 3. sprite.position += direction * movementSpeed
-     * 
+     *
      */
     void move() override;
 

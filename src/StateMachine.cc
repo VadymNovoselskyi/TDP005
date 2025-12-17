@@ -83,20 +83,11 @@ void StateMachine::startGame()
     setState(GameState::STARTING_GAME);
 }
 
-void StateMachine::continueGame()
-{
-    if (currentState != GameState::GAME_PAUSED && currentState != GameState::LEVEL_UP_SCREEN)
-    {
-        throw std::logic_error("Can continue the game only if it was paused or on level up");
-    }
-    setState(GameState::CONTINUING_GAME);
-}
-
 void StateMachine::setInGame()
 {
-    if (currentState != GameState::STARTING_GAME && currentState != GameState::CONTINUING_GAME)
+    if (currentState != GameState::STARTING_GAME)
     {
-        throw std::logic_error("Can set to in game only if in was starting or continuing the game");
+        throw std::logic_error("Can set to in game only if in was starting the game");
     }
     setState(GameState::IN_GAME);
 }

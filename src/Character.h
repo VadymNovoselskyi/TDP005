@@ -13,7 +13,6 @@ class Character : public Entity
     void setMovementSpeed(int movementSpeed);
 
   protected:
-    
     int movementSpeed;
     sf::Vector2f position;
 };
