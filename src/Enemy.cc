@@ -112,23 +112,17 @@ Kaboom::Kaboom(/*Charactar*/ std::string const& pngName,
 void Enemy::die()
 {
 
-    // std::cout << "Dying: " << this << std::endl;
     Map::instance()->removeEntity(this);
     player->gainXp(XP_DROP);
     Highscore::instance()->addKillScore(score);
-    // std::cout << "Died" << std::endl;
 }
 
 float Enemy::calculateDistance()
 { 
-    oldPosition = getPosition();
-    sf::Vector2f playerPositon = player->getPosition();
-    sf::Vector2f enemyPosition = oldPosition;
 
-    float directionX = playerPositon.x - enemyPosition.x;
-    float directionY = playerPositon.y - enemyPosition.y;
+    sf::Vector2 direction {calculateDirection()};
 
-    return std::sqrt((directionX * directionX) + (directionY * directionY));
+    return std::sqrt((direction.x * direction.x) + (direction.y * direction.y));
 }
 
 sf::Vector2f Enemy::calculateDirection()
