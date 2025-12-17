@@ -85,7 +85,7 @@ void Leaderboard::loadLeaderboard(std::string const &leaderboardPath)
 
     if (!file.is_open())
     {
-        throw std::logic_error("Couldn't open the leaderboard file");
+        return;
     }
 
     // The loop is kinda taken from TilesManager
