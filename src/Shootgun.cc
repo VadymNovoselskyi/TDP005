@@ -11,7 +11,7 @@ float const Shootgun::angleStep {BULLETS_SPREAD_ANGLE * 2.0f / (BULLETS_COUNT - 
 Shootgun::Shootgun()
     : Weapon("Shootgun",
              "Shoot slow with a medium damag",
-             /*dmg*/ 20.0f,
+             /*dmg*/ 25.0f,
              /*attackSpeed (shoots per sec)*/ 2,
              /*bullet speed*/ 30,
              /*bulletHP*/ 1,
@@ -28,7 +28,7 @@ void Shootgun::shoot()
         Map::instance()->addEntity(
             new Projectile{Transformable::getPosition(),
                            /*bulletRotation*/ Transformable::getRotation() + angleOffset,
-                           speed,
+                           bulletSpeed,
                            damage * damageMultiplication,
                            bulletHP,
                            "Shootgun_bullet.png"});

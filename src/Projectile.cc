@@ -9,9 +9,9 @@ Projectile::Projectile(sf::Vector2f const &pos,
                        double rotation,
                        double velocity,
                        double damage,
-                       double hp,
+                       double bulletHP,
                        std::string const &pngName)
-    : Entity(std::string{"projectile"}, pos, hp), velocity{velocity}, damage{damage},
+    : Entity(std::string{"projectile"}, pos, bulletHP), velocity{velocity}, damage{damage},
       texture{TextureManager::instance()->getTexture(pngName)}, isDying{false}
 {
     sf::Sprite::setTexture(*texture);
@@ -44,11 +44,6 @@ void Projectile::move()
         static_cast<float>(std::sin((sf::Sprite::getRotation() + 90) * M_PI / 180.0f))};
 
     sf::Sprite::Transformable::move(-dir.x * velocity, -dir.y * velocity);
-}
-
-void Projectile::draw(sf::RenderWindow *window) const
-{
-    window->draw(*this);
 }
 
 void Projectile::takeDamage(double damage)
