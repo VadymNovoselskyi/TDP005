@@ -6,7 +6,7 @@
 class Projectile : public Entity
 {
   public:
-    Projectile(sf::Vector2f const &pos, double rotation, double velocity, double damage, double hp, std::string pngName);
+    Projectile(sf::Vector2f const &pos, double rotation, double velocity, double damage, double hp, std::string const &pngName);
     ~Projectile() override = default;
 
     void onCollision(Entity *other) override;
@@ -22,6 +22,8 @@ class Projectile : public Entity
     double velocity;
     double damage;
     sf::Texture const *texture;
+
+    bool isDying;
 };
 
 #endif

@@ -12,8 +12,7 @@
 StartMenu::StartMenu()
     : Menu(createButtons(), StateMachine::instance()->state() == GameState::IN_START_MENU)
 {
-    StateMachine::instance()->addListener("StartMenu",
-                                          [this](GameState gameState)
+    StateMachine::instance()->addListener([this](GameState gameState)
                                           { setIsOpen(gameState == GameState::IN_START_MENU); });
 }
 
@@ -42,8 +41,7 @@ std::vector<ElementsInfo> StartMenu::createButtons() const
 LeaderboardMenu::LeaderboardMenu()
     : Menu(createButtons(), StateMachine::instance()->state() == GameState::LEADERBOARD)
 {
-    StateMachine::instance()->addListener("LeaderboardMenu",
-                                          [this](GameState gameState)
+    StateMachine::instance()->addListener([this](GameState gameState)
                                           { setIsOpen(gameState == GameState::LEADERBOARD); });
 }
 
@@ -90,7 +88,6 @@ ChooseNameMenu::ChooseNameMenu()
       username{}
 {
     StateMachine::instance()->addListener(
-        "ChooseNameMenu",
         [this](GameState gameState) { setIsOpen(gameState == GameState::CHOOSING_USERNAME); });
 }
 
@@ -164,8 +161,7 @@ bool ChooseNameMenu::handleEvent(sf::Event const &event)
 PauseMenu::PauseMenu()
     : Menu(createButtons(), StateMachine::instance()->state() == GameState::GAME_PAUSED)
 {
-    StateMachine::instance()->addListener("PauseMenu",
-                                          [this](GameState gameState)
+    StateMachine::instance()->addListener([this](GameState gameState)
                                           { setIsOpen(gameState == GameState::GAME_PAUSED); });
 }
 
@@ -200,8 +196,7 @@ bool PauseMenu::handleEvent(sf::Event const &event)
 
     if (StateMachine::instance()->state() == GameState::IN_GAME &&
         event.type == sf::Event::KeyPressed &&
-        (event.key.scancode == sf::Keyboard::Scan::Space ||
-         event.key.scancode == sf::Keyboard::Scan::Escape))
+        (event.key.code == sf::Keyboard::Space || event.key.code == sf::Keyboard::Escape))
     {
         StateMachine::instance()->pauseGame();
         return true;
@@ -213,8 +208,7 @@ bool PauseMenu::handleEvent(sf::Event const &event)
 GameOverMenu::GameOverMenu()
     : Menu(createButtons(), StateMachine::instance()->state() == GameState::GAME_OVER)
 {
-    StateMachine::instance()->addListener("GameOverMenu",
-                                          [this](GameState gameState)
+    StateMachine::instance()->addListener([this](GameState gameState)
                                           { setIsOpen(gameState == GameState::GAME_OVER); });
 }
 
@@ -243,8 +237,7 @@ std::vector<ElementsInfo> GameOverMenu::createButtons() const
 LevelUpMenu::LevelUpMenu()
     : Menu(createButtons(), StateMachine::instance()->state() == GameState::LEVEL_UP_SCREEN)
 {
-    StateMachine::instance()->addListener("LevelUpMenu",
-                                          [this](GameState gameState)
+    StateMachine::instance()->addListener([this](GameState gameState)
                                           { setIsOpen(gameState == GameState::LEVEL_UP_SCREEN); });
 }
 

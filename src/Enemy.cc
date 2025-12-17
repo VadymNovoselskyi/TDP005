@@ -17,9 +17,9 @@ Enemy::Enemy(/*Charactar*/ std::string const& pngName,
              double damage,
              int score,
              Player *player)
-    : Character("enemy", currentHp, movementSpeed, positon), pngName{pngName},
-      attackRange{attackRange}, attackSpeed{attackSpeed}, count{attackSpeed}, XP_DROP{XP_DROP},
-      damage{damage}, score{score}, player{player}, rotation{0}
+    : Character("enemy", currentHp, movementSpeed, positon), attackRange{attackRange},
+      attackSpeed{attackSpeed}, count{attackSpeed}, XP_DROP{XP_DROP}, damage{damage},
+      score{score}, player{player}, rotation{0}, pngName{pngName}
 {
     auto texture{TextureManager::instance()->getTexture(pngName)};
     auto enemySize{texture->getSize()};
@@ -112,13 +112,15 @@ Kaboom::Kaboom(/*Charactar*/ std::string const& pngName,
 void Enemy::die()
 {
 
+    // std::cout << "Dying: " << this << std::endl;
     Map::instance()->removeEntity(this);
     player->gainXp(XP_DROP);
     Highscore::instance()->addKillScore(score);
+    // std::cout << "Died" << std::endl;
 }
 
 float Enemy::calculateDistance()
-{
+{ 
     oldPosition = getPosition();
     sf::Vector2f playerPositon = player->getPosition();
     sf::Vector2f enemyPosition = oldPosition;
@@ -170,11 +172,7 @@ std::string Enemy::getTag()
 
 void Enemy::onCollision(Entity *other)
 {
-    if (other->getTag() == "player")
-    {
-        collisionHandler(other);
-    }
-    else if (other->getTag() == "enemy")
+    if (other->getTag() == "player" || other->getTag() == "enemy")
     {
         collisionHandler(other);
     }
@@ -235,24 +233,59 @@ void Footman::move()
 // kaboom
 void Kaboom::isInRange(float len)
 {
-    if (len <= attackRange)
+    auto p { player -> getTexture()-> getSize()};
+    auto e {this -> getTexture()-> getSize()};
+
+    double imageRange{static_cast<double>(attackRange)};
+    imageRange += sqrt((p.x/2)*(p.x/2)+(p.y/2)*(p.y/2))+sqrt((e.x/2)*(e.x/2)+(e.y/2)*(e.y/2));
+
+    if (len <= imageRange)
     {
         // sleep(15);
-        Kaboom::explode(len);
+        //Kaboom::explode(len);
+        contuneBegin = true;
+    }
+    if(contuneBegin && explodeCountdown > 0)
+    {
+        explodeCountdown --;
+    }
+    if(contuneBegin)
+    {
+        explode(len);
     }
 }
 
 void Kaboom::explode(float len)
 {
-    if (explodeCountdown == 0)
+    if (hasExploded)
     {
-        if (len <= explodeRange)
+        die();
+        return; //här för att stoppa att en kabom kan explodera fellera gånger
+    }
+    if(explodeCountdown <= 0)
+    {
+        hasExploded = true;
+
+        std::cout<<"kaboom"<<std::endl;
+        auto p { player -> getTexture()-> getSize()};
+        auto e {this -> getTexture()-> getSize()};
+
+        double imageRange{explodeRange};
+        imageRange += sqrt((p.x/2)*(p.x/2)+(p.y/2)*(p.y/2))+sqrt((e.x/2)*(e.x/2)+(e.y/2)*(e.y/2));
+
+        if (len <= imageRange)
         {
             player->takeDamage(explodeDamage);
         }
-        die();
+        auto texture{TextureManager::instance()->getTexture("explod.png")};
+        this -> setTexture(*texture, true); // tog delen från SFML att om man säter true i setTExur så får bilden bhåla sin storlek när den ritas ut https://www.sfml-dev.org/documentation/3.0.2/classsf_1_1Sprite.html#a3729c88d88ac38c19317c18e87242560
+        //sf::Sprite s;
+        //s.setTexture(*texture);
+        auto explodSize{texture->getSize()};
+        std::cout<<"x "<<explodSize.x<<" y "<<explodSize.y<<std::endl;
+        this-> setOrigin(explodSize.x / 2.0, explodSize.y / 2.0);
     }
-    explodeCountdown--;
+    
 }
 
 void Kaboom::attack()
@@ -279,8 +312,10 @@ void Kaboom::move()
     sf::Sprite::setRotation(calculateRotation());
     sf::Sprite::move(direction.x * movementSpeed, direction.y * movementSpeed);
     tryAttack(len);
+    isInRange(len);
 }
 
+//Archer
 void Archer::attack()
 {
     shoot();

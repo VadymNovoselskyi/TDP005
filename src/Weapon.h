@@ -39,12 +39,11 @@ class Weapon : public sf::Sprite::Transformable
     double attackSpeed;
     double speed;
     double bulletHP;
-    
+
     double counter;
-    
 
     Rarity rarity;
-    
+
     void update();
 
   private:

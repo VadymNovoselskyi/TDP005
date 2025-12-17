@@ -50,19 +50,19 @@ bool Menu::handleEvent(sf::Event const &event)
         // std::cout << sf::Keyboard::getDescription(event.key.scancode).toAnsiString() <<
         // std::endl;
 
-        switch (event.key.scancode)
+        switch (event.key.code)
         {
-        case sf::Keyboard::Scan::Up:
+        case sf::Keyboard::Up:
             // std::cout << "pageUp" << std::endl;
             changeFocusedIdx(-1);
             return true;
 
-        case sf::Keyboard::Scan::Down:
+        case sf::Keyboard::Down:
             // std::cout << "pageDown" << std::endl;
             changeFocusedIdx(1);
             return true;
 
-        case sf::Keyboard::Scan::Enter:
+        case sf::Keyboard::Enter:
             // std::cout << "Enter" << std::endl;
             if (!buttonElements.empty() && focusedButtonIdx < static_cast<int>(buttonInfos.size()))
             {
@@ -119,7 +119,7 @@ void Menu::focusButton(int index)
     sf::Text &button = buttonElements.at(index);
     button.setFillColor(sf::Color::Red);
 }
-void Menu::unFocusButton(int index)
+void Menu::unfocusButton(int index)
 {
     sf::Text &button = buttonElements.at(index);
     button.setFillColor(sf::Color::Blue);
@@ -133,7 +133,7 @@ void Menu::changeFocusedIdx(int change)
     }
     int targetIndex = (focusedButtonIdx + change) % buttonElements.size();
 
-    unFocusButton(focusedButtonIdx);
+    unfocusButton(focusedButtonIdx);
     focusedButtonIdx = targetIndex;
     focusButton(focusedButtonIdx);
 }
@@ -148,7 +148,7 @@ void Menu::setIsOpen(bool isOpen)
     menuOpen = isOpen;
     if (!buttonElements.empty())
     {
-        unFocusButton(focusedButtonIdx);
+        unfocusButton(focusedButtonIdx);
         focusedButtonIdx = 0;
         focusButton(focusedButtonIdx);
     }
