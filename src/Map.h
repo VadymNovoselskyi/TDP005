@@ -18,7 +18,7 @@
  */
 class Map
 {
-  public: // singelton taget från vadyms kod
+  public: // singelton taget from vadyms kod
     /**
      * Get the Map singleton instance
      * The instance must be created with init() before calling this function

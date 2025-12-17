@@ -16,7 +16,7 @@ void AssaultRifle::shoot()
 {
     Map::instance()->addEntity(new Projectile{Transformable::getPosition(),
                                               Transformable::getRotation(),
-                                              speed,
+                                              bulletSpeed,
                                               damage * damageMultiplication,
                                               bulletHP,
                                               "AR_bullet.png"});
