@@ -76,13 +76,6 @@ std::vector<std::pair<std::string, ScoreInfo>> Leaderboard::getLeaderboard(int m
                 std::min(static_cast<int>(highscores.size()), maxSize),
                 std::back_inserter(leaderboard));
 
-    std::cout << "Leaderboard: " << leaderboard.size() << std::endl;
-    for (auto &[username, scoreInfo] : leaderboard)
-    {
-        std::cout << username << " " << scoreInfo.score << " " << scoreInfo.timeSurvived << " "
-                  << scoreInfo.enemiesKilled << std::endl;
-    }
-
     return leaderboard;
 }
 
