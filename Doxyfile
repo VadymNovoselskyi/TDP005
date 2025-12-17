@@ -1,0 +1,30 @@
+# Project
+PROJECT_NAME           = "The Game"
+OUTPUT_DIRECTORY       = docs
+
+# Input
+INPUT                  = .
+FILE_PATTERNS          = *.h *.cpp
+RECURSIVE              = YES
+
+# Build
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+
+# Extraction
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = NO
+EXTRACT_STATIC         = NO
+
+# Warnings
+QUIET                  = NO
+WARNINGS               = YES
+
+# Preprocessing
+ENABLE_PREPROCESSING   = YES
+MACRO_EXPANSION        = YES
+EXPAND_ONLY_PREDEF     = NO
+
+# Output formatting
+OPTIMIZE_OUTPUT_FOR_C  = NO
+OPTIMIZE_OUTPUT_JAVA   = NO
