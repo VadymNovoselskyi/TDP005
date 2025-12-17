@@ -141,23 +141,59 @@ float Enemy::calculateRotation()
     rotation = rotationRadians * (180.f / M_PI) + 90.f;
     return rotation;
 }
-void Enemy::collisionHandler(Entity *other)
+void Enemy::EntetyCollisionHandler(Entity *other)
 {
     sf::Vector2f diff = sf::Sprite::getPosition() - other->getPosition();
     float lenDistance = std::sqrt((diff.x * diff.x) + (diff.y * diff.y));
     sf::Vector2f direction;
+    float push = other->getGlobalBounds().width / 6.0f;
     if (lenDistance > 0)
     {
         direction = diff / lenDistance;
     }
     else
     {
-        direction = sf::Vector2f(0.5F, 0.0F);
+        direction = sf::Vector2f(0.5f, 0.5f);
     }
+
     // using a set variable to lower the push force
-    float push = other->getGlobalBounds().width / 6.0f;
+       
     sf::Sprite::setPosition(sf::Sprite::getPosition() + direction * push);
 }
+void Enemy::boxCollisionHandler(Entity* box)
+{
+    sf::FloatRect enemyBounds = getGlobalBounds();
+    sf::FloatRect boxBounds = box->getGlobalBounds();
+    // calculates the distance between enemy and box
+    float horizontalDistance = (enemyBounds.left + enemyBounds.width / 2) - (boxBounds.left + boxBounds.width / 2);
+    float verticalDistance = (enemyBounds.top + enemyBounds.height / 2) - (boxBounds.top + boxBounds.height / 2);
+    //calculates how much the enemy image is above the box
+    float overlapX = (enemyBounds.width + boxBounds.width) / 2 - std::abs(horizontalDistance);
+    float overlapY = (enemyBounds.height + boxBounds.height) / 2 - std::abs(verticalDistance);
+    //moves along the smaller intersection to seperate enemy from the box
+    sf::Vector2f move;
+    if (overlapX < overlapY) 
+    {
+        if (horizontalDistance < 0) 
+        {
+            overlapX = - overlapX; //left
+        } 
+
+        move = sf::Vector2f(overlapX, 0.f); //right
+    } 
+    else 
+    {
+        if (verticalDistance < 0) 
+        {
+            overlapY = -overlapY; //top
+        } 
+
+        move = sf::Vector2f(0.f, overlapY); //bottom
+    }
+
+    setPosition(getPosition() + move);
+}
+
 
 std::string Enemy::getTag()
 {
@@ -168,11 +204,11 @@ void Enemy::onCollision(Entity *other)
 {
     if (other->getTag() == "player" || other->getTag() == "enemy")
     {
-        collisionHandler(other);
+        EntetyCollisionHandler(other);
     }
     else if (other->getTag() == "obstacle")
     {
-        collisionHandler(this);
+        boxCollisionHandler(other);
         return;
     }
 }
@@ -235,8 +271,6 @@ void Kaboom::isInRange(float len)
 
     if (len <= imageRange)
     {
-        // sleep(15);
-        //Kaboom::explode(len);
         contuneBegin = true;
     }
     if(contuneBegin && explodeCountdown > 0)

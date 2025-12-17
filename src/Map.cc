@@ -80,6 +80,7 @@ void Map::handelUpdate(sf::RenderWindow *window)
     {
         if (TilesManager::instance()->outOfBorders(*it1))
         {
+
             (*it1)->onBorderCollision();
         }
 

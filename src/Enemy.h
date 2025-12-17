@@ -29,13 +29,27 @@ class Enemy : public Character
     void die() override;
 
     /**
-     * Handles enemys collision with obstacles, other enemies and player
+     * Handles enemys collision with other enemies and player.
      * when a collision occurs it calculates how long the images are overeach other and then puches
-     * oneof the enemy awy with the full distance divided by 6 to get a smaller force push
+     * one of the enemy awy with the full distance divided by 6 to get a smaller force push
      * @param other stores the object the enemy
      */
     void onCollision(Entity *other) override;
 
+    /**
+ * Handles enemy collision with obstacles by calculating the minimum distance it has to move.
+ *
+ * The method compares the intersection along the x and y axes and moves the enemy along the
+ * smallest intersecting axis to avoid contact by pushing the enemy in the other direction.
+ * 
+ * Formula steps:
+ * 1. diff = enemy.position - other.position
+ * 2. lenDistance = sqrt(diff.x * diff.x + diff.y * diff.y)
+ * 3. direction = diff / lenDistance   // fallback if lenDistance is 0
+ * 4. push = other.width / 6
+ * 5. enemy.position += direction * push
+ */
+    void boxCollisionHandler(Entity *box);
     /**
      * Sets the enemys current position to the old position
      */
@@ -85,11 +99,12 @@ class Enemy : public Character
      * Formula steps:
      * 1. diff = enemy.position - other.position
      * 2. lenDistance = sqrt(diff.x * diff.x + diff.y * diff.y)
-     * 3. direction = diff /lenDistance has a fallback distance to prevent dividing by 0 
-     * 4. push = other.width / 6 - the reason behind dividing by 6, stoping it from looking like the enemy is teleporting
+     * 3. direction = diff /lenDistance has a fallback distance to prevent dividing by 0
+     * 4. push = other.width / 6 - the reason behind dividing by 6, stoping it from looking like the
+     * enemy is teleporting
      * 5. enemy.position += direction * push
      */
-    void collisionHandler(Entity *other);
+    void EntetyCollisionHandler(Entity *other);
     void tryAttack(float leng);
     sf::Vector2f oldPosition;
     int attackRange;
