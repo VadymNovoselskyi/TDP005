@@ -119,7 +119,7 @@ sf::Vector2f Player::getOldPosition() const
 {
     return oldPosition;
 }
-void Player::updateRotation(sf::RenderWindow *window)
+void Player::updateRotation(sf::RenderWindow *window) 
 {
     // kollade upp om det fans någon atan funktion och hittad:
     // https://cppreference.com/w/c/numeric/math/atan2.html kollade upp hur jag skulle räkna
