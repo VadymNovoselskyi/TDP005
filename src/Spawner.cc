@@ -62,30 +62,30 @@ void Spawner::chooseSpawnPos()
         std::rand() % mapSize.x; // tar inspraskion från  w3schools
                                  // //https://www.w3schools.com/cpp/cpp_howto_random_number.asp
     float randomY = std::rand() % mapSize.y;
-    sf::Vector2f nySpawnPos{randomX, randomY};
+    sf::Vector2f newSpawnPos{randomX, randomY};
 
     float pPlusX{playerWindow.x + (Window::getWindowWidth() / 2.0F)}; // 512
     float pMinusX{playerWindow.x - (Window::getWindowWidth() / 2.0F)};
     float pPlusY{playerWindow.y + (Window::getWindowHeight() / 2.0F)}; // 384
     float pMinusY{playerWindow.y - (Window::getWindowHeight() / 2.0F)};
 
-    bool insidaX =
-        (nySpawnPos.x > pMinusX &&
-         nySpawnPos.x < pPlusX); // tar insparaskion från w3schools
+    bool insideX =
+        (newSpawnPos.x > pMinusX &&
+         newSpawnPos.x < pPlusX); // tar insparaskion från w3schools
                                  // https://www.w3schools.com/cpp/cpp_operators_logical.asp
-    bool insidaY = (nySpawnPos.y > pMinusY && nySpawnPos.y < pPlusY);
+    bool insideY = (newSpawnPos.y > pMinusY && newSpawnPos.y < pPlusY);
  
     bool xCrash = (randomX < 160 || randomX > 2200);
     bool yCrash = (randomY < 160 || randomY > 2200);
     //std::cout<<"inan"<<std::endl;
-    if (insidaX and insidaY or xCrash or yCrash)
+    if ((insideX && insideY) || xCrash || yCrash)
     {
         //std::cout<<"inne"<<std::endl;
         chooseSpawnPos();
     }
     else
     {
-        spawnPoint = nySpawnPos;
+        spawnPoint = newSpawnPos;
     }
 }
 
