@@ -66,7 +66,7 @@ void Spawner::chooseSpawnPos()
     // std::cout << "Choosing spawn pos" << std::endl;
 
     sf::Vector2i mapSize{TilesManager::instance()->getMapDimensions()};
-    // sf::Vector2f playerPos{player->getPosition()};
+    sf::Vector2f playerPos{player->getPosition()};
     // std::cout << "Got mapsize and player window" << std::endl;
 
     float randomX =
@@ -75,16 +75,16 @@ void Spawner::chooseSpawnPos()
     float randomY = std::rand() % mapSize.y;
     sf::Vector2f newSpawnPos{randomX, randomY};
 
-    // float pRight{playerPos.x + (Window::getWindowWidth() / 2.0F)}; // 512
-    // float pLeft{-pRight};
-    // float pUpp{playerPos.y + (Window::getWindowHeight() / 2.0F)}; // 384
-    // float pDown{-pUpp};
+    float pRight{playerPos.x + (Window::getWindowWidth() / 2.0F)}; // 512
+    float pLeft{-pRight};
+    float pUpp{playerPos.y + (Window::getWindowHeight() / 2.0F)}; // 384
+    float pDown{-pUpp};
 
-    // bool insideX =
-    //     (newSpawnPos.x > pLeft &&
-    //      newSpawnPos.x < pRight); // tar insparaskion från w3schools
-    //                               // https://www.w3schools.com/cpp/cpp_operators_logical.asp
-    // bool insideY = (newSpawnPos.y > pDown && newSpawnPos.y < pUpp);
+    bool insideX =
+         (newSpawnPos.x > pLeft &&
+          newSpawnPos.x < pRight); // tar insparaskion från w3schools
+                                   // https://www.w3schools.com/cpp/cpp_operators_logical.asp
+    bool insideY = (newSpawnPos.y > pDown && newSpawnPos.y < pUpp);
 
     // bool xCrash = (randomX < 160 || randomX > 2200);
     // bool yCrash = (randomY < 160 || randomY > 2200);
@@ -95,7 +95,12 @@ void Spawner::chooseSpawnPos()
     {
         // std::cout<<"outside"<<std::endl;
         chooseSpawnPos();
-    }
+    } 
+    else if(insideX && insideY)
+      {
+	    //std::cout<<"in frame"<<std::endl;
+	    chooseSpawnPos();
+      }
     else
     {
         spawnPoint = newSpawnPos;
