@@ -86,7 +86,7 @@ class Spawner
 
     Player *player;
 
-
+    double hpIncres;
 
     bool canSpawnKaboom;
     bool canSpawnArcher;

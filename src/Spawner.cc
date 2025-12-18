@@ -1,5 +1,5 @@
 #include "Spawner.h"
-//#include <iostream>
+#include <iostream>
 
 #include <cstdlib>
 
@@ -35,6 +35,12 @@ void Spawner::spawnEnemies()
         counter = 0;
         timeCounter += 1;
         increaseSpawnRate();
+        if(timeCounter >=40)
+        {
+            addFootman();
+            addKaboom();
+            addArcher();
+        }
     }
     else
     {
@@ -51,6 +57,7 @@ void Spawner::newEnmey()
     if (timeCounter >= 20)
     {
         canSpawnArcher = true;
+        hpIncres+=5;
     }
 }
 void Spawner::chooseSpawnPos()
@@ -99,9 +106,10 @@ void Spawner::increaseSpawnRate()
 
 void Spawner::addFootman()
 {
+    std::cout<< hpIncres << std::endl;
     chooseSpawnPos();
     std::string const pngName{"enemy.png"};
-    double currentHP{100.0};
+    double currentHP{100.0 + hpIncres};
     int movementSpeed{4};
     sf::Vector2f direction{0, 0};
     int attackRange{20};
@@ -132,7 +140,7 @@ void Spawner::addKaboom()
     {
         chooseSpawnPos();
         std::string const pngName{"kaboom.png"};
-        double currentHP{75.0};
+        double currentHP{75.0 + hpIncres};
         int movementSpeed{4};
         sf::Vector2f direction{0, 0};
         int attackRange{10};
@@ -168,7 +176,7 @@ void Spawner::addArcher()
     {
         chooseSpawnPos();
         std::string const pngName{"fighter.png"};
-        double currentHP{100.0};
+        double currentHP{100.0 + hpIncres};
         int movementSpeed{2};
         sf::Vector2f direction{0, 0};
         int attackRange{40};
