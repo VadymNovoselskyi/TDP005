@@ -65,7 +65,7 @@ void Map::handelUpdate(sf::RenderWindow *window)
     // Loop through all entities and check for collisions with borders and other entities
     for (auto it1{entities.begin()}; it1 != entities.end(); ++it1)
     {
-        if (TilesManager::instance()->outOfBorders(*it1))
+        if (TilesManager::instance()->outOfBorders((*it1)->getGlobalBounds()))
         {
 
             (*it1)->onBorderCollision();

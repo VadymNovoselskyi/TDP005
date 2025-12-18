@@ -56,10 +56,9 @@ std::vector<Obstacle *> TilesManager::getObstacles() const
     return obstacles;
 }
 
-bool TilesManager::outOfBorders(sf::Sprite const *sprite) const
+bool TilesManager::outOfBorders(sf::FloatRect const &spriteRect) const
 {
     auto mapBorders{mapRect.getGlobalBounds()};
-    auto spriteRect{sprite->getGlobalBounds()};
 
     return spriteRect.left < mapBorders.left || spriteRect.top < mapBorders.top ||
            spriteRect.left + spriteRect.width > mapBorders.left + mapBorders.width ||

@@ -1,7 +1,7 @@
 #include "Spawner.h"
-#include <iostream>
 
 #include <cstdlib>
+#include <iostream>
 
 #include "TilesManager.h"
 #include "Window.h"
@@ -15,7 +15,7 @@ Spawner::Spawner(Player *player)
 
 void Spawner::resetState()
 {
-    //enemies.clear();
+    // enemies.clear();
     spawnRate = 200.0;
     counter = 0;
     timeCounter = 0;
@@ -35,7 +35,7 @@ void Spawner::spawnEnemies()
         counter = 0;
         timeCounter += 1;
         increaseSpawnRate();
-        if(timeCounter >=40)
+        if (timeCounter >= 40)
         {
             addFootman();
             addKaboom();
@@ -57,7 +57,7 @@ void Spawner::newEnmey()
     if (timeCounter >= 20)
     {
         canSpawnArcher = true;
-        hpIncrease+=5;
+        hpIncrease += 5;
     }
 }
 
@@ -74,8 +74,6 @@ void Spawner::chooseSpawnPos()
                                  // //https://www.w3schools.com/cpp/cpp_howto_random_number.asp
     float randomY = std::rand() % mapSize.y;
     sf::Vector2f newSpawnPos{randomX, randomY};
-    sf::Sprite *randSprite{new sf::Sprite()};
-    randSprite->setPosition(newSpawnPos);
 
     // float pRight{playerPos.x + (Window::getWindowWidth() / 2.0F)}; // 512
     // float pLeft{-pRight};
@@ -92,7 +90,7 @@ void Spawner::chooseSpawnPos()
     // bool yCrash = (randomY < 160 || randomY > 2200);
     // std::cout << "Done all calc" << std::endl;
     // std::cout<<"inan"<<std::endl;
-    if (TilesManager::instance()->outOfBorders(randSprite))
+    if (TilesManager::instance()->outOfBorders(sf::FloatRect(newSpawnPos, newSpawnPos)))
     {
         // std::cout<<"outside"<<std::endl;
         chooseSpawnPos();
@@ -114,7 +112,7 @@ void Spawner::increaseSpawnRate()
 
 void Spawner::addFootman()
 {
-    std::cout<< hpIncrease << std::endl;
+    std::cout << hpIncrease << std::endl;
     chooseSpawnPos();
     std::string const pngName{"enemy.png"};
     double currentHP{100.0 + hpIncrease};
@@ -126,8 +124,8 @@ void Spawner::addFootman()
     double damage{15};
     int score{2};
 
-    //sf::Vector2f spawnPoint {160,160};
-    //sf::Vector2f spawnPoint {2200,2200};
+    // sf::Vector2f spawnPoint {160,160};
+    // sf::Vector2f spawnPoint {2200,2200};
     Footman *enemyF = new Footman(pngName,
                                   currentHP,
                                   movementSpeed,
@@ -178,7 +176,7 @@ void Spawner::addKaboom()
     }
 }
 
-void Spawner::addArcher() 
+void Spawner::addArcher()
 {
     if (canSpawnArcher)
     {

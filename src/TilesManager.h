@@ -42,12 +42,12 @@ class TilesManager
     static void deleteInstance();
 
     /**
-     * Check if a sprite is outside the map borders
+     * Check if a rectangle is outside the map borders
      *
-     * @param sprite Sprite to check
-     * @return true if the sprite is outside the map borders
+     * @param rect rectangle to check
+     * @return true if the position is outside the map borders
      */
-    bool outOfBorders(sf::Sprite const *sprite) const;
+    bool outOfBorders(sf::FloatRect const &rect) const;
 
     /**
      * Check if a sprite is inside the danger zone
