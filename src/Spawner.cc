@@ -35,6 +35,12 @@ void Spawner::spawnEnemies()
         counter = 0;
         timeCounter += 1;
         increaseSpawnRate();
+        if(timeCounter >=40)
+        {
+            addFootman();
+            addKaboom();
+            addArcher();
+        }
     }
     else
     {
@@ -51,6 +57,7 @@ void Spawner::newEnmey()
     if (timeCounter >= 20)
     {
         canSpawnArcher = true;
+        hpIncrease+=5;
     }
 }
 void Spawner::chooseSpawnPos()
@@ -64,16 +71,16 @@ void Spawner::chooseSpawnPos()
     float randomY = std::rand() % mapSize.y;
     sf::Vector2f newSpawnPos{randomX, randomY};
 
-    float pPlusX{playerWindow.x + (Window::getWindowWidth() / 2.0F)}; // 512
-    float pMinusX{playerWindow.x - (Window::getWindowWidth() / 2.0F)};
-    float pPlusY{playerWindow.y + (Window::getWindowHeight() / 2.0F)}; // 384
-    float pMinusY{playerWindow.y - (Window::getWindowHeight() / 2.0F)};
+    float pRight{playerWindow.x + (Window::getWindowWidth() / 2.0F)}; // 512
+    float pLeft{-pRight};
+    float pUpp{playerWindow.y + (Window::getWindowHeight() / 2.0F)}; // 384
+    float pDown{-pUpp};
 
     bool insideX =
-        (newSpawnPos.x > pMinusX &&
-         newSpawnPos.x < pPlusX); // tar insparaskion från w3schools
+        (newSpawnPos.x > pLeft &&
+         newSpawnPos.x < pRight); // tar insparaskion från w3schools
                                  // https://www.w3schools.com/cpp/cpp_operators_logical.asp
-    bool insideY = (newSpawnPos.y > pMinusY && newSpawnPos.y < pPlusY);
+    bool insideY = (newSpawnPos.y > pDown && newSpawnPos.y < pUpp);
  
     bool xCrash = (randomX < 160 || randomX > 2200);
     bool yCrash = (randomY < 160 || randomY > 2200);
@@ -99,9 +106,10 @@ void Spawner::increaseSpawnRate()
 
 void Spawner::addFootman()
 {
+    std::cout<< hpIncrease << std::endl;
     chooseSpawnPos();
     std::string const pngName{"enemy.png"};
-    double currentHP{100.0};
+    double currentHP{100.0 + hpIncrease};
     int movementSpeed{4};
     sf::Vector2f direction{0, 0};
     int attackRange{20};
@@ -132,7 +140,7 @@ void Spawner::addKaboom()
     {
         chooseSpawnPos();
         std::string const pngName{"kaboom.png"};
-        double currentHP{75.0};
+        double currentHP{75.0 + hpIncrease};
         int movementSpeed{4};
         sf::Vector2f direction{0, 0};
         int attackRange{10};
@@ -168,7 +176,7 @@ void Spawner::addArcher()
     {
         chooseSpawnPos();
         std::string const pngName{"fighter.png"};
-        double currentHP{100.0};
+        double currentHP{100.0 + hpIncrease};
         int movementSpeed{2};
         sf::Vector2f direction{0, 0};
         int attackRange{40};
