@@ -2,7 +2,16 @@
 
 #include "Window.h"
 
-int const Menu::TRIANGLE_RADIUS = 12.0f;
+int const Menu::DEFAULT_FONT_SIZE{50};
+float const Menu::DEFAULT_OUTLINE_THICKNESS{4.0F};
+sf::Vector2f const Menu::DEFAULT_SHADOW_OFFSET{6.0F, 9.0F};
+float const Menu::TRIANGLE_RADIUS{12.0f};
+float const Menu::TRIANGLE_OFFSET{50.0F};
+
+sf::Color const Menu::TEXT_COLOR{sf::Color::Blue};
+sf::Color const Menu::UNFOCUSED_BUTTON_COLOR{sf::Color::Blue};
+sf::Color const Menu::FOCUSED_BUTTON_COLOR{sf::Color::Red};
+sf::Color const Menu::OUTLINE_COLOR{sf::Color::Green};
 
 Menu::Menu(std::vector<ElementsInfo> const &elements, bool windowOpen)
     : defaultFont{}, buttonInfos{}, textElements{}, buttonElements{}, shadowElements{},
@@ -13,12 +22,12 @@ Menu::Menu(std::vector<ElementsInfo> const &elements, bool windowOpen)
     defaultFont.loadFromFile("static/Orbitron-Bold.ttf");
 
     leftTriangle = sf::CircleShape(TRIANGLE_RADIUS, 3);
-    leftTriangle.setFillColor(sf::Color::Red);
+    leftTriangle.setFillColor(FOCUSED_BUTTON_COLOR);
     leftTriangle.setOrigin(TRIANGLE_RADIUS, TRIANGLE_RADIUS);
     leftTriangle.setRotation(90.0f); // Rotate to point right
 
     rightTriangle = sf::CircleShape(TRIANGLE_RADIUS, 3);
-    rightTriangle.setFillColor(sf::Color::Red);
+    rightTriangle.setFillColor(FOCUSED_BUTTON_COLOR);
     rightTriangle.setOrigin(TRIANGLE_RADIUS, TRIANGLE_RADIUS);
     rightTriangle.setRotation(-90.0f); // Rotate to point left
 
@@ -107,30 +116,30 @@ void Menu::setButtons(std::vector<ElementsInfo> const &elements)
 
     for (auto &elementInfo : elements)
     {
-        sf::Text element{
-            sf::Text(elementInfo.text, defaultFont, elementInfo.fontSize.value_or(50))};
+        sf::Text element{sf::Text(
+            elementInfo.text, defaultFont, elementInfo.fontSize.value_or(DEFAULT_FONT_SIZE))};
         auto textRect{element.getGlobalBounds()};
         element.setOrigin(textRect.width / 2, textRect.height / 2);
         element.setPosition((Window::getWindowWidth() * elementInfo.xAlignn),
                             (Window::getWindowHeight() * elementInfo.yAlign));
 
-        element.setOutlineColor(sf::Color::Green);
-        element.setOutlineThickness(4.0);
+        element.setOutlineColor(OUTLINE_COLOR);
+        element.setOutlineThickness(DEFAULT_OUTLINE_THICKNESS);
 
         sf::Text shadow = element;
         shadow.setFillColor(sf::Color(0, 0, 0, 150));
         shadow.setOutlineColor(sf::Color(0, 0, 0, 150));
-        shadow.move(6.0F, 6.0F);
+        shadow.move(DEFAULT_SHADOW_OFFSET);
         shadowElements.push_back(shadow);
 
         if (!elementInfo.onClick.has_value())
         {
-            element.setFillColor(sf::Color::Blue);
+            element.setFillColor(TEXT_COLOR);
             textElements.push_back(element);
         }
         else
         {
-            element.setFillColor(sf::Color::Blue);
+            element.setFillColor(UNFOCUSED_BUTTON_COLOR);
             buttonInfos.push_back(elementInfo);
             buttonElements.push_back(element);
         }
@@ -146,12 +155,12 @@ void Menu::setButtons(std::vector<ElementsInfo> const &elements)
 void Menu::focusButton(int index)
 {
     sf::Text &button = buttonElements.at(index);
-    button.setFillColor(sf::Color::Red);
+    button.setFillColor(FOCUSED_BUTTON_COLOR);
 }
 void Menu::unfocusButton(int index)
 {
     sf::Text &button = buttonElements.at(index);
-    button.setFillColor(sf::Color::Blue);
+    button.setFillColor(UNFOCUSED_BUTTON_COLOR);
 }
 
 void Menu::changeFocusedIdx(int change)
@@ -180,10 +189,10 @@ void Menu::updateTrianglesPositions()
     auto textRect = button.getGlobalBounds();
     float buttonCenterY = textRect.top + textRect.height / 2.0F;
 
-    float leftTriangleX = textRect.left - 50.0F;
+    float leftTriangleX = textRect.left - TRIANGLE_OFFSET;
     leftTriangle.setPosition(leftTriangleX, buttonCenterY);
 
-    float rightTriangleX = textRect.left + textRect.width + 50.0F;
+    float rightTriangleX = textRect.left + textRect.width + TRIANGLE_OFFSET;
     rightTriangle.setPosition(rightTriangleX, buttonCenterY);
 }
 

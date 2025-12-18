@@ -29,7 +29,8 @@ Checks: >
   -readability-uppercase-literal-suffix,
   -readability-math-missing-parentheses,
   -readability-avoid-const-params-in-decls,
-  -modernize-use-auto
+  -modernize-use-auto,
+  -cppcoreguidelines-interfaces-global-init
 
 WarningsAsErrors: >
   bugprone-*
