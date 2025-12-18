@@ -1,4 +1,5 @@
 #include "Spawner.h"
+#include <iostream>
 
 #include <cstdlib>
 
@@ -73,9 +74,13 @@ void Spawner::chooseSpawnPos()
          nySpawnPos.x < pPlusX); // tar insparaskion från w3schools
                                  // https://www.w3schools.com/cpp/cpp_operators_logical.asp
     bool insidaY = (nySpawnPos.y > pMinusY && nySpawnPos.y < pPlusY);
-
-    if (insidaX and insidaY)
+ 
+    bool xCrash = (randomX < 160 || randomX > 2200);
+    bool yCrash = (randomY < 160 || randomY > 2200);
+    //std::cout<<"inan"<<std::endl;
+    if (insidaX and insidaY or xCrash or yCrash)
     {
+        //std::cout<<"inne"<<std::endl;
         chooseSpawnPos();
     }
     else
@@ -104,6 +109,9 @@ void Spawner::addFootman()
     int const XP_DROP{5};
     double damage{15};
     int score{2};
+
+    //sf::Vector2f spawnPoint {160,160};
+    //sf::Vector2f spawnPoint {2200,2200};
     Footman *enemyF = new Footman(pngName,
                                   currentHP,
                                   movementSpeed,
@@ -163,7 +171,7 @@ void Spawner::addArcher()
         double currentHP{100.0};
         int movementSpeed{2};
         sf::Vector2f direction{0, 0};
-        int attackRange{10};
+        int attackRange{30};
         int attackSpeed{10};
         int const XP_DROP{10};
         double damage{5};
