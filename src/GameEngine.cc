@@ -44,16 +44,18 @@ GameEngine::GameEngine() : spawner{}, clock{}
     Highscore::init(FPS);
     Leaderboard::init("static/leaderboard.txt");
     TilesManager::init("static/tileMap.txt");
+    Window::init();
 
     std::vector<Menu *> menus{};
     auto levelUpMenu{new LevelUpMenu()};
+    auto leaderboardMenu{new LeaderboardMenu()};
     menus.push_back(new StartMenu());
-    menus.push_back(new LeaderboardMenu());
+    menus.push_back(leaderboardMenu);
     menus.push_back(new ChooseNameMenu());
     menus.push_back(new PauseMenu());
     menus.push_back(new GameOverMenu());
     menus.push_back(levelUpMenu);
-    Window::init(menus);
+    Window::instance()->setMenus(menus);
 
     auto mapCenter{TilesManager::instance()->getMapDimensions() / 2.0F};
 
@@ -76,18 +78,19 @@ GameEngine::GameEngine() : spawner{}, clock{}
                 player->resetState(mapCenter);
                 spawner->resetState();
                 Map::instance()->resetState();
-                Highscore::instance()->saveHighscore();
                 Highscore::instance()->resetState();
 
                 StateMachine::instance()->setInGame();
             }
         });
+
     StateMachine::instance()->addListener(
-        [](GameState gameState)
+        [leaderboardMenu](GameState gameState)
         {
-            if (gameState == GameState::CONTINUING_GAME)
+            if (gameState == GameState::GAME_OVER)
             {
-                StateMachine::instance()->setInGame();
+                Highscore::instance()->saveHighscore();
+                leaderboardMenu->resetLeaderboard();
             }
         });
 

@@ -44,6 +44,11 @@ LeaderboardMenu::LeaderboardMenu()
                                           { setIsOpen(gameState == GameState::LEADERBOARD); });
 }
 
+void LeaderboardMenu::resetLeaderboard()
+{
+    Menu::setButtons(createButtons());
+}
+
 std::vector<ElementsInfo> LeaderboardMenu::createButtons() const
 {
     float const PADDING_TOP{0.35};
@@ -67,7 +72,7 @@ std::vector<ElementsInfo> LeaderboardMenu::createButtons() const
                 std::to_string(scoreInfo.timeSurvived) + " | " +
                 std::to_string(scoreInfo.enemiesKilled),
             0.5,
-            (((1 - PADDING_TOP - PADDING_BOTTOM) / static_cast<int>(highscores.size()) * index) +
+            (((1 - PADDING_TOP - PADDING_BOTTOM) / static_cast<int>(MAX_LEADERBOARD_SIZE) * index) +
              PADDING_TOP),
             std::nullopt,
             40};
@@ -172,7 +177,7 @@ std::vector<ElementsInfo> PauseMenu::createButtons() const
     elements.push_back(title);
 
     ElementsInfo continueButton{
-        "CONTINUE", 0.5, 0.4, []() { StateMachine::instance()->continueGame(); }};
+        "CONTINUE", 0.5, 0.4, []() { StateMachine::instance()->setInGame(); }};
     elements.push_back(continueButton);
 
     ElementsInfo giveUpButton{

@@ -59,14 +59,70 @@ class Enemy : public Character
      * giv xp to plater and score to highscore
     */
     void die() override;
+
+    /**
+     * Handles enems collision with other enemies and player.
+
+     * When a collision occurs it calculates how long the images are over each other and then pushes
+     * one of the enemy away with the full distance divided by 6 to get a smaller force push
+     * @param other stores the object the enemy
+     */
     void onCollision(Entity *other) override;
+
+    /**
+     * Handles enemy collision with obstacles by calculating the minimum distance it has to move.
+     *
+     * The method compares the intersection along the x and y axes and moves the enemy along the
+     * smallest intersecting axis to avoid contact by pushing the enemy in the other direction.
+     *
+     * Formula steps:
+     * 1. diff = enemy.position - other.position
+     * 2. lenDistance = sqrt(diff.x * diff.x + diff.y * diff.y)
+     * 3. direction = diff / lenDistance   // fallback if lenDistance is 0
+     * 4. push = other.width / 6
+     * 5. enemy.position += direction * push
+     */
+    void boxCollisionHandler(Entity *box);
+
+    /**
+     * Sets the enemies current position to the old position
+     */
     void onBorderCollision() override;
 
   protected:
+    /**
+     * Calculates the Pythagoras distance between the enemy and player.
+     * Formula:
+     * distance =  sqrt(x^2 + y^2)
+     *
+     * @return Distance between enemy and player with cordinates
+     */
     float calculateDistance();
+
+    /**
+     * Calculates the direction vector from the enemy to the player.
+     * The vector is calculated by subtracting the enemy position from the player position. The
+     * resulting vector points towards the player positon and still contains the distance.
+     * Formula:
+     * direction = playerPosition - enemyPosition
+     *
+     * @return Vector pointing from the enemy to the player
+     */
     sf::Vector2f calculateDirection();
+
+    /**
+     * Calculates the rotaiton angle needed for the eneme to look at the player.
+     * The angle is obtained by using atan2 which gives the angle between the x axis and the vector
+     * from the enemy to the player. The value is converted from radians to degrees and offset by +
+     * 90 degrees to align with the sprite.
+     *
+     * Formula:
+     * rotation = atan2(player.y - enemy.y, player.x - enemy.x) * (180 / PI) + 90
+     *
+     * @return Rotation angle in degrees
+     */
     float calculateRotation();
-    void collisionHandler(Entity *other);
+    void entityCollisionHandler(Entity *other);
 
     /** 
      * se if enemy can attack the player 
@@ -87,7 +143,7 @@ class Enemy : public Character
     int count{};
     int const XP_DROP;
     double damage;
-    int score; // inte en privat för olika enyme är vär olika score
+    int score;
     Player *player;
     float rotation;
     std::string const &pngName;
@@ -183,9 +239,9 @@ class Kaboom : public Enemy
            double damage,
            int score,
            Player *player,
-           double explodeDamage,
-           double explodeRange,
-           int explodeCountdown,
+           double exploadeDamage,
+           double exploadeRange,
+           int exploadeCountdown,
            float agroRange);
     /**
      * attack handel to give the player damege
@@ -243,10 +299,10 @@ class Kaboom : public Enemy
      * 
      * set the sprite to the exploshen.png. 
      */
-    void explode(float len);
-    double explodeDamage;
-    double explodeRange;
-    int explodeCountdown;
+    void exploade(float len);
+    double explosionDamage;
+    double explosionRange;
+    int explosionCountdown;
     float agroRange;
     bool contuneBegin{false};
     bool hasExploded{false};
@@ -313,7 +369,6 @@ class Archer : public Enemy
   * spawn enemy projektat
   */
     void shoot();
-    // float fireRange;
     double velocity;
 };
 

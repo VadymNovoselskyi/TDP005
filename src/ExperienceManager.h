@@ -33,14 +33,14 @@ class ExperienceManager
 {
   public:
     ExperienceManager();
-    
+
     /**
      * Set callback functions for each level up choice type
      *
      * @param levelUpCallbacks Map of level up choices to their callback functions
      */
     void setCallbacks(std::map<LevelUpChoice, std::function<void()>> const &levelUpCallbacks);
-    
+
     /**
      * Reset experience and level to initial state
      */
@@ -53,7 +53,7 @@ class ExperienceManager
      * @return true if level up occurred
      */
     bool gainXp(int gainedXp);
-    
+
     /**
      * Get available level up choices based on weapon availability
      *

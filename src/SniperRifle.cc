@@ -5,7 +5,7 @@
 SniperRifle::SniperRifle()
     : Weapon("Sniper",
              "Shoot slow with a High damag",
-             /*dmg*/ 100.0f,
+             /*dmg*/ 200.0f,
              /*attackSpeed (shoots per sec)*/ 1,
              /*bullet speed*/ 50,
              /*bulletHP*/ 3,
@@ -17,7 +17,7 @@ void SniperRifle::shoot()
 {
     Map::instance()->addEntity(new Projectile{Transformable::getPosition(),
                                               /*bulletRotation*/ Transformable::getRotation(),
-                                              speed,
+                                              bulletSpeed,
                                               damage * damageMultiplication,
                                               bulletHP,
                                               "Sniper_bullet.png"});

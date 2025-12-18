@@ -77,7 +77,7 @@ class Spawner
     */
     void addArcher();
 
-    //std::vector<Enemy *> enemies;
+    // std::vector<Enemy *> enemies;
     double spawnRate;
     double spawnRateIncrease;
     sf::Vector2f spawnPoint;

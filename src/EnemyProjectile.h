@@ -35,9 +35,7 @@ class EnemyProjectile : public Projectile
     void onCollision(Entity *other) override;
 
   private:
-
     double damage;
-
 };
 
 #endif

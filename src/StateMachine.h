@@ -79,11 +79,6 @@ class StateMachine
     void pauseGame();
 
     /**
-     * Set state to CONTINUING_GAME
-     */
-    void continueGame();
-
-    /**
      * Set state to LEVEL_UP_SCREEN
      */
     void startLevelUp();

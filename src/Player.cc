@@ -39,25 +39,25 @@ Player::Player(double startHp,
                               {
                                   increaseMaxHp(60);
                                   heal(40);
-                                  StateMachine::instance()->continueGame();
+                                  StateMachine::instance()->setInGame();
                               }},
                              {LevelUpChoice::SPEED,
                               [this]()
                               {
                                   increaseSpeed(3);
-                                  StateMachine::instance()->continueGame();
+                                  StateMachine::instance()->setInGame();
                               }},
                              {LevelUpChoice::DAMAGE,
                               [this]()
                               {
                                   increaseDamageMultiplyer(0.5);
-                                  StateMachine::instance()->continueGame();
+                                  StateMachine::instance()->setInGame();
                               }},
                              {LevelUpChoice::WEAPON,
                               [this]()
                               {
                                   weaponsManager.receiveRandomWeapon();
-                                  StateMachine::instance()->continueGame();
+                                  StateMachine::instance()->setInGame();
                               }}});
     weaponsManager.receiveNewWeapon("AR");
 }
@@ -115,11 +115,8 @@ void Player::move()
     weaponsManager.setWeaponsPos(sf::Sprite::getPosition());
     weaponsManager.shoot();
 }
-sf::Vector2f Player::getOldPosition() const
-{
-    return oldPosition;
-}
-void Player::updateRotation(sf::RenderWindow *window)
+
+void Player::updateRotation(sf::RenderWindow *window) 
 {
     // kollade upp om det fans någon atan funktion och hittad:
     // https://cppreference.com/w/c/numeric/math/atan2.html kollade upp hur jag skulle räkna

@@ -46,7 +46,7 @@ class Menu
     void draw(sf::RenderWindow *window);
 
     /**
-     * Handle an input event when the menu is open 
+     * Handle an input event when the menu is open
      * Keyboard navigation and activating the focused button
      *
      * @param event The event to handle
@@ -105,10 +105,20 @@ class Menu
      */
     void changeFocusedIdx(int change);
 
+    /**
+     * Update triangles positions to point to the focused button
+     */
+    void updateTrianglesPositions();
+
+    int static const TRIANGLE_RADIUS;
+
     sf::Font defaultFont;
     std::vector<ElementsInfo> buttonInfos;
     std::vector<sf::Text> textElements;
     std::vector<sf::Text> buttonElements;
+    std::vector<sf::Text> shadowElements;
+    sf::CircleShape leftTriangle;
+    sf::CircleShape rightTriangle;
     sf::Vector2f menuCenter;
 
     bool menuOpen;
