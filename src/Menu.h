@@ -109,6 +109,7 @@ class Menu
     std::vector<ElementsInfo> buttonInfos;
     std::vector<sf::Text> textElements;
     std::vector<sf::Text> buttonElements;
+    std::vector<sf::Text> shadowElements;
     sf::Vector2f menuCenter;
 
     bool menuOpen;

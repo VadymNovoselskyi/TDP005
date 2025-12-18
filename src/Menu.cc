@@ -3,7 +3,7 @@
 #include "Window.h"
 
 Menu::Menu(std::vector<ElementsInfo> const &elements, bool windowOpen)
-    : defaultFont{}, buttonInfos{}, textElements{}, buttonElements{},
+    : defaultFont{}, buttonInfos{}, textElements{}, buttonElements{}, shadowElements{},
       menuCenter{Window::getWindowWidth() / 2.0F, Window::getWindowHeight() / 2.0F},
       menuOpen{windowOpen}, focusedButtonIdx{0}
 {
@@ -20,6 +20,12 @@ void Menu::draw(sf::RenderWindow *window)
 
     auto viewCenter{window->getView().getCenter()};
     sf::Vector2f centerOffset{viewCenter - menuCenter};
+
+    for (auto &shadowEl : shadowElements)
+    {
+        shadowEl.move(centerOffset);
+        window->draw(shadowEl);
+    }
 
     for (auto &buttonEl : buttonElements)
     {
@@ -44,8 +50,6 @@ bool Menu::handleEvent(sf::Event const &event)
 
     if (event.type == sf::Event::KeyPressed)
     {
-        // std::endl;
-
         switch (event.key.code)
         {
         case sf::Keyboard::Up:
@@ -73,6 +77,7 @@ void Menu::setButtons(std::vector<ElementsInfo> const &elements)
 {
     buttonElements.clear();
     textElements.clear();
+    shadowElements.clear();
     buttonInfos.clear();
     menuCenter = {Window::getWindowWidth() / 2.0F, Window::getWindowHeight() / 2.0F};
 
@@ -87,6 +92,12 @@ void Menu::setButtons(std::vector<ElementsInfo> const &elements)
 
         element.setOutlineColor(sf::Color::Green);
         element.setOutlineThickness(4.0);
+
+        sf::Text shadow = element;
+        shadow.setFillColor(sf::Color(0, 0, 0, 150));
+        shadow.setOutlineColor(sf::Color(0, 0, 0, 150));
+        shadow.move(6.0F, 6.0F);
+        shadowElements.push_back(shadow);
 
         if (!elementInfo.onClick.has_value())
         {
