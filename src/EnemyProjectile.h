@@ -25,9 +25,6 @@ class EnemyProjectile : public Projectile
      * @param pngName is the name of the png
      */
 
-
-     */
-
     EnemyProjectile(sf::Vector2f const &pos, double rotation, double velocity, double damage, double hp, std::string pngName);
     
     /**

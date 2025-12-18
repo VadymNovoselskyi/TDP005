@@ -20,7 +20,7 @@ class Spawner
   public:
    /**
      * Constructor for player with needed informaiton
-     * @param Player is a pointer to the player bul carahter and its difrent informaskion. 
+     * @param player is a pointer to the player bul carahter and its difrent informaskion. 
      */
     Spawner(Player *player);
    /**

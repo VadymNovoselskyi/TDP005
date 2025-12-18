@@ -241,8 +241,6 @@ void Kaboom::isInRange(float len)
 
     if (len <= imageRange)
     {
-        // sleep(15);
-        //Kaboom::explode(len);
         contuneBegin = true;
     }
     if(contuneBegin && explodeCountdown > 0)
@@ -266,7 +264,7 @@ void Kaboom::explode(float len)
     {
         hasExploded = true;
 
-        std::cout<<"kaboom"<<std::endl;
+        //std::cout<<"kaboom"<<std::endl;
         auto p { player -> getTexture()-> getSize()};
         auto e {this -> getTexture()-> getSize()};
 
