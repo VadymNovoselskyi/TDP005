@@ -110,7 +110,16 @@ class Menu
      */
     void updateTrianglesPositions();
 
-    int static const TRIANGLE_RADIUS;
+    int static const DEFAULT_FONT_SIZE;
+    float static const DEFAULT_OUTLINE_THICKNESS;
+    sf::Vector2f static const DEFAULT_SHADOW_OFFSET;
+    float static const TRIANGLE_RADIUS;
+    float static const TRIANGLE_OFFSET;
+
+    sf::Color static const TEXT_COLOR;
+    sf::Color static const UNFOCUSED_BUTTON_COLOR;
+    sf::Color static const FOCUSED_BUTTON_COLOR;
+    sf::Color static const OUTLINE_COLOR;
 
     sf::Font defaultFont;
     std::vector<ElementsInfo> buttonInfos;
