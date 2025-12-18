@@ -13,8 +13,8 @@
 class EnemyProjectile : public Projectile
 {
   public:
-   /**
-     * Construct a EnemyProjectile that send pos, rotation, velocity, damage, bulletHP and pngName 
+    /**
+     * Construct a EnemyProjectile that send pos, rotation, velocity, damage, bulletHP and pngName
      * to projektile construct
      *
      * @param pos Position is so it and other know where it is
@@ -31,7 +31,7 @@ class EnemyProjectile : public Projectile
                     double damage,
                     double hp,
                     std::string pngName);
-    
+
     /**
      * Handel collison white a player
      *
