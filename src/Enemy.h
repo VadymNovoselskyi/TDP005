@@ -122,10 +122,6 @@ class Enemy : public Character
      * @return Rotation angle in degrees
      */
     float calculateRotation();
-    void entityCollisionHandler(Entity *other);
-
-    /** 
-     * se if enemy can attack the player 
 
     /**
      * Handles collision by pushing the enemy away from another entity.
