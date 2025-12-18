@@ -5,14 +5,14 @@
 #include <cmath>
 #include "Map.h"
 
-int const Shootgun::BULLETS_COUNT {9};
+int const Shootgun::BULLETS_COUNT {21};
 float const Shootgun::BULLETS_SPREAD_ANGLE {15};
 float const Shootgun::angleStep {BULLETS_SPREAD_ANGLE * 2.0f / (BULLETS_COUNT - 1)};
 Shootgun::Shootgun()
     : Weapon("Shootgun",
              "Shoot slow with a medium damag",
-             /*dmg*/ 25.0f,
-             /*attackSpeed (shoots per sec)*/ 2,
+             /*dmg*/ 7.5f,
+             /*attackSpeed (shoots per sec)*/ 0.5,
              /*bullet speed*/ 30,
              /*bulletHP*/ 1,
              Rarity::EPIC)
