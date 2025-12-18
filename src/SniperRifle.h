@@ -2,15 +2,25 @@
 #define SNIPER_RIFLE_H
 #include "Weapon.h"
 
+/**
+ * SniperRifle
+ *
+ * SniperRifle is responsible for:
+ * - Shooting projectiles
+ */
 class SniperRifle : public Weapon
 {
-public:
+  public:
+    /**
+     * Construct a SniperRifle where every varible is set
+     */
     SniperRifle();
-private:
+
+  private:
+    /**
+     * Spawn a projectile
+     */
     void shoot() override;
-    void calculateRotation(Entity * closeEnemy);
-    double bulletRotation;
-    /* data */
 };
 
 #endif

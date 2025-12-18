@@ -1,15 +1,11 @@
 #include "Obstacle.h"
 
-#include <iostream>
-
 #include "Entity.h"
 
 Obstacle::Obstacle(sf::Texture const *texture, sf::Vector2f position, std::string const &tag)
-    : Entity(tag, position, /*hp*/ 1)
+    : Entity(tag, position, 1)
 {
-    // auto obstackeSize{texture->getSize()};
     sf::Sprite::setTexture(*texture);
-    // sf::Sprite::setOrigin(obstackeSize.x / 2.0, obstackeSize.y / 2.0);
 }
 
 void Obstacle::onCollision(Entity *other)

@@ -6,14 +6,12 @@ enum GameState
     IN_START_MENU,
     CHOOSING_USERNAME,
     STARTING_GAME,
-    CONTINUING_GAME,
     IN_GAME,
     LEVEL_UP_SCREEN,
     GAME_PAUSED,
     GAME_OVER,
     EXIT,
     LEADERBOARD,
-    // SETTINGS
 };
 
 #endif

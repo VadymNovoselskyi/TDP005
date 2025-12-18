@@ -1,6 +1,5 @@
 #include "StateMachine.h"
 
-#include <iostream>
 #include <stdexcept>
 
 #include "GameState.h"
@@ -25,7 +24,6 @@ StateMachine *StateMachine::init()
 
 void StateMachine::deleteInstance()
 {
-    // std::cout << "Deleting the instance" << std::endl;
     delete StateMachine::instancePtr;
     StateMachine::instancePtr = nullptr;
 }
@@ -33,16 +31,11 @@ void StateMachine::deleteInstance()
 // Instance methods
 StateMachine::StateMachine() : currentState{GameState::IN_START_MENU}
 {
-    // std::cout << "Constructed the StartMenu" << std::endl;
 }
 
-void StateMachine::addListener(std::string const &id, std::function<void(GameState)> handler)
+void StateMachine::addListener(std::function<void(GameState)> const &handler)
 {
-    listenersMap.insert_or_assign(id, handler);
-}
-void StateMachine::removeListener(std::string const &id)
-{
-    listenersMap.erase(listenersMap.find(id));
+    listeners.push_back(handler);
 }
 
 GameState StateMachine::state() const
@@ -52,18 +45,17 @@ GameState StateMachine::state() const
 
 void StateMachine::openStartMenu()
 {
-    // std::cout << "Opening the start menu from " << currentState << std::endl;
     if (currentState != GameState::GAME_PAUSED && currentState != GameState::GAME_OVER &&
         currentState != GameState::LEADERBOARD)
     {
-        throw std::logic_error("Can open the start menu only if the game is paused or over or in the leaderboard");
+        throw std::logic_error(
+            "Can open the start menu only if the game is paused or over or in the leaderboard");
     }
     setState(GameState::IN_START_MENU);
 }
 
 void StateMachine::openLeaderboard()
 {
-    // std::cout << "Opening the leaderboard from " << currentState << std::endl;
     if (currentState != GameState::IN_START_MENU)
     {
         throw std::logic_error("Can open the leaderboard only if the start menu is open");
@@ -73,7 +65,6 @@ void StateMachine::openLeaderboard()
 
 void StateMachine::chooseUsername()
 {
-    // std::cout << "Choosing the name from" << currentState << std::endl;
     if (currentState != GameState::IN_START_MENU)
     {
         throw std::logic_error("Can choose the name only from the start menu");
@@ -83,7 +74,6 @@ void StateMachine::chooseUsername()
 
 void StateMachine::startGame()
 {
-    // std::cout << "Starting the game from " << currentState << std::endl;
     if (currentState != GameState::IN_START_MENU && currentState != GameState::GAME_OVER &&
         currentState != GameState::CHOOSING_USERNAME)
     {
@@ -93,29 +83,19 @@ void StateMachine::startGame()
     setState(GameState::STARTING_GAME);
 }
 
-void StateMachine::continueGame()
-{
-    // std::cout << "Continuing the game from " << currentState << std::endl;
-    if (currentState != GameState::GAME_PAUSED && currentState != GameState::LEVEL_UP_SCREEN)
-    {
-        throw std::logic_error("Can continue the game only if it was paused or on level up");
-    }
-    setState(GameState::CONTINUING_GAME);
-}
-
 void StateMachine::setInGame()
 {
-    // std::cout << "Setting to in game from " << currentState << std::endl;
-    if (currentState != GameState::STARTING_GAME && currentState != GameState::CONTINUING_GAME)
+    if (currentState != GameState::STARTING_GAME && currentState != GameState::GAME_OVER &&
+        currentState != GameState::GAME_PAUSED && currentState != GameState::LEVEL_UP_SCREEN)
     {
-        throw std::logic_error("Can set to in game only if in was starting or continuing the game");
+        throw std::logic_error("Can set to in game only if in was starting the game, game is over, "
+                               "game is paused or level up screen");
     }
     setState(GameState::IN_GAME);
 }
 
 void StateMachine::startLevelUp()
 {
-    // std::cout << "Starting the level up from " << currentState << std::endl;
     if (currentState != GameState::IN_GAME)
     {
         throw std::logic_error("Can go to the level up screen only when in game");
@@ -125,7 +105,6 @@ void StateMachine::startLevelUp()
 
 void StateMachine::pauseGame()
 {
-    // std::cout << "Pausing the game from " << currentState << std::endl;
     if (currentState != GameState::IN_GAME)
     {
         throw std::logic_error("Can pause the game only if the game is on");
@@ -135,7 +114,6 @@ void StateMachine::pauseGame()
 
 void StateMachine::finishGame()
 {
-    // std::cout << "Finishing the game from " << currentState << std::endl;
     if (currentState != GameState::IN_GAME && currentState != GameState::GAME_PAUSED)
     {
         throw std::logic_error("Can finish the game only if the game is on or is paused");
@@ -145,7 +123,6 @@ void StateMachine::finishGame()
 
 void StateMachine::exitGame()
 {
-    // std::cout << "Exiting the game from " << currentState << std::endl;
     if (currentState != GameState::IN_START_MENU && currentState != GameState::GAME_OVER &&
         currentState != GameState::GAME_PAUSED)
     {
@@ -158,7 +135,7 @@ void StateMachine::exitGame()
 void StateMachine::setState(GameState gameState)
 {
     this->currentState = gameState;
-    for (auto const &[id, handler] : listenersMap)
+    for (auto &handler : listeners)
     {
         handler(currentState);
     }

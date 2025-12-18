@@ -2,15 +2,25 @@
 #define ASSAULT_RIFLE_H
 #include "Weapon.h"
 
+/**
+ * AssaultRifle
+ *
+ * AssaultRifle is responsible for:
+ * - Shooting projectiles
+ */
 class AssaultRifle : public Weapon
 {
-public:
+  public:
+    /**
+     * Construct a AssaultRifle where every varible is set
+     */
     AssaultRifle();
-    void tryToShoot() override;
-    
-private:
+
+  private:
+    /**
+     * Spawn a projectile
+     */
     void shoot() override;
-    /* data */
 };
 
 #endif

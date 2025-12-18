@@ -2,16 +2,16 @@
 
 #include <algorithm>
 #include <cstdlib>
-#include <iostream>
 
-// Weapon include
 #include "AssaultRifle.h"
+#include "Shootgun.h"
 #include "SniperRifle.h"
 
 WeaponsManager::WeaponsManager() : equipedWeapons{}, unequipedWeapons{}
 {
     unequipedWeapons.push_back(new AssaultRifle());
     unequipedWeapons.push_back(new SniperRifle());
+    unequipedWeapons.push_back(new Shootgun());
 }
 
 void WeaponsManager::resetState()
@@ -89,6 +89,7 @@ void WeaponsManager::equipWeapon(Weapon *weaponToDelete)
         std::remove_if(unequipedWeapons.begin(),
                        unequipedWeapons.end(),
                        [weaponToDelete](Weapon *weapon)
-                       { return weaponToDelete->getName() == weapon->getName(); }), unequipedWeapons.end());
+                       { return weaponToDelete->getName() == weapon->getName(); }),
+        unequipedWeapons.end());
     equipedWeapons.push_back(weaponToDelete);
 }

@@ -5,9 +5,13 @@
 #include "Enemy.h"
 #include "Map.h"
 
-Projectile::Projectile(
-    sf::Vector2f const &pos, double rotation, double velocity, double damage, double hp, std::string pngName)
-    : Entity(std::string{"projectile"}, pos, hp), velocity{velocity}, damage{damage},
+Projectile::Projectile(sf::Vector2f const &pos,
+                       double rotation,
+                       double velocity,
+                       double damage,
+                       double bulletHP,
+                       std::string const &pngName)
+    : Entity(std::string{"projectile"}, pos, bulletHP), velocity{velocity}, damage{damage},
       texture{TextureManager::instance()->getTexture(pngName)}, isDying{false}
 {
     sf::Sprite::setTexture(*texture);
@@ -21,6 +25,10 @@ void Projectile::onCollision(Entity *other)
     {
         other->takeDamage(damage);
         takeDamage();
+    }
+    if (other->getTag() == "obstacle")
+    {
+        die();
     }
 }
 
@@ -38,11 +46,6 @@ void Projectile::move()
     sf::Sprite::Transformable::move(-dir.x * velocity, -dir.y * velocity);
 }
 
-void Projectile::draw(sf::RenderWindow *window) const
-{
-    window->draw(*this);
-}
-
 void Projectile::takeDamage(double damage)
 {
     hp -= damage;
@@ -54,11 +57,11 @@ void Projectile::takeDamage(double damage)
 
 void Projectile::die()
 {
-    std::cout << "Removing projectile: " << this << std::endl;
+    // std::cout << "Removing projectile: " << this << std::endl;
     if (!isDying)
     {
         Map::instance()->removeEntity(this);
     }
-    std::cout << "Removed projectile" << std::endl;
+    // std::cout << "Removed projectile" << std::endl;
     isDying = true;
 }

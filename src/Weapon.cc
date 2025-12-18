@@ -1,4 +1,5 @@
 #include "Weapon.h"
+#include "GameEngine.h"
 
 #include <iostream>
 
@@ -6,11 +7,11 @@ Weapon::Weapon(std::string const &name,
                std::string const &description,
                double const &damage,
                double const &attackSpeed,
-               double speed,
+               double bulletSpeed,
                double bulletHP,
                Rarity rarity)
     : name{name}, description{description}, damage{damage}, damageMultiplication{1},
-      attackSpeed{attackSpeed}, speed{speed}, bulletHP{bulletHP}, counter{}, rarity{rarity}
+      attackSpeed{attackSpeed}, bulletSpeed{bulletSpeed}, bulletHP{bulletHP}, counter{}, rarity{rarity}
 {
 }
 
@@ -20,7 +21,7 @@ void Weapon::tryToShoot()
     if (counter <= 0)
     {
         shoot();
-        counter = 60 / attackSpeed;
+        counter =  GameEngine::FPS / attackSpeed;
     }
 }
 
