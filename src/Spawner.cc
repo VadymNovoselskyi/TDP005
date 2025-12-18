@@ -171,7 +171,7 @@ void Spawner::addArcher()
         double currentHP{100.0};
         int movementSpeed{2};
         sf::Vector2f direction{0, 0};
-        int attackRange{30};
+        int attackRange{40};
         int attackSpeed{10};
         int const XP_DROP{10};
         double damage{5};
