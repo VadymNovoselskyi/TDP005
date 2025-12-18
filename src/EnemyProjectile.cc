@@ -20,5 +20,9 @@ void EnemyProjectile::onCollision(Entity *other)
         other->takeDamage(damage);
         takeDamage();
     }
+    if (other->getTag() == "obstacle")
+    {
+        die();
+    }
 }
 
