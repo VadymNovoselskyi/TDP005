@@ -23,7 +23,7 @@ class Shootgun : public Weapon
     void shoot() override;
     int static const BULLETS_COUNT;
     float static const BULLETS_SPREAD_ANGLE;
-    float static const angleStep;
+    float static const ANGLE_STEP;
     /* data */
 };
 
