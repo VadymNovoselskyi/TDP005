@@ -8,7 +8,3 @@ Character::Character(std::string const &tag,
 {
 }
 
-void Character::setMovementSpeed(int newSpeed)
-{
-    movementSpeed = newSpeed;
-}
