@@ -65,6 +65,13 @@ bool TilesManager::outOfBorders(sf::FloatRect const &spriteRect) const
            spriteRect.top + spriteRect.height > mapBorders.top + mapBorders.height;
 }
 
+bool TilesManager::outOfBorders(sf::Vector2f const &position) const
+{
+    auto mapBorders{mapRect.getGlobalBounds()};
+
+    return mapBorders.contains(position);
+}
+
 bool TilesManager::inDangerZone(sf::Sprite const *sprite) const
 {
     auto safeZoneBounds{safeZoneRect.getGlobalBounds()};

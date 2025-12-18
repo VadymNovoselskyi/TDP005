@@ -50,6 +50,14 @@ class TilesManager
     bool outOfBorders(sf::FloatRect const &rect) const;
 
     /**
+     * Check if a position is outside the map borders
+     *
+     * @param position position to check
+     * @return true if the position is outside the map borders
+     */
+    bool outOfBorders(sf::Vector2f const &position) const;
+
+    /**
      * Check if a sprite is inside the danger zone
      *
      * @param sprite Sprite to check

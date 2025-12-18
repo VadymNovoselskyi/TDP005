@@ -8,14 +8,13 @@
 
 Spawner::Spawner(Player *player)
     : spawnRate{200.0}, spawnRateIncrease{0.99}, spawnPoint{}, counter{0}, timeCounter{0},
-      player{player}, canSpawnKaboom{false}, canSpawnArcher{false}
+      player{player}, hpIncrease{}, canSpawnKaboom{false}, canSpawnArcher{false}
 {
     Spawner::spawnEnemies();
 }
 
 void Spawner::resetState()
 {
-    // enemies.clear();
     spawnRate = 200.0;
     counter = 0;
     timeCounter = 0;
@@ -63,49 +62,27 @@ void Spawner::newEnmey()
 
 void Spawner::chooseSpawnPos()
 {
-    // std::cout << "Choosing spawn pos" << std::endl;
-
     sf::Vector2i mapSize{TilesManager::instance()->getMapDimensions()};
     sf::Vector2f playerPos{player->getPosition()};
-    // std::cout << "Got mapsize and player window" << std::endl;
+    auto windowSize{Window::getWindowSize()};
+    auto viewRect{sf::FloatRect(playerPos.x - windowSize.x / 2.0F,
+                                playerPos.y - windowSize.y / 2.0F,
+                                windowSize.x,
+                                windowSize.y)};
 
-    float randomX =
-        std::rand() % mapSize.x; // tar inspraskion från  w3schools
-                                 // //https://www.w3schools.com/cpp/cpp_howto_random_number.asp
-    float randomY = std::rand() % mapSize.y;
-    sf::Vector2f newSpawnPos{randomX, randomY};
-
-    float pRight{playerPos.x + (Window::getWindowWidth() / 2.0F)}; // 512
-    float pLeft{-pRight};
-    float pUpp{playerPos.y + (Window::getWindowHeight() / 2.0F)}; // 384
-    float pDown{-pUpp};
-
-    bool insideX =
-         (newSpawnPos.x > pLeft &&
-          newSpawnPos.x < pRight); // tar insparaskion från w3schools
-                                   // https://www.w3schools.com/cpp/cpp_operators_logical.asp
-    bool insideY = (newSpawnPos.y > pDown && newSpawnPos.y < pUpp);
-
-    // bool xCrash = (randomX < 160 || randomX > 2200);
-    // bool yCrash = (randomY < 160 || randomY > 2200);
-    // std::cout << "Done all calc" << std::endl;
-    // std::cout<<"inan"<<std::endl;
-    if (TilesManager::instance()->outOfBorders(sf::FloatRect(newSpawnPos, newSpawnPos)) ||
-                                               player->getGlobalBounds().contains(newSpawnPos))
+    bool validSpawnPos = false;
+    while (!validSpawnPos)
     {
-        // std::cout<<"outside"<<std::endl;
-        chooseSpawnPos();
-    } 
-    else if(insideX && insideY)
-      {
-	    //std::cout<<"in frame"<<std::endl;
-	    chooseSpawnPos();
-      }
-    else
-    {
-        spawnPoint = newSpawnPos;
+        float randomX = std::rand() % mapSize.x;
+        float randomY = std::rand() % mapSize.y;
+        sf::Vector2f newSpawnPos{randomX, randomY};
+        if (!(TilesManager::instance()->outOfBorders(newSpawnPos) ||
+              viewRect.contains(newSpawnPos)))
+        {
+            validSpawnPos = true;
+            spawnPoint = newSpawnPos;
+        }
     }
-    // std::cout << "Done spawning" << std::endl;
 }
 
 void Spawner::increaseSpawnRate()
@@ -118,7 +95,6 @@ void Spawner::increaseSpawnRate()
 
 void Spawner::addFootman()
 {
-    // std::cout << hpIncrease << std::endl;
     chooseSpawnPos();
     std::string const pngName{"enemy.png"};
     double currentHP{100.0 + hpIncrease};

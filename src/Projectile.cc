@@ -57,11 +57,9 @@ void Projectile::takeDamage(double damage)
 
 void Projectile::die()
 {
-    // std::cout << "Removing projectile: " << this << std::endl;
     if (!isDying)
     {
         Map::instance()->removeEntity(this);
     }
-    // std::cout << "Removed projectile" << std::endl;
     isDying = true;
 }
