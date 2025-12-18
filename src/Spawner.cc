@@ -90,7 +90,8 @@ void Spawner::chooseSpawnPos()
     // bool yCrash = (randomY < 160 || randomY > 2200);
     // std::cout << "Done all calc" << std::endl;
     // std::cout<<"inan"<<std::endl;
-    if (TilesManager::instance()->outOfBorders(sf::FloatRect(newSpawnPos, newSpawnPos)))
+    if (TilesManager::instance()->outOfBorders(sf::FloatRect(newSpawnPos, newSpawnPos)) ||
+                                               player->getGlobalBounds().contains(newSpawnPos))
     {
         // std::cout<<"outside"<<std::endl;
         chooseSpawnPos();
@@ -99,7 +100,7 @@ void Spawner::chooseSpawnPos()
     {
         spawnPoint = newSpawnPos;
     }
-    std::cout << "Done spawning" << std::endl;
+    // std::cout << "Done spawning" << std::endl;
 }
 
 void Spawner::increaseSpawnRate()
@@ -112,7 +113,7 @@ void Spawner::increaseSpawnRate()
 
 void Spawner::addFootman()
 {
-    std::cout << hpIncrease << std::endl;
+    // std::cout << hpIncrease << std::endl;
     chooseSpawnPos();
     std::string const pngName{"enemy.png"};
     double currentHP{100.0 + hpIncrease};
