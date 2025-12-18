@@ -114,9 +114,9 @@ void StateMachine::pauseGame()
 
 void StateMachine::finishGame()
 {
-    if (currentState != GameState::IN_GAME && currentState != GameState::GAME_PAUSED)
+    if (currentState != GameState::IN_GAME && currentState != GameState::GAME_PAUSED && currentState != GameState::LEVEL_UP_SCREEN)
     {
-        throw std::logic_error("Can finish the game only if the game is on or is paused");
+        throw std::logic_error("Can finish the game only if the game is on, is paused or in levelUp");
     }
     setState(GameState::GAME_OVER);
 }
